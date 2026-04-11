@@ -1,4 +1,418 @@
 # Reference
+## CliAuth
+<details><summary><code>client.CliAuth.CliAuthorize(request) -> *promptvmgosdk.CliAuthorizeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Called by the frontend consent page after the user authorizes a CLI login request. Returns a one-time authorization code tied to the PKCE challenge.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CliAuthorizeRequest{
+        CodeChallenge: "code_challenge",
+        CodeChallengeMethod: promptvmgosdk.CliAuthorizeRequestCodeChallengeMethodS256,
+        RedirectURI: "redirect_uri",
+        ClientID: promptvmgosdk.CliAuthorizeRequestClientIDPromptvmCli,
+    }
+client.CliAuth.CliAuthorize(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codeChallenge:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**codeChallengeMethod:** `*promptvmgosdk.CliAuthorizeRequestCodeChallengeMethod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**redirectURI:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceName:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientID:** `*promptvmgosdk.CliAuthorizeRequestClientID` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CliAuth.CliDeviceAuthorize(request) -> *promptvmgosdk.CliDeviceAuthorizeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CliDeviceAuthorizeRequest{
+        UserCode: "user_code",
+        Action: promptvmgosdk.CliDeviceAuthorizeRequestActionApprove,
+    }
+client.CliAuth.CliDeviceAuthorize(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userCode:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**action:** `*promptvmgosdk.CliDeviceAuthorizeRequestAction` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CliAuth.ListCliSessions() -> []*promptvmgosdk.ListCliSessionsResponseItem</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.CliAuth.ListCliSessions(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CliAuth.RevokeCliSession(ID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RevokeCliSessionRequest{
+        ID: "id",
+    }
+client.CliAuth.RevokeCliSession(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CliAuth.CliTokenExchange(request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+OAuth 2.0 token endpoint supporting grant_type=authorization_code (with PKCE) and grant_type=refresh_token. Public — no client secret.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CliTokenExchangeRequest{
+        AuthorizationCode: &promptvmgosdk.CliTokenExchangeRequestAuthorizationCode{
+            Code: "code",
+            CodeVerifier: "code_verifier",
+            RedirectURI: "redirect_uri",
+            ClientID: promptvmgosdk.CliTokenExchangeRequestAuthorizationCodeClientIDPromptvmCli,
+        },
+    }
+client.CliAuth.CliTokenExchange(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `*promptvmgosdk.CliTokenExchangeRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CliAuth.CliDeviceCode(request) -> *promptvmgosdk.CliDeviceCodeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CliDeviceCodeRequest{
+        ClientID: promptvmgosdk.CliDeviceCodeRequestClientIDPromptvmCli,
+    }
+client.CliAuth.CliDeviceCode(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientID:** `*promptvmgosdk.CliDeviceCodeRequestClientID` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceName:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CliAuth.CliDeviceToken(request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CliDeviceTokenRequest{
+        GrantType: promptvmgosdk.CliDeviceTokenRequestGrantTypeUrnIetfParamsOauthGrantTypeDeviceCode,
+        DeviceCode: "device_code",
+        ClientID: promptvmgosdk.CliDeviceTokenRequestClientIDPromptvmCli,
+    }
+client.CliAuth.CliDeviceToken(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**grantType:** `*promptvmgosdk.CliDeviceTokenRequestGrantType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceCode:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientID:** `*promptvmgosdk.CliDeviceTokenRequestClientID` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## AgentAPI
 <details><summary><code>client.AgentAPI.AgentResolvePrompt(Slug) -> error</code></summary>
 <dl>

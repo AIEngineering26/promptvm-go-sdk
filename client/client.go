@@ -5,6 +5,7 @@ package client
 import (
 	agentapi "github.com/AIEngineering26/promptvm-go-sdk/agentapi"
 	apikeys "github.com/AIEngineering26/promptvm-go-sdk/apikeys"
+	cliauth "github.com/AIEngineering26/promptvm-go-sdk/cliauth"
 	collections "github.com/AIEngineering26/promptvm-go-sdk/collections"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	directories "github.com/AIEngineering26/promptvm-go-sdk/directories"
@@ -31,6 +32,7 @@ import (
 )
 
 type Client struct {
+	CliAuth                     *cliauth.Client
 	AgentAPI                    *agentapi.Client
 	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
@@ -62,6 +64,7 @@ type Client struct {
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
+		CliAuth:                     cliauth.NewClient(options),
 		AgentAPI:                    agentapi.NewClient(options),
 		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
