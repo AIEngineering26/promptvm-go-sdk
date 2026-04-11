@@ -1,0 +1,6130 @@
+# Reference
+## API Keys
+<details><summary><code>client.APIKeys.ListAPIKeys() -> *promptvmgosdk.ListAPIKeysResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a paginated list of API keys for the authenticated user. Results include metadata but never expose the secret key.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListAPIKeysRequest{}
+client.APIKeys.ListAPIKeys(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cursor:** `*string` — Cursor for pagination (base64-encoded)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` — Number of items per page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.ListAPIKeysRequestStatus` — Filter by API key status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**environment:** `*promptvmgosdk.ListAPIKeysRequestEnvironment` — Filter by environment
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.APIKeys.CreateAPIKey(request) -> *promptvmgosdk.CreateAPIKeyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a new API key for the authenticated user. Requires Pro or Enterprise tier. The secret key is only returned once during creation - store it securely.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateAPIKeyRequest{
+        Name: "Production API Key",
+        Scopes: []promptvmgosdk.CreateAPIKeyRequestScopesItem{
+            promptvmgosdk.CreateAPIKeyRequestScopesItemRead,
+            promptvmgosdk.CreateAPIKeyRequestScopesItemWrite,
+        },
+        Environment: promptvmgosdk.CreateAPIKeyRequestEnvironmentLive,
+    }
+client.APIKeys.CreateAPIKey(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `string` — Human-readable name for the API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scopes:** `[]*promptvmgosdk.CreateAPIKeyRequestScopesItem` — Permission scopes for the API key. Requires Pro or Enterprise tier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**environment:** `*promptvmgosdk.CreateAPIKeyRequestEnvironment` — Environment for the API key (live or test)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.APIKeys.GetAPIKey(APIKeyID) -> *promptvmgosdk.GetAPIKeyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves detailed information about a specific API key. Does not include the secret key.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIKeyRequest{
+        APIKeyID: "apiKeyId",
+    }
+client.APIKeys.GetAPIKey(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**apiKeyID:** `string` — UUID of the API key
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.APIKeys.RevokeAPIKey(APIKeyID, request) -> *promptvmgosdk.RevokeAPIKeyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Permanently revokes an API key. Revoked keys cannot be used for API access but remain in the system for audit purposes. This action cannot be undone.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RevokeAPIKeyRequest{
+        APIKeyID: "apiKeyId",
+    }
+client.APIKeys.RevokeAPIKey(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**apiKeyID:** `string` — UUID of the API key to revoke
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `*string` — Optional reason for revocation
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.APIKeys.UpdateAPIKey(APIKeyID, request) -> *promptvmgosdk.UpdateAPIKeyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the metadata (name) of an existing API key. Cannot modify scopes or environment after creation.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateAPIKeyRequest{
+        APIKeyID: "apiKeyId",
+    }
+client.APIKeys.UpdateAPIKey(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**apiKeyID:** `string` — UUID of the API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` — New name for the API key
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.APIKeys.GetAPIKeyUsage(APIKeyID) -> *promptvmgosdk.GetAPIKeyUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves usage statistics for a specific API key including request counts, error rates, and latency metrics.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIKeyUsageRequest{
+        APIKeyID: "apiKeyId",
+    }
+client.APIKeys.GetAPIKeyUsage(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**apiKeyID:** `string` — UUID of the API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**period:** `*promptvmgosdk.GetAPIKeyUsageRequestPeriod` — Time period for statistics aggregation
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Organizations
+<details><summary><code>client.Organizations.ListOrganizationWorkspaces(OrgID) -> *promptvmgosdk.ListOrganizationWorkspacesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all workspaces in the org visible to the caller. Org owners and admins see every workspace; regular members see workspaces they own, are a member of, or that have public/internal visibility.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListOrganizationWorkspacesRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.ListOrganizationWorkspaces(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.ListOrganizationMembers(OrgID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListOrganizationMembersRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.ListOrganizationMembers(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**perPage:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role:** `*promptvmgosdk.ListOrganizationMembersRequestRole` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.ListOrganizationMembersRequestStatus` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.RemoveOrganizationMember(OrgID, MemberID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RemoveOrganizationMemberRequest{
+        OrgID: "orgId",
+        MemberID: "memberId",
+    }
+client.Organizations.RemoveOrganizationMember(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**memberID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.UpdateOrganizationMemberRole(OrgID, MemberID, request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateOrganizationMemberRoleRequest{
+        OrgID: "orgId",
+        MemberID: "memberId",
+        Role: promptvmgosdk.UpdateOrganizationMemberRoleRequestRoleOwner,
+    }
+client.Organizations.UpdateOrganizationMemberRole(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**memberID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role:** `*promptvmgosdk.UpdateOrganizationMemberRoleRequestRole` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customRoleID:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.ListOrganizationInvitations(OrgID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListOrganizationInvitationsRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.ListOrganizationInvitations(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.ListOrganizationInvitationsRequestStatus` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.CreateOrganizationInvitation(OrgID, request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateOrganizationInvitationRequest{
+        OrgID: "orgId",
+        Email: "email",
+        Role: promptvmgosdk.CreateOrganizationInvitationRequestRoleOwner,
+    }
+client.Organizations.CreateOrganizationInvitation(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role:** `*promptvmgosdk.CreateOrganizationInvitationRequestRole` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.RevokeOrganizationInvitation(OrgID, InvitationID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RevokeOrganizationInvitationRequest{
+        OrgID: "orgId",
+        InvitationID: "invitationId",
+    }
+client.Organizations.RevokeOrganizationInvitation(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invitationID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.ResendOrganizationInvitation(OrgID, InvitationID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ResendOrganizationInvitationRequest{
+        OrgID: "orgId",
+        InvitationID: "invitationId",
+    }
+client.Organizations.ResendOrganizationInvitation(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invitationID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.AcceptOrganizationInvitation(Token) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AcceptOrganizationInvitationRequest{
+        Token: "token",
+    }
+client.Organizations.AcceptOrganizationInvitation(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.GetOrganizationPermissions(OrgID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetOrganizationPermissionsRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.GetOrganizationPermissions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.UpdateOrganizationPermissions(OrgID, request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateOrganizationPermissionsRequest{
+        OrgID: "orgId",
+        Updates: []*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+            &promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+                Capability: "capability",
+                Role: promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
+                Enabled: true,
+            },
+        },
+    }
+client.Organizations.UpdateOrganizationPermissions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**updates:** `[]*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.ListOrganizationRoles(OrgID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListOrganizationRolesRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.ListOrganizationRoles(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.CreateOrganizationRole(OrgID, request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateOrganizationRoleRequest{
+        OrgID: "orgId",
+        Name: "name",
+        BaseRole: promptvmgosdk.CreateOrganizationRoleRequestBaseRoleOwner,
+    }
+client.Organizations.CreateOrganizationRole(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**baseRole:** `*promptvmgosdk.CreateOrganizationRoleRequestBaseRole` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**color:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.DeleteOrganizationRole(OrgID, RoleID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteOrganizationRoleRequest{
+        OrgID: "orgId",
+        RoleID: "roleId",
+    }
+client.Organizations.DeleteOrganizationRole(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**roleID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.UpdateOrganizationRole(OrgID, RoleID, request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateOrganizationRoleRequest{
+        OrgID: "orgId",
+        RoleID: "roleId",
+    }
+client.Organizations.UpdateOrganizationRole(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**roleID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**baseRole:** `*promptvmgosdk.UpdateOrganizationRoleRequestBaseRole` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**color:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Workspaces
+<details><summary><code>client.Workspaces.ListWorkspaces() -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns workspaces the authenticated user can access within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListWorkspacesRequest{
+        OrganizationID: "organizationId",
+    }
+client.Workspaces.ListWorkspaces(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**organizationID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.CreateWorkspace(request) -> *promptvmgosdk.CreateWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new workspace within an organization. The creator is added as owner.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateWorkspaceRequest{
+        Name: "name",
+        OrganizationID: "organizationId",
+    }
+client.Workspaces.CreateWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**visibility:** `*promptvmgosdk.CreateWorkspaceRequestVisibility` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**organizationID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.GetWorkspace(WorkspaceID) -> *promptvmgosdk.GetWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns full workspace metadata including owner, members, and content counts.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetWorkspaceRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Workspaces.GetWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.DeleteWorkspace(WorkspaceID) -> *promptvmgosdk.DeleteWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft-deletes a workspace. Cannot delete default workspace. Use cascade=true to also delete prompts/directories.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteWorkspaceRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Workspaces.DeleteWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cascade:** `*promptvmgosdk.DeleteWorkspaceRequestCascade` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.UpdateWorkspace(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates workspace metadata. Only owner or admin can update. Re-generates slug if name changes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateWorkspaceRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Workspaces.UpdateWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**visibility:** `*promptvmgosdk.UpdateWorkspaceRequestVisibility` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.UpdateWorkspacePin(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspacePinResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Pins or unpins a workspace for the authenticated user.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateWorkspacePinRequest{
+        WorkspaceID: "workspaceId",
+        Pinned: true,
+    }
+client.Workspaces.UpdateWorkspacePin(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pinned:** `bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.TransferWorkspaceOwnership(WorkspaceID, request) -> *promptvmgosdk.TransferWorkspaceOwnershipResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Transfers workspace ownership to another org member. Only current owner can transfer. Cannot transfer default workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.TransferWorkspaceOwnershipRequest{
+        WorkspaceID: "workspaceId",
+        NewOwnerID: "newOwnerId",
+    }
+client.Workspaces.TransferWorkspaceOwnership(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**newOwnerID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Creator
+<details><summary><code>client.MarketplaceCreator.GetMyMarketplaceCreatorProfile() -> *promptvmgosdk.GetMyMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceCreator.GetMyMarketplaceCreatorProfile(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(request) -> *promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest{}
+client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**bio:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**socialLinks:** `map[string]any` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreator.CreateMarketplaceCreatorProfile(request) -> *promptvmgosdk.CreateMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateMarketplaceCreatorProfileRequest{
+        Bio: "bio",
+    }
+client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**bio:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**socialLinks:** `map[string]any` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreator.GetMarketplaceCreatorProfile(UserID) -> *promptvmgosdk.GetMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetMarketplaceCreatorProfileRequest{
+        UserID: "userId",
+    }
+client.MarketplaceCreator.GetMarketplaceCreatorProfile(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Browse
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceListings() -> *promptvmgosdk.ListMarketplaceListingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Paginated browse with optional search, category filter, and sort.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListMarketplaceListingsRequest{}
+client.MarketplaceBrowse.ListMarketplaceListings(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**q:** `*string` — Search query
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**categoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*promptvmgosdk.ListMarketplaceListingsRequestSort` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.GetMarketplaceListing(ListingID) -> *promptvmgosdk.GetMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetMarketplaceListingRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceBrowse.GetMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.ListFeaturedMarketplaceListings() -> *promptvmgosdk.ListFeaturedMarketplaceListingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceBrowse.ListFeaturedMarketplaceListings(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceCategories() -> *promptvmgosdk.ListMarketplaceCategoriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceBrowse.ListMarketplaceCategories(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Listings
+<details><summary><code>client.MarketplaceListings.CreateMarketplaceListing(request) -> *promptvmgosdk.CreateMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Publishes a prompt or collection to the marketplace. Requires a creator profile.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateMarketplaceListingRequest{
+        Title: "title",
+        Description: "description",
+    }
+client.MarketplaceListings.CreateMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**title:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**categoryIDs:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**priceCents:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accessType:** `*promptvmgosdk.CreateMarketplaceListingRequestAccessType` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.ArchiveMarketplaceListing(ListingID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ArchiveMarketplaceListingRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceListings.ArchiveMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.UpdateMarketplaceListing(ListingID, request) -> *promptvmgosdk.UpdateMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateMarketplaceListingRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceListings.UpdateMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**title:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**categoryIDs:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.UpdateMarketplaceListingRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**priceCents:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accessType:** `*promptvmgosdk.UpdateMarketplaceListingRequestAccessType` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.ClaimMarketplaceListing(ListingID, request) -> *promptvmgosdk.ClaimMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Claims a free listing and copies the prompt/collection into the user workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ClaimMarketplaceListingRequest{
+        ListingID: "listingId",
+        WorkspaceID: "workspaceId",
+    }
+client.MarketplaceListings.ClaimMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Creator Dashboard
+<details><summary><code>client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings() -> *promptvmgosdk.ListMarketplaceCreatorListingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListMarketplaceCreatorListingsRequest{}
+client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.ListMarketplaceCreatorListingsRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreatorDashboard.ListMarketplaceCreatorSubscribers() -> *promptvmgosdk.ListMarketplaceCreatorSubscribersResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListMarketplaceCreatorSubscribersRequest{}
+client.MarketplaceCreatorDashboard.ListMarketplaceCreatorSubscribers(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**page:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Subscriptions
+<details><summary><code>client.MarketplaceSubscriptions.SubscribeToMarketplaceCreator(CreatorUserID) -> *promptvmgosdk.SubscribeToMarketplaceCreatorResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.SubscribeToMarketplaceCreatorRequest{
+        CreatorUserID: "creatorUserId",
+    }
+client.MarketplaceSubscriptions.SubscribeToMarketplaceCreator(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**creatorUserID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceSubscriptions.UnsubscribeFromMarketplaceCreator(CreatorUserID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UnsubscribeFromMarketplaceCreatorRequest{
+        CreatorUserID: "creatorUserId",
+    }
+client.MarketplaceSubscriptions.UnsubscribeFromMarketplaceCreator(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**creatorUserID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Prompts
+<details><summary><code>client.Prompts.ListPrompts() -> *promptvmgosdk.ListPromptsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a paginated list of prompts in a workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptsRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Prompts.ListPrompts(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.ListPromptsRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.ListPromptsRequestKind` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Prompts.CreatePrompt(request) -> *promptvmgosdk.CreatePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new prompt with an initial version (v1). Requires edit permission on the target workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreatePromptRequest{
+        Name: "name",
+        WorkspaceID: "workspaceId",
+        Content: "content",
+    }
+client.Prompts.CreatePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**systemPrompt:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.CreatePromptRequestKind` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.CreatePromptRequestStatus` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Prompts.GetPrompt(PromptID) -> *promptvmgosdk.GetPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a prompt with its current version content.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetPromptRequest{
+        PromptID: "promptId",
+    }
+client.Prompts.GetPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Prompts.DeletePrompt(PromptID) -> *promptvmgosdk.DeletePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft-deletes a prompt by setting deletedAt on its file record.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeletePromptRequest{
+        PromptID: "promptId",
+    }
+client.Prompts.DeletePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Prompts.UpdatePrompt(PromptID, request) -> *promptvmgosdk.UpdatePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates name, description, status, tags, or isPublic. Does not create a new version.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdatePromptRequest{
+        PromptID: "promptId",
+    }
+client.Prompts.UpdatePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.UpdatePromptRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Prompt Versions
+<details><summary><code>client.PromptVersions.ListPromptVersions(PromptID) -> *promptvmgosdk.ListPromptVersionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptVersionsRequest{
+        PromptID: "promptId",
+    }
+client.PromptVersions.ListPromptVersions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptVersions.CreatePromptVersion(PromptID, request) -> *promptvmgosdk.CreatePromptVersionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreatePromptVersionRequest{
+        PromptID: "promptId",
+        Content: "content",
+    }
+client.PromptVersions.CreatePromptVersion(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**systemPrompt:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**changeNote:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionLabel:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**variablesSchema:** `map[string]any` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptVersions.GetPromptVersion(PromptID, VersionID) -> *promptvmgosdk.GetPromptVersionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetPromptVersionRequest{
+        PromptID: "promptId",
+        VersionID: "versionId",
+    }
+client.PromptVersions.GetPromptVersion(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptVersions.UpdatePromptVersion(PromptID, VersionID, request) -> *promptvmgosdk.UpdatePromptVersionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdatePromptVersionRequest{
+        PromptID: "promptId",
+        VersionID: "versionId",
+    }
+client.PromptVersions.UpdatePromptVersion(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionLabel:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**changeNote:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**systemPrompt:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptVersions.DiffPromptVersions(PromptID) -> *promptvmgosdk.DiffPromptVersionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a unified diff between two version numbers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DiffPromptVersionsRequest{
+        PromptID: "promptId",
+        From: "from",
+        To: "to",
+    }
+client.PromptVersions.DiffPromptVersions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**from:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**to:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptVersions.RollbackPrompt(PromptID, request) -> *promptvmgosdk.RollbackPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new version from an older version's content.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RollbackPromptRequest{
+        PromptID: "promptId",
+        TargetVersion: 1,
+    }
+client.PromptVersions.RollbackPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetVersion:** `int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Prompt Resolution
+<details><summary><code>client.PromptResolution.ResolvePrompt(PromptID) -> *promptvmgosdk.ResolvePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Resolves [[include:]] references and {{variable}} substitutions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ResolvePromptRequest{
+        PromptID: "promptId",
+    }
+client.PromptResolution.ResolvePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionID:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptResolution.ResolvePromptStream(PromptID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Same as /resolve but delivers content as Server-Sent Events for large payloads.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ResolvePromptStreamRequest{
+        PromptID: "promptId",
+    }
+client.PromptResolution.ResolvePromptStream(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionID:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Collections
+<details><summary><code>client.Collections.ListCollections() -> *promptvmgosdk.ListCollectionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListCollectionsRequest{}
+client.Collections.ListCollections(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Collections.CreateCollection(request) -> *promptvmgosdk.CreateCollectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateCollectionRequest{
+        Name: "name",
+    }
+client.Collections.CreateCollection(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Collections.GetCollection(CollectionID) -> *promptvmgosdk.GetCollectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetCollectionRequest{
+        CollectionID: "collectionId",
+    }
+client.Collections.GetCollection(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**collectionID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Collections.DeleteCollection(CollectionID) -> *promptvmgosdk.DeleteCollectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteCollectionRequest{
+        CollectionID: "collectionId",
+    }
+client.Collections.DeleteCollection(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**collectionID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Collections.UpdateCollection(CollectionID, request) -> *promptvmgosdk.UpdateCollectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateCollectionRequest{
+        CollectionID: "collectionId",
+    }
+client.Collections.UpdateCollection(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**collectionID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Collections.AddCollectionItem(CollectionID, request) -> *promptvmgosdk.AddCollectionItemResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AddCollectionItemRequest{
+        CollectionID: "collectionId",
+        FileID: "fileId",
+    }
+client.Collections.AddCollectionItem(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**collectionID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fileID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**note:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Collections.RemoveCollectionItem(CollectionID, ItemID) -> *promptvmgosdk.RemoveCollectionItemResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RemoveCollectionItemRequest{
+        CollectionID: "collectionId",
+        ItemID: "itemId",
+    }
+client.Collections.RemoveCollectionItem(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**collectionID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Templates
+<details><summary><code>client.Templates.ConvertPromptToTemplate(PromptID) -> *promptvmgosdk.ConvertPromptToTemplateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ConvertPromptToTemplateRequest{
+        PromptID: "promptId",
+    }
+client.Templates.ConvertPromptToTemplate(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Templates.ListTemplates() -> *promptvmgosdk.ListTemplatesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists templates visible org-wide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListTemplatesRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Templates.ListTemplates(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Templates.CreatePromptFromTemplate(request) -> *promptvmgosdk.CreatePromptFromTemplateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreatePromptFromTemplateRequest{
+        TemplateID: "templateId",
+        Name: "name",
+        WorkspaceID: "workspaceId",
+    }
+client.Templates.CreatePromptFromTemplate(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**templateID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**variableValues:** `map[string]any` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Sharing
+<details><summary><code>client.Sharing.SharePrompt(PromptID, request) -> *promptvmgosdk.SharePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.SharePromptRequest{
+        PromptID: "promptId",
+        Permission: promptvmgosdk.SharePromptRequestPermissionView,
+    }
+client.Sharing.SharePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**groupID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**permission:** `*promptvmgosdk.SharePromptRequestPermission` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.ListPromptCollaborators(PromptID) -> *promptvmgosdk.ListPromptCollaboratorsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptCollaboratorsRequest{
+        PromptID: "promptId",
+    }
+client.Sharing.ListPromptCollaborators(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.RevokePromptCollaborator(PromptID, CollaboratorID) -> *promptvmgosdk.RevokePromptCollaboratorResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RevokePromptCollaboratorRequest{
+        PromptID: "promptId",
+        CollaboratorID: "collaboratorId",
+    }
+client.Sharing.RevokePromptCollaborator(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collaboratorID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.CreatePromptShareLink(PromptID, request) -> *promptvmgosdk.CreatePromptShareLinkResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreatePromptShareLinkRequest{
+        PromptID: "promptId",
+    }
+client.Sharing.CreatePromptShareLink(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**permission:** `*promptvmgosdk.CreatePromptShareLinkRequestPermission` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiresInHours:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxUses:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionNumber:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.AccessSharedPrompt(Token) -> *promptvmgosdk.AccessSharedPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Public endpoint — no authentication required. Validates token, password, and expiry.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AccessSharedPromptRequest{
+        Token: "token",
+    }
+client.Sharing.AccessSharedPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Prompt Organization
+<details><summary><code>client.PromptOrganization.MovePrompt(PromptID, request) -> *promptvmgosdk.MovePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Moves a prompt to a different directory and/or workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.MovePromptRequest{
+        PromptID: "promptId",
+    }
+client.PromptOrganization.MovePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptOrganization.ForkPrompt(PromptID, request) -> *promptvmgosdk.ForkPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a copy in the specified workspace with forkedFromPromptId set.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ForkPromptRequest{
+        PromptID: "promptId",
+        WorkspaceID: "workspaceId",
+    }
+client.PromptOrganization.ForkPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptOrganization.ListPromptReferences(PromptID) -> *promptvmgosdk.ListPromptReferencesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all [[include:]] references in the current version.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptReferencesRequest{
+        PromptID: "promptId",
+    }
+client.PromptOrganization.ListPromptReferences(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptOrganization.ListPromptDependents(PromptID) -> *promptvmgosdk.ListPromptDependentsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all prompts that reference this one.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptDependentsRequest{
+        PromptID: "promptId",
+    }
+client.PromptOrganization.ListPromptDependents(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Prompt Export
+<details><summary><code>client.PromptExport.ExportPrompt(PromptID, request) -> *promptvmgosdk.ExportPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Exports a prompt in Markdown, JSON, or XML format.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ExportPromptRequest{
+        PromptID: "promptId",
+        Format: promptvmgosdk.ExportPromptRequestFormatMd,
+    }
+client.PromptExport.ExportPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `*promptvmgosdk.ExportPromptRequestFormat` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**resolveReferences:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeMetadata:** `*bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Directories
+<details><summary><code>client.Directories.ListDirectories() -> *promptvmgosdk.ListDirectoriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all active directories in a workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListDirectoriesRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Directories.ListDirectories(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Directories.CreateDirectory(request) -> *promptvmgosdk.CreateDirectoryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a persisted directory inside a workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateDirectoryRequest{
+        WorkspaceID: "workspaceId",
+        Name: "name",
+    }
+client.Directories.CreateDirectory(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parentID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Directories.DeleteDirectory(DirectoryID) -> *promptvmgosdk.DeleteDirectoryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes an empty directory.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteDirectoryRequest{
+        DirectoryID: "directoryId",
+    }
+client.Directories.DeleteDirectory(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**directoryID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Directories.UpdateDirectory(DirectoryID, request) -> *promptvmgosdk.UpdateDirectoryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates persisted directory metadata.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateDirectoryRequest{
+        DirectoryID: "directoryId",
+    }
+client.Directories.UpdateDirectory(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**directoryID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parentID:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Resources
+<details><summary><code>client.Resources.ListWorkspaceResources() -> *promptvmgosdk.ListWorkspaceResourcesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all confirmed, non-deleted resources belonging to a workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListWorkspaceResourcesRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Resources.ListWorkspaceResources(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.InitiateResourceUpload(request) -> *promptvmgosdk.InitiateResourceUploadResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a file record and returns a presigned S3 PUT URL. Upload your file bytes directly to the presigned URL within 15 minutes. Then call POST /resources/:resourceId/confirm to complete the process.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.InitiateResourceUploadRequest{
+        WorkspaceID: "workspaceId",
+        Name: "name",
+        ContentType: "contentType",
+        SizeBytes: 1,
+    }
+client.Resources.InitiateResourceUpload(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` — Workspace to upload the resource into
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` — Display name for the resource
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contentType:** `string` — MIME type (e.g. text/markdown, image/png)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sizeBytes:** `int` — File size in bytes (max 100MB)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` — Directory to place the resource in (null = workspace root)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**categories:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.ConfirmResourceUpload(ResourceID, request) -> *promptvmgosdk.ConfirmResourceUploadResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Verifies the file was uploaded to S3 and marks the resource as available for use.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ConfirmResourceUploadRequest{
+        ResourceID: "resourceId",
+    }
+client.Resources.ConfirmResourceUpload(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.GetResource(ResourceID) -> *promptvmgosdk.GetResourceResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetResourceRequest{
+        ResourceID: "resourceId",
+    }
+client.Resources.GetResource(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.DeleteResource(ResourceID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft-deletes the resource and removes its S3 object. Also detaches it from all prompt versions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteResourceRequest{
+        ResourceID: "resourceId",
+    }
+client.Resources.DeleteResource(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.UpdateResource(ResourceID, request) -> *promptvmgosdk.UpdateResourceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update resource metadata (name, directory placement).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateResourceRequest{
+        ResourceID: "resourceId",
+    }
+client.Resources.UpdateResource(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.GetResourceDownloadURL(ResourceID) -> *promptvmgosdk.GetResourceDownloadURLResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a time-limited presigned URL (1 hour) for downloading the resource from S3.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetResourceDownloadURLRequest{
+        ResourceID: "resourceId",
+    }
+client.Resources.GetResourceDownloadURL(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.ListPromptResources(PromptID) -> *promptvmgosdk.ListPromptResourcesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptResourcesRequest{
+        PromptID: "promptId",
+    }
+client.Resources.ListPromptResources(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.AttachPromptResource(PromptID, request) -> *promptvmgosdk.AttachPromptResourceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The resource must be confirmed (upload completed) and belong to the same workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AttachPromptResourceRequest{
+        PromptID: "promptId",
+        ResourceID: "resourceId",
+    }
+client.Resources.AttachPromptResource(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**resourceID:** `string` — ID of a confirmed resource to attach
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**usageContext:** `*promptvmgosdk.AttachPromptResourceRequestUsageContext` — How the resource is used by the LLM at execution time
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.DetachPromptResource(PromptID, ResourceID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes the association only — the resource file is not deleted.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DetachPromptResourceRequest{
+        PromptID: "promptId",
+        ResourceID: "resourceId",
+    }
+client.Resources.DetachPromptResource(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
