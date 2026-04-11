@@ -307,3 +307,49 @@ func (r *RawClient) GetAPIKeyUsage(
 		Body:       response,
 	}, nil
 }
+
+func (r *RawClient) RotateAPIKey(
+	ctx context.Context,
+	request *promptvmgosdk.RotateAPIKeyRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.RotateAPIKeyResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/api-keys/%v/rotate",
+		request.APIKeyID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *promptvmgosdk.RotateAPIKeyResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.RotateAPIKeyResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}

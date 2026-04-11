@@ -31,7 +31,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
-// Workspace has content
+// Already following
 type ConflictError struct {
 	*core.APIError
 	Body interface{}
@@ -103,7 +103,7 @@ func (g *GoneError) Unwrap() error {
 	return g.APIError
 }
 
-// Internal server error
+// Server error
 type InternalServerError struct {
 	*core.APIError
 	Body interface{}
@@ -127,7 +127,7 @@ func (i *InternalServerError) Unwrap() error {
 	return i.APIError
 }
 
-// API key not found
+// Not found
 type NotFoundError struct {
 	*core.APIError
 	Body interface{}
@@ -175,7 +175,7 @@ func (t *TooManyRequestsError) Unwrap() error {
 	return t.APIError
 }
 
-// Unauthorized - authentication required
+// Password required or invalid
 type UnauthorizedError struct {
 	*core.APIError
 	Body interface{}

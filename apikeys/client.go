@@ -133,3 +133,20 @@ func (c *Client) GetAPIKeyUsage(
 	}
 	return response.Body, nil
 }
+
+// Generates a new secret for an existing API key. The public key remains unchanged. The old secret remains valid for a configurable grace period (default: 24 hours). Requires JWT auth — cannot rotate using the key itself.
+func (c *Client) RotateAPIKey(
+	ctx context.Context,
+	request *promptvmgosdk.RotateAPIKeyRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.RotateAPIKeyResponse, error) {
+	response, err := c.WithRawResponse.RotateAPIKey(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

@@ -32,6 +32,23 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+// Public endpoint — no authentication required.
+func (c *Client) AccessSharedPrompt(
+	ctx context.Context,
+	request *promptvmgosdk.AccessSharedPromptRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.AccessSharedPromptResponse, error) {
+	response, err := c.WithRawResponse.AccessSharedPrompt(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 func (c *Client) SharePrompt(
 	ctx context.Context,
 	request *promptvmgosdk.SharePromptRequest,
@@ -86,23 +103,6 @@ func (c *Client) CreatePromptShareLink(
 	opts ...option.RequestOption,
 ) (*promptvmgosdk.CreatePromptShareLinkResponse, error) {
 	response, err := c.WithRawResponse.CreatePromptShareLink(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Public endpoint — no authentication required. Validates token, password, and expiry.
-func (c *Client) AccessSharedPrompt(
-	ctx context.Context,
-	request *promptvmgosdk.AccessSharedPromptRequest,
-	opts ...option.RequestOption,
-) (*promptvmgosdk.AccessSharedPromptResponse, error) {
-	response, err := c.WithRawResponse.AccessSharedPrompt(
 		ctx,
 		request,
 		opts...,

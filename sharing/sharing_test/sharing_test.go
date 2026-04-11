@@ -62,6 +62,32 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+func TestSharingAccessSharedPromptWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.AccessSharedPromptRequest{
+		Token: "token",
+	}
+	_, invocationErr := client.Sharing.AccessSharedPrompt(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestSharingAccessSharedPromptWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestSharingAccessSharedPromptWithWireMock", "GET", "/api/v1/share/token", nil, 1)
+}
+
 func TestSharingSharePromptWithWireMock(
 	t *testing.T,
 ) {
@@ -166,30 +192,4 @@ func TestSharingCreatePromptShareLinkWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestSharingCreatePromptShareLinkWithWireMock", "POST", "/api/v1/prompts/promptId/share-link", nil, 1)
-}
-
-func TestSharingAccessSharedPromptWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.AccessSharedPromptRequest{
-		Token: "token",
-	}
-	_, invocationErr := client.Sharing.AccessSharedPrompt(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestSharingAccessSharedPromptWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestSharingAccessSharedPromptWithWireMock", "GET", "/api/v1/share/token", nil, 1)
 }

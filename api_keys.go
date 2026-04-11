@@ -14,6 +14,7 @@ var (
 	createAPIKeyRequestFieldName        = big.NewInt(1 << 0)
 	createAPIKeyRequestFieldScopes      = big.NewInt(1 << 1)
 	createAPIKeyRequestFieldEnvironment = big.NewInt(1 << 2)
+	createAPIKeyRequestFieldExpiresAt   = big.NewInt(1 << 3)
 )
 
 type CreateAPIKeyRequest struct {
@@ -23,6 +24,8 @@ type CreateAPIKeyRequest struct {
 	Scopes []CreateAPIKeyRequestScopesItem `json:"scopes" url:"-"`
 	// Environment for the API key (live or test)
 	Environment CreateAPIKeyRequestEnvironment `json:"environment" url:"-"`
+	// Optional expiration date. If set, the key becomes invalid after this time.
+	ExpiresAt *time.Time `json:"expiresAt,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -54,6 +57,36 @@ func (c *CreateAPIKeyRequest) SetScopes(scopes []CreateAPIKeyRequestScopesItem) 
 func (c *CreateAPIKeyRequest) SetEnvironment(environment CreateAPIKeyRequestEnvironment) {
 	c.Environment = environment
 	c.require(createAPIKeyRequestFieldEnvironment)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateAPIKeyRequest) SetExpiresAt(expiresAt *time.Time) {
+	c.ExpiresAt = expiresAt
+	c.require(createAPIKeyRequestFieldExpiresAt)
+}
+
+func (c *CreateAPIKeyRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateAPIKeyRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateAPIKeyRequest(body)
+	return nil
+}
+
+func (c *CreateAPIKeyRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateAPIKeyRequest
+	var marshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expiresAt,omitempty"`
+	}{
+		embed:     embed(*c),
+		ExpiresAt: internal.NewOptionalDateTime(c.ExpiresAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -208,6 +241,42 @@ func (r *RevokeAPIKeyRequest) SetAPIKeyID(apiKeyID string) {
 func (r *RevokeAPIKeyRequest) SetReason(reason *string) {
 	r.Reason = reason
 	r.require(revokeAPIKeyRequestFieldReason)
+}
+
+var (
+	rotateAPIKeyRequestFieldAPIKeyID         = big.NewInt(1 << 0)
+	rotateAPIKeyRequestFieldGracePeriodHours = big.NewInt(1 << 1)
+)
+
+type RotateAPIKeyRequest struct {
+	// UUID of the API key to rotate
+	APIKeyID string `json:"-" url:"-"`
+	// Hours the old secret remains valid (0-168, default 24). Public key is unchanged.
+	GracePeriodHours *int `json:"gracePeriodHours,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RotateAPIKeyRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetAPIKeyID sets the APIKeyID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyRequest) SetAPIKeyID(apiKeyID string) {
+	r.APIKeyID = apiKeyID
+	r.require(rotateAPIKeyRequestFieldAPIKeyID)
+}
+
+// SetGracePeriodHours sets the GracePeriodHours field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyRequest) SetGracePeriodHours(gracePeriodHours *int) {
+	r.GracePeriodHours = gracePeriodHours
+	r.require(rotateAPIKeyRequestFieldGracePeriodHours)
 }
 
 // Environment for the API key (live or test)
@@ -940,6 +1009,7 @@ type GetAPIKeyResponseDataStatus string
 const (
 	GetAPIKeyResponseDataStatusActive  GetAPIKeyResponseDataStatus = "active"
 	GetAPIKeyResponseDataStatusRevoked GetAPIKeyResponseDataStatus = "revoked"
+	GetAPIKeyResponseDataStatusExpired GetAPIKeyResponseDataStatus = "expired"
 )
 
 func NewGetAPIKeyResponseDataStatusFromString(s string) (GetAPIKeyResponseDataStatus, error) {
@@ -948,6 +1018,8 @@ func NewGetAPIKeyResponseDataStatusFromString(s string) (GetAPIKeyResponseDataSt
 		return GetAPIKeyResponseDataStatusActive, nil
 	case "revoked":
 		return GetAPIKeyResponseDataStatusRevoked, nil
+	case "expired":
+		return GetAPIKeyResponseDataStatusExpired, nil
 	}
 	var t GetAPIKeyResponseDataStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -1991,6 +2063,7 @@ type ListAPIKeysResponseDataItemStatus string
 const (
 	ListAPIKeysResponseDataItemStatusActive  ListAPIKeysResponseDataItemStatus = "active"
 	ListAPIKeysResponseDataItemStatusRevoked ListAPIKeysResponseDataItemStatus = "revoked"
+	ListAPIKeysResponseDataItemStatusExpired ListAPIKeysResponseDataItemStatus = "expired"
 )
 
 func NewListAPIKeysResponseDataItemStatusFromString(s string) (ListAPIKeysResponseDataItemStatus, error) {
@@ -1999,6 +2072,8 @@ func NewListAPIKeysResponseDataItemStatusFromString(s string) (ListAPIKeysRespon
 		return ListAPIKeysResponseDataItemStatusActive, nil
 	case "revoked":
 		return ListAPIKeysResponseDataItemStatusRevoked, nil
+	case "expired":
+		return ListAPIKeysResponseDataItemStatusExpired, nil
 	}
 	var t ListAPIKeysResponseDataItemStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -2261,6 +2336,157 @@ func NewRevokeAPIKeyResponseStatusFromString(s string) (RevokeAPIKeyResponseStat
 
 func (r RevokeAPIKeyResponseStatus) Ptr() *RevokeAPIKeyResponseStatus {
 	return &r
+}
+
+// API key rotated successfully
+var (
+	rotateAPIKeyResponseFieldID                   = big.NewInt(1 << 0)
+	rotateAPIKeyResponseFieldPublicKey            = big.NewInt(1 << 1)
+	rotateAPIKeyResponseFieldSecretKey            = big.NewInt(1 << 2)
+	rotateAPIKeyResponseFieldPreviousKeyExpiresAt = big.NewInt(1 << 3)
+	rotateAPIKeyResponseFieldWarning              = big.NewInt(1 << 4)
+)
+
+type RotateAPIKeyResponse struct {
+	ID                   string    `json:"id" url:"id"`
+	PublicKey            string    `json:"publicKey" url:"publicKey"`
+	SecretKey            string    `json:"secretKey" url:"secretKey"`
+	PreviousKeyExpiresAt time.Time `json:"previousKeyExpiresAt" url:"previousKeyExpiresAt"`
+	Warning              string    `json:"warning" url:"warning"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RotateAPIKeyResponse) GetID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ID
+}
+
+func (r *RotateAPIKeyResponse) GetPublicKey() string {
+	if r == nil {
+		return ""
+	}
+	return r.PublicKey
+}
+
+func (r *RotateAPIKeyResponse) GetSecretKey() string {
+	if r == nil {
+		return ""
+	}
+	return r.SecretKey
+}
+
+func (r *RotateAPIKeyResponse) GetPreviousKeyExpiresAt() time.Time {
+	if r == nil {
+		return time.Time{}
+	}
+	return r.PreviousKeyExpiresAt
+}
+
+func (r *RotateAPIKeyResponse) GetWarning() string {
+	if r == nil {
+		return ""
+	}
+	return r.Warning
+}
+
+func (r *RotateAPIKeyResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RotateAPIKeyResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyResponse) SetID(id string) {
+	r.ID = id
+	r.require(rotateAPIKeyResponseFieldID)
+}
+
+// SetPublicKey sets the PublicKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyResponse) SetPublicKey(publicKey string) {
+	r.PublicKey = publicKey
+	r.require(rotateAPIKeyResponseFieldPublicKey)
+}
+
+// SetSecretKey sets the SecretKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyResponse) SetSecretKey(secretKey string) {
+	r.SecretKey = secretKey
+	r.require(rotateAPIKeyResponseFieldSecretKey)
+}
+
+// SetPreviousKeyExpiresAt sets the PreviousKeyExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyResponse) SetPreviousKeyExpiresAt(previousKeyExpiresAt time.Time) {
+	r.PreviousKeyExpiresAt = previousKeyExpiresAt
+	r.require(rotateAPIKeyResponseFieldPreviousKeyExpiresAt)
+}
+
+// SetWarning sets the Warning field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyResponse) SetWarning(warning string) {
+	r.Warning = warning
+	r.require(rotateAPIKeyResponseFieldWarning)
+}
+
+func (r *RotateAPIKeyResponse) UnmarshalJSON(data []byte) error {
+	type embed RotateAPIKeyResponse
+	var unmarshaler = struct {
+		embed
+		PreviousKeyExpiresAt *internal.DateTime `json:"previousKeyExpiresAt"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*r = RotateAPIKeyResponse(unmarshaler.embed)
+	r.PreviousKeyExpiresAt = unmarshaler.PreviousKeyExpiresAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RotateAPIKeyResponse) MarshalJSON() ([]byte, error) {
+	type embed RotateAPIKeyResponse
+	var marshaler = struct {
+		embed
+		PreviousKeyExpiresAt *internal.DateTime `json:"previousKeyExpiresAt"`
+	}{
+		embed:                embed(*r),
+		PreviousKeyExpiresAt: internal.NewDateTime(r.PreviousKeyExpiresAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RotateAPIKeyResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }
 
 // API key updated successfully
@@ -2682,6 +2908,7 @@ type UpdateAPIKeyResponseDataStatus string
 const (
 	UpdateAPIKeyResponseDataStatusActive  UpdateAPIKeyResponseDataStatus = "active"
 	UpdateAPIKeyResponseDataStatusRevoked UpdateAPIKeyResponseDataStatus = "revoked"
+	UpdateAPIKeyResponseDataStatusExpired UpdateAPIKeyResponseDataStatus = "expired"
 )
 
 func NewUpdateAPIKeyResponseDataStatusFromString(s string) (UpdateAPIKeyResponseDataStatus, error) {
@@ -2690,6 +2917,8 @@ func NewUpdateAPIKeyResponseDataStatusFromString(s string) (UpdateAPIKeyResponse
 		return UpdateAPIKeyResponseDataStatusActive, nil
 	case "revoked":
 		return UpdateAPIKeyResponseDataStatusRevoked, nil
+	case "expired":
+		return UpdateAPIKeyResponseDataStatusExpired, nil
 	}
 	var t UpdateAPIKeyResponseDataStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

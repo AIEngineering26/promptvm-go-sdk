@@ -1,4 +1,414 @@
 # Reference
+## AgentAPI
+<details><summary><code>client.AgentAPI.AgentResolvePrompt(Slug) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns resolved prompt content as plain text or JSON. Pass ?version=latest (default) or ?version=<number>. Pass ?format=json for structured output. Any other query params are treated as variable values.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AgentResolvePromptRequest{
+        Slug: "slug",
+    }
+client.AgentAPI.AgentResolvePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**slug:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `*promptvmgosdk.AgentResolvePromptRequestFormat` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Sharing
+<details><summary><code>client.Sharing.AccessSharedPrompt(Token) -> *promptvmgosdk.AccessSharedPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Public endpoint — no authentication required.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AccessSharedPromptRequest{
+        Token: "token",
+    }
+client.Sharing.AccessSharedPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.SharePrompt(PromptID, request) -> *promptvmgosdk.SharePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.SharePromptRequest{
+        PromptID: "promptId",
+        Permission: promptvmgosdk.SharePromptRequestPermissionView,
+    }
+client.Sharing.SharePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**groupID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**permission:** `*promptvmgosdk.SharePromptRequestPermission` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.ListPromptCollaborators(PromptID) -> *promptvmgosdk.ListPromptCollaboratorsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptCollaboratorsRequest{
+        PromptID: "promptId",
+    }
+client.Sharing.ListPromptCollaborators(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.RevokePromptCollaborator(PromptID, CollaboratorID) -> *promptvmgosdk.RevokePromptCollaboratorResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RevokePromptCollaboratorRequest{
+        PromptID: "promptId",
+        CollaboratorID: "collaboratorId",
+    }
+client.Sharing.RevokePromptCollaborator(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collaboratorID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.CreatePromptShareLink(PromptID, request) -> *promptvmgosdk.CreatePromptShareLinkResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreatePromptShareLinkRequest{
+        PromptID: "promptId",
+    }
+client.Sharing.CreatePromptShareLink(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**permission:** `*promptvmgosdk.CreatePromptShareLinkRequestPermission` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiresInHours:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxUses:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionNumber:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## API Keys
 <details><summary><code>client.APIKeys.ListAPIKeys() -> *promptvmgosdk.ListAPIKeysResponse</code></summary>
 <dl>
@@ -154,6 +564,14 @@ client.APIKeys.CreateAPIKey(
 <dd>
 
 **environment:** `*promptvmgosdk.CreateAPIKeyRequestEnvironment` — Environment for the API key (live or test)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiresAt:** `*time.Time` — Optional expiration date. If set, the key becomes invalid after this time.
     
 </dd>
 </dl>
@@ -422,6 +840,75 @@ client.APIKeys.GetAPIKeyUsage(
 <dd>
 
 **period:** `*promptvmgosdk.GetAPIKeyUsageRequestPeriod` — Time period for statistics aggregation
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.APIKeys.RotateAPIKey(APIKeyID, request) -> *promptvmgosdk.RotateAPIKeyResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a new secret for an existing API key. The public key remains unchanged. The old secret remains valid for a configurable grace period (default: 24 hours). Requires JWT auth — cannot rotate using the key itself.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RotateAPIKeyRequest{
+        APIKeyID: "apiKeyId",
+    }
+client.APIKeys.RotateAPIKey(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**apiKeyID:** `string` — UUID of the API key to rotate
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**gracePeriodHours:** `*int` — Hours the old secret remains valid (0-168, default 24). Public key is unchanged.
     
 </dd>
 </dl>
@@ -1360,525 +1847,6 @@ client.Organizations.UpdateOrganizationRole(
 <dd>
 
 **color:** `*string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Workspaces
-<details><summary><code>client.Workspaces.ListWorkspaces() -> error</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns workspaces the authenticated user can access within an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.ListWorkspacesRequest{
-        OrganizationID: "organizationId",
-    }
-client.Workspaces.ListWorkspaces(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**organizationID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Workspaces.CreateWorkspace(request) -> *promptvmgosdk.CreateWorkspaceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a new workspace within an organization. The creator is added as owner.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.CreateWorkspaceRequest{
-        Name: "name",
-        OrganizationID: "organizationId",
-    }
-client.Workspaces.CreateWorkspace(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**name:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**visibility:** `*promptvmgosdk.CreateWorkspaceRequestVisibility` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**icon:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**organizationID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Workspaces.GetWorkspace(WorkspaceID) -> *promptvmgosdk.GetWorkspaceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns full workspace metadata including owner, members, and content counts.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.GetWorkspaceRequest{
-        WorkspaceID: "workspaceId",
-    }
-client.Workspaces.GetWorkspace(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**workspaceID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Workspaces.DeleteWorkspace(WorkspaceID) -> *promptvmgosdk.DeleteWorkspaceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Soft-deletes a workspace. Cannot delete default workspace. Use cascade=true to also delete prompts/directories.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.DeleteWorkspaceRequest{
-        WorkspaceID: "workspaceId",
-    }
-client.Workspaces.DeleteWorkspace(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**workspaceID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cascade:** `*promptvmgosdk.DeleteWorkspaceRequestCascade` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Workspaces.UpdateWorkspace(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspaceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates workspace metadata. Only owner or admin can update. Re-generates slug if name changes.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.UpdateWorkspaceRequest{
-        WorkspaceID: "workspaceId",
-    }
-client.Workspaces.UpdateWorkspace(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**workspaceID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**visibility:** `*promptvmgosdk.UpdateWorkspaceRequestVisibility` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**icon:** `*string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Workspaces.UpdateWorkspacePin(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspacePinResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Pins or unpins a workspace for the authenticated user.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.UpdateWorkspacePinRequest{
-        WorkspaceID: "workspaceId",
-        Pinned: true,
-    }
-client.Workspaces.UpdateWorkspacePin(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**workspaceID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pinned:** `bool` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Workspaces.TransferWorkspaceOwnership(WorkspaceID, request) -> *promptvmgosdk.TransferWorkspaceOwnershipResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Transfers workspace ownership to another org member. Only current owner can transfer. Cannot transfer default workspace.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.TransferWorkspaceOwnershipRequest{
-        WorkspaceID: "workspaceId",
-        NewOwnerID: "newOwnerId",
-    }
-client.Workspaces.TransferWorkspaceOwnership(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**workspaceID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**newOwnerID:** `string` 
     
 </dd>
 </dl>
@@ -5313,338 +5281,6 @@ client.Templates.CreatePromptFromTemplate(
 </dl>
 </details>
 
-## Sharing
-<details><summary><code>client.Sharing.SharePrompt(PromptID, request) -> *promptvmgosdk.SharePromptResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.SharePromptRequest{
-        PromptID: "promptId",
-        Permission: promptvmgosdk.SharePromptRequestPermissionView,
-    }
-client.Sharing.SharePrompt(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**promptID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**userID:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**groupID:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**permission:** `*promptvmgosdk.SharePromptRequestPermission` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Sharing.ListPromptCollaborators(PromptID) -> *promptvmgosdk.ListPromptCollaboratorsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.ListPromptCollaboratorsRequest{
-        PromptID: "promptId",
-    }
-client.Sharing.ListPromptCollaborators(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**promptID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Sharing.RevokePromptCollaborator(PromptID, CollaboratorID) -> *promptvmgosdk.RevokePromptCollaboratorResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.RevokePromptCollaboratorRequest{
-        PromptID: "promptId",
-        CollaboratorID: "collaboratorId",
-    }
-client.Sharing.RevokePromptCollaborator(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**promptID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**collaboratorID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Sharing.CreatePromptShareLink(PromptID, request) -> *promptvmgosdk.CreatePromptShareLinkResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.CreatePromptShareLinkRequest{
-        PromptID: "promptId",
-    }
-client.Sharing.CreatePromptShareLink(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**promptID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**permission:** `*promptvmgosdk.CreatePromptShareLinkRequestPermission` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**password:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expiresInHours:** `*int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**maxUses:** `*int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**versionNumber:** `*int` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Sharing.AccessSharedPrompt(Token) -> *promptvmgosdk.AccessSharedPromptResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Public endpoint — no authentication required. Validates token, password, and expiry.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.AccessSharedPromptRequest{
-        Token: "token",
-    }
-client.Sharing.AccessSharedPrompt(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**token:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**password:** `*string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Prompt Organization
 <details><summary><code>client.PromptOrganization.MovePrompt(PromptID, request) -> *promptvmgosdk.MovePromptResponse</code></summary>
 <dl>
@@ -6953,6 +6589,525 @@ client.Resources.DetachPromptResource(
 <dd>
 
 **resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Workspaces
+<details><summary><code>client.Workspaces.ListWorkspaces() -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns workspaces the authenticated user can access within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListWorkspacesRequest{
+        OrganizationID: "organizationId",
+    }
+client.Workspaces.ListWorkspaces(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**organizationID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.CreateWorkspace(request) -> *promptvmgosdk.CreateWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new workspace within an organization. The creator is added as owner.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateWorkspaceRequest{
+        Name: "name",
+        OrganizationID: "organizationId",
+    }
+client.Workspaces.CreateWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**visibility:** `*promptvmgosdk.CreateWorkspaceRequestVisibility` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**organizationID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.GetWorkspace(WorkspaceID) -> *promptvmgosdk.GetWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns full workspace metadata including owner, members, and content counts.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetWorkspaceRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Workspaces.GetWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.DeleteWorkspace(WorkspaceID) -> *promptvmgosdk.DeleteWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft-deletes a workspace. Cannot delete default workspace. Use cascade=true to also delete prompts/directories.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteWorkspaceRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Workspaces.DeleteWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cascade:** `*promptvmgosdk.DeleteWorkspaceRequestCascade` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.UpdateWorkspace(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspaceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates workspace metadata. Only owner or admin can update. Re-generates slug if name changes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateWorkspaceRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Workspaces.UpdateWorkspace(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**visibility:** `*promptvmgosdk.UpdateWorkspaceRequestVisibility` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.UpdateWorkspacePin(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspacePinResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Pins or unpins a workspace for the authenticated user.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateWorkspacePinRequest{
+        WorkspaceID: "workspaceId",
+        Pinned: true,
+    }
+client.Workspaces.UpdateWorkspacePin(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pinned:** `bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Workspaces.TransferWorkspaceOwnership(WorkspaceID, request) -> *promptvmgosdk.TransferWorkspaceOwnershipResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Transfers workspace ownership to another org member. Only current owner can transfer. Cannot transfer default workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.TransferWorkspaceOwnershipRequest{
+        WorkspaceID: "workspaceId",
+        NewOwnerID: "newOwnerId",
+    }
+client.Workspaces.TransferWorkspaceOwnership(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**newOwnerID:** `string` 
     
 </dd>
 </dl>

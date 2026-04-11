@@ -220,3 +220,29 @@ func TestAPIKeysGetAPIKeyUsageWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestAPIKeysGetAPIKeyUsageWithWireMock", "GET", "/api/v1/api-keys/apiKeyId/usage", nil, 1)
 }
+
+func TestAPIKeysRotateAPIKeyWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.RotateAPIKeyRequest{
+		APIKeyID: "apiKeyId",
+	}
+	_, invocationErr := client.APIKeys.RotateAPIKey(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestAPIKeysRotateAPIKeyWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestAPIKeysRotateAPIKeyWithWireMock", "POST", "/api/v1/api-keys/apiKeyId/rotate", nil, 1)
+}

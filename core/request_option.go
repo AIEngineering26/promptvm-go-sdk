@@ -48,7 +48,7 @@ func NewRequestOptions(opts ...RequestOption) *RequestOptions {
 func (r *RequestOptions) ToHeader() http.Header {
 	header := r.cloneHeader()
 	if r.APIKey != "" {
-		header.Set("X-API-Key", fmt.Sprintf("%v", r.APIKey))
+		header.Set("X-PromptVM-Public-Key", fmt.Sprintf("%v", r.APIKey))
 	}
 	return header
 }
@@ -57,7 +57,7 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/AIEngineering26/promptvm-go-sdk")
-	headers.Set("X-Fern-SDK-Version", "v0.0.8")
+	headers.Set("X-Fern-SDK-Version", "v0.0.10")
 	return headers
 }
 

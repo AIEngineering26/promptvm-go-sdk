@@ -3,6 +3,7 @@
 package client
 
 import (
+	agentapi "github.com/AIEngineering26/promptvm-go-sdk/agentapi"
 	apikeys "github.com/AIEngineering26/promptvm-go-sdk/apikeys"
 	collections "github.com/AIEngineering26/promptvm-go-sdk/collections"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
@@ -30,9 +31,10 @@ import (
 )
 
 type Client struct {
+	AgentAPI                    *agentapi.Client
+	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
 	Organizations               *organizations.Client
-	Workspaces                  *workspaces.Client
 	MarketplaceSocial           *marketplacesocial.Client
 	MarketplaceCreator          *marketplacecreator.Client
 	MarketplaceBrowse           *marketplacebrowse.Client
@@ -46,11 +48,11 @@ type Client struct {
 	PromptResolution            *promptresolution.Client
 	Collections                 *collections.Client
 	Templates                   *templates.Client
-	Sharing                     *sharing.Client
 	PromptOrganization          *promptorganization.Client
 	PromptExport                *promptexport.Client
 	Directories                 *directories.Client
 	Resources                   *resources.Client
+	Workspaces                  *workspaces.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -60,9 +62,10 @@ type Client struct {
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
+		AgentAPI:                    agentapi.NewClient(options),
+		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
 		Organizations:               organizations.NewClient(options),
-		Workspaces:                  workspaces.NewClient(options),
 		MarketplaceSocial:           marketplacesocial.NewClient(options),
 		MarketplaceCreator:          marketplacecreator.NewClient(options),
 		MarketplaceBrowse:           marketplacebrowse.NewClient(options),
@@ -76,11 +79,11 @@ func NewClient(opts ...option.RequestOption) *Client {
 		PromptResolution:            promptresolution.NewClient(options),
 		Collections:                 collections.NewClient(options),
 		Templates:                   templates.NewClient(options),
-		Sharing:                     sharing.NewClient(options),
 		PromptOrganization:          promptorganization.NewClient(options),
 		PromptExport:                promptexport.NewClient(options),
 		Directories:                 directories.NewClient(options),
 		Resources:                   resources.NewClient(options),
+		Workspaces:                  workspaces.NewClient(options),
 		options:                     options,
 		baseURL:                     options.BaseURL,
 		caller: internal.NewCaller(
