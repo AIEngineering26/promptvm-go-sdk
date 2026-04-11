@@ -9,9 +9,12 @@ import (
 	directories "github.com/AIEngineering26/promptvm-go-sdk/directories"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	marketplacebrowse "github.com/AIEngineering26/promptvm-go-sdk/marketplacebrowse"
+	marketplacecomments "github.com/AIEngineering26/promptvm-go-sdk/marketplacecomments"
 	marketplacecreator "github.com/AIEngineering26/promptvm-go-sdk/marketplacecreator"
 	marketplacecreatordashboard "github.com/AIEngineering26/promptvm-go-sdk/marketplacecreatordashboard"
 	marketplacelistings "github.com/AIEngineering26/promptvm-go-sdk/marketplacelistings"
+	marketplaceratings "github.com/AIEngineering26/promptvm-go-sdk/marketplaceratings"
+	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
 	marketplacesubscriptions "github.com/AIEngineering26/promptvm-go-sdk/marketplacesubscriptions"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	organizations "github.com/AIEngineering26/promptvm-go-sdk/organizations"
@@ -30,11 +33,14 @@ type Client struct {
 	APIKeys                     *apikeys.Client
 	Organizations               *organizations.Client
 	Workspaces                  *workspaces.Client
+	MarketplaceSocial           *marketplacesocial.Client
 	MarketplaceCreator          *marketplacecreator.Client
 	MarketplaceBrowse           *marketplacebrowse.Client
 	MarketplaceListings         *marketplacelistings.Client
 	MarketplaceCreatorDashboard *marketplacecreatordashboard.Client
 	MarketplaceSubscriptions    *marketplacesubscriptions.Client
+	MarketplaceRatings          *marketplaceratings.Client
+	MarketplaceComments         *marketplacecomments.Client
 	Prompts                     *prompts.Client
 	PromptVersions              *promptversions.Client
 	PromptResolution            *promptresolution.Client
@@ -57,11 +63,14 @@ func NewClient(opts ...option.RequestOption) *Client {
 		APIKeys:                     apikeys.NewClient(options),
 		Organizations:               organizations.NewClient(options),
 		Workspaces:                  workspaces.NewClient(options),
+		MarketplaceSocial:           marketplacesocial.NewClient(options),
 		MarketplaceCreator:          marketplacecreator.NewClient(options),
 		MarketplaceBrowse:           marketplacebrowse.NewClient(options),
 		MarketplaceListings:         marketplacelistings.NewClient(options),
 		MarketplaceCreatorDashboard: marketplacecreatordashboard.NewClient(options),
 		MarketplaceSubscriptions:    marketplacesubscriptions.NewClient(options),
+		MarketplaceRatings:          marketplaceratings.NewClient(options),
+		MarketplaceComments:         marketplacecomments.NewClient(options),
 		Prompts:                     prompts.NewClient(options),
 		PromptVersions:              promptversions.NewClient(options),
 		PromptResolution:            promptresolution.NewClient(options),

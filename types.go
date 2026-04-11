@@ -1098,25 +1098,19 @@ func (n *NotFoundErrorBody) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
-// Rate limit exceeded - maximum 10 API keys per hour
+// Rate limited
 var (
 	tooManyRequestsErrorBodyFieldStatusCode = big.NewInt(1 << 0)
 	tooManyRequestsErrorBodyFieldError      = big.NewInt(1 << 1)
 	tooManyRequestsErrorBodyFieldMessage    = big.NewInt(1 << 2)
 	tooManyRequestsErrorBodyFieldRetryAfter = big.NewInt(1 << 3)
-	tooManyRequestsErrorBodyFieldRateLimit  = big.NewInt(1 << 4)
 )
 
 type TooManyRequestsErrorBody struct {
-	// HTTP status code
-	StatusCode int `json:"statusCode" url:"statusCode"`
-	// Error type
-	Error string `json:"error" url:"error"`
-	// Error message with retry information
-	Message string `json:"message" url:"message"`
-	// Seconds to wait before retrying
-	RetryAfter int                                `json:"retryAfter" url:"retryAfter"`
-	RateLimit  *TooManyRequestsErrorBodyRateLimit `json:"rateLimit,omitempty" url:"rateLimit,omitempty"`
+	StatusCode int    `json:"statusCode" url:"statusCode"`
+	Error      string `json:"error" url:"error"`
+	Message    string `json:"message" url:"message"`
+	RetryAfter *int   `json:"retryAfter,omitempty" url:"retryAfter,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1146,18 +1140,11 @@ func (t *TooManyRequestsErrorBody) GetMessage() string {
 	return t.Message
 }
 
-func (t *TooManyRequestsErrorBody) GetRetryAfter() int {
-	if t == nil {
-		return 0
-	}
-	return t.RetryAfter
-}
-
-func (t *TooManyRequestsErrorBody) GetRateLimit() *TooManyRequestsErrorBodyRateLimit {
+func (t *TooManyRequestsErrorBody) GetRetryAfter() *int {
 	if t == nil {
 		return nil
 	}
-	return t.RateLimit
+	return t.RetryAfter
 }
 
 func (t *TooManyRequestsErrorBody) GetExtraProperties() map[string]interface{} {
@@ -1194,16 +1181,9 @@ func (t *TooManyRequestsErrorBody) SetMessage(message string) {
 
 // SetRetryAfter sets the RetryAfter field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TooManyRequestsErrorBody) SetRetryAfter(retryAfter int) {
+func (t *TooManyRequestsErrorBody) SetRetryAfter(retryAfter *int) {
 	t.RetryAfter = retryAfter
 	t.require(tooManyRequestsErrorBodyFieldRetryAfter)
-}
-
-// SetRateLimit sets the RateLimit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TooManyRequestsErrorBody) SetRateLimit(rateLimit *TooManyRequestsErrorBodyRateLimit) {
-	t.RateLimit = rateLimit
-	t.require(tooManyRequestsErrorBodyFieldRateLimit)
 }
 
 func (t *TooManyRequestsErrorBody) UnmarshalJSON(data []byte) error {

@@ -154,11 +154,11 @@ func (n *NotFoundError) Unwrap() error {
 // Rate limit exceeded - maximum 10 API keys per hour
 type TooManyRequestsError struct {
 	*core.APIError
-	Body *TooManyRequestsErrorBody
+	Body interface{}
 }
 
 func (t *TooManyRequestsError) UnmarshalJSON(data []byte) error {
-	var body *TooManyRequestsErrorBody
+	var body interface{}
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

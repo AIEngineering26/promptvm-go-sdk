@@ -1890,6 +1890,270 @@ client.Workspaces.TransferWorkspaceOwnership(
 </dl>
 </details>
 
+## MarketplaceSocial
+<details><summary><code>client.MarketplaceSocial.FollowACreator(CreatorUserID) -> *promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
+        CreatorUserID: "creatorUserId",
+    }
+client.MarketplaceSocial.FollowACreator(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**creatorUserID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceSocial.UnfollowACreator(CreatorUserID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
+        CreatorUserID: "creatorUserId",
+    }
+client.MarketplaceSocial.UnfollowACreator(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**creatorUserID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceSocial.ListCreatorsIFollow() -> *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingRequest{}
+client.MarketplaceSocial.ListCreatorsIFollow(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceSocial.FollowedCreatorListingFeed() -> *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedRequest{}
+client.MarketplaceSocial.FollowedCreatorListingFeed(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceSocial.ListACreatorsFollowers(CreatorUserID) -> *promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest{
+        CreatorUserID: "creatorUserId",
+    }
+client.MarketplaceSocial.ListACreatorsFollowers(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**creatorUserID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Marketplace - Creator
 <details><summary><code>client.MarketplaceCreator.GetMyMarketplaceCreatorProfile() -> *promptvmgosdk.GetMyMarketplaceCreatorProfileResponse</code></summary>
 <dl>
@@ -2823,6 +3087,577 @@ client.MarketplaceSubscriptions.UnsubscribeFromMarketplaceCreator(
 <dd>
 
 **creatorUserID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## MarketplaceRatings
+<details><summary><code>client.MarketplaceRatings.ListRatingsForAListing(ListingID) -> *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceRatings.ListRatingsForAListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsRequestSort` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceRatings.CreateARatingOnAPurchasedListing(ListingID, request) -> *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest{
+        ListingID: "listingId",
+        Score: 1,
+    }
+client.MarketplaceRatings.CreateARatingOnAPurchasedListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**score:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**review:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceRatings.GetTheCallersRatingOnAListing(ListingID) -> *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceRatings.GetTheCallersRatingOnAListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceRatings.DeleteMyRating(RatingID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest{
+        RatingID: "ratingId",
+    }
+client.MarketplaceRatings.DeleteMyRating(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ratingID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceRatings.UpdateMyRating(RatingID, request) -> *promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDRequest{
+        RatingID: "ratingId",
+    }
+client.MarketplaceRatings.UpdateMyRating(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ratingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**score:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**review:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(RatingID, request) -> *promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest{
+        RatingID: "ratingId",
+        VoteType: promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteTypeUpvote,
+    }
+client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ratingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**voteType:** `*promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteType` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceRatings.RemoveMyVoteFromARating(RatingID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest{
+        RatingID: "ratingId",
+    }
+client.MarketplaceRatings.RemoveMyVoteFromARating(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ratingID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## MarketplaceComments
+<details><summary><code>client.MarketplaceComments.ListThreadedCommentsOnAListing(ListingID) -> *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceComments.ListThreadedCommentsOnAListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceComments.CreateACommentOrReplyOnAListing(ListingID, request) -> *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest{
+        ListingID: "listingId",
+        Content: "content",
+    }
+client.MarketplaceComments.CreateACommentOrReplyOnAListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parentID:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceComments.SoftDeleteMyComment(CommentID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest{
+        CommentID: "commentId",
+    }
+client.MarketplaceComments.SoftDeleteMyComment(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**commentID:** `string` 
     
 </dd>
 </dl>

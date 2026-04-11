@@ -201,6 +201,7 @@ var (
 	getMarketplaceListingResponseDataFieldUpdatedAt              = big.NewInt(1 << 21)
 	getMarketplaceListingResponseDataFieldCollectionItemCount    = big.NewInt(1 << 22)
 	getMarketplaceListingResponseDataFieldCollectionItemPreviews = big.NewInt(1 << 23)
+	getMarketplaceListingResponseDataFieldViewer                 = big.NewInt(1 << 24)
 )
 
 type GetMarketplaceListingResponseData struct {
@@ -228,6 +229,7 @@ type GetMarketplaceListingResponseData struct {
 	UpdatedAt              *time.Time                                                     `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
 	CollectionItemCount    *int                                                           `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
 	CollectionItemPreviews []*GetMarketplaceListingResponseDataCollectionItemPreviewsItem `json:"collectionItemPreviews,omitempty" url:"collectionItemPreviews,omitempty"`
+	Viewer                 *GetMarketplaceListingResponseDataViewer                       `json:"viewer,omitempty" url:"viewer,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -402,6 +404,13 @@ func (g *GetMarketplaceListingResponseData) GetCollectionItemPreviews() []*GetMa
 		return nil
 	}
 	return g.CollectionItemPreviews
+}
+
+func (g *GetMarketplaceListingResponseData) GetViewer() *GetMarketplaceListingResponseDataViewer {
+	if g == nil {
+		return nil
+	}
+	return g.Viewer
 }
 
 func (g *GetMarketplaceListingResponseData) GetExtraProperties() map[string]interface{} {
@@ -581,6 +590,13 @@ func (g *GetMarketplaceListingResponseData) SetCollectionItemCount(collectionIte
 func (g *GetMarketplaceListingResponseData) SetCollectionItemPreviews(collectionItemPreviews []*GetMarketplaceListingResponseDataCollectionItemPreviewsItem) {
 	g.CollectionItemPreviews = collectionItemPreviews
 	g.require(getMarketplaceListingResponseDataFieldCollectionItemPreviews)
+}
+
+// SetViewer sets the Viewer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseData) SetViewer(viewer *GetMarketplaceListingResponseDataViewer) {
+	g.Viewer = viewer
+	g.require(getMarketplaceListingResponseDataFieldViewer)
 }
 
 func (g *GetMarketplaceListingResponseData) UnmarshalJSON(data []byte) error {
@@ -1035,6 +1051,132 @@ func NewGetMarketplaceListingResponseDataStatusFromString(s string) (GetMarketpl
 
 func (g GetMarketplaceListingResponseDataStatus) Ptr() *GetMarketplaceListingResponseDataStatus {
 	return &g
+}
+
+var (
+	getMarketplaceListingResponseDataViewerFieldIsFollowingCreator = big.NewInt(1 << 0)
+	getMarketplaceListingResponseDataViewerFieldHasRated           = big.NewInt(1 << 1)
+	getMarketplaceListingResponseDataViewerFieldMyRatingID         = big.NewInt(1 << 2)
+	getMarketplaceListingResponseDataViewerFieldHasPurchased       = big.NewInt(1 << 3)
+)
+
+type GetMarketplaceListingResponseDataViewer struct {
+	IsFollowingCreator bool    `json:"isFollowingCreator" url:"isFollowingCreator"`
+	HasRated           bool    `json:"hasRated" url:"hasRated"`
+	MyRatingID         *string `json:"myRatingId,omitempty" url:"myRatingId,omitempty"`
+	HasPurchased       bool    `json:"hasPurchased" url:"hasPurchased"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) GetIsFollowingCreator() bool {
+	if g == nil {
+		return false
+	}
+	return g.IsFollowingCreator
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) GetHasRated() bool {
+	if g == nil {
+		return false
+	}
+	return g.HasRated
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) GetMyRatingID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.MyRatingID
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) GetHasPurchased() bool {
+	if g == nil {
+		return false
+	}
+	return g.HasPurchased
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetIsFollowingCreator sets the IsFollowingCreator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseDataViewer) SetIsFollowingCreator(isFollowingCreator bool) {
+	g.IsFollowingCreator = isFollowingCreator
+	g.require(getMarketplaceListingResponseDataViewerFieldIsFollowingCreator)
+}
+
+// SetHasRated sets the HasRated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseDataViewer) SetHasRated(hasRated bool) {
+	g.HasRated = hasRated
+	g.require(getMarketplaceListingResponseDataViewerFieldHasRated)
+}
+
+// SetMyRatingID sets the MyRatingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseDataViewer) SetMyRatingID(myRatingID *string) {
+	g.MyRatingID = myRatingID
+	g.require(getMarketplaceListingResponseDataViewerFieldMyRatingID)
+}
+
+// SetHasPurchased sets the HasPurchased field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseDataViewer) SetHasPurchased(hasPurchased bool) {
+	g.HasPurchased = hasPurchased
+	g.require(getMarketplaceListingResponseDataViewerFieldHasPurchased)
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarketplaceListingResponseDataViewer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarketplaceListingResponseDataViewer(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceListingResponseDataViewer
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceListingResponseDataViewer) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 // Featured listings
