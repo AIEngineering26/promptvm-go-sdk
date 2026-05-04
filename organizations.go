@@ -36,6 +36,31 @@ func (a *AcceptOrganizationInvitationRequest) SetToken(token string) {
 }
 
 var (
+	createOrganizationRequestFieldName = big.NewInt(1 << 0)
+)
+
+type CreateOrganizationRequest struct {
+	Name string `json:"name" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CreateOrganizationRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateOrganizationRequest) SetName(name string) {
+	c.Name = name
+	c.require(createOrganizationRequestFieldName)
+}
+
+var (
 	createOrganizationInvitationRequestFieldOrgID = big.NewInt(1 << 0)
 	createOrganizationInvitationRequestFieldEmail = big.NewInt(1 << 1)
 	createOrganizationInvitationRequestFieldRole  = big.NewInt(1 << 2)
@@ -942,6 +967,535 @@ func NewListOrganizationWorkspacesResponseDataItemVisibilityFromString(s string)
 
 func (l ListOrganizationWorkspacesResponseDataItemVisibility) Ptr() *ListOrganizationWorkspacesResponseDataItemVisibility {
 	return &l
+}
+
+var (
+	listOrganizationsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type ListOrganizationsResponse struct {
+	Data []*ListOrganizationsResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListOrganizationsResponse) GetData() []*ListOrganizationsResponseDataItem {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListOrganizationsResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListOrganizationsResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponse) SetData(data []*ListOrganizationsResponseDataItem) {
+	l.Data = data
+	l.require(listOrganizationsResponseFieldData)
+}
+
+func (l *ListOrganizationsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListOrganizationsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListOrganizationsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListOrganizationsResponse) MarshalJSON() ([]byte, error) {
+	type embed ListOrganizationsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListOrganizationsResponse) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listOrganizationsResponseDataItemFieldID               = big.NewInt(1 << 0)
+	listOrganizationsResponseDataItemFieldName             = big.NewInt(1 << 1)
+	listOrganizationsResponseDataItemFieldSlug             = big.NewInt(1 << 2)
+	listOrganizationsResponseDataItemFieldType             = big.NewInt(1 << 3)
+	listOrganizationsResponseDataItemFieldSubscriptionTier = big.NewInt(1 << 4)
+	listOrganizationsResponseDataItemFieldOwnerID          = big.NewInt(1 << 5)
+	listOrganizationsResponseDataItemFieldRole             = big.NewInt(1 << 6)
+	listOrganizationsResponseDataItemFieldCreatedAt        = big.NewInt(1 << 7)
+	listOrganizationsResponseDataItemFieldUpdatedAt        = big.NewInt(1 << 8)
+	listOrganizationsResponseDataItemFieldWorkspace        = big.NewInt(1 << 9)
+)
+
+type ListOrganizationsResponseDataItem struct {
+	ID               string                                            `json:"id" url:"id"`
+	Name             string                                            `json:"name" url:"name"`
+	Slug             string                                            `json:"slug" url:"slug"`
+	Type             ListOrganizationsResponseDataItemType             `json:"type" url:"type"`
+	SubscriptionTier ListOrganizationsResponseDataItemSubscriptionTier `json:"subscriptionTier" url:"subscriptionTier"`
+	OwnerID          string                                            `json:"ownerId" url:"ownerId"`
+	Role             ListOrganizationsResponseDataItemRole             `json:"role" url:"role"`
+	CreatedAt        time.Time                                         `json:"createdAt" url:"createdAt"`
+	UpdatedAt        time.Time                                         `json:"updatedAt" url:"updatedAt"`
+	Workspace        *ListOrganizationsResponseDataItemWorkspace       `json:"workspace,omitempty" url:"workspace,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListOrganizationsResponseDataItem) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListOrganizationsResponseDataItem) GetName() string {
+	if l == nil {
+		return ""
+	}
+	return l.Name
+}
+
+func (l *ListOrganizationsResponseDataItem) GetSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.Slug
+}
+
+func (l *ListOrganizationsResponseDataItem) GetType() ListOrganizationsResponseDataItemType {
+	if l == nil {
+		return ""
+	}
+	return l.Type
+}
+
+func (l *ListOrganizationsResponseDataItem) GetSubscriptionTier() ListOrganizationsResponseDataItemSubscriptionTier {
+	if l == nil {
+		return ""
+	}
+	return l.SubscriptionTier
+}
+
+func (l *ListOrganizationsResponseDataItem) GetOwnerID() string {
+	if l == nil {
+		return ""
+	}
+	return l.OwnerID
+}
+
+func (l *ListOrganizationsResponseDataItem) GetRole() ListOrganizationsResponseDataItemRole {
+	if l == nil {
+		return ""
+	}
+	return l.Role
+}
+
+func (l *ListOrganizationsResponseDataItem) GetCreatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.CreatedAt
+}
+
+func (l *ListOrganizationsResponseDataItem) GetUpdatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.UpdatedAt
+}
+
+func (l *ListOrganizationsResponseDataItem) GetWorkspace() *ListOrganizationsResponseDataItemWorkspace {
+	if l == nil {
+		return nil
+	}
+	return l.Workspace
+}
+
+func (l *ListOrganizationsResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListOrganizationsResponseDataItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetID(id string) {
+	l.ID = id
+	l.require(listOrganizationsResponseDataItemFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetName(name string) {
+	l.Name = name
+	l.require(listOrganizationsResponseDataItemFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetSlug(slug string) {
+	l.Slug = slug
+	l.require(listOrganizationsResponseDataItemFieldSlug)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetType(type_ ListOrganizationsResponseDataItemType) {
+	l.Type = type_
+	l.require(listOrganizationsResponseDataItemFieldType)
+}
+
+// SetSubscriptionTier sets the SubscriptionTier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetSubscriptionTier(subscriptionTier ListOrganizationsResponseDataItemSubscriptionTier) {
+	l.SubscriptionTier = subscriptionTier
+	l.require(listOrganizationsResponseDataItemFieldSubscriptionTier)
+}
+
+// SetOwnerID sets the OwnerID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetOwnerID(ownerID string) {
+	l.OwnerID = ownerID
+	l.require(listOrganizationsResponseDataItemFieldOwnerID)
+}
+
+// SetRole sets the Role field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetRole(role ListOrganizationsResponseDataItemRole) {
+	l.Role = role
+	l.require(listOrganizationsResponseDataItemFieldRole)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetCreatedAt(createdAt time.Time) {
+	l.CreatedAt = createdAt
+	l.require(listOrganizationsResponseDataItemFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetUpdatedAt(updatedAt time.Time) {
+	l.UpdatedAt = updatedAt
+	l.require(listOrganizationsResponseDataItemFieldUpdatedAt)
+}
+
+// SetWorkspace sets the Workspace field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItem) SetWorkspace(workspace *ListOrganizationsResponseDataItemWorkspace) {
+	l.Workspace = workspace
+	l.require(listOrganizationsResponseDataItemFieldWorkspace)
+}
+
+func (l *ListOrganizationsResponseDataItem) UnmarshalJSON(data []byte) error {
+	type embed ListOrganizationsResponseDataItem
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = ListOrganizationsResponseDataItem(unmarshaler.embed)
+	l.CreatedAt = unmarshaler.CreatedAt.Time()
+	l.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListOrganizationsResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed ListOrganizationsResponseDataItem
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed:     embed(*l),
+		CreatedAt: internal.NewDateTime(l.CreatedAt),
+		UpdatedAt: internal.NewDateTime(l.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListOrganizationsResponseDataItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListOrganizationsResponseDataItemRole string
+
+const (
+	ListOrganizationsResponseDataItemRoleOwner  ListOrganizationsResponseDataItemRole = "owner"
+	ListOrganizationsResponseDataItemRoleAdmin  ListOrganizationsResponseDataItemRole = "admin"
+	ListOrganizationsResponseDataItemRoleMember ListOrganizationsResponseDataItemRole = "member"
+	ListOrganizationsResponseDataItemRoleViewer ListOrganizationsResponseDataItemRole = "viewer"
+)
+
+func NewListOrganizationsResponseDataItemRoleFromString(s string) (ListOrganizationsResponseDataItemRole, error) {
+	switch s {
+	case "owner":
+		return ListOrganizationsResponseDataItemRoleOwner, nil
+	case "admin":
+		return ListOrganizationsResponseDataItemRoleAdmin, nil
+	case "member":
+		return ListOrganizationsResponseDataItemRoleMember, nil
+	case "viewer":
+		return ListOrganizationsResponseDataItemRoleViewer, nil
+	}
+	var t ListOrganizationsResponseDataItemRole
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListOrganizationsResponseDataItemRole) Ptr() *ListOrganizationsResponseDataItemRole {
+	return &l
+}
+
+type ListOrganizationsResponseDataItemSubscriptionTier string
+
+const (
+	ListOrganizationsResponseDataItemSubscriptionTierFree       ListOrganizationsResponseDataItemSubscriptionTier = "free"
+	ListOrganizationsResponseDataItemSubscriptionTierPro        ListOrganizationsResponseDataItemSubscriptionTier = "pro"
+	ListOrganizationsResponseDataItemSubscriptionTierEnterprise ListOrganizationsResponseDataItemSubscriptionTier = "enterprise"
+)
+
+func NewListOrganizationsResponseDataItemSubscriptionTierFromString(s string) (ListOrganizationsResponseDataItemSubscriptionTier, error) {
+	switch s {
+	case "free":
+		return ListOrganizationsResponseDataItemSubscriptionTierFree, nil
+	case "pro":
+		return ListOrganizationsResponseDataItemSubscriptionTierPro, nil
+	case "enterprise":
+		return ListOrganizationsResponseDataItemSubscriptionTierEnterprise, nil
+	}
+	var t ListOrganizationsResponseDataItemSubscriptionTier
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListOrganizationsResponseDataItemSubscriptionTier) Ptr() *ListOrganizationsResponseDataItemSubscriptionTier {
+	return &l
+}
+
+type ListOrganizationsResponseDataItemType string
+
+const (
+	ListOrganizationsResponseDataItemTypePersonal ListOrganizationsResponseDataItemType = "personal"
+	ListOrganizationsResponseDataItemTypeTeam     ListOrganizationsResponseDataItemType = "team"
+)
+
+func NewListOrganizationsResponseDataItemTypeFromString(s string) (ListOrganizationsResponseDataItemType, error) {
+	switch s {
+	case "personal":
+		return ListOrganizationsResponseDataItemTypePersonal, nil
+	case "team":
+		return ListOrganizationsResponseDataItemTypeTeam, nil
+	}
+	var t ListOrganizationsResponseDataItemType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListOrganizationsResponseDataItemType) Ptr() *ListOrganizationsResponseDataItemType {
+	return &l
+}
+
+var (
+	listOrganizationsResponseDataItemWorkspaceFieldID             = big.NewInt(1 << 0)
+	listOrganizationsResponseDataItemWorkspaceFieldName           = big.NewInt(1 << 1)
+	listOrganizationsResponseDataItemWorkspaceFieldSlug           = big.NewInt(1 << 2)
+	listOrganizationsResponseDataItemWorkspaceFieldOrganizationID = big.NewInt(1 << 3)
+	listOrganizationsResponseDataItemWorkspaceFieldIsDefault      = big.NewInt(1 << 4)
+)
+
+type ListOrganizationsResponseDataItemWorkspace struct {
+	ID             string `json:"id" url:"id"`
+	Name           string `json:"name" url:"name"`
+	Slug           string `json:"slug" url:"slug"`
+	OrganizationID string `json:"organizationId" url:"organizationId"`
+	IsDefault      bool   `json:"isDefault" url:"isDefault"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) GetName() string {
+	if l == nil {
+		return ""
+	}
+	return l.Name
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) GetSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.Slug
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) GetOrganizationID() string {
+	if l == nil {
+		return ""
+	}
+	return l.OrganizationID
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) GetIsDefault() bool {
+	if l == nil {
+		return false
+	}
+	return l.IsDefault
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItemWorkspace) SetID(id string) {
+	l.ID = id
+	l.require(listOrganizationsResponseDataItemWorkspaceFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItemWorkspace) SetName(name string) {
+	l.Name = name
+	l.require(listOrganizationsResponseDataItemWorkspaceFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItemWorkspace) SetSlug(slug string) {
+	l.Slug = slug
+	l.require(listOrganizationsResponseDataItemWorkspaceFieldSlug)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItemWorkspace) SetOrganizationID(organizationID string) {
+	l.OrganizationID = organizationID
+	l.require(listOrganizationsResponseDataItemWorkspaceFieldOrganizationID)
+}
+
+// SetIsDefault sets the IsDefault field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponseDataItemWorkspace) SetIsDefault(isDefault bool) {
+	l.IsDefault = isDefault
+	l.require(listOrganizationsResponseDataItemWorkspaceFieldIsDefault)
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListOrganizationsResponseDataItemWorkspace
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListOrganizationsResponseDataItemWorkspace(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) MarshalJSON() ([]byte, error) {
+	type embed ListOrganizationsResponseDataItemWorkspace
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListOrganizationsResponseDataItemWorkspace) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
 }
 
 type UpdateOrganizationMemberRoleRequestRole string

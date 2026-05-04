@@ -18,6 +18,7 @@ import (
 	marketplaceratings "github.com/AIEngineering26/promptvm-go-sdk/marketplaceratings"
 	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
 	marketplacesubscriptions "github.com/AIEngineering26/promptvm-go-sdk/marketplacesubscriptions"
+	onboarding "github.com/AIEngineering26/promptvm-go-sdk/onboarding"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	organizations "github.com/AIEngineering26/promptvm-go-sdk/organizations"
 	promptexport "github.com/AIEngineering26/promptvm-go-sdk/promptexport"
@@ -36,6 +37,7 @@ type Client struct {
 	AgentAPI                    *agentapi.Client
 	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
+	Onboarding                  *onboarding.Client
 	Organizations               *organizations.Client
 	MarketplaceSocial           *marketplacesocial.Client
 	MarketplaceCreator          *marketplacecreator.Client
@@ -68,6 +70,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		AgentAPI:                    agentapi.NewClient(options),
 		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
+		Onboarding:                  onboarding.NewClient(options),
 		Organizations:               organizations.NewClient(options),
 		MarketplaceSocial:           marketplacesocial.NewClient(options),
 		MarketplaceCreator:          marketplacecreator.NewClient(options),

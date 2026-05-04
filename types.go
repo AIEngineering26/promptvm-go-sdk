@@ -105,6 +105,102 @@ func (b *BadRequestErrorBody) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	badRequestErrorBodyDetailsItemFieldField   = big.NewInt(1 << 0)
+	badRequestErrorBodyDetailsItemFieldMessage = big.NewInt(1 << 1)
+)
+
+type BadRequestErrorBodyDetailsItem struct {
+	// Field that failed validation
+	Field string `json:"field" url:"field"`
+	// Validation error message
+	Message string `json:"message" url:"message"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BadRequestErrorBodyDetailsItem) GetField() string {
+	if b == nil {
+		return ""
+	}
+	return b.Field
+}
+
+func (b *BadRequestErrorBodyDetailsItem) GetMessage() string {
+	if b == nil {
+		return ""
+	}
+	return b.Message
+}
+
+func (b *BadRequestErrorBodyDetailsItem) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BadRequestErrorBodyDetailsItem) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetField sets the Field field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBodyDetailsItem) SetField(field string) {
+	b.Field = field
+	b.require(badRequestErrorBodyDetailsItemFieldField)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBodyDetailsItem) SetMessage(message string) {
+	b.Message = message
+	b.require(badRequestErrorBodyDetailsItemFieldMessage)
+}
+
+func (b *BadRequestErrorBodyDetailsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler BadRequestErrorBodyDetailsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BadRequestErrorBodyDetailsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BadRequestErrorBodyDetailsItem) MarshalJSON() ([]byte, error) {
+	type embed BadRequestErrorBodyDetailsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BadRequestErrorBodyDetailsItem) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Workspace has content
 var (
 	conflictErrorBodyFieldError          = big.NewInt(1 << 0)

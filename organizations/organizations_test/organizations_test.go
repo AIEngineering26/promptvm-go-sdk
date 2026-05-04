@@ -62,6 +62,54 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+func TestOrganizationsListOrganizationsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	_, invocationErr := client.Organizations.ListOrganizations(
+		context.TODO(),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsListOrganizationsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsListOrganizationsWithWireMock", "GET", "/api/v1/organizations/", nil, 1)
+}
+
+func TestOrganizationsCreateOrganizationWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.CreateOrganizationRequest{
+		Name: "name",
+	}
+	invocationErr := client.Organizations.CreateOrganization(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsCreateOrganizationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsCreateOrganizationWithWireMock", "POST", "/api/v1/organizations/", nil, 1)
+}
+
 func TestOrganizationsListOrganizationWorkspacesWithWireMock(
 	t *testing.T,
 ) {

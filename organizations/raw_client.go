@@ -30,6 +30,85 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
+func (r *RawClient) ListOrganizations(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.ListOrganizationsResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/organizations/"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *promptvmgosdk.ListOrganizationsResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.ListOrganizationsResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) CreateOrganization(
+	ctx context.Context,
+	request *promptvmgosdk.CreateOrganizationRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/organizations/"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
 func (r *RawClient) ListOrganizationWorkspaces(
 	ctx context.Context,
 	request *promptvmgosdk.ListOrganizationWorkspacesRequest,

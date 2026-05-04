@@ -32,6 +32,36 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+func (c *Client) ListOrganizations(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ListOrganizationsResponse, error) {
+	response, err := c.WithRawResponse.ListOrganizations(
+		ctx,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+func (c *Client) CreateOrganization(
+	ctx context.Context,
+	request *promptvmgosdk.CreateOrganizationRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.CreateOrganization(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Returns all workspaces in the org visible to the caller. Org owners and admins see every workspace; regular members see workspaces they own, are a member of, or that have public/internal visibility.
 func (c *Client) ListOrganizationWorkspaces(
 	ctx context.Context,
