@@ -27,6 +27,7 @@ import (
 	prompts "github.com/AIEngineering26/promptvm-go-sdk/prompts"
 	promptversions "github.com/AIEngineering26/promptvm-go-sdk/promptversions"
 	resources "github.com/AIEngineering26/promptvm-go-sdk/resources"
+	search "github.com/AIEngineering26/promptvm-go-sdk/search"
 	sharing "github.com/AIEngineering26/promptvm-go-sdk/sharing"
 	templates "github.com/AIEngineering26/promptvm-go-sdk/templates"
 	workspaces "github.com/AIEngineering26/promptvm-go-sdk/workspaces"
@@ -57,6 +58,7 @@ type Client struct {
 	Directories                 *directories.Client
 	Resources                   *resources.Client
 	Workspaces                  *workspaces.Client
+	Search                      *search.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -90,6 +92,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Directories:                 directories.NewClient(options),
 		Resources:                   resources.NewClient(options),
 		Workspaces:                  workspaces.NewClient(options),
+		Search:                      search.NewClient(options),
 		options:                     options,
 		baseURL:                     options.BaseURL,
 		caller: internal.NewCaller(

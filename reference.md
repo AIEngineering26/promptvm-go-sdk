@@ -7762,3 +7762,122 @@ client.Workspaces.TransferWorkspaceOwnership(
 </dd>
 </dl>
 </details>
+
+## Search
+<details><summary><code>client.Search.Organization() -> *promptvmgosdk.SearchOrganizationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cross-workspace, ranked search returning prompts and files the requester can read. Optional scoping by workspace or directory. Cursor pagination, normalized relevance score, ts_headline highlights with <mark> markers. The contract is forward-compat: future ranking modes (`semantic`, `hybrid`) and result kinds (`collection`, `team`) are additive — existing clients ignore unknown enum values.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.SearchOrganizationRequest{
+        Q: "q",
+        OrganizationID: "organizationId",
+    }
+client.Search.Organization(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**q:** `string` — Search query. Less than 2 chars after trim short-circuits to an empty result set (no error).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**organizationID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceIDs:** `*string` — Restrict results to these workspaces. Workspaces from a different org or that the requester cannot access are silently ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryIDs:** `*string` — Restrict file results to these directories.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kinds:** `*promptvmgosdk.SearchOrganizationRequestKindsItem` — Subset of [prompt, file]. Default both. Unknown kinds return 400 UNSUPPORTED_KIND.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` — Opaque base64url cursor returned in a previous response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ranking:** `*string` — MVP only honours `keyword`. Other values return 400 UNSUPPORTED_RANKING. Reserved future values: `semantic`, `hybrid`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
