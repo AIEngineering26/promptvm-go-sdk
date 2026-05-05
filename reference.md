@@ -1,4 +1,96 @@
 # Reference
+## Authentication
+<details><summary><code>client.Authentication.UpdateUIPreferences(request) -> *promptvmgosdk.UpdateUIPreferencesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Merges the provided UI preferences (panel collapse state, widths, etc.) with the user's existing preferences. Cached in Redis with a 1-hour TTL using a write-through strategy so subsequent reads hit cache.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateUIPreferencesRequest{}
+client.Authentication.UpdateUIPreferences(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**sidebarOpen:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**leftPanelCollapsed:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**leftPanelWidth:** `*float64` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**rightPanelCollapsed:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**rightPanelWidth:** `*float64` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## CliAuth
 <details><summary><code>client.CliAuth.CliAuthorize(request) -> *promptvmgosdk.CliAuthorizeResponse</code></summary>
 <dl>

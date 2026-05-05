@@ -2,6 +2,6 @@
   "cliVersion": "4.67.1",
   "generatorName": "fernapi/fern-go-sdk",
   "generatorVersion": "1.23.3",
-  "originGitCommit": "aecde69431febf225eff6cfc13e62eca0869836a",
-  "sdkVersion": "v0.0.20"
+  "originGitCommit": "6c51e103c48da95831c004f91dd66262799ab563",
+  "sdkVersion": "v0.0.22"
 }

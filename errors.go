@@ -103,7 +103,7 @@ func (g *GoneError) Unwrap() error {
 	return g.APIError
 }
 
-// Server error
+// Internal server error
 type InternalServerError struct {
 	*core.APIError
 	Body interface{}
@@ -151,7 +151,7 @@ func (n *NotFoundError) Unwrap() error {
 	return n.APIError
 }
 
-// Rate limit exceeded - maximum 10 API keys per hour
+// Rate limit exceeded
 type TooManyRequestsError struct {
 	*core.APIError
 	Body interface{}
@@ -175,7 +175,7 @@ func (t *TooManyRequestsError) Unwrap() error {
 	return t.APIError
 }
 
-// Password required or invalid
+// Invalid or missing authentication
 type UnauthorizedError struct {
 	*core.APIError
 	Body interface{}
