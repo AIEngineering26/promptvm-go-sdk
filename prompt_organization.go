@@ -241,6 +241,7 @@ var (
 	forkPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
 	forkPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
 	forkPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
+	forkPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
 )
 
 type ForkPromptResponseData struct {
@@ -259,6 +260,7 @@ type ForkPromptResponseData struct {
 	CreatedAt          time.Time                             `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                             `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *ForkPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus      *ForkPromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -370,6 +372,13 @@ func (f *ForkPromptResponseData) GetCurrentVersion() *ForkPromptResponseDataCurr
 		return nil
 	}
 	return f.CurrentVersion
+}
+
+func (f *ForkPromptResponseData) GetReleaseStatus() *ForkPromptResponseDataReleaseStatus {
+	if f == nil {
+		return nil
+	}
+	return f.ReleaseStatus
 }
 
 func (f *ForkPromptResponseData) GetExtraProperties() map[string]interface{} {
@@ -486,6 +495,13 @@ func (f *ForkPromptResponseData) SetUpdatedAt(updatedAt time.Time) {
 func (f *ForkPromptResponseData) SetCurrentVersion(currentVersion *ForkPromptResponseDataCurrentVersion) {
 	f.CurrentVersion = currentVersion
 	f.require(forkPromptResponseDataFieldCurrentVersion)
+}
+
+// SetReleaseStatus sets the ReleaseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseData) SetReleaseStatus(releaseStatus *ForkPromptResponseDataReleaseStatus) {
+	f.ReleaseStatus = releaseStatus
+	f.require(forkPromptResponseDataFieldReleaseStatus)
 }
 
 func (f *ForkPromptResponseData) UnmarshalJSON(data []byte) error {
@@ -741,6 +757,688 @@ func NewForkPromptResponseDataKindFromString(s string) (ForkPromptResponseDataKi
 
 func (f ForkPromptResponseDataKind) Ptr() *ForkPromptResponseDataKind {
 	return &f
+}
+
+var (
+	forkPromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges = big.NewInt(1 << 0)
+	forkPromptResponseDataReleaseStatusFieldLatestPublishedVersion     = big.NewInt(1 << 1)
+	forkPromptResponseDataReleaseStatusFieldDeployments                = big.NewInt(1 << 2)
+)
+
+type ForkPromptResponseDataReleaseStatus struct {
+	DraftHasUnpublishedChanges bool                                                       `json:"draftHasUnpublishedChanges" url:"draftHasUnpublishedChanges"`
+	LatestPublishedVersion     *ForkPromptResponseDataReleaseStatusLatestPublishedVersion `json:"latestPublishedVersion,omitempty" url:"latestPublishedVersion,omitempty"`
+	Deployments                *ForkPromptResponseDataReleaseStatusDeployments            `json:"deployments" url:"deployments"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) GetDraftHasUnpublishedChanges() bool {
+	if f == nil {
+		return false
+	}
+	return f.DraftHasUnpublishedChanges
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) GetLatestPublishedVersion() *ForkPromptResponseDataReleaseStatusLatestPublishedVersion {
+	if f == nil {
+		return nil
+	}
+	return f.LatestPublishedVersion
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) GetDeployments() *ForkPromptResponseDataReleaseStatusDeployments {
+	if f == nil {
+		return nil
+	}
+	return f.Deployments
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) require(field *big.Int) {
+	if f.explicitFields == nil {
+		f.explicitFields = big.NewInt(0)
+	}
+	f.explicitFields.Or(f.explicitFields, field)
+}
+
+// SetDraftHasUnpublishedChanges sets the DraftHasUnpublishedChanges field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatus) SetDraftHasUnpublishedChanges(draftHasUnpublishedChanges bool) {
+	f.DraftHasUnpublishedChanges = draftHasUnpublishedChanges
+	f.require(forkPromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges)
+}
+
+// SetLatestPublishedVersion sets the LatestPublishedVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatus) SetLatestPublishedVersion(latestPublishedVersion *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) {
+	f.LatestPublishedVersion = latestPublishedVersion
+	f.require(forkPromptResponseDataReleaseStatusFieldLatestPublishedVersion)
+}
+
+// SetDeployments sets the Deployments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatus) SetDeployments(deployments *ForkPromptResponseDataReleaseStatusDeployments) {
+	f.Deployments = deployments
+	f.require(forkPromptResponseDataReleaseStatusFieldDeployments)
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) UnmarshalJSON(data []byte) error {
+	type unmarshaler ForkPromptResponseDataReleaseStatus
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = ForkPromptResponseDataReleaseStatus(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) MarshalJSON() ([]byte, error) {
+	type embed ForkPromptResponseDataReleaseStatus
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*f),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (f *ForkPromptResponseDataReleaseStatus) String() string {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
+var (
+	forkPromptResponseDataReleaseStatusDeploymentsFieldDevelopment = big.NewInt(1 << 0)
+	forkPromptResponseDataReleaseStatusDeploymentsFieldProduction  = big.NewInt(1 << 1)
+)
+
+type ForkPromptResponseDataReleaseStatusDeployments struct {
+	Development *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment `json:"development,omitempty" url:"development,omitempty"`
+	Production  *ForkPromptResponseDataReleaseStatusDeploymentsProduction  `json:"production,omitempty" url:"production,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeployments) GetDevelopment() *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment {
+	if f == nil {
+		return nil
+	}
+	return f.Development
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeployments) GetProduction() *ForkPromptResponseDataReleaseStatusDeploymentsProduction {
+	if f == nil {
+		return nil
+	}
+	return f.Production
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeployments) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeployments) require(field *big.Int) {
+	if f.explicitFields == nil {
+		f.explicitFields = big.NewInt(0)
+	}
+	f.explicitFields.Or(f.explicitFields, field)
+}
+
+// SetDevelopment sets the Development field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeployments) SetDevelopment(development *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) {
+	f.Development = development
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsFieldDevelopment)
+}
+
+// SetProduction sets the Production field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeployments) SetProduction(production *ForkPromptResponseDataReleaseStatusDeploymentsProduction) {
+	f.Production = production
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsFieldProduction)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeployments) UnmarshalJSON(data []byte) error {
+	type unmarshaler ForkPromptResponseDataReleaseStatusDeployments
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = ForkPromptResponseDataReleaseStatusDeployments(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeployments) MarshalJSON() ([]byte, error) {
+	type embed ForkPromptResponseDataReleaseStatusDeployments
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*f),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeployments) String() string {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
+var (
+	forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment   = big.NewInt(1 << 0)
+	forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID     = big.NewInt(1 << 1)
+	forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber = big.NewInt(1 << 2)
+	forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt    = big.NewInt(1 << 3)
+	forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type ForkPromptResponseDataReleaseStatusDeploymentsDevelopment struct {
+	Environment   ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                               `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                  `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                            `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                               `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) GetEnvironment() ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	if f == nil {
+		return ""
+	}
+	return f.Environment
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionID() string {
+	if f == nil {
+		return ""
+	}
+	return f.VersionID
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionNumber() int {
+	if f == nil {
+		return 0
+	}
+	return f.VersionNumber
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedAt() time.Time {
+	if f == nil {
+		return time.Time{}
+	}
+	return f.DeployedAt
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedByID() string {
+	if f == nil {
+		return ""
+	}
+	return f.DeployedByID
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) require(field *big.Int) {
+	if f.explicitFields == nil {
+		f.explicitFields = big.NewInt(0)
+	}
+	f.explicitFields.Or(f.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) SetEnvironment(environment ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) {
+	f.Environment = environment
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionID(versionID string) {
+	f.VersionID = versionID
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionNumber(versionNumber int) {
+	f.VersionNumber = versionNumber
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedAt(deployedAt time.Time) {
+	f.DeployedAt = deployedAt
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedByID(deployedByID string) {
+	f.DeployedByID = deployedByID
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) UnmarshalJSON(data []byte) error {
+	type embed ForkPromptResponseDataReleaseStatusDeploymentsDevelopment
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*f),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*f = ForkPromptResponseDataReleaseStatusDeploymentsDevelopment(unmarshaler.embed)
+	f.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) MarshalJSON() ([]byte, error) {
+	type embed ForkPromptResponseDataReleaseStatusDeploymentsDevelopment
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*f),
+		DeployedAt: internal.NewDateTime(f.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsDevelopment) String() string {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
+type ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment string
+
+const (
+	ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "development"
+	ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction  ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "production"
+)
+
+func NewForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentFromString(s string) (ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment, error) {
+	switch s {
+	case "development":
+		return ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment, nil
+	case "production":
+		return ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction, nil
+	}
+	var t ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) Ptr() *ForkPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	return &f
+}
+
+var (
+	forkPromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment   = big.NewInt(1 << 0)
+	forkPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID     = big.NewInt(1 << 1)
+	forkPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber = big.NewInt(1 << 2)
+	forkPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt    = big.NewInt(1 << 3)
+	forkPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type ForkPromptResponseDataReleaseStatusDeploymentsProduction struct {
+	Environment   ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                              `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                 `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                           `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                              `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) GetEnvironment() ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	if f == nil {
+		return ""
+	}
+	return f.Environment
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) GetVersionID() string {
+	if f == nil {
+		return ""
+	}
+	return f.VersionID
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) GetVersionNumber() int {
+	if f == nil {
+		return 0
+	}
+	return f.VersionNumber
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedAt() time.Time {
+	if f == nil {
+		return time.Time{}
+	}
+	return f.DeployedAt
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedByID() string {
+	if f == nil {
+		return ""
+	}
+	return f.DeployedByID
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) require(field *big.Int) {
+	if f.explicitFields == nil {
+		f.explicitFields = big.NewInt(0)
+	}
+	f.explicitFields.Or(f.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) SetEnvironment(environment ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment) {
+	f.Environment = environment
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) SetVersionID(versionID string) {
+	f.VersionID = versionID
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) SetVersionNumber(versionNumber int) {
+	f.VersionNumber = versionNumber
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedAt(deployedAt time.Time) {
+	f.DeployedAt = deployedAt
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedByID(deployedByID string) {
+	f.DeployedByID = deployedByID
+	f.require(forkPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) UnmarshalJSON(data []byte) error {
+	type embed ForkPromptResponseDataReleaseStatusDeploymentsProduction
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*f),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*f = ForkPromptResponseDataReleaseStatusDeploymentsProduction(unmarshaler.embed)
+	f.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) MarshalJSON() ([]byte, error) {
+	type embed ForkPromptResponseDataReleaseStatusDeploymentsProduction
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*f),
+		DeployedAt: internal.NewDateTime(f.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusDeploymentsProduction) String() string {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
+type ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment string
+
+const (
+	ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "development"
+	ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction  ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "production"
+)
+
+func NewForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentFromString(s string) (ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment, error) {
+	switch s {
+	case "development":
+		return ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment, nil
+	case "production":
+		return ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction, nil
+	}
+	var t ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment) Ptr() *ForkPromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	return &f
+}
+
+var (
+	forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldID            = big.NewInt(1 << 0)
+	forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber = big.NewInt(1 << 1)
+	forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt     = big.NewInt(1 << 2)
+	forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID   = big.NewInt(1 << 3)
+)
+
+type ForkPromptResponseDataReleaseStatusLatestPublishedVersion struct {
+	ID            string    `json:"id" url:"id"`
+	VersionNumber int       `json:"versionNumber" url:"versionNumber"`
+	CreatedAt     time.Time `json:"createdAt" url:"createdAt"`
+	CreatedByID   string    `json:"createdById" url:"createdById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) GetID() string {
+	if f == nil {
+		return ""
+	}
+	return f.ID
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) GetVersionNumber() int {
+	if f == nil {
+		return 0
+	}
+	return f.VersionNumber
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedAt() time.Time {
+	if f == nil {
+		return time.Time{}
+	}
+	return f.CreatedAt
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedByID() string {
+	if f == nil {
+		return ""
+	}
+	return f.CreatedByID
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) require(field *big.Int) {
+	if f.explicitFields == nil {
+		f.explicitFields = big.NewInt(0)
+	}
+	f.explicitFields.Or(f.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) SetID(id string) {
+	f.ID = id
+	f.require(forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) SetVersionNumber(versionNumber int) {
+	f.VersionNumber = versionNumber
+	f.require(forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedAt(createdAt time.Time) {
+	f.CreatedAt = createdAt
+	f.require(forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt)
+}
+
+// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedByID(createdByID string) {
+	f.CreatedByID = createdByID
+	f.require(forkPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) UnmarshalJSON(data []byte) error {
+	type embed ForkPromptResponseDataReleaseStatusLatestPublishedVersion
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*f),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*f = ForkPromptResponseDataReleaseStatusLatestPublishedVersion(unmarshaler.embed)
+	f.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) MarshalJSON() ([]byte, error) {
+	type embed ForkPromptResponseDataReleaseStatusLatestPublishedVersion
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*f),
+		CreatedAt: internal.NewDateTime(f.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (f *ForkPromptResponseDataReleaseStatusLatestPublishedVersion) String() string {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
 }
 
 type ForkPromptResponseDataStatus string
@@ -1371,6 +2069,7 @@ var (
 	movePromptResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
 	movePromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
 	movePromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
+	movePromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
 )
 
 type MovePromptResponseData struct {
@@ -1389,6 +2088,7 @@ type MovePromptResponseData struct {
 	CreatedAt          time.Time                             `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                             `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *MovePromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus      *MovePromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1500,6 +2200,13 @@ func (m *MovePromptResponseData) GetCurrentVersion() *MovePromptResponseDataCurr
 		return nil
 	}
 	return m.CurrentVersion
+}
+
+func (m *MovePromptResponseData) GetReleaseStatus() *MovePromptResponseDataReleaseStatus {
+	if m == nil {
+		return nil
+	}
+	return m.ReleaseStatus
 }
 
 func (m *MovePromptResponseData) GetExtraProperties() map[string]interface{} {
@@ -1616,6 +2323,13 @@ func (m *MovePromptResponseData) SetUpdatedAt(updatedAt time.Time) {
 func (m *MovePromptResponseData) SetCurrentVersion(currentVersion *MovePromptResponseDataCurrentVersion) {
 	m.CurrentVersion = currentVersion
 	m.require(movePromptResponseDataFieldCurrentVersion)
+}
+
+// SetReleaseStatus sets the ReleaseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseData) SetReleaseStatus(releaseStatus *MovePromptResponseDataReleaseStatus) {
+	m.ReleaseStatus = releaseStatus
+	m.require(movePromptResponseDataFieldReleaseStatus)
 }
 
 func (m *MovePromptResponseData) UnmarshalJSON(data []byte) error {
@@ -1871,6 +2585,688 @@ func NewMovePromptResponseDataKindFromString(s string) (MovePromptResponseDataKi
 
 func (m MovePromptResponseDataKind) Ptr() *MovePromptResponseDataKind {
 	return &m
+}
+
+var (
+	movePromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges = big.NewInt(1 << 0)
+	movePromptResponseDataReleaseStatusFieldLatestPublishedVersion     = big.NewInt(1 << 1)
+	movePromptResponseDataReleaseStatusFieldDeployments                = big.NewInt(1 << 2)
+)
+
+type MovePromptResponseDataReleaseStatus struct {
+	DraftHasUnpublishedChanges bool                                                       `json:"draftHasUnpublishedChanges" url:"draftHasUnpublishedChanges"`
+	LatestPublishedVersion     *MovePromptResponseDataReleaseStatusLatestPublishedVersion `json:"latestPublishedVersion,omitempty" url:"latestPublishedVersion,omitempty"`
+	Deployments                *MovePromptResponseDataReleaseStatusDeployments            `json:"deployments" url:"deployments"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MovePromptResponseDataReleaseStatus) GetDraftHasUnpublishedChanges() bool {
+	if m == nil {
+		return false
+	}
+	return m.DraftHasUnpublishedChanges
+}
+
+func (m *MovePromptResponseDataReleaseStatus) GetLatestPublishedVersion() *MovePromptResponseDataReleaseStatusLatestPublishedVersion {
+	if m == nil {
+		return nil
+	}
+	return m.LatestPublishedVersion
+}
+
+func (m *MovePromptResponseDataReleaseStatus) GetDeployments() *MovePromptResponseDataReleaseStatusDeployments {
+	if m == nil {
+		return nil
+	}
+	return m.Deployments
+}
+
+func (m *MovePromptResponseDataReleaseStatus) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MovePromptResponseDataReleaseStatus) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetDraftHasUnpublishedChanges sets the DraftHasUnpublishedChanges field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatus) SetDraftHasUnpublishedChanges(draftHasUnpublishedChanges bool) {
+	m.DraftHasUnpublishedChanges = draftHasUnpublishedChanges
+	m.require(movePromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges)
+}
+
+// SetLatestPublishedVersion sets the LatestPublishedVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatus) SetLatestPublishedVersion(latestPublishedVersion *MovePromptResponseDataReleaseStatusLatestPublishedVersion) {
+	m.LatestPublishedVersion = latestPublishedVersion
+	m.require(movePromptResponseDataReleaseStatusFieldLatestPublishedVersion)
+}
+
+// SetDeployments sets the Deployments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatus) SetDeployments(deployments *MovePromptResponseDataReleaseStatusDeployments) {
+	m.Deployments = deployments
+	m.require(movePromptResponseDataReleaseStatusFieldDeployments)
+}
+
+func (m *MovePromptResponseDataReleaseStatus) UnmarshalJSON(data []byte) error {
+	type unmarshaler MovePromptResponseDataReleaseStatus
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MovePromptResponseDataReleaseStatus(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MovePromptResponseDataReleaseStatus) MarshalJSON() ([]byte, error) {
+	type embed MovePromptResponseDataReleaseStatus
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MovePromptResponseDataReleaseStatus) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	movePromptResponseDataReleaseStatusDeploymentsFieldDevelopment = big.NewInt(1 << 0)
+	movePromptResponseDataReleaseStatusDeploymentsFieldProduction  = big.NewInt(1 << 1)
+)
+
+type MovePromptResponseDataReleaseStatusDeployments struct {
+	Development *MovePromptResponseDataReleaseStatusDeploymentsDevelopment `json:"development,omitempty" url:"development,omitempty"`
+	Production  *MovePromptResponseDataReleaseStatusDeploymentsProduction  `json:"production,omitempty" url:"production,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeployments) GetDevelopment() *MovePromptResponseDataReleaseStatusDeploymentsDevelopment {
+	if m == nil {
+		return nil
+	}
+	return m.Development
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeployments) GetProduction() *MovePromptResponseDataReleaseStatusDeploymentsProduction {
+	if m == nil {
+		return nil
+	}
+	return m.Production
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeployments) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeployments) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetDevelopment sets the Development field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeployments) SetDevelopment(development *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) {
+	m.Development = development
+	m.require(movePromptResponseDataReleaseStatusDeploymentsFieldDevelopment)
+}
+
+// SetProduction sets the Production field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeployments) SetProduction(production *MovePromptResponseDataReleaseStatusDeploymentsProduction) {
+	m.Production = production
+	m.require(movePromptResponseDataReleaseStatusDeploymentsFieldProduction)
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeployments) UnmarshalJSON(data []byte) error {
+	type unmarshaler MovePromptResponseDataReleaseStatusDeployments
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MovePromptResponseDataReleaseStatusDeployments(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeployments) MarshalJSON() ([]byte, error) {
+	type embed MovePromptResponseDataReleaseStatusDeployments
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeployments) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment   = big.NewInt(1 << 0)
+	movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID     = big.NewInt(1 << 1)
+	movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber = big.NewInt(1 << 2)
+	movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt    = big.NewInt(1 << 3)
+	movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type MovePromptResponseDataReleaseStatusDeploymentsDevelopment struct {
+	Environment   MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                               `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                  `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                            `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                               `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) GetEnvironment() MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	if m == nil {
+		return ""
+	}
+	return m.Environment
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionID() string {
+	if m == nil {
+		return ""
+	}
+	return m.VersionID
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionNumber() int {
+	if m == nil {
+		return 0
+	}
+	return m.VersionNumber
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedAt() time.Time {
+	if m == nil {
+		return time.Time{}
+	}
+	return m.DeployedAt
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedByID() string {
+	if m == nil {
+		return ""
+	}
+	return m.DeployedByID
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) SetEnvironment(environment MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) {
+	m.Environment = environment
+	m.require(movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionID(versionID string) {
+	m.VersionID = versionID
+	m.require(movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionNumber(versionNumber int) {
+	m.VersionNumber = versionNumber
+	m.require(movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedAt(deployedAt time.Time) {
+	m.DeployedAt = deployedAt
+	m.require(movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedByID(deployedByID string) {
+	m.DeployedByID = deployedByID
+	m.require(movePromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID)
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) UnmarshalJSON(data []byte) error {
+	type embed MovePromptResponseDataReleaseStatusDeploymentsDevelopment
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = MovePromptResponseDataReleaseStatusDeploymentsDevelopment(unmarshaler.embed)
+	m.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) MarshalJSON() ([]byte, error) {
+	type embed MovePromptResponseDataReleaseStatusDeploymentsDevelopment
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*m),
+		DeployedAt: internal.NewDateTime(m.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsDevelopment) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment string
+
+const (
+	MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "development"
+	MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction  MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "production"
+)
+
+func NewMovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentFromString(s string) (MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment, error) {
+	switch s {
+	case "development":
+		return MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment, nil
+	case "production":
+		return MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction, nil
+	}
+	var t MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) Ptr() *MovePromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	return &m
+}
+
+var (
+	movePromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment   = big.NewInt(1 << 0)
+	movePromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID     = big.NewInt(1 << 1)
+	movePromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber = big.NewInt(1 << 2)
+	movePromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt    = big.NewInt(1 << 3)
+	movePromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type MovePromptResponseDataReleaseStatusDeploymentsProduction struct {
+	Environment   MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                              `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                 `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                           `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                              `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) GetEnvironment() MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	if m == nil {
+		return ""
+	}
+	return m.Environment
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) GetVersionID() string {
+	if m == nil {
+		return ""
+	}
+	return m.VersionID
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) GetVersionNumber() int {
+	if m == nil {
+		return 0
+	}
+	return m.VersionNumber
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedAt() time.Time {
+	if m == nil {
+		return time.Time{}
+	}
+	return m.DeployedAt
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedByID() string {
+	if m == nil {
+		return ""
+	}
+	return m.DeployedByID
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) SetEnvironment(environment MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment) {
+	m.Environment = environment
+	m.require(movePromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) SetVersionID(versionID string) {
+	m.VersionID = versionID
+	m.require(movePromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) SetVersionNumber(versionNumber int) {
+	m.VersionNumber = versionNumber
+	m.require(movePromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedAt(deployedAt time.Time) {
+	m.DeployedAt = deployedAt
+	m.require(movePromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedByID(deployedByID string) {
+	m.DeployedByID = deployedByID
+	m.require(movePromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID)
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) UnmarshalJSON(data []byte) error {
+	type embed MovePromptResponseDataReleaseStatusDeploymentsProduction
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = MovePromptResponseDataReleaseStatusDeploymentsProduction(unmarshaler.embed)
+	m.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) MarshalJSON() ([]byte, error) {
+	type embed MovePromptResponseDataReleaseStatusDeploymentsProduction
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*m),
+		DeployedAt: internal.NewDateTime(m.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MovePromptResponseDataReleaseStatusDeploymentsProduction) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment string
+
+const (
+	MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "development"
+	MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction  MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "production"
+)
+
+func NewMovePromptResponseDataReleaseStatusDeploymentsProductionEnvironmentFromString(s string) (MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment, error) {
+	switch s {
+	case "development":
+		return MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment, nil
+	case "production":
+		return MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction, nil
+	}
+	var t MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment) Ptr() *MovePromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	return &m
+}
+
+var (
+	movePromptResponseDataReleaseStatusLatestPublishedVersionFieldID            = big.NewInt(1 << 0)
+	movePromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber = big.NewInt(1 << 1)
+	movePromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt     = big.NewInt(1 << 2)
+	movePromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID   = big.NewInt(1 << 3)
+)
+
+type MovePromptResponseDataReleaseStatusLatestPublishedVersion struct {
+	ID            string    `json:"id" url:"id"`
+	VersionNumber int       `json:"versionNumber" url:"versionNumber"`
+	CreatedAt     time.Time `json:"createdAt" url:"createdAt"`
+	CreatedByID   string    `json:"createdById" url:"createdById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) GetID() string {
+	if m == nil {
+		return ""
+	}
+	return m.ID
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) GetVersionNumber() int {
+	if m == nil {
+		return 0
+	}
+	return m.VersionNumber
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedAt() time.Time {
+	if m == nil {
+		return time.Time{}
+	}
+	return m.CreatedAt
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedByID() string {
+	if m == nil {
+		return ""
+	}
+	return m.CreatedByID
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) SetID(id string) {
+	m.ID = id
+	m.require(movePromptResponseDataReleaseStatusLatestPublishedVersionFieldID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) SetVersionNumber(versionNumber int) {
+	m.VersionNumber = versionNumber
+	m.require(movePromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedAt(createdAt time.Time) {
+	m.CreatedAt = createdAt
+	m.require(movePromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt)
+}
+
+// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedByID(createdByID string) {
+	m.CreatedByID = createdByID
+	m.require(movePromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID)
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) UnmarshalJSON(data []byte) error {
+	type embed MovePromptResponseDataReleaseStatusLatestPublishedVersion
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = MovePromptResponseDataReleaseStatusLatestPublishedVersion(unmarshaler.embed)
+	m.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) MarshalJSON() ([]byte, error) {
+	type embed MovePromptResponseDataReleaseStatusLatestPublishedVersion
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*m),
+		CreatedAt: internal.NewDateTime(m.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MovePromptResponseDataReleaseStatusLatestPublishedVersion) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
 }
 
 type MovePromptResponseDataStatus string

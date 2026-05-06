@@ -22,6 +22,7 @@ import (
 	onboarding "github.com/AIEngineering26/promptvm-go-sdk/onboarding"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	organizations "github.com/AIEngineering26/promptvm-go-sdk/organizations"
+	promptdeployments "github.com/AIEngineering26/promptvm-go-sdk/promptdeployments"
 	promptexport "github.com/AIEngineering26/promptvm-go-sdk/promptexport"
 	promptorganization "github.com/AIEngineering26/promptvm-go-sdk/promptorganization"
 	promptresolution "github.com/AIEngineering26/promptvm-go-sdk/promptresolution"
@@ -52,6 +53,7 @@ type Client struct {
 	MarketplaceComments         *marketplacecomments.Client
 	Prompts                     *prompts.Client
 	PromptVersions              *promptversions.Client
+	PromptDeployments           *promptdeployments.Client
 	PromptResolution            *promptresolution.Client
 	Collections                 *collections.Client
 	Templates                   *templates.Client
@@ -87,6 +89,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		MarketplaceComments:         marketplacecomments.NewClient(options),
 		Prompts:                     prompts.NewClient(options),
 		PromptVersions:              promptversions.NewClient(options),
+		PromptDeployments:           promptdeployments.NewClient(options),
 		PromptResolution:            promptresolution.NewClient(options),
 		Collections:                 collections.NewClient(options),
 		Templates:                   templates.NewClient(options),

@@ -234,6 +234,7 @@ var (
 	convertPromptToTemplateResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
 	convertPromptToTemplateResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
 	convertPromptToTemplateResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
+	convertPromptToTemplateResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
 )
 
 type ConvertPromptToTemplateResponseData struct {
@@ -252,6 +253,7 @@ type ConvertPromptToTemplateResponseData struct {
 	CreatedAt          time.Time                                          `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                                          `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *ConvertPromptToTemplateResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus      *ConvertPromptToTemplateResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -363,6 +365,13 @@ func (c *ConvertPromptToTemplateResponseData) GetCurrentVersion() *ConvertPrompt
 		return nil
 	}
 	return c.CurrentVersion
+}
+
+func (c *ConvertPromptToTemplateResponseData) GetReleaseStatus() *ConvertPromptToTemplateResponseDataReleaseStatus {
+	if c == nil {
+		return nil
+	}
+	return c.ReleaseStatus
 }
 
 func (c *ConvertPromptToTemplateResponseData) GetExtraProperties() map[string]interface{} {
@@ -479,6 +488,13 @@ func (c *ConvertPromptToTemplateResponseData) SetUpdatedAt(updatedAt time.Time) 
 func (c *ConvertPromptToTemplateResponseData) SetCurrentVersion(currentVersion *ConvertPromptToTemplateResponseDataCurrentVersion) {
 	c.CurrentVersion = currentVersion
 	c.require(convertPromptToTemplateResponseDataFieldCurrentVersion)
+}
+
+// SetReleaseStatus sets the ReleaseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseData) SetReleaseStatus(releaseStatus *ConvertPromptToTemplateResponseDataReleaseStatus) {
+	c.ReleaseStatus = releaseStatus
+	c.require(convertPromptToTemplateResponseDataFieldReleaseStatus)
 }
 
 func (c *ConvertPromptToTemplateResponseData) UnmarshalJSON(data []byte) error {
@@ -736,6 +752,688 @@ func (c ConvertPromptToTemplateResponseDataKind) Ptr() *ConvertPromptToTemplateR
 	return &c
 }
 
+var (
+	convertPromptToTemplateResponseDataReleaseStatusFieldDraftHasUnpublishedChanges = big.NewInt(1 << 0)
+	convertPromptToTemplateResponseDataReleaseStatusFieldLatestPublishedVersion     = big.NewInt(1 << 1)
+	convertPromptToTemplateResponseDataReleaseStatusFieldDeployments                = big.NewInt(1 << 2)
+)
+
+type ConvertPromptToTemplateResponseDataReleaseStatus struct {
+	DraftHasUnpublishedChanges bool                                                                    `json:"draftHasUnpublishedChanges" url:"draftHasUnpublishedChanges"`
+	LatestPublishedVersion     *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion `json:"latestPublishedVersion,omitempty" url:"latestPublishedVersion,omitempty"`
+	Deployments                *ConvertPromptToTemplateResponseDataReleaseStatusDeployments            `json:"deployments" url:"deployments"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) GetDraftHasUnpublishedChanges() bool {
+	if c == nil {
+		return false
+	}
+	return c.DraftHasUnpublishedChanges
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) GetLatestPublishedVersion() *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion {
+	if c == nil {
+		return nil
+	}
+	return c.LatestPublishedVersion
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) GetDeployments() *ConvertPromptToTemplateResponseDataReleaseStatusDeployments {
+	if c == nil {
+		return nil
+	}
+	return c.Deployments
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetDraftHasUnpublishedChanges sets the DraftHasUnpublishedChanges field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) SetDraftHasUnpublishedChanges(draftHasUnpublishedChanges bool) {
+	c.DraftHasUnpublishedChanges = draftHasUnpublishedChanges
+	c.require(convertPromptToTemplateResponseDataReleaseStatusFieldDraftHasUnpublishedChanges)
+}
+
+// SetLatestPublishedVersion sets the LatestPublishedVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) SetLatestPublishedVersion(latestPublishedVersion *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) {
+	c.LatestPublishedVersion = latestPublishedVersion
+	c.require(convertPromptToTemplateResponseDataReleaseStatusFieldLatestPublishedVersion)
+}
+
+// SetDeployments sets the Deployments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) SetDeployments(deployments *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) {
+	c.Deployments = deployments
+	c.require(convertPromptToTemplateResponseDataReleaseStatusFieldDeployments)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConvertPromptToTemplateResponseDataReleaseStatus
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConvertPromptToTemplateResponseDataReleaseStatus(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) MarshalJSON() ([]byte, error) {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatus
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatus) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsFieldDevelopment = big.NewInt(1 << 0)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsFieldProduction  = big.NewInt(1 << 1)
+)
+
+type ConvertPromptToTemplateResponseDataReleaseStatusDeployments struct {
+	Development *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment `json:"development,omitempty" url:"development,omitempty"`
+	Production  *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction  `json:"production,omitempty" url:"production,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) GetDevelopment() *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment {
+	if c == nil {
+		return nil
+	}
+	return c.Development
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) GetProduction() *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction {
+	if c == nil {
+		return nil
+	}
+	return c.Production
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetDevelopment sets the Development field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) SetDevelopment(development *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) {
+	c.Development = development
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsFieldDevelopment)
+}
+
+// SetProduction sets the Production field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) SetProduction(production *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) {
+	c.Production = production
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsFieldProduction)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConvertPromptToTemplateResponseDataReleaseStatusDeployments
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConvertPromptToTemplateResponseDataReleaseStatusDeployments(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) MarshalJSON() ([]byte, error) {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatusDeployments
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeployments) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment   = big.NewInt(1 << 0)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID     = big.NewInt(1 << 1)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber = big.NewInt(1 << 2)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt    = big.NewInt(1 << 3)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment struct {
+	Environment   ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                                            `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                               `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                                         `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                                            `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetEnvironment() ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	if c == nil {
+		return ""
+	}
+	return c.Environment
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetVersionID() string {
+	if c == nil {
+		return ""
+	}
+	return c.VersionID
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetVersionNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.VersionNumber
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.DeployedAt
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedByID() string {
+	if c == nil {
+		return ""
+	}
+	return c.DeployedByID
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetEnvironment(environment ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) {
+	c.Environment = environment
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetVersionID(versionID string) {
+	c.VersionID = versionID
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetVersionNumber(versionNumber int) {
+	c.VersionNumber = versionNumber
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedAt(deployedAt time.Time) {
+	c.DeployedAt = deployedAt
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedByID(deployedByID string) {
+	c.DeployedByID = deployedByID
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) UnmarshalJSON(data []byte) error {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment(unmarshaler.embed)
+	c.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) MarshalJSON() ([]byte, error) {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*c),
+		DeployedAt: internal.NewDateTime(c.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopment) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment string
+
+const (
+	ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "development"
+	ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction  ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "production"
+)
+
+func NewConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentFromString(s string) (ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment, error) {
+	switch s {
+	case "development":
+		return ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment, nil
+	case "production":
+		return ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction, nil
+	}
+	var t ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) Ptr() *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	return &c
+}
+
+var (
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldEnvironment   = big.NewInt(1 << 0)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionID     = big.NewInt(1 << 1)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber = big.NewInt(1 << 2)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt    = big.NewInt(1 << 3)
+	convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction struct {
+	Environment   ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                                           `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                              `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                                        `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                                           `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) GetEnvironment() ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	if c == nil {
+		return ""
+	}
+	return c.Environment
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) GetVersionID() string {
+	if c == nil {
+		return ""
+	}
+	return c.VersionID
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) GetVersionNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.VersionNumber
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) GetDeployedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.DeployedAt
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) GetDeployedByID() string {
+	if c == nil {
+		return ""
+	}
+	return c.DeployedByID
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) SetEnvironment(environment ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment) {
+	c.Environment = environment
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) SetVersionID(versionID string) {
+	c.VersionID = versionID
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) SetVersionNumber(versionNumber int) {
+	c.VersionNumber = versionNumber
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) SetDeployedAt(deployedAt time.Time) {
+	c.DeployedAt = deployedAt
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) SetDeployedByID(deployedByID string) {
+	c.DeployedByID = deployedByID
+	c.require(convertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) UnmarshalJSON(data []byte) error {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction(unmarshaler.embed)
+	c.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) MarshalJSON() ([]byte, error) {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*c),
+		DeployedAt: internal.NewDateTime(c.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProduction) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment string
+
+const (
+	ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment = "development"
+	ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction  ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment = "production"
+)
+
+func NewConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentFromString(s string) (ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment, error) {
+	switch s {
+	case "development":
+		return ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment, nil
+	case "production":
+		return ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction, nil
+	}
+	var t ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment) Ptr() *ConvertPromptToTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	return &c
+}
+
+var (
+	convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldID            = big.NewInt(1 << 0)
+	convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber = big.NewInt(1 << 1)
+	convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt     = big.NewInt(1 << 2)
+	convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID   = big.NewInt(1 << 3)
+)
+
+type ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion struct {
+	ID            string    `json:"id" url:"id"`
+	VersionNumber int       `json:"versionNumber" url:"versionNumber"`
+	CreatedAt     time.Time `json:"createdAt" url:"createdAt"`
+	CreatedByID   string    `json:"createdById" url:"createdById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) GetVersionNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.VersionNumber
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) GetCreatedByID() string {
+	if c == nil {
+		return ""
+	}
+	return c.CreatedByID
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) SetID(id string) {
+	c.ID = id
+	c.require(convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) SetVersionNumber(versionNumber int) {
+	c.VersionNumber = versionNumber
+	c.require(convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt)
+}
+
+// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) SetCreatedByID(createdByID string) {
+	c.CreatedByID = createdByID
+	c.require(convertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) UnmarshalJSON(data []byte) error {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) MarshalJSON() ([]byte, error) {
+	type embed ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConvertPromptToTemplateResponseDataReleaseStatusLatestPublishedVersion) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ConvertPromptToTemplateResponseDataStatus string
 
 const (
@@ -859,6 +1557,7 @@ var (
 	createPromptFromTemplateResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
 	createPromptFromTemplateResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
 	createPromptFromTemplateResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
+	createPromptFromTemplateResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
 )
 
 type CreatePromptFromTemplateResponseData struct {
@@ -877,6 +1576,7 @@ type CreatePromptFromTemplateResponseData struct {
 	CreatedAt          time.Time                                           `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                                           `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *CreatePromptFromTemplateResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus      *CreatePromptFromTemplateResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -988,6 +1688,13 @@ func (c *CreatePromptFromTemplateResponseData) GetCurrentVersion() *CreatePrompt
 		return nil
 	}
 	return c.CurrentVersion
+}
+
+func (c *CreatePromptFromTemplateResponseData) GetReleaseStatus() *CreatePromptFromTemplateResponseDataReleaseStatus {
+	if c == nil {
+		return nil
+	}
+	return c.ReleaseStatus
 }
 
 func (c *CreatePromptFromTemplateResponseData) GetExtraProperties() map[string]interface{} {
@@ -1104,6 +1811,13 @@ func (c *CreatePromptFromTemplateResponseData) SetUpdatedAt(updatedAt time.Time)
 func (c *CreatePromptFromTemplateResponseData) SetCurrentVersion(currentVersion *CreatePromptFromTemplateResponseDataCurrentVersion) {
 	c.CurrentVersion = currentVersion
 	c.require(createPromptFromTemplateResponseDataFieldCurrentVersion)
+}
+
+// SetReleaseStatus sets the ReleaseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseData) SetReleaseStatus(releaseStatus *CreatePromptFromTemplateResponseDataReleaseStatus) {
+	c.ReleaseStatus = releaseStatus
+	c.require(createPromptFromTemplateResponseDataFieldReleaseStatus)
 }
 
 func (c *CreatePromptFromTemplateResponseData) UnmarshalJSON(data []byte) error {
@@ -1359,6 +2073,688 @@ func NewCreatePromptFromTemplateResponseDataKindFromString(s string) (CreateProm
 
 func (c CreatePromptFromTemplateResponseDataKind) Ptr() *CreatePromptFromTemplateResponseDataKind {
 	return &c
+}
+
+var (
+	createPromptFromTemplateResponseDataReleaseStatusFieldDraftHasUnpublishedChanges = big.NewInt(1 << 0)
+	createPromptFromTemplateResponseDataReleaseStatusFieldLatestPublishedVersion     = big.NewInt(1 << 1)
+	createPromptFromTemplateResponseDataReleaseStatusFieldDeployments                = big.NewInt(1 << 2)
+)
+
+type CreatePromptFromTemplateResponseDataReleaseStatus struct {
+	DraftHasUnpublishedChanges bool                                                                     `json:"draftHasUnpublishedChanges" url:"draftHasUnpublishedChanges"`
+	LatestPublishedVersion     *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion `json:"latestPublishedVersion,omitempty" url:"latestPublishedVersion,omitempty"`
+	Deployments                *CreatePromptFromTemplateResponseDataReleaseStatusDeployments            `json:"deployments" url:"deployments"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) GetDraftHasUnpublishedChanges() bool {
+	if c == nil {
+		return false
+	}
+	return c.DraftHasUnpublishedChanges
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) GetLatestPublishedVersion() *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion {
+	if c == nil {
+		return nil
+	}
+	return c.LatestPublishedVersion
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) GetDeployments() *CreatePromptFromTemplateResponseDataReleaseStatusDeployments {
+	if c == nil {
+		return nil
+	}
+	return c.Deployments
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetDraftHasUnpublishedChanges sets the DraftHasUnpublishedChanges field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) SetDraftHasUnpublishedChanges(draftHasUnpublishedChanges bool) {
+	c.DraftHasUnpublishedChanges = draftHasUnpublishedChanges
+	c.require(createPromptFromTemplateResponseDataReleaseStatusFieldDraftHasUnpublishedChanges)
+}
+
+// SetLatestPublishedVersion sets the LatestPublishedVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) SetLatestPublishedVersion(latestPublishedVersion *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) {
+	c.LatestPublishedVersion = latestPublishedVersion
+	c.require(createPromptFromTemplateResponseDataReleaseStatusFieldLatestPublishedVersion)
+}
+
+// SetDeployments sets the Deployments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) SetDeployments(deployments *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) {
+	c.Deployments = deployments
+	c.require(createPromptFromTemplateResponseDataReleaseStatusFieldDeployments)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePromptFromTemplateResponseDataReleaseStatus
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreatePromptFromTemplateResponseDataReleaseStatus(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatus
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatus) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsFieldDevelopment = big.NewInt(1 << 0)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsFieldProduction  = big.NewInt(1 << 1)
+)
+
+type CreatePromptFromTemplateResponseDataReleaseStatusDeployments struct {
+	Development *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment `json:"development,omitempty" url:"development,omitempty"`
+	Production  *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction  `json:"production,omitempty" url:"production,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) GetDevelopment() *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment {
+	if c == nil {
+		return nil
+	}
+	return c.Development
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) GetProduction() *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction {
+	if c == nil {
+		return nil
+	}
+	return c.Production
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetDevelopment sets the Development field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) SetDevelopment(development *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) {
+	c.Development = development
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsFieldDevelopment)
+}
+
+// SetProduction sets the Production field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) SetProduction(production *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) {
+	c.Production = production
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsFieldProduction)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePromptFromTemplateResponseDataReleaseStatusDeployments
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreatePromptFromTemplateResponseDataReleaseStatusDeployments(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatusDeployments
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeployments) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment   = big.NewInt(1 << 0)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID     = big.NewInt(1 << 1)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber = big.NewInt(1 << 2)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt    = big.NewInt(1 << 3)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment struct {
+	Environment   CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                                             `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                                `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                                          `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                                             `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetEnvironment() CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	if c == nil {
+		return ""
+	}
+	return c.Environment
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetVersionID() string {
+	if c == nil {
+		return ""
+	}
+	return c.VersionID
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetVersionNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.VersionNumber
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.DeployedAt
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedByID() string {
+	if c == nil {
+		return ""
+	}
+	return c.DeployedByID
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetEnvironment(environment CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) {
+	c.Environment = environment
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetVersionID(versionID string) {
+	c.VersionID = versionID
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetVersionNumber(versionNumber int) {
+	c.VersionNumber = versionNumber
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedAt(deployedAt time.Time) {
+	c.DeployedAt = deployedAt
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedByID(deployedByID string) {
+	c.DeployedByID = deployedByID
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) UnmarshalJSON(data []byte) error {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment(unmarshaler.embed)
+	c.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*c),
+		DeployedAt: internal.NewDateTime(c.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopment) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment string
+
+const (
+	CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "development"
+	CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction  CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "production"
+)
+
+func NewCreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentFromString(s string) (CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment, error) {
+	switch s {
+	case "development":
+		return CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment, nil
+	case "production":
+		return CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction, nil
+	}
+	var t CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) Ptr() *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	return &c
+}
+
+var (
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldEnvironment   = big.NewInt(1 << 0)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionID     = big.NewInt(1 << 1)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber = big.NewInt(1 << 2)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt    = big.NewInt(1 << 3)
+	createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction struct {
+	Environment   CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                                            `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                               `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                                         `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                                            `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) GetEnvironment() CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	if c == nil {
+		return ""
+	}
+	return c.Environment
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) GetVersionID() string {
+	if c == nil {
+		return ""
+	}
+	return c.VersionID
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) GetVersionNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.VersionNumber
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) GetDeployedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.DeployedAt
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) GetDeployedByID() string {
+	if c == nil {
+		return ""
+	}
+	return c.DeployedByID
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) SetEnvironment(environment CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment) {
+	c.Environment = environment
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) SetVersionID(versionID string) {
+	c.VersionID = versionID
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) SetVersionNumber(versionNumber int) {
+	c.VersionNumber = versionNumber
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) SetDeployedAt(deployedAt time.Time) {
+	c.DeployedAt = deployedAt
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) SetDeployedByID(deployedByID string) {
+	c.DeployedByID = deployedByID
+	c.require(createPromptFromTemplateResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) UnmarshalJSON(data []byte) error {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction(unmarshaler.embed)
+	c.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*c),
+		DeployedAt: internal.NewDateTime(c.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProduction) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment string
+
+const (
+	CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment = "development"
+	CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction  CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment = "production"
+)
+
+func NewCreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentFromString(s string) (CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment, error) {
+	switch s {
+	case "development":
+		return CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment, nil
+	case "production":
+		return CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction, nil
+	}
+	var t CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment) Ptr() *CreatePromptFromTemplateResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	return &c
+}
+
+var (
+	createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldID            = big.NewInt(1 << 0)
+	createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber = big.NewInt(1 << 1)
+	createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt     = big.NewInt(1 << 2)
+	createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID   = big.NewInt(1 << 3)
+)
+
+type CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion struct {
+	ID            string    `json:"id" url:"id"`
+	VersionNumber int       `json:"versionNumber" url:"versionNumber"`
+	CreatedAt     time.Time `json:"createdAt" url:"createdAt"`
+	CreatedByID   string    `json:"createdById" url:"createdById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) GetVersionNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.VersionNumber
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) GetCreatedByID() string {
+	if c == nil {
+		return ""
+	}
+	return c.CreatedByID
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) SetID(id string) {
+	c.ID = id
+	c.require(createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) SetVersionNumber(versionNumber int) {
+	c.VersionNumber = versionNumber
+	c.require(createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt)
+}
+
+// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) SetCreatedByID(createdByID string) {
+	c.CreatedByID = createdByID
+	c.require(createPromptFromTemplateResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) UnmarshalJSON(data []byte) error {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptFromTemplateResponseDataReleaseStatusLatestPublishedVersion) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 type CreatePromptFromTemplateResponseDataStatus string

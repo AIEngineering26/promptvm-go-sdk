@@ -314,31 +314,35 @@ func (c *CreatePromptVersionResponse) String() string {
 }
 
 var (
-	createPromptVersionResponseDataFieldID               = big.NewInt(1 << 0)
-	createPromptVersionResponseDataFieldPromptID         = big.NewInt(1 << 1)
-	createPromptVersionResponseDataFieldVersionNumber    = big.NewInt(1 << 2)
-	createPromptVersionResponseDataFieldVersionLabel     = big.NewInt(1 << 3)
-	createPromptVersionResponseDataFieldContent          = big.NewInt(1 << 4)
-	createPromptVersionResponseDataFieldSystemPrompt     = big.NewInt(1 << 5)
-	createPromptVersionResponseDataFieldChangeNote       = big.NewInt(1 << 6)
-	createPromptVersionResponseDataFieldIsCurrentVersion = big.NewInt(1 << 7)
-	createPromptVersionResponseDataFieldVariablesSchema  = big.NewInt(1 << 8)
-	createPromptVersionResponseDataFieldCreatedByID      = big.NewInt(1 << 9)
-	createPromptVersionResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	createPromptVersionResponseDataFieldID                      = big.NewInt(1 << 0)
+	createPromptVersionResponseDataFieldPromptID                = big.NewInt(1 << 1)
+	createPromptVersionResponseDataFieldVersionNumber           = big.NewInt(1 << 2)
+	createPromptVersionResponseDataFieldVersionLabel            = big.NewInt(1 << 3)
+	createPromptVersionResponseDataFieldContent                 = big.NewInt(1 << 4)
+	createPromptVersionResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
+	createPromptVersionResponseDataFieldChangeNote              = big.NewInt(1 << 6)
+	createPromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
+	createPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
+	createPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
+	createPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
+	createPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
+	createPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
 )
 
 type CreatePromptVersionResponseData struct {
-	ID               string                 `json:"id" url:"id"`
-	PromptID         string                 `json:"promptId" url:"promptId"`
-	VersionNumber    int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel     *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content          string                 `json:"content" url:"content"`
-	SystemPrompt     *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote       *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	VariablesSchema  map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID      *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedAt        time.Time              `json:"createdAt" url:"createdAt"`
+	ID                      string                 `json:"id" url:"id"`
+	PromptID                string                 `json:"promptId" url:"promptId"`
+	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                 `json:"content" url:"content"`
+	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -422,6 +426,20 @@ func (c *CreatePromptVersionResponseData) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return c.CreatedAt
+}
+
+func (c *CreatePromptVersionResponseData) GetIsDeployedToDevelopment() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsDeployedToDevelopment
+}
+
+func (c *CreatePromptVersionResponseData) GetIsDeployedToProduction() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsDeployedToProduction
 }
 
 func (c *CreatePromptVersionResponseData) GetExtraProperties() map[string]interface{} {
@@ -510,6 +528,20 @@ func (c *CreatePromptVersionResponseData) SetCreatedByID(createdByID *string) {
 func (c *CreatePromptVersionResponseData) SetCreatedAt(createdAt time.Time) {
 	c.CreatedAt = createdAt
 	c.require(createPromptVersionResponseDataFieldCreatedAt)
+}
+
+// SetIsDeployedToDevelopment sets the IsDeployedToDevelopment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseData) SetIsDeployedToDevelopment(isDeployedToDevelopment *bool) {
+	c.IsDeployedToDevelopment = isDeployedToDevelopment
+	c.require(createPromptVersionResponseDataFieldIsDeployedToDevelopment)
+}
+
+// SetIsDeployedToProduction sets the IsDeployedToProduction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseData) SetIsDeployedToProduction(isDeployedToProduction *bool) {
+	c.IsDeployedToProduction = isDeployedToProduction
+	c.require(createPromptVersionResponseDataFieldIsDeployedToProduction)
 }
 
 func (c *CreatePromptVersionResponseData) UnmarshalJSON(data []byte) error {
@@ -954,31 +986,35 @@ func (g *GetPromptVersionResponse) String() string {
 }
 
 var (
-	getPromptVersionResponseDataFieldID               = big.NewInt(1 << 0)
-	getPromptVersionResponseDataFieldPromptID         = big.NewInt(1 << 1)
-	getPromptVersionResponseDataFieldVersionNumber    = big.NewInt(1 << 2)
-	getPromptVersionResponseDataFieldVersionLabel     = big.NewInt(1 << 3)
-	getPromptVersionResponseDataFieldContent          = big.NewInt(1 << 4)
-	getPromptVersionResponseDataFieldSystemPrompt     = big.NewInt(1 << 5)
-	getPromptVersionResponseDataFieldChangeNote       = big.NewInt(1 << 6)
-	getPromptVersionResponseDataFieldIsCurrentVersion = big.NewInt(1 << 7)
-	getPromptVersionResponseDataFieldVariablesSchema  = big.NewInt(1 << 8)
-	getPromptVersionResponseDataFieldCreatedByID      = big.NewInt(1 << 9)
-	getPromptVersionResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	getPromptVersionResponseDataFieldID                      = big.NewInt(1 << 0)
+	getPromptVersionResponseDataFieldPromptID                = big.NewInt(1 << 1)
+	getPromptVersionResponseDataFieldVersionNumber           = big.NewInt(1 << 2)
+	getPromptVersionResponseDataFieldVersionLabel            = big.NewInt(1 << 3)
+	getPromptVersionResponseDataFieldContent                 = big.NewInt(1 << 4)
+	getPromptVersionResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
+	getPromptVersionResponseDataFieldChangeNote              = big.NewInt(1 << 6)
+	getPromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
+	getPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
+	getPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
+	getPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
+	getPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
+	getPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
 )
 
 type GetPromptVersionResponseData struct {
-	ID               string                 `json:"id" url:"id"`
-	PromptID         string                 `json:"promptId" url:"promptId"`
-	VersionNumber    int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel     *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content          string                 `json:"content" url:"content"`
-	SystemPrompt     *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote       *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	VariablesSchema  map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID      *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedAt        time.Time              `json:"createdAt" url:"createdAt"`
+	ID                      string                 `json:"id" url:"id"`
+	PromptID                string                 `json:"promptId" url:"promptId"`
+	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                 `json:"content" url:"content"`
+	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1062,6 +1098,20 @@ func (g *GetPromptVersionResponseData) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return g.CreatedAt
+}
+
+func (g *GetPromptVersionResponseData) GetIsDeployedToDevelopment() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsDeployedToDevelopment
+}
+
+func (g *GetPromptVersionResponseData) GetIsDeployedToProduction() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsDeployedToProduction
 }
 
 func (g *GetPromptVersionResponseData) GetExtraProperties() map[string]interface{} {
@@ -1150,6 +1200,20 @@ func (g *GetPromptVersionResponseData) SetCreatedByID(createdByID *string) {
 func (g *GetPromptVersionResponseData) SetCreatedAt(createdAt time.Time) {
 	g.CreatedAt = createdAt
 	g.require(getPromptVersionResponseDataFieldCreatedAt)
+}
+
+// SetIsDeployedToDevelopment sets the IsDeployedToDevelopment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseData) SetIsDeployedToDevelopment(isDeployedToDevelopment *bool) {
+	g.IsDeployedToDevelopment = isDeployedToDevelopment
+	g.require(getPromptVersionResponseDataFieldIsDeployedToDevelopment)
+}
+
+// SetIsDeployedToProduction sets the IsDeployedToProduction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseData) SetIsDeployedToProduction(isDeployedToProduction *bool) {
+	g.IsDeployedToProduction = isDeployedToProduction
+	g.require(getPromptVersionResponseDataFieldIsDeployedToProduction)
 }
 
 func (g *GetPromptVersionResponseData) UnmarshalJSON(data []byte) error {
@@ -1295,31 +1359,35 @@ func (l *ListPromptVersionsResponse) String() string {
 }
 
 var (
-	listPromptVersionsResponseDataItemFieldID               = big.NewInt(1 << 0)
-	listPromptVersionsResponseDataItemFieldPromptID         = big.NewInt(1 << 1)
-	listPromptVersionsResponseDataItemFieldVersionNumber    = big.NewInt(1 << 2)
-	listPromptVersionsResponseDataItemFieldVersionLabel     = big.NewInt(1 << 3)
-	listPromptVersionsResponseDataItemFieldContent          = big.NewInt(1 << 4)
-	listPromptVersionsResponseDataItemFieldSystemPrompt     = big.NewInt(1 << 5)
-	listPromptVersionsResponseDataItemFieldChangeNote       = big.NewInt(1 << 6)
-	listPromptVersionsResponseDataItemFieldIsCurrentVersion = big.NewInt(1 << 7)
-	listPromptVersionsResponseDataItemFieldVariablesSchema  = big.NewInt(1 << 8)
-	listPromptVersionsResponseDataItemFieldCreatedByID      = big.NewInt(1 << 9)
-	listPromptVersionsResponseDataItemFieldCreatedAt        = big.NewInt(1 << 10)
+	listPromptVersionsResponseDataItemFieldID                      = big.NewInt(1 << 0)
+	listPromptVersionsResponseDataItemFieldPromptID                = big.NewInt(1 << 1)
+	listPromptVersionsResponseDataItemFieldVersionNumber           = big.NewInt(1 << 2)
+	listPromptVersionsResponseDataItemFieldVersionLabel            = big.NewInt(1 << 3)
+	listPromptVersionsResponseDataItemFieldContent                 = big.NewInt(1 << 4)
+	listPromptVersionsResponseDataItemFieldSystemPrompt            = big.NewInt(1 << 5)
+	listPromptVersionsResponseDataItemFieldChangeNote              = big.NewInt(1 << 6)
+	listPromptVersionsResponseDataItemFieldIsCurrentVersion        = big.NewInt(1 << 7)
+	listPromptVersionsResponseDataItemFieldVariablesSchema         = big.NewInt(1 << 8)
+	listPromptVersionsResponseDataItemFieldCreatedByID             = big.NewInt(1 << 9)
+	listPromptVersionsResponseDataItemFieldCreatedAt               = big.NewInt(1 << 10)
+	listPromptVersionsResponseDataItemFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
+	listPromptVersionsResponseDataItemFieldIsDeployedToProduction  = big.NewInt(1 << 12)
 )
 
 type ListPromptVersionsResponseDataItem struct {
-	ID               string                 `json:"id" url:"id"`
-	PromptID         string                 `json:"promptId" url:"promptId"`
-	VersionNumber    int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel     *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content          string                 `json:"content" url:"content"`
-	SystemPrompt     *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote       *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	VariablesSchema  map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID      *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedAt        time.Time              `json:"createdAt" url:"createdAt"`
+	ID                      string                 `json:"id" url:"id"`
+	PromptID                string                 `json:"promptId" url:"promptId"`
+	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                 `json:"content" url:"content"`
+	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1403,6 +1471,20 @@ func (l *ListPromptVersionsResponseDataItem) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return l.CreatedAt
+}
+
+func (l *ListPromptVersionsResponseDataItem) GetIsDeployedToDevelopment() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.IsDeployedToDevelopment
+}
+
+func (l *ListPromptVersionsResponseDataItem) GetIsDeployedToProduction() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.IsDeployedToProduction
 }
 
 func (l *ListPromptVersionsResponseDataItem) GetExtraProperties() map[string]interface{} {
@@ -1491,6 +1573,20 @@ func (l *ListPromptVersionsResponseDataItem) SetCreatedByID(createdByID *string)
 func (l *ListPromptVersionsResponseDataItem) SetCreatedAt(createdAt time.Time) {
 	l.CreatedAt = createdAt
 	l.require(listPromptVersionsResponseDataItemFieldCreatedAt)
+}
+
+// SetIsDeployedToDevelopment sets the IsDeployedToDevelopment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItem) SetIsDeployedToDevelopment(isDeployedToDevelopment *bool) {
+	l.IsDeployedToDevelopment = isDeployedToDevelopment
+	l.require(listPromptVersionsResponseDataItemFieldIsDeployedToDevelopment)
+}
+
+// SetIsDeployedToProduction sets the IsDeployedToProduction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItem) SetIsDeployedToProduction(isDeployedToProduction *bool) {
+	l.IsDeployedToProduction = isDeployedToProduction
+	l.require(listPromptVersionsResponseDataItemFieldIsDeployedToProduction)
 }
 
 func (l *ListPromptVersionsResponseDataItem) UnmarshalJSON(data []byte) error {
@@ -1714,31 +1810,35 @@ func (r *RollbackPromptResponse) String() string {
 }
 
 var (
-	rollbackPromptResponseDataFieldID               = big.NewInt(1 << 0)
-	rollbackPromptResponseDataFieldPromptID         = big.NewInt(1 << 1)
-	rollbackPromptResponseDataFieldVersionNumber    = big.NewInt(1 << 2)
-	rollbackPromptResponseDataFieldVersionLabel     = big.NewInt(1 << 3)
-	rollbackPromptResponseDataFieldContent          = big.NewInt(1 << 4)
-	rollbackPromptResponseDataFieldSystemPrompt     = big.NewInt(1 << 5)
-	rollbackPromptResponseDataFieldChangeNote       = big.NewInt(1 << 6)
-	rollbackPromptResponseDataFieldIsCurrentVersion = big.NewInt(1 << 7)
-	rollbackPromptResponseDataFieldVariablesSchema  = big.NewInt(1 << 8)
-	rollbackPromptResponseDataFieldCreatedByID      = big.NewInt(1 << 9)
-	rollbackPromptResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	rollbackPromptResponseDataFieldID                      = big.NewInt(1 << 0)
+	rollbackPromptResponseDataFieldPromptID                = big.NewInt(1 << 1)
+	rollbackPromptResponseDataFieldVersionNumber           = big.NewInt(1 << 2)
+	rollbackPromptResponseDataFieldVersionLabel            = big.NewInt(1 << 3)
+	rollbackPromptResponseDataFieldContent                 = big.NewInt(1 << 4)
+	rollbackPromptResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
+	rollbackPromptResponseDataFieldChangeNote              = big.NewInt(1 << 6)
+	rollbackPromptResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
+	rollbackPromptResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
+	rollbackPromptResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
+	rollbackPromptResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
+	rollbackPromptResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
+	rollbackPromptResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
 )
 
 type RollbackPromptResponseData struct {
-	ID               string                 `json:"id" url:"id"`
-	PromptID         string                 `json:"promptId" url:"promptId"`
-	VersionNumber    int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel     *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content          string                 `json:"content" url:"content"`
-	SystemPrompt     *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote       *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	VariablesSchema  map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID      *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedAt        time.Time              `json:"createdAt" url:"createdAt"`
+	ID                      string                 `json:"id" url:"id"`
+	PromptID                string                 `json:"promptId" url:"promptId"`
+	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                 `json:"content" url:"content"`
+	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1822,6 +1922,20 @@ func (r *RollbackPromptResponseData) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return r.CreatedAt
+}
+
+func (r *RollbackPromptResponseData) GetIsDeployedToDevelopment() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.IsDeployedToDevelopment
+}
+
+func (r *RollbackPromptResponseData) GetIsDeployedToProduction() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.IsDeployedToProduction
 }
 
 func (r *RollbackPromptResponseData) GetExtraProperties() map[string]interface{} {
@@ -1910,6 +2024,20 @@ func (r *RollbackPromptResponseData) SetCreatedByID(createdByID *string) {
 func (r *RollbackPromptResponseData) SetCreatedAt(createdAt time.Time) {
 	r.CreatedAt = createdAt
 	r.require(rollbackPromptResponseDataFieldCreatedAt)
+}
+
+// SetIsDeployedToDevelopment sets the IsDeployedToDevelopment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseData) SetIsDeployedToDevelopment(isDeployedToDevelopment *bool) {
+	r.IsDeployedToDevelopment = isDeployedToDevelopment
+	r.require(rollbackPromptResponseDataFieldIsDeployedToDevelopment)
+}
+
+// SetIsDeployedToProduction sets the IsDeployedToProduction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseData) SetIsDeployedToProduction(isDeployedToProduction *bool) {
+	r.IsDeployedToProduction = isDeployedToProduction
+	r.require(rollbackPromptResponseDataFieldIsDeployedToProduction)
 }
 
 func (r *RollbackPromptResponseData) UnmarshalJSON(data []byte) error {
@@ -2039,31 +2167,35 @@ func (u *UpdatePromptVersionResponse) String() string {
 }
 
 var (
-	updatePromptVersionResponseDataFieldID               = big.NewInt(1 << 0)
-	updatePromptVersionResponseDataFieldPromptID         = big.NewInt(1 << 1)
-	updatePromptVersionResponseDataFieldVersionNumber    = big.NewInt(1 << 2)
-	updatePromptVersionResponseDataFieldVersionLabel     = big.NewInt(1 << 3)
-	updatePromptVersionResponseDataFieldContent          = big.NewInt(1 << 4)
-	updatePromptVersionResponseDataFieldSystemPrompt     = big.NewInt(1 << 5)
-	updatePromptVersionResponseDataFieldChangeNote       = big.NewInt(1 << 6)
-	updatePromptVersionResponseDataFieldIsCurrentVersion = big.NewInt(1 << 7)
-	updatePromptVersionResponseDataFieldVariablesSchema  = big.NewInt(1 << 8)
-	updatePromptVersionResponseDataFieldCreatedByID      = big.NewInt(1 << 9)
-	updatePromptVersionResponseDataFieldCreatedAt        = big.NewInt(1 << 10)
+	updatePromptVersionResponseDataFieldID                      = big.NewInt(1 << 0)
+	updatePromptVersionResponseDataFieldPromptID                = big.NewInt(1 << 1)
+	updatePromptVersionResponseDataFieldVersionNumber           = big.NewInt(1 << 2)
+	updatePromptVersionResponseDataFieldVersionLabel            = big.NewInt(1 << 3)
+	updatePromptVersionResponseDataFieldContent                 = big.NewInt(1 << 4)
+	updatePromptVersionResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
+	updatePromptVersionResponseDataFieldChangeNote              = big.NewInt(1 << 6)
+	updatePromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
+	updatePromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
+	updatePromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
+	updatePromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
+	updatePromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
+	updatePromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
 )
 
 type UpdatePromptVersionResponseData struct {
-	ID               string                 `json:"id" url:"id"`
-	PromptID         string                 `json:"promptId" url:"promptId"`
-	VersionNumber    int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel     *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content          string                 `json:"content" url:"content"`
-	SystemPrompt     *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote       *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	VariablesSchema  map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID      *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedAt        time.Time              `json:"createdAt" url:"createdAt"`
+	ID                      string                 `json:"id" url:"id"`
+	PromptID                string                 `json:"promptId" url:"promptId"`
+	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                 `json:"content" url:"content"`
+	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2147,6 +2279,20 @@ func (u *UpdatePromptVersionResponseData) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return u.CreatedAt
+}
+
+func (u *UpdatePromptVersionResponseData) GetIsDeployedToDevelopment() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.IsDeployedToDevelopment
+}
+
+func (u *UpdatePromptVersionResponseData) GetIsDeployedToProduction() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.IsDeployedToProduction
 }
 
 func (u *UpdatePromptVersionResponseData) GetExtraProperties() map[string]interface{} {
@@ -2235,6 +2381,20 @@ func (u *UpdatePromptVersionResponseData) SetCreatedByID(createdByID *string) {
 func (u *UpdatePromptVersionResponseData) SetCreatedAt(createdAt time.Time) {
 	u.CreatedAt = createdAt
 	u.require(updatePromptVersionResponseDataFieldCreatedAt)
+}
+
+// SetIsDeployedToDevelopment sets the IsDeployedToDevelopment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseData) SetIsDeployedToDevelopment(isDeployedToDevelopment *bool) {
+	u.IsDeployedToDevelopment = isDeployedToDevelopment
+	u.require(updatePromptVersionResponseDataFieldIsDeployedToDevelopment)
+}
+
+// SetIsDeployedToProduction sets the IsDeployedToProduction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseData) SetIsDeployedToProduction(isDeployedToProduction *bool) {
+	u.IsDeployedToProduction = isDeployedToProduction
+	u.require(updatePromptVersionResponseDataFieldIsDeployedToProduction)
 }
 
 func (u *UpdatePromptVersionResponseData) UnmarshalJSON(data []byte) error {

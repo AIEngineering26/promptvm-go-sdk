@@ -5286,6 +5286,86 @@ client.PromptVersions.RollbackPrompt(
 </dl>
 </details>
 
+## PromptDeployments
+<details><summary><code>client.PromptDeployments.DeployPromptVersion(PromptID, request) -> *promptvmgosdk.DeployPromptVersionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Points the named environment at an existing published version. Idempotent — redeploying the same version updates deployedAt only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeployPromptVersionRequest{
+        PromptID: "promptId",
+        Environment: promptvmgosdk.DeployPromptVersionRequestEnvironmentDevelopment,
+        VersionID: "versionId",
+    }
+client.PromptDeployments.DeployPromptVersion(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**environment:** `*promptvmgosdk.DeployPromptVersionRequestEnvironment` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Prompt Resolution
 <details><summary><code>client.PromptResolution.ResolvePrompt(PromptID) -> *promptvmgosdk.ResolvePromptResponse</code></summary>
 <dl>
