@@ -109,6 +109,49 @@ func (r *RawClient) CreateOrganization(
 	}, nil
 }
 
+func (r *RawClient) AcceptOrganizationInvitation(
+	ctx context.Context,
+	request *promptvmgosdk.AcceptOrganizationInvitationRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.AcceptOrganizationInvitationResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/organizations/invitations/%v/accept",
+		request.Token,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *promptvmgosdk.AcceptOrganizationInvitationResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.AcceptOrganizationInvitationResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) ListOrganizationWorkspaces(
 	ctx context.Context,
 	request *promptvmgosdk.ListOrganizationWorkspacesRequest,
@@ -188,6 +231,174 @@ func (r *RawClient) ListOrganizationMembers(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
+func (r *RawClient) GetOrganizationPermissions(
+	ctx context.Context,
+	request *promptvmgosdk.GetOrganizationPermissionsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/organizations/%v/permissions",
+		request.OrgID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
+func (r *RawClient) UpdateOrganizationPermissions(
+	ctx context.Context,
+	request *promptvmgosdk.UpdateOrganizationPermissionsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/organizations/%v/permissions",
+		request.OrgID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPut,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
+func (r *RawClient) ListOrganizationRoles(
+	ctx context.Context,
+	request *promptvmgosdk.ListOrganizationRolesRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/organizations/%v/roles",
+		request.OrgID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
+func (r *RawClient) CreateOrganizationRole(
+	ctx context.Context,
+	request *promptvmgosdk.CreateOrganizationRoleRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/organizations/%v/roles",
+		request.OrgID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
 		},
 	)
 	if err != nil {
@@ -449,215 +660,6 @@ func (r *RawClient) ResendOrganizationInvitation(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       nil,
-	}, nil
-}
-
-func (r *RawClient) AcceptOrganizationInvitation(
-	ctx context.Context,
-	request *promptvmgosdk.AcceptOrganizationInvitationRequest,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"http://localhost:3000",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/v1/organizations/invitations/%v/accept",
-		request.Token,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       nil,
-	}, nil
-}
-
-func (r *RawClient) GetOrganizationPermissions(
-	ctx context.Context,
-	request *promptvmgosdk.GetOrganizationPermissionsRequest,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"http://localhost:3000",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/v1/organizations/%v/permissions",
-		request.OrgID,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       nil,
-	}, nil
-}
-
-func (r *RawClient) UpdateOrganizationPermissions(
-	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationPermissionsRequest,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"http://localhost:3000",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/v1/organizations/%v/permissions",
-		request.OrgID,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPut,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       nil,
-	}, nil
-}
-
-func (r *RawClient) ListOrganizationRoles(
-	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationRolesRequest,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"http://localhost:3000",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/v1/organizations/%v/roles",
-		request.OrgID,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       nil,
-	}, nil
-}
-
-func (r *RawClient) CreateOrganizationRole(
-	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationRoleRequest,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"http://localhost:3000",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/v1/organizations/%v/roles",
-		request.OrgID,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
 		},
 	)
 	if err != nil {

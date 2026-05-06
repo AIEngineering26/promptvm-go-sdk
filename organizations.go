@@ -479,6 +479,254 @@ func (r *RevokeOrganizationInvitationRequest) SetInvitationID(invitationID strin
 	r.require(revokeOrganizationInvitationRequestFieldInvitationID)
 }
 
+var (
+	acceptOrganizationInvitationResponseFieldMessage = big.NewInt(1 << 0)
+	acceptOrganizationInvitationResponseFieldData    = big.NewInt(1 << 1)
+)
+
+type AcceptOrganizationInvitationResponse struct {
+	Message *string                                   `json:"message,omitempty" url:"message,omitempty"`
+	Data    *AcceptOrganizationInvitationResponseData `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AcceptOrganizationInvitationResponse) GetMessage() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Message
+}
+
+func (a *AcceptOrganizationInvitationResponse) GetData() *AcceptOrganizationInvitationResponseData {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AcceptOrganizationInvitationResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AcceptOrganizationInvitationResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AcceptOrganizationInvitationResponse) SetMessage(message *string) {
+	a.Message = message
+	a.require(acceptOrganizationInvitationResponseFieldMessage)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AcceptOrganizationInvitationResponse) SetData(data *AcceptOrganizationInvitationResponseData) {
+	a.Data = data
+	a.require(acceptOrganizationInvitationResponseFieldData)
+}
+
+func (a *AcceptOrganizationInvitationResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AcceptOrganizationInvitationResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AcceptOrganizationInvitationResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AcceptOrganizationInvitationResponse) MarshalJSON() ([]byte, error) {
+	type embed AcceptOrganizationInvitationResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AcceptOrganizationInvitationResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	acceptOrganizationInvitationResponseDataFieldOrgID         = big.NewInt(1 << 0)
+	acceptOrganizationInvitationResponseDataFieldRole          = big.NewInt(1 << 1)
+	acceptOrganizationInvitationResponseDataFieldWorkspaceID   = big.NewInt(1 << 2)
+	acceptOrganizationInvitationResponseDataFieldWorkspaceSlug = big.NewInt(1 << 3)
+)
+
+type AcceptOrganizationInvitationResponseData struct {
+	OrgID         *string                                       `json:"orgId,omitempty" url:"orgId,omitempty"`
+	Role          *AcceptOrganizationInvitationResponseDataRole `json:"role,omitempty" url:"role,omitempty"`
+	WorkspaceID   *string                                       `json:"workspaceId,omitempty" url:"workspaceId,omitempty"`
+	WorkspaceSlug *string                                       `json:"workspaceSlug,omitempty" url:"workspaceSlug,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AcceptOrganizationInvitationResponseData) GetOrgID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.OrgID
+}
+
+func (a *AcceptOrganizationInvitationResponseData) GetRole() *AcceptOrganizationInvitationResponseDataRole {
+	if a == nil {
+		return nil
+	}
+	return a.Role
+}
+
+func (a *AcceptOrganizationInvitationResponseData) GetWorkspaceID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.WorkspaceID
+}
+
+func (a *AcceptOrganizationInvitationResponseData) GetWorkspaceSlug() *string {
+	if a == nil {
+		return nil
+	}
+	return a.WorkspaceSlug
+}
+
+func (a *AcceptOrganizationInvitationResponseData) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AcceptOrganizationInvitationResponseData) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AcceptOrganizationInvitationResponseData) SetOrgID(orgID *string) {
+	a.OrgID = orgID
+	a.require(acceptOrganizationInvitationResponseDataFieldOrgID)
+}
+
+// SetRole sets the Role field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AcceptOrganizationInvitationResponseData) SetRole(role *AcceptOrganizationInvitationResponseDataRole) {
+	a.Role = role
+	a.require(acceptOrganizationInvitationResponseDataFieldRole)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AcceptOrganizationInvitationResponseData) SetWorkspaceID(workspaceID *string) {
+	a.WorkspaceID = workspaceID
+	a.require(acceptOrganizationInvitationResponseDataFieldWorkspaceID)
+}
+
+// SetWorkspaceSlug sets the WorkspaceSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AcceptOrganizationInvitationResponseData) SetWorkspaceSlug(workspaceSlug *string) {
+	a.WorkspaceSlug = workspaceSlug
+	a.require(acceptOrganizationInvitationResponseDataFieldWorkspaceSlug)
+}
+
+func (a *AcceptOrganizationInvitationResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler AcceptOrganizationInvitationResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AcceptOrganizationInvitationResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AcceptOrganizationInvitationResponseData) MarshalJSON() ([]byte, error) {
+	type embed AcceptOrganizationInvitationResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AcceptOrganizationInvitationResponseData) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AcceptOrganizationInvitationResponseDataRole string
+
+const (
+	AcceptOrganizationInvitationResponseDataRoleOwner  AcceptOrganizationInvitationResponseDataRole = "owner"
+	AcceptOrganizationInvitationResponseDataRoleAdmin  AcceptOrganizationInvitationResponseDataRole = "admin"
+	AcceptOrganizationInvitationResponseDataRoleMember AcceptOrganizationInvitationResponseDataRole = "member"
+	AcceptOrganizationInvitationResponseDataRoleViewer AcceptOrganizationInvitationResponseDataRole = "viewer"
+)
+
+func NewAcceptOrganizationInvitationResponseDataRoleFromString(s string) (AcceptOrganizationInvitationResponseDataRole, error) {
+	switch s {
+	case "owner":
+		return AcceptOrganizationInvitationResponseDataRoleOwner, nil
+	case "admin":
+		return AcceptOrganizationInvitationResponseDataRoleAdmin, nil
+	case "member":
+		return AcceptOrganizationInvitationResponseDataRoleMember, nil
+	case "viewer":
+		return AcceptOrganizationInvitationResponseDataRoleViewer, nil
+	}
+	var t AcceptOrganizationInvitationResponseDataRole
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AcceptOrganizationInvitationResponseDataRole) Ptr() *AcceptOrganizationInvitationResponseDataRole {
+	return &a
+}
+
 type CreateOrganizationInvitationRequestRole string
 
 const (
@@ -1527,13 +1775,13 @@ func (u UpdateOrganizationMemberRoleRequestRole) Ptr() *UpdateOrganizationMember
 }
 
 var (
-	updateOrganizationPermissionsRequestUpdatesItemFieldCapability = big.NewInt(1 << 0)
+	updateOrganizationPermissionsRequestUpdatesItemFieldPermission = big.NewInt(1 << 0)
 	updateOrganizationPermissionsRequestUpdatesItemFieldRole       = big.NewInt(1 << 1)
 	updateOrganizationPermissionsRequestUpdatesItemFieldEnabled    = big.NewInt(1 << 2)
 )
 
 type UpdateOrganizationPermissionsRequestUpdatesItem struct {
-	Capability string                                              `json:"capability" url:"capability"`
+	Permission string                                              `json:"permission" url:"permission"`
 	Role       UpdateOrganizationPermissionsRequestUpdatesItemRole `json:"role" url:"role"`
 	Enabled    bool                                                `json:"enabled" url:"enabled"`
 
@@ -1544,11 +1792,11 @@ type UpdateOrganizationPermissionsRequestUpdatesItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateOrganizationPermissionsRequestUpdatesItem) GetCapability() string {
+func (u *UpdateOrganizationPermissionsRequestUpdatesItem) GetPermission() string {
 	if u == nil {
 		return ""
 	}
-	return u.Capability
+	return u.Permission
 }
 
 func (u *UpdateOrganizationPermissionsRequestUpdatesItem) GetRole() UpdateOrganizationPermissionsRequestUpdatesItemRole {
@@ -1576,11 +1824,11 @@ func (u *UpdateOrganizationPermissionsRequestUpdatesItem) require(field *big.Int
 	u.explicitFields.Or(u.explicitFields, field)
 }
 
-// SetCapability sets the Capability field and marks it as non-optional;
+// SetPermission sets the Permission field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOrganizationPermissionsRequestUpdatesItem) SetCapability(capability string) {
-	u.Capability = capability
-	u.require(updateOrganizationPermissionsRequestUpdatesItemFieldCapability)
+func (u *UpdateOrganizationPermissionsRequestUpdatesItem) SetPermission(permission string) {
+	u.Permission = permission
+	u.require(updateOrganizationPermissionsRequestUpdatesItemFieldPermission)
 }
 
 // SetRole sets the Role field and marks it as non-optional;

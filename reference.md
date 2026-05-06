@@ -1657,6 +1657,53 @@ client.Organizations.CreateOrganization(
 </dl>
 </details>
 
+<details><summary><code>client.Organizations.AcceptOrganizationInvitation(Token) -> *promptvmgosdk.AcceptOrganizationInvitationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AcceptOrganizationInvitationRequest{
+        Token: "token",
+    }
+client.Organizations.AcceptOrganizationInvitation(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Organizations.ListOrganizationWorkspaces(OrgID) -> *promptvmgosdk.ListOrganizationWorkspacesResponse</code></summary>
 <dl>
 <dd>
@@ -1794,6 +1841,243 @@ client.Organizations.ListOrganizationMembers(
 <dd>
 
 **status:** `*promptvmgosdk.ListOrganizationMembersRequestStatus` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.GetOrganizationPermissions(OrgID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetOrganizationPermissionsRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.GetOrganizationPermissions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.UpdateOrganizationPermissions(OrgID, request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateOrganizationPermissionsRequest{
+        OrgID: "orgId",
+        Updates: []*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+            &promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+                Permission: "permission",
+                Role: promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
+                Enabled: true,
+            },
+        },
+    }
+client.Organizations.UpdateOrganizationPermissions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**updates:** `[]*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.ListOrganizationRoles(OrgID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListOrganizationRolesRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.ListOrganizationRoles(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.CreateOrganizationRole(OrgID, request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateOrganizationRoleRequest{
+        OrgID: "orgId",
+        Name: "name",
+        BaseRole: promptvmgosdk.CreateOrganizationRoleRequestBaseRoleOwner,
+    }
+client.Organizations.CreateOrganizationRole(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**baseRole:** `*promptvmgosdk.CreateOrganizationRoleRequestBaseRole` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**color:** `*string` 
     
 </dd>
 </dl>
@@ -2155,290 +2439,6 @@ client.Organizations.ResendOrganizationInvitation(
 <dd>
 
 **invitationID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organizations.AcceptOrganizationInvitation(Token) -> error</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.AcceptOrganizationInvitationRequest{
-        Token: "token",
-    }
-client.Organizations.AcceptOrganizationInvitation(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**token:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organizations.GetOrganizationPermissions(OrgID) -> error</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.GetOrganizationPermissionsRequest{
-        OrgID: "orgId",
-    }
-client.Organizations.GetOrganizationPermissions(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organizations.UpdateOrganizationPermissions(OrgID, request) -> error</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.UpdateOrganizationPermissionsRequest{
-        OrgID: "orgId",
-        Updates: []*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
-            &promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
-                Capability: "capability",
-                Role: promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
-                Enabled: true,
-            },
-        },
-    }
-client.Organizations.UpdateOrganizationPermissions(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**updates:** `[]*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organizations.ListOrganizationRoles(OrgID) -> error</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.ListOrganizationRolesRequest{
-        OrgID: "orgId",
-    }
-client.Organizations.ListOrganizationRoles(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organizations.CreateOrganizationRole(OrgID, request) -> error</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.CreateOrganizationRoleRequest{
-        OrgID: "orgId",
-        Name: "name",
-        BaseRole: promptvmgosdk.CreateOrganizationRoleRequestBaseRoleOwner,
-    }
-client.Organizations.CreateOrganizationRole(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**baseRole:** `*promptvmgosdk.CreateOrganizationRoleRequestBaseRole` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**color:** `*string` 
     
 </dd>
 </dl>

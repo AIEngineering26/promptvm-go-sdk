@@ -324,9 +324,10 @@ var (
 	createPromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
 	createPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
 	createPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	createPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
-	createPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
-	createPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
+	createPromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
+	createPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
+	createPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
+	createPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
 )
 
 type CreatePromptVersionResponseData struct {
@@ -340,6 +341,7 @@ type CreatePromptVersionResponseData struct {
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
@@ -419,6 +421,13 @@ func (c *CreatePromptVersionResponseData) GetCreatedByID() *string {
 		return nil
 	}
 	return c.CreatedByID
+}
+
+func (c *CreatePromptVersionResponseData) GetCreatedByName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CreatedByName
 }
 
 func (c *CreatePromptVersionResponseData) GetCreatedAt() time.Time {
@@ -521,6 +530,13 @@ func (c *CreatePromptVersionResponseData) SetVariablesSchema(variablesSchema map
 func (c *CreatePromptVersionResponseData) SetCreatedByID(createdByID *string) {
 	c.CreatedByID = createdByID
 	c.require(createPromptVersionResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseData) SetCreatedByName(createdByName *string) {
+	c.CreatedByName = createdByName
+	c.require(createPromptVersionResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -996,9 +1012,10 @@ var (
 	getPromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
 	getPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
 	getPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	getPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
-	getPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
-	getPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
+	getPromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
+	getPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
+	getPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
+	getPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
 )
 
 type GetPromptVersionResponseData struct {
@@ -1012,6 +1029,7 @@ type GetPromptVersionResponseData struct {
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
@@ -1091,6 +1109,13 @@ func (g *GetPromptVersionResponseData) GetCreatedByID() *string {
 		return nil
 	}
 	return g.CreatedByID
+}
+
+func (g *GetPromptVersionResponseData) GetCreatedByName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.CreatedByName
 }
 
 func (g *GetPromptVersionResponseData) GetCreatedAt() time.Time {
@@ -1193,6 +1218,13 @@ func (g *GetPromptVersionResponseData) SetVariablesSchema(variablesSchema map[st
 func (g *GetPromptVersionResponseData) SetCreatedByID(createdByID *string) {
 	g.CreatedByID = createdByID
 	g.require(getPromptVersionResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseData) SetCreatedByName(createdByName *string) {
+	g.CreatedByName = createdByName
+	g.require(getPromptVersionResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -1369,9 +1401,10 @@ var (
 	listPromptVersionsResponseDataItemFieldIsCurrentVersion        = big.NewInt(1 << 7)
 	listPromptVersionsResponseDataItemFieldVariablesSchema         = big.NewInt(1 << 8)
 	listPromptVersionsResponseDataItemFieldCreatedByID             = big.NewInt(1 << 9)
-	listPromptVersionsResponseDataItemFieldCreatedAt               = big.NewInt(1 << 10)
-	listPromptVersionsResponseDataItemFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
-	listPromptVersionsResponseDataItemFieldIsDeployedToProduction  = big.NewInt(1 << 12)
+	listPromptVersionsResponseDataItemFieldCreatedByName           = big.NewInt(1 << 10)
+	listPromptVersionsResponseDataItemFieldCreatedAt               = big.NewInt(1 << 11)
+	listPromptVersionsResponseDataItemFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
+	listPromptVersionsResponseDataItemFieldIsDeployedToProduction  = big.NewInt(1 << 13)
 )
 
 type ListPromptVersionsResponseDataItem struct {
@@ -1385,6 +1418,7 @@ type ListPromptVersionsResponseDataItem struct {
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
@@ -1464,6 +1498,13 @@ func (l *ListPromptVersionsResponseDataItem) GetCreatedByID() *string {
 		return nil
 	}
 	return l.CreatedByID
+}
+
+func (l *ListPromptVersionsResponseDataItem) GetCreatedByName() *string {
+	if l == nil {
+		return nil
+	}
+	return l.CreatedByName
 }
 
 func (l *ListPromptVersionsResponseDataItem) GetCreatedAt() time.Time {
@@ -1566,6 +1607,13 @@ func (l *ListPromptVersionsResponseDataItem) SetVariablesSchema(variablesSchema 
 func (l *ListPromptVersionsResponseDataItem) SetCreatedByID(createdByID *string) {
 	l.CreatedByID = createdByID
 	l.require(listPromptVersionsResponseDataItemFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItem) SetCreatedByName(createdByName *string) {
+	l.CreatedByName = createdByName
+	l.require(listPromptVersionsResponseDataItemFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -1820,9 +1868,10 @@ var (
 	rollbackPromptResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
 	rollbackPromptResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
 	rollbackPromptResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	rollbackPromptResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
-	rollbackPromptResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
-	rollbackPromptResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
+	rollbackPromptResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
+	rollbackPromptResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
+	rollbackPromptResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
+	rollbackPromptResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
 )
 
 type RollbackPromptResponseData struct {
@@ -1836,6 +1885,7 @@ type RollbackPromptResponseData struct {
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
@@ -1915,6 +1965,13 @@ func (r *RollbackPromptResponseData) GetCreatedByID() *string {
 		return nil
 	}
 	return r.CreatedByID
+}
+
+func (r *RollbackPromptResponseData) GetCreatedByName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.CreatedByName
 }
 
 func (r *RollbackPromptResponseData) GetCreatedAt() time.Time {
@@ -2017,6 +2074,13 @@ func (r *RollbackPromptResponseData) SetVariablesSchema(variablesSchema map[stri
 func (r *RollbackPromptResponseData) SetCreatedByID(createdByID *string) {
 	r.CreatedByID = createdByID
 	r.require(rollbackPromptResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseData) SetCreatedByName(createdByName *string) {
+	r.CreatedByName = createdByName
+	r.require(rollbackPromptResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -2177,9 +2241,10 @@ var (
 	updatePromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
 	updatePromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
 	updatePromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	updatePromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 10)
-	updatePromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 11)
-	updatePromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 12)
+	updatePromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
+	updatePromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
+	updatePromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
+	updatePromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
 )
 
 type UpdatePromptVersionResponseData struct {
@@ -2193,6 +2258,7 @@ type UpdatePromptVersionResponseData struct {
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
@@ -2272,6 +2338,13 @@ func (u *UpdatePromptVersionResponseData) GetCreatedByID() *string {
 		return nil
 	}
 	return u.CreatedByID
+}
+
+func (u *UpdatePromptVersionResponseData) GetCreatedByName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.CreatedByName
 }
 
 func (u *UpdatePromptVersionResponseData) GetCreatedAt() time.Time {
@@ -2374,6 +2447,13 @@ func (u *UpdatePromptVersionResponseData) SetVariablesSchema(variablesSchema map
 func (u *UpdatePromptVersionResponseData) SetCreatedByID(createdByID *string) {
 	u.CreatedByID = createdByID
 	u.require(updatePromptVersionResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseData) SetCreatedByName(createdByName *string) {
+	u.CreatedByName = createdByName
+	u.require(updatePromptVersionResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;

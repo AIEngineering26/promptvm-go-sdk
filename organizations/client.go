@@ -62,6 +62,22 @@ func (c *Client) CreateOrganization(
 	return nil
 }
 
+func (c *Client) AcceptOrganizationInvitation(
+	ctx context.Context,
+	request *promptvmgosdk.AcceptOrganizationInvitationRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.AcceptOrganizationInvitationResponse, error) {
+	response, err := c.WithRawResponse.AcceptOrganizationInvitation(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns all workspaces in the org visible to the caller. Org owners and admins see every workspace; regular members see workspaces they own, are a member of, or that have public/internal visibility.
 func (c *Client) ListOrganizationWorkspaces(
 	ctx context.Context,
@@ -85,6 +101,70 @@ func (c *Client) ListOrganizationMembers(
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ListOrganizationMembers(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) GetOrganizationPermissions(
+	ctx context.Context,
+	request *promptvmgosdk.GetOrganizationPermissionsRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.GetOrganizationPermissions(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) UpdateOrganizationPermissions(
+	ctx context.Context,
+	request *promptvmgosdk.UpdateOrganizationPermissionsRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.UpdateOrganizationPermissions(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) ListOrganizationRoles(
+	ctx context.Context,
+	request *promptvmgosdk.ListOrganizationRolesRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.ListOrganizationRoles(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) CreateOrganizationRole(
+	ctx context.Context,
+	request *promptvmgosdk.CreateOrganizationRoleRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.CreateOrganizationRole(
 		ctx,
 		request,
 		opts...,
@@ -181,86 +261,6 @@ func (c *Client) ResendOrganizationInvitation(
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ResendOrganizationInvitation(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) AcceptOrganizationInvitation(
-	ctx context.Context,
-	request *promptvmgosdk.AcceptOrganizationInvitationRequest,
-	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.AcceptOrganizationInvitation(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) GetOrganizationPermissions(
-	ctx context.Context,
-	request *promptvmgosdk.GetOrganizationPermissionsRequest,
-	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.GetOrganizationPermissions(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) UpdateOrganizationPermissions(
-	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationPermissionsRequest,
-	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.UpdateOrganizationPermissions(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) ListOrganizationRoles(
-	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationRolesRequest,
-	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.ListOrganizationRoles(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Client) CreateOrganizationRole(
-	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationRoleRequest,
-	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.CreateOrganizationRole(
 		ctx,
 		request,
 		opts...,

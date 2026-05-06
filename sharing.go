@@ -317,10 +317,11 @@ var (
 	accessSharedPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
 	accessSharedPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
 	accessSharedPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	accessSharedPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
-	accessSharedPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
-	accessSharedPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
-	accessSharedPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
+	accessSharedPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
+	accessSharedPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
+	accessSharedPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
+	accessSharedPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
+	accessSharedPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
 )
 
 type AccessSharedPromptResponseData struct {
@@ -336,6 +337,7 @@ type AccessSharedPromptResponseData struct {
 	DirectoryID        *string                                       `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID *string                                       `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	CreatedByID        string                                        `json:"createdById" url:"createdById"`
+	CreatedByName      *string                                       `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt          time.Time                                     `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                                     `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *AccessSharedPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
@@ -430,6 +432,13 @@ func (a *AccessSharedPromptResponseData) GetCreatedByID() string {
 		return ""
 	}
 	return a.CreatedByID
+}
+
+func (a *AccessSharedPromptResponseData) GetCreatedByName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.CreatedByName
 }
 
 func (a *AccessSharedPromptResponseData) GetCreatedAt() time.Time {
@@ -553,6 +562,13 @@ func (a *AccessSharedPromptResponseData) SetForkedFromPromptID(forkedFromPromptI
 func (a *AccessSharedPromptResponseData) SetCreatedByID(createdByID string) {
 	a.CreatedByID = createdByID
 	a.require(accessSharedPromptResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseData) SetCreatedByName(createdByName *string) {
+	a.CreatedByName = createdByName
+	a.require(accessSharedPromptResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;

@@ -372,10 +372,11 @@ var (
 	createPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
 	createPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
 	createPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	createPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
-	createPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
-	createPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
-	createPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
+	createPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
+	createPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
+	createPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
+	createPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
+	createPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
 )
 
 type CreatePromptResponseData struct {
@@ -391,6 +392,7 @@ type CreatePromptResponseData struct {
 	DirectoryID        *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID *string                                 `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	CreatedByID        string                                  `json:"createdById" url:"createdById"`
+	CreatedByName      *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt          time.Time                               `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                               `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *CreatePromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
@@ -485,6 +487,13 @@ func (c *CreatePromptResponseData) GetCreatedByID() string {
 		return ""
 	}
 	return c.CreatedByID
+}
+
+func (c *CreatePromptResponseData) GetCreatedByName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CreatedByName
 }
 
 func (c *CreatePromptResponseData) GetCreatedAt() time.Time {
@@ -608,6 +617,13 @@ func (c *CreatePromptResponseData) SetForkedFromPromptID(forkedFromPromptID *str
 func (c *CreatePromptResponseData) SetCreatedByID(createdByID string) {
 	c.CreatedByID = createdByID
 	c.require(createPromptResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptResponseData) SetCreatedByName(createdByName *string) {
+	c.CreatedByName = createdByName
+	c.require(createPromptResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -1774,10 +1790,11 @@ var (
 	getPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
 	getPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
 	getPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	getPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
-	getPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
-	getPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
-	getPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
+	getPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
+	getPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
+	getPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
+	getPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
+	getPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
 )
 
 type GetPromptResponseData struct {
@@ -1793,6 +1810,7 @@ type GetPromptResponseData struct {
 	DirectoryID        *string                              `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID *string                              `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	CreatedByID        string                               `json:"createdById" url:"createdById"`
+	CreatedByName      *string                              `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt          time.Time                            `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                            `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *GetPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
@@ -1887,6 +1905,13 @@ func (g *GetPromptResponseData) GetCreatedByID() string {
 		return ""
 	}
 	return g.CreatedByID
+}
+
+func (g *GetPromptResponseData) GetCreatedByName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.CreatedByName
 }
 
 func (g *GetPromptResponseData) GetCreatedAt() time.Time {
@@ -2010,6 +2035,13 @@ func (g *GetPromptResponseData) SetForkedFromPromptID(forkedFromPromptID *string
 func (g *GetPromptResponseData) SetCreatedByID(createdByID string) {
 	g.CreatedByID = createdByID
 	g.require(getPromptResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptResponseData) SetCreatedByName(createdByName *string) {
+	g.CreatedByName = createdByName
+	g.require(getPromptResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -3151,33 +3183,37 @@ func (l *ListPromptsResponse) String() string {
 }
 
 var (
-	listPromptsResponseDataItemFieldID          = big.NewInt(1 << 0)
-	listPromptsResponseDataItemFieldName        = big.NewInt(1 << 1)
-	listPromptsResponseDataItemFieldSlug        = big.NewInt(1 << 2)
-	listPromptsResponseDataItemFieldDescription = big.NewInt(1 << 3)
-	listPromptsResponseDataItemFieldStatus      = big.NewInt(1 << 4)
-	listPromptsResponseDataItemFieldKind        = big.NewInt(1 << 5)
-	listPromptsResponseDataItemFieldTags        = big.NewInt(1 << 6)
-	listPromptsResponseDataItemFieldIsPublic    = big.NewInt(1 << 7)
-	listPromptsResponseDataItemFieldWorkspaceID = big.NewInt(1 << 8)
-	listPromptsResponseDataItemFieldDirectoryID = big.NewInt(1 << 9)
-	listPromptsResponseDataItemFieldCreatedAt   = big.NewInt(1 << 10)
-	listPromptsResponseDataItemFieldUpdatedAt   = big.NewInt(1 << 11)
+	listPromptsResponseDataItemFieldID            = big.NewInt(1 << 0)
+	listPromptsResponseDataItemFieldName          = big.NewInt(1 << 1)
+	listPromptsResponseDataItemFieldSlug          = big.NewInt(1 << 2)
+	listPromptsResponseDataItemFieldDescription   = big.NewInt(1 << 3)
+	listPromptsResponseDataItemFieldStatus        = big.NewInt(1 << 4)
+	listPromptsResponseDataItemFieldKind          = big.NewInt(1 << 5)
+	listPromptsResponseDataItemFieldTags          = big.NewInt(1 << 6)
+	listPromptsResponseDataItemFieldIsPublic      = big.NewInt(1 << 7)
+	listPromptsResponseDataItemFieldWorkspaceID   = big.NewInt(1 << 8)
+	listPromptsResponseDataItemFieldDirectoryID   = big.NewInt(1 << 9)
+	listPromptsResponseDataItemFieldCreatedByID   = big.NewInt(1 << 10)
+	listPromptsResponseDataItemFieldCreatedByName = big.NewInt(1 << 11)
+	listPromptsResponseDataItemFieldCreatedAt     = big.NewInt(1 << 12)
+	listPromptsResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 13)
 )
 
 type ListPromptsResponseDataItem struct {
-	ID          string                            `json:"id" url:"id"`
-	Name        string                            `json:"name" url:"name"`
-	Slug        string                            `json:"slug" url:"slug"`
-	Description *string                           `json:"description,omitempty" url:"description,omitempty"`
-	Status      ListPromptsResponseDataItemStatus `json:"status" url:"status"`
-	Kind        ListPromptsResponseDataItemKind   `json:"kind" url:"kind"`
-	Tags        []string                          `json:"tags" url:"tags"`
-	IsPublic    bool                              `json:"isPublic" url:"isPublic"`
-	WorkspaceID string                            `json:"workspaceId" url:"workspaceId"`
-	DirectoryID *string                           `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	CreatedAt   time.Time                         `json:"createdAt" url:"createdAt"`
-	UpdatedAt   time.Time                         `json:"updatedAt" url:"updatedAt"`
+	ID            string                            `json:"id" url:"id"`
+	Name          string                            `json:"name" url:"name"`
+	Slug          string                            `json:"slug" url:"slug"`
+	Description   *string                           `json:"description,omitempty" url:"description,omitempty"`
+	Status        ListPromptsResponseDataItemStatus `json:"status" url:"status"`
+	Kind          ListPromptsResponseDataItemKind   `json:"kind" url:"kind"`
+	Tags          []string                          `json:"tags" url:"tags"`
+	IsPublic      bool                              `json:"isPublic" url:"isPublic"`
+	WorkspaceID   string                            `json:"workspaceId" url:"workspaceId"`
+	DirectoryID   *string                           `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	CreatedByID   *string                           `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName *string                           `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt     time.Time                         `json:"createdAt" url:"createdAt"`
+	UpdatedAt     time.Time                         `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3254,6 +3290,20 @@ func (l *ListPromptsResponseDataItem) GetDirectoryID() *string {
 		return nil
 	}
 	return l.DirectoryID
+}
+
+func (l *ListPromptsResponseDataItem) GetCreatedByID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.CreatedByID
+}
+
+func (l *ListPromptsResponseDataItem) GetCreatedByName() *string {
+	if l == nil {
+		return nil
+	}
+	return l.CreatedByName
 }
 
 func (l *ListPromptsResponseDataItem) GetCreatedAt() time.Time {
@@ -3349,6 +3399,20 @@ func (l *ListPromptsResponseDataItem) SetWorkspaceID(workspaceID string) {
 func (l *ListPromptsResponseDataItem) SetDirectoryID(directoryID *string) {
 	l.DirectoryID = directoryID
 	l.require(listPromptsResponseDataItemFieldDirectoryID)
+}
+
+// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptsResponseDataItem) SetCreatedByID(createdByID *string) {
+	l.CreatedByID = createdByID
+	l.require(listPromptsResponseDataItemFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptsResponseDataItem) SetCreatedByName(createdByName *string) {
+	l.CreatedByName = createdByName
+	l.require(listPromptsResponseDataItemFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -3680,10 +3744,11 @@ var (
 	updatePromptResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
 	updatePromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
 	updatePromptResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	updatePromptResponseDataFieldCreatedAt          = big.NewInt(1 << 12)
-	updatePromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 13)
-	updatePromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 14)
-	updatePromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 15)
+	updatePromptResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
+	updatePromptResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
+	updatePromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
+	updatePromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
+	updatePromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
 )
 
 type UpdatePromptResponseData struct {
@@ -3699,6 +3764,7 @@ type UpdatePromptResponseData struct {
 	DirectoryID        *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID *string                                 `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	CreatedByID        string                                  `json:"createdById" url:"createdById"`
+	CreatedByName      *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt          time.Time                               `json:"createdAt" url:"createdAt"`
 	UpdatedAt          time.Time                               `json:"updatedAt" url:"updatedAt"`
 	CurrentVersion     *UpdatePromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
@@ -3793,6 +3859,13 @@ func (u *UpdatePromptResponseData) GetCreatedByID() string {
 		return ""
 	}
 	return u.CreatedByID
+}
+
+func (u *UpdatePromptResponseData) GetCreatedByName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.CreatedByName
 }
 
 func (u *UpdatePromptResponseData) GetCreatedAt() time.Time {
@@ -3916,6 +3989,13 @@ func (u *UpdatePromptResponseData) SetForkedFromPromptID(forkedFromPromptID *str
 func (u *UpdatePromptResponseData) SetCreatedByID(createdByID string) {
 	u.CreatedByID = createdByID
 	u.require(updatePromptResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptResponseData) SetCreatedByName(createdByName *string) {
+	u.CreatedByName = createdByName
+	u.require(updatePromptResponseDataFieldCreatedByName)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;

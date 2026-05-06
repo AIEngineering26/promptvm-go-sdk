@@ -110,6 +110,32 @@ func TestOrganizationsCreateOrganizationWithWireMock(
 	VerifyRequestCount(t, "TestOrganizationsCreateOrganizationWithWireMock", "POST", "/api/v1/organizations/", nil, 1)
 }
 
+func TestOrganizationsAcceptOrganizationInvitationWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.AcceptOrganizationInvitationRequest{
+		Token: "token",
+	}
+	_, invocationErr := client.Organizations.AcceptOrganizationInvitation(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsAcceptOrganizationInvitationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsAcceptOrganizationInvitationWithWireMock", "POST", "/api/v1/organizations/invitations/token/accept", nil, 1)
+}
+
 func TestOrganizationsListOrganizationWorkspacesWithWireMock(
 	t *testing.T,
 ) {
@@ -160,6 +186,119 @@ func TestOrganizationsListOrganizationMembersWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestOrganizationsListOrganizationMembersWithWireMock", "GET", "/api/v1/organizations/orgId/members", nil, 1)
+}
+
+func TestOrganizationsGetOrganizationPermissionsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetOrganizationPermissionsRequest{
+		OrgID: "orgId",
+	}
+	invocationErr := client.Organizations.GetOrganizationPermissions(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsGetOrganizationPermissionsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsGetOrganizationPermissionsWithWireMock", "GET", "/api/v1/organizations/orgId/permissions", nil, 1)
+}
+
+func TestOrganizationsUpdateOrganizationPermissionsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.UpdateOrganizationPermissionsRequest{
+		OrgID: "orgId",
+		Updates: []*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+			&promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+				Permission: "permission",
+				Role:       promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
+				Enabled:    true,
+			},
+		},
+	}
+	invocationErr := client.Organizations.UpdateOrganizationPermissions(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsUpdateOrganizationPermissionsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsUpdateOrganizationPermissionsWithWireMock", "PUT", "/api/v1/organizations/orgId/permissions", nil, 1)
+}
+
+func TestOrganizationsListOrganizationRolesWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ListOrganizationRolesRequest{
+		OrgID: "orgId",
+	}
+	invocationErr := client.Organizations.ListOrganizationRoles(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsListOrganizationRolesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsListOrganizationRolesWithWireMock", "GET", "/api/v1/organizations/orgId/roles", nil, 1)
+}
+
+func TestOrganizationsCreateOrganizationRoleWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.CreateOrganizationRoleRequest{
+		OrgID:    "orgId",
+		Name:     "name",
+		BaseRole: promptvmgosdk.CreateOrganizationRoleRequestBaseRoleOwner,
+	}
+	invocationErr := client.Organizations.CreateOrganizationRole(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsCreateOrganizationRoleWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsCreateOrganizationRoleWithWireMock", "POST", "/api/v1/organizations/orgId/roles", nil, 1)
 }
 
 func TestOrganizationsRemoveOrganizationMemberWithWireMock(
@@ -323,145 +462,6 @@ func TestOrganizationsResendOrganizationInvitationWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestOrganizationsResendOrganizationInvitationWithWireMock", "POST", "/api/v1/organizations/orgId/invitations/invitationId/resend", nil, 1)
-}
-
-func TestOrganizationsAcceptOrganizationInvitationWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.AcceptOrganizationInvitationRequest{
-		Token: "token",
-	}
-	invocationErr := client.Organizations.AcceptOrganizationInvitation(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOrganizationsAcceptOrganizationInvitationWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOrganizationsAcceptOrganizationInvitationWithWireMock", "POST", "/api/v1/organizations/invitations/token/accept", nil, 1)
-}
-
-func TestOrganizationsGetOrganizationPermissionsWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.GetOrganizationPermissionsRequest{
-		OrgID: "orgId",
-	}
-	invocationErr := client.Organizations.GetOrganizationPermissions(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOrganizationsGetOrganizationPermissionsWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOrganizationsGetOrganizationPermissionsWithWireMock", "GET", "/api/v1/organizations/orgId/permissions", nil, 1)
-}
-
-func TestOrganizationsUpdateOrganizationPermissionsWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.UpdateOrganizationPermissionsRequest{
-		OrgID: "orgId",
-		Updates: []*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
-			&promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
-				Capability: "capability",
-				Role:       promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
-				Enabled:    true,
-			},
-		},
-	}
-	invocationErr := client.Organizations.UpdateOrganizationPermissions(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOrganizationsUpdateOrganizationPermissionsWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOrganizationsUpdateOrganizationPermissionsWithWireMock", "PUT", "/api/v1/organizations/orgId/permissions", nil, 1)
-}
-
-func TestOrganizationsListOrganizationRolesWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.ListOrganizationRolesRequest{
-		OrgID: "orgId",
-	}
-	invocationErr := client.Organizations.ListOrganizationRoles(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOrganizationsListOrganizationRolesWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOrganizationsListOrganizationRolesWithWireMock", "GET", "/api/v1/organizations/orgId/roles", nil, 1)
-}
-
-func TestOrganizationsCreateOrganizationRoleWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.CreateOrganizationRoleRequest{
-		OrgID:    "orgId",
-		Name:     "name",
-		BaseRole: promptvmgosdk.CreateOrganizationRoleRequestBaseRoleOwner,
-	}
-	invocationErr := client.Organizations.CreateOrganizationRole(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOrganizationsCreateOrganizationRoleWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOrganizationsCreateOrganizationRoleWithWireMock", "POST", "/api/v1/organizations/orgId/roles", nil, 1)
 }
 
 func TestOrganizationsDeleteOrganizationRoleWithWireMock(
