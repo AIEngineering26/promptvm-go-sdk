@@ -103,7 +103,6 @@ func TestAPIKeysCreateAPIKeyWithWireMock(
 			promptvmgosdk.CreateAPIKeyRequestScopesItemRead,
 			promptvmgosdk.CreateAPIKeyRequestScopesItemWrite,
 		},
-		Environment: promptvmgosdk.CreateAPIKeyRequestEnvironmentLive,
 	}
 	_, invocationErr := client.APIKeys.CreateAPIKey(
 		context.TODO(),

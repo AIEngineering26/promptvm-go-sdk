@@ -11,10 +11,9 @@ import (
 )
 
 var (
-	createAPIKeyRequestFieldName        = big.NewInt(1 << 0)
-	createAPIKeyRequestFieldScopes      = big.NewInt(1 << 1)
-	createAPIKeyRequestFieldEnvironment = big.NewInt(1 << 2)
-	createAPIKeyRequestFieldExpiresAt   = big.NewInt(1 << 3)
+	createAPIKeyRequestFieldName      = big.NewInt(1 << 0)
+	createAPIKeyRequestFieldScopes    = big.NewInt(1 << 1)
+	createAPIKeyRequestFieldExpiresAt = big.NewInt(1 << 2)
 )
 
 type CreateAPIKeyRequest struct {
@@ -22,8 +21,6 @@ type CreateAPIKeyRequest struct {
 	Name string `json:"name" url:"-"`
 	// Permission scopes for the API key. Requires Pro or Enterprise tier.
 	Scopes []CreateAPIKeyRequestScopesItem `json:"scopes" url:"-"`
-	// Environment for the API key (live or test)
-	Environment CreateAPIKeyRequestEnvironment `json:"environment" url:"-"`
 	// Optional expiration date. If set, the key becomes invalid after this time.
 	ExpiresAt *time.Time `json:"expiresAt,omitempty" url:"-"`
 
@@ -50,13 +47,6 @@ func (c *CreateAPIKeyRequest) SetName(name string) {
 func (c *CreateAPIKeyRequest) SetScopes(scopes []CreateAPIKeyRequestScopesItem) {
 	c.Scopes = scopes
 	c.require(createAPIKeyRequestFieldScopes)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateAPIKeyRequest) SetEnvironment(environment CreateAPIKeyRequestEnvironment) {
-	c.Environment = environment
-	c.require(createAPIKeyRequestFieldEnvironment)
 }
 
 // SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
@@ -152,10 +142,9 @@ func (g *GetAPIKeyUsageRequest) SetPeriod(period *GetAPIKeyUsageRequestPeriod) {
 }
 
 var (
-	listAPIKeysRequestFieldCursor      = big.NewInt(1 << 0)
-	listAPIKeysRequestFieldLimit       = big.NewInt(1 << 1)
-	listAPIKeysRequestFieldStatus      = big.NewInt(1 << 2)
-	listAPIKeysRequestFieldEnvironment = big.NewInt(1 << 3)
+	listAPIKeysRequestFieldCursor = big.NewInt(1 << 0)
+	listAPIKeysRequestFieldLimit  = big.NewInt(1 << 1)
+	listAPIKeysRequestFieldStatus = big.NewInt(1 << 2)
 )
 
 type ListAPIKeysRequest struct {
@@ -165,8 +154,6 @@ type ListAPIKeysRequest struct {
 	Limit *int `json:"-" url:"limit,omitempty"`
 	// Filter by API key status
 	Status *ListAPIKeysRequestStatus `json:"-" url:"status,omitempty"`
-	// Filter by environment
-	Environment *ListAPIKeysRequestEnvironment `json:"-" url:"environment,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -198,13 +185,6 @@ func (l *ListAPIKeysRequest) SetLimit(limit *int) {
 func (l *ListAPIKeysRequest) SetStatus(status *ListAPIKeysRequestStatus) {
 	l.Status = status
 	l.require(listAPIKeysRequestFieldStatus)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAPIKeysRequest) SetEnvironment(environment *ListAPIKeysRequestEnvironment) {
-	l.Environment = environment
-	l.require(listAPIKeysRequestFieldEnvironment)
 }
 
 var (
@@ -279,29 +259,6 @@ func (r *RotateAPIKeyRequest) SetGracePeriodHours(gracePeriodHours *int) {
 	r.require(rotateAPIKeyRequestFieldGracePeriodHours)
 }
 
-// Environment for the API key (live or test)
-type CreateAPIKeyRequestEnvironment string
-
-const (
-	CreateAPIKeyRequestEnvironmentLive CreateAPIKeyRequestEnvironment = "live"
-	CreateAPIKeyRequestEnvironmentTest CreateAPIKeyRequestEnvironment = "test"
-)
-
-func NewCreateAPIKeyRequestEnvironmentFromString(s string) (CreateAPIKeyRequestEnvironment, error) {
-	switch s {
-	case "live":
-		return CreateAPIKeyRequestEnvironmentLive, nil
-	case "test":
-		return CreateAPIKeyRequestEnvironmentTest, nil
-	}
-	var t CreateAPIKeyRequestEnvironment
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (c CreateAPIKeyRequestEnvironment) Ptr() *CreateAPIKeyRequestEnvironment {
-	return &c
-}
-
 // Permission scope for the API key
 type CreateAPIKeyRequestScopesItem string
 
@@ -333,14 +290,13 @@ func (c CreateAPIKeyRequestScopesItem) Ptr() *CreateAPIKeyRequestScopesItem {
 
 // API key created successfully
 var (
-	createAPIKeyResponseFieldID          = big.NewInt(1 << 0)
-	createAPIKeyResponseFieldPublicKey   = big.NewInt(1 << 1)
-	createAPIKeyResponseFieldSecretKey   = big.NewInt(1 << 2)
-	createAPIKeyResponseFieldKeyName     = big.NewInt(1 << 3)
-	createAPIKeyResponseFieldScopes      = big.NewInt(1 << 4)
-	createAPIKeyResponseFieldEnvironment = big.NewInt(1 << 5)
-	createAPIKeyResponseFieldCreatedAt   = big.NewInt(1 << 6)
-	createAPIKeyResponseFieldWarning     = big.NewInt(1 << 7)
+	createAPIKeyResponseFieldID        = big.NewInt(1 << 0)
+	createAPIKeyResponseFieldPublicKey = big.NewInt(1 << 1)
+	createAPIKeyResponseFieldSecretKey = big.NewInt(1 << 2)
+	createAPIKeyResponseFieldKeyName   = big.NewInt(1 << 3)
+	createAPIKeyResponseFieldScopes    = big.NewInt(1 << 4)
+	createAPIKeyResponseFieldCreatedAt = big.NewInt(1 << 5)
+	createAPIKeyResponseFieldWarning   = big.NewInt(1 << 6)
 )
 
 type CreateAPIKeyResponse struct {
@@ -354,8 +310,6 @@ type CreateAPIKeyResponse struct {
 	KeyName string `json:"keyName" url:"keyName"`
 	// Permission scopes assigned to this API key
 	Scopes []CreateAPIKeyResponseScopesItem `json:"scopes" url:"scopes"`
-	// Environment for which the API key is valid
-	Environment CreateAPIKeyResponseEnvironment `json:"environment" url:"environment"`
 	// When the API key was created
 	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
 	// Warning message about storing the secret key
@@ -401,13 +355,6 @@ func (c *CreateAPIKeyResponse) GetScopes() []CreateAPIKeyResponseScopesItem {
 		return nil
 	}
 	return c.Scopes
-}
-
-func (c *CreateAPIKeyResponse) GetEnvironment() CreateAPIKeyResponseEnvironment {
-	if c == nil {
-		return ""
-	}
-	return c.Environment
 }
 
 func (c *CreateAPIKeyResponse) GetCreatedAt() time.Time {
@@ -470,13 +417,6 @@ func (c *CreateAPIKeyResponse) SetScopes(scopes []CreateAPIKeyResponseScopesItem
 	c.require(createAPIKeyResponseFieldScopes)
 }
 
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateAPIKeyResponse) SetEnvironment(environment CreateAPIKeyResponseEnvironment) {
-	c.Environment = environment
-	c.require(createAPIKeyResponseFieldEnvironment)
-}
-
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateAPIKeyResponse) SetCreatedAt(createdAt time.Time) {
@@ -536,29 +476,6 @@ func (c *CreateAPIKeyResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
-}
-
-// Environment for which the API key is valid
-type CreateAPIKeyResponseEnvironment string
-
-const (
-	CreateAPIKeyResponseEnvironmentLive CreateAPIKeyResponseEnvironment = "live"
-	CreateAPIKeyResponseEnvironmentTest CreateAPIKeyResponseEnvironment = "test"
-)
-
-func NewCreateAPIKeyResponseEnvironmentFromString(s string) (CreateAPIKeyResponseEnvironment, error) {
-	switch s {
-	case "live":
-		return CreateAPIKeyResponseEnvironmentLive, nil
-	case "test":
-		return CreateAPIKeyResponseEnvironmentTest, nil
-	}
-	var t CreateAPIKeyResponseEnvironment
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (c CreateAPIKeyResponseEnvironment) Ptr() *CreateAPIKeyResponseEnvironment {
-	return &c
 }
 
 // Permission scope for the API key
@@ -675,13 +592,12 @@ var (
 	getAPIKeyResponseDataFieldKeyName       = big.NewInt(1 << 2)
 	getAPIKeyResponseDataFieldScopes        = big.NewInt(1 << 3)
 	getAPIKeyResponseDataFieldStatus        = big.NewInt(1 << 4)
-	getAPIKeyResponseDataFieldEnvironment   = big.NewInt(1 << 5)
-	getAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 6)
-	getAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 7)
-	getAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 8)
-	getAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 9)
-	getAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 10)
-	getAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 11)
+	getAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 5)
+	getAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 6)
+	getAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 7)
+	getAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 8)
+	getAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 9)
+	getAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 10)
 )
 
 type GetAPIKeyResponseData struct {
@@ -695,8 +611,6 @@ type GetAPIKeyResponseData struct {
 	Scopes []GetAPIKeyResponseDataScopesItem `json:"scopes" url:"scopes"`
 	// Current status of the API key
 	Status GetAPIKeyResponseDataStatus `json:"status" url:"status"`
-	// Environment for which the API key is valid
-	Environment GetAPIKeyResponseDataEnvironment `json:"environment" url:"environment"`
 	// ID of the user who owns this API key
 	UserID string `json:"userId" url:"userId"`
 	// When the API key was created
@@ -750,13 +664,6 @@ func (g *GetAPIKeyResponseData) GetStatus() GetAPIKeyResponseDataStatus {
 		return ""
 	}
 	return g.Status
-}
-
-func (g *GetAPIKeyResponseData) GetEnvironment() GetAPIKeyResponseDataEnvironment {
-	if g == nil {
-		return ""
-	}
-	return g.Environment
 }
 
 func (g *GetAPIKeyResponseData) GetUserID() string {
@@ -845,13 +752,6 @@ func (g *GetAPIKeyResponseData) SetScopes(scopes []GetAPIKeyResponseDataScopesIt
 func (g *GetAPIKeyResponseData) SetStatus(status GetAPIKeyResponseDataStatus) {
 	g.Status = status
 	g.require(getAPIKeyResponseDataFieldStatus)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAPIKeyResponseData) SetEnvironment(environment GetAPIKeyResponseDataEnvironment) {
-	g.Environment = environment
-	g.require(getAPIKeyResponseDataFieldEnvironment)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
@@ -949,29 +849,6 @@ func (g *GetAPIKeyResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
-}
-
-// Environment for which the API key is valid
-type GetAPIKeyResponseDataEnvironment string
-
-const (
-	GetAPIKeyResponseDataEnvironmentLive GetAPIKeyResponseDataEnvironment = "live"
-	GetAPIKeyResponseDataEnvironmentTest GetAPIKeyResponseDataEnvironment = "test"
-)
-
-func NewGetAPIKeyResponseDataEnvironmentFromString(s string) (GetAPIKeyResponseDataEnvironment, error) {
-	switch s {
-	case "live":
-		return GetAPIKeyResponseDataEnvironmentLive, nil
-	case "test":
-		return GetAPIKeyResponseDataEnvironmentTest, nil
-	}
-	var t GetAPIKeyResponseDataEnvironment
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (g GetAPIKeyResponseDataEnvironment) Ptr() *GetAPIKeyResponseDataEnvironment {
-	return &g
 }
 
 // Permission scope for the API key
@@ -1522,28 +1399,6 @@ func (g GetAPIKeyUsageResponsePeriodStatsItemPeriod) Ptr() *GetAPIKeyUsageRespon
 	return &g
 }
 
-type ListAPIKeysRequestEnvironment string
-
-const (
-	ListAPIKeysRequestEnvironmentLive ListAPIKeysRequestEnvironment = "live"
-	ListAPIKeysRequestEnvironmentTest ListAPIKeysRequestEnvironment = "test"
-)
-
-func NewListAPIKeysRequestEnvironmentFromString(s string) (ListAPIKeysRequestEnvironment, error) {
-	switch s {
-	case "live":
-		return ListAPIKeysRequestEnvironmentLive, nil
-	case "test":
-		return ListAPIKeysRequestEnvironmentTest, nil
-	}
-	var t ListAPIKeysRequestEnvironment
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (l ListAPIKeysRequestEnvironment) Ptr() *ListAPIKeysRequestEnvironment {
-	return &l
-}
-
 type ListAPIKeysRequestStatus string
 
 const (
@@ -1668,11 +1523,10 @@ var (
 	listAPIKeysResponseDataItemFieldPublicKey          = big.NewInt(1 << 2)
 	listAPIKeysResponseDataItemFieldScopes             = big.NewInt(1 << 3)
 	listAPIKeysResponseDataItemFieldStatus             = big.NewInt(1 << 4)
-	listAPIKeysResponseDataItemFieldEnvironment        = big.NewInt(1 << 5)
-	listAPIKeysResponseDataItemFieldCreatedAt          = big.NewInt(1 << 6)
-	listAPIKeysResponseDataItemFieldLastUsedAt         = big.NewInt(1 << 7)
-	listAPIKeysResponseDataItemFieldRevokedAt          = big.NewInt(1 << 8)
-	listAPIKeysResponseDataItemFieldCurrentPeriodUsage = big.NewInt(1 << 9)
+	listAPIKeysResponseDataItemFieldCreatedAt          = big.NewInt(1 << 5)
+	listAPIKeysResponseDataItemFieldLastUsedAt         = big.NewInt(1 << 6)
+	listAPIKeysResponseDataItemFieldRevokedAt          = big.NewInt(1 << 7)
+	listAPIKeysResponseDataItemFieldCurrentPeriodUsage = big.NewInt(1 << 8)
 )
 
 type ListAPIKeysResponseDataItem struct {
@@ -1682,9 +1536,7 @@ type ListAPIKeysResponseDataItem struct {
 	PublicKey string                                  `json:"publicKey" url:"publicKey"`
 	Scopes    []ListAPIKeysResponseDataItemScopesItem `json:"scopes" url:"scopes"`
 	// Current status of the API key
-	Status ListAPIKeysResponseDataItemStatus `json:"status" url:"status"`
-	// Environment for which the API key is valid
-	Environment        ListAPIKeysResponseDataItemEnvironment         `json:"environment" url:"environment"`
+	Status             ListAPIKeysResponseDataItemStatus              `json:"status" url:"status"`
 	CreatedAt          time.Time                                      `json:"createdAt" url:"createdAt"`
 	LastUsedAt         *time.Time                                     `json:"lastUsedAt,omitempty" url:"lastUsedAt,omitempty"`
 	RevokedAt          *time.Time                                     `json:"revokedAt,omitempty" url:"revokedAt,omitempty"`
@@ -1730,13 +1582,6 @@ func (l *ListAPIKeysResponseDataItem) GetStatus() ListAPIKeysResponseDataItemSta
 		return ""
 	}
 	return l.Status
-}
-
-func (l *ListAPIKeysResponseDataItem) GetEnvironment() ListAPIKeysResponseDataItemEnvironment {
-	if l == nil {
-		return ""
-	}
-	return l.Environment
 }
 
 func (l *ListAPIKeysResponseDataItem) GetCreatedAt() time.Time {
@@ -1811,13 +1656,6 @@ func (l *ListAPIKeysResponseDataItem) SetScopes(scopes []ListAPIKeysResponseData
 func (l *ListAPIKeysResponseDataItem) SetStatus(status ListAPIKeysResponseDataItemStatus) {
 	l.Status = status
 	l.require(listAPIKeysResponseDataItemFieldStatus)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListAPIKeysResponseDataItem) SetEnvironment(environment ListAPIKeysResponseDataItemEnvironment) {
-	l.Environment = environment
-	l.require(listAPIKeysResponseDataItemFieldEnvironment)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -2003,29 +1841,6 @@ func (l *ListAPIKeysResponseDataItemCurrentPeriodUsage) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
-}
-
-// Environment for which the API key is valid
-type ListAPIKeysResponseDataItemEnvironment string
-
-const (
-	ListAPIKeysResponseDataItemEnvironmentLive ListAPIKeysResponseDataItemEnvironment = "live"
-	ListAPIKeysResponseDataItemEnvironmentTest ListAPIKeysResponseDataItemEnvironment = "test"
-)
-
-func NewListAPIKeysResponseDataItemEnvironmentFromString(s string) (ListAPIKeysResponseDataItemEnvironment, error) {
-	switch s {
-	case "live":
-		return ListAPIKeysResponseDataItemEnvironmentLive, nil
-	case "test":
-		return ListAPIKeysResponseDataItemEnvironmentTest, nil
-	}
-	var t ListAPIKeysResponseDataItemEnvironment
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (l ListAPIKeysResponseDataItemEnvironment) Ptr() *ListAPIKeysResponseDataItemEnvironment {
-	return &l
 }
 
 // Permission scope for the API key
@@ -2574,13 +2389,12 @@ var (
 	updateAPIKeyResponseDataFieldKeyName       = big.NewInt(1 << 2)
 	updateAPIKeyResponseDataFieldScopes        = big.NewInt(1 << 3)
 	updateAPIKeyResponseDataFieldStatus        = big.NewInt(1 << 4)
-	updateAPIKeyResponseDataFieldEnvironment   = big.NewInt(1 << 5)
-	updateAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 6)
-	updateAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 7)
-	updateAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 8)
-	updateAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 9)
-	updateAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 10)
-	updateAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 11)
+	updateAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 5)
+	updateAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 6)
+	updateAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 7)
+	updateAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 8)
+	updateAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 9)
+	updateAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 10)
 )
 
 type UpdateAPIKeyResponseData struct {
@@ -2594,8 +2408,6 @@ type UpdateAPIKeyResponseData struct {
 	Scopes []UpdateAPIKeyResponseDataScopesItem `json:"scopes" url:"scopes"`
 	// Current status of the API key
 	Status UpdateAPIKeyResponseDataStatus `json:"status" url:"status"`
-	// Environment for which the API key is valid
-	Environment UpdateAPIKeyResponseDataEnvironment `json:"environment" url:"environment"`
 	// ID of the user who owns this API key
 	UserID string `json:"userId" url:"userId"`
 	// When the API key was created
@@ -2649,13 +2461,6 @@ func (u *UpdateAPIKeyResponseData) GetStatus() UpdateAPIKeyResponseDataStatus {
 		return ""
 	}
 	return u.Status
-}
-
-func (u *UpdateAPIKeyResponseData) GetEnvironment() UpdateAPIKeyResponseDataEnvironment {
-	if u == nil {
-		return ""
-	}
-	return u.Environment
 }
 
 func (u *UpdateAPIKeyResponseData) GetUserID() string {
@@ -2744,13 +2549,6 @@ func (u *UpdateAPIKeyResponseData) SetScopes(scopes []UpdateAPIKeyResponseDataSc
 func (u *UpdateAPIKeyResponseData) SetStatus(status UpdateAPIKeyResponseDataStatus) {
 	u.Status = status
 	u.require(updateAPIKeyResponseDataFieldStatus)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateAPIKeyResponseData) SetEnvironment(environment UpdateAPIKeyResponseDataEnvironment) {
-	u.Environment = environment
-	u.require(updateAPIKeyResponseDataFieldEnvironment)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
@@ -2848,29 +2646,6 @@ func (u *UpdateAPIKeyResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
-}
-
-// Environment for which the API key is valid
-type UpdateAPIKeyResponseDataEnvironment string
-
-const (
-	UpdateAPIKeyResponseDataEnvironmentLive UpdateAPIKeyResponseDataEnvironment = "live"
-	UpdateAPIKeyResponseDataEnvironmentTest UpdateAPIKeyResponseDataEnvironment = "test"
-)
-
-func NewUpdateAPIKeyResponseDataEnvironmentFromString(s string) (UpdateAPIKeyResponseDataEnvironment, error) {
-	switch s {
-	case "live":
-		return UpdateAPIKeyResponseDataEnvironmentLive, nil
-	case "test":
-		return UpdateAPIKeyResponseDataEnvironmentTest, nil
-	}
-	var t UpdateAPIKeyResponseDataEnvironment
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (u UpdateAPIKeyResponseDataEnvironment) Ptr() *UpdateAPIKeyResponseDataEnvironment {
-	return &u
 }
 
 // Permission scope for the API key

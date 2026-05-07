@@ -983,14 +983,6 @@ client.APIKeys.ListAPIKeys(
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**environment:** `*promptvmgosdk.ListAPIKeysRequestEnvironment` — Filter by environment
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -1032,7 +1024,6 @@ request := &promptvmgosdk.CreateAPIKeyRequest{
             promptvmgosdk.CreateAPIKeyRequestScopesItemRead,
             promptvmgosdk.CreateAPIKeyRequestScopesItemWrite,
         },
-        Environment: promptvmgosdk.CreateAPIKeyRequestEnvironmentLive,
     }
 client.APIKeys.CreateAPIKey(
         context.TODO(),
@@ -1062,14 +1053,6 @@ client.APIKeys.CreateAPIKey(
 <dd>
 
 **scopes:** `[]*promptvmgosdk.CreateAPIKeyRequestScopesItem` — Permission scopes for the API key. Requires Pro or Enterprise tier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**environment:** `*promptvmgosdk.CreateAPIKeyRequestEnvironment` — Environment for the API key (live or test)
     
 </dd>
 </dl>
@@ -1231,7 +1214,7 @@ client.APIKeys.RevokeAPIKey(
 <dl>
 <dd>
 
-Updates the metadata (name) of an existing API key. Cannot modify scopes or environment after creation.
+Updates the metadata (name) of an existing API key. Cannot modify scopes after creation.
 </dd>
 </dl>
 </dd>

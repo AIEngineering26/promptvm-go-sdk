@@ -100,7 +100,7 @@ func (c *Client) RevokeAPIKey(
 	return response.Body, nil
 }
 
-// Updates the metadata (name) of an existing API key. Cannot modify scopes or environment after creation.
+// Updates the metadata (name) of an existing API key. Cannot modify scopes after creation.
 func (c *Client) UpdateAPIKey(
 	ctx context.Context,
 	request *promptvmgosdk.UpdateAPIKeyRequest,
