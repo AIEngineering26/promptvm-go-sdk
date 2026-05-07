@@ -322,12 +322,13 @@ var (
 	createPromptVersionResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
 	createPromptVersionResponseDataFieldChangeNote              = big.NewInt(1 << 6)
 	createPromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
-	createPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
-	createPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	createPromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
-	createPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
-	createPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
-	createPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
+	createPromptVersionResponseDataFieldIsPublished             = big.NewInt(1 << 8)
+	createPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 9)
+	createPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 10)
+	createPromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 11)
+	createPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
+	createPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
+	createPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
 )
 
 type CreatePromptVersionResponseData struct {
@@ -339,6 +340,7 @@ type CreatePromptVersionResponseData struct {
 	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
 	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
@@ -407,6 +409,13 @@ func (c *CreatePromptVersionResponseData) GetIsCurrentVersion() bool {
 		return false
 	}
 	return c.IsCurrentVersion
+}
+
+func (c *CreatePromptVersionResponseData) GetIsPublished() bool {
+	if c == nil {
+		return false
+	}
+	return c.IsPublished
 }
 
 func (c *CreatePromptVersionResponseData) GetVariablesSchema() map[string]interface{} {
@@ -516,6 +525,13 @@ func (c *CreatePromptVersionResponseData) SetChangeNote(changeNote *string) {
 func (c *CreatePromptVersionResponseData) SetIsCurrentVersion(isCurrentVersion bool) {
 	c.IsCurrentVersion = isCurrentVersion
 	c.require(createPromptVersionResponseDataFieldIsCurrentVersion)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseData) SetIsPublished(isPublished bool) {
+	c.IsPublished = isPublished
+	c.require(createPromptVersionResponseDataFieldIsPublished)
 }
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
@@ -1010,12 +1026,13 @@ var (
 	getPromptVersionResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
 	getPromptVersionResponseDataFieldChangeNote              = big.NewInt(1 << 6)
 	getPromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
-	getPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
-	getPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	getPromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
-	getPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
-	getPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
-	getPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
+	getPromptVersionResponseDataFieldIsPublished             = big.NewInt(1 << 8)
+	getPromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 9)
+	getPromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 10)
+	getPromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 11)
+	getPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
+	getPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
+	getPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
 )
 
 type GetPromptVersionResponseData struct {
@@ -1027,6 +1044,7 @@ type GetPromptVersionResponseData struct {
 	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
 	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
@@ -1095,6 +1113,13 @@ func (g *GetPromptVersionResponseData) GetIsCurrentVersion() bool {
 		return false
 	}
 	return g.IsCurrentVersion
+}
+
+func (g *GetPromptVersionResponseData) GetIsPublished() bool {
+	if g == nil {
+		return false
+	}
+	return g.IsPublished
 }
 
 func (g *GetPromptVersionResponseData) GetVariablesSchema() map[string]interface{} {
@@ -1204,6 +1229,13 @@ func (g *GetPromptVersionResponseData) SetChangeNote(changeNote *string) {
 func (g *GetPromptVersionResponseData) SetIsCurrentVersion(isCurrentVersion bool) {
 	g.IsCurrentVersion = isCurrentVersion
 	g.require(getPromptVersionResponseDataFieldIsCurrentVersion)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseData) SetIsPublished(isPublished bool) {
+	g.IsPublished = isPublished
+	g.require(getPromptVersionResponseDataFieldIsPublished)
 }
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
@@ -1399,12 +1431,13 @@ var (
 	listPromptVersionsResponseDataItemFieldSystemPrompt            = big.NewInt(1 << 5)
 	listPromptVersionsResponseDataItemFieldChangeNote              = big.NewInt(1 << 6)
 	listPromptVersionsResponseDataItemFieldIsCurrentVersion        = big.NewInt(1 << 7)
-	listPromptVersionsResponseDataItemFieldVariablesSchema         = big.NewInt(1 << 8)
-	listPromptVersionsResponseDataItemFieldCreatedByID             = big.NewInt(1 << 9)
-	listPromptVersionsResponseDataItemFieldCreatedByName           = big.NewInt(1 << 10)
-	listPromptVersionsResponseDataItemFieldCreatedAt               = big.NewInt(1 << 11)
-	listPromptVersionsResponseDataItemFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
-	listPromptVersionsResponseDataItemFieldIsDeployedToProduction  = big.NewInt(1 << 13)
+	listPromptVersionsResponseDataItemFieldIsPublished             = big.NewInt(1 << 8)
+	listPromptVersionsResponseDataItemFieldVariablesSchema         = big.NewInt(1 << 9)
+	listPromptVersionsResponseDataItemFieldCreatedByID             = big.NewInt(1 << 10)
+	listPromptVersionsResponseDataItemFieldCreatedByName           = big.NewInt(1 << 11)
+	listPromptVersionsResponseDataItemFieldCreatedAt               = big.NewInt(1 << 12)
+	listPromptVersionsResponseDataItemFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
+	listPromptVersionsResponseDataItemFieldIsDeployedToProduction  = big.NewInt(1 << 14)
 )
 
 type ListPromptVersionsResponseDataItem struct {
@@ -1416,6 +1449,7 @@ type ListPromptVersionsResponseDataItem struct {
 	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
 	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
@@ -1484,6 +1518,13 @@ func (l *ListPromptVersionsResponseDataItem) GetIsCurrentVersion() bool {
 		return false
 	}
 	return l.IsCurrentVersion
+}
+
+func (l *ListPromptVersionsResponseDataItem) GetIsPublished() bool {
+	if l == nil {
+		return false
+	}
+	return l.IsPublished
 }
 
 func (l *ListPromptVersionsResponseDataItem) GetVariablesSchema() map[string]interface{} {
@@ -1593,6 +1634,13 @@ func (l *ListPromptVersionsResponseDataItem) SetChangeNote(changeNote *string) {
 func (l *ListPromptVersionsResponseDataItem) SetIsCurrentVersion(isCurrentVersion bool) {
 	l.IsCurrentVersion = isCurrentVersion
 	l.require(listPromptVersionsResponseDataItemFieldIsCurrentVersion)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItem) SetIsPublished(isPublished bool) {
+	l.IsPublished = isPublished
+	l.require(listPromptVersionsResponseDataItemFieldIsPublished)
 }
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
@@ -1866,12 +1914,13 @@ var (
 	rollbackPromptResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
 	rollbackPromptResponseDataFieldChangeNote              = big.NewInt(1 << 6)
 	rollbackPromptResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
-	rollbackPromptResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
-	rollbackPromptResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	rollbackPromptResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
-	rollbackPromptResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
-	rollbackPromptResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
-	rollbackPromptResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
+	rollbackPromptResponseDataFieldIsPublished             = big.NewInt(1 << 8)
+	rollbackPromptResponseDataFieldVariablesSchema         = big.NewInt(1 << 9)
+	rollbackPromptResponseDataFieldCreatedByID             = big.NewInt(1 << 10)
+	rollbackPromptResponseDataFieldCreatedByName           = big.NewInt(1 << 11)
+	rollbackPromptResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
+	rollbackPromptResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
+	rollbackPromptResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
 )
 
 type RollbackPromptResponseData struct {
@@ -1883,6 +1932,7 @@ type RollbackPromptResponseData struct {
 	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
 	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
@@ -1951,6 +2001,13 @@ func (r *RollbackPromptResponseData) GetIsCurrentVersion() bool {
 		return false
 	}
 	return r.IsCurrentVersion
+}
+
+func (r *RollbackPromptResponseData) GetIsPublished() bool {
+	if r == nil {
+		return false
+	}
+	return r.IsPublished
 }
 
 func (r *RollbackPromptResponseData) GetVariablesSchema() map[string]interface{} {
@@ -2060,6 +2117,13 @@ func (r *RollbackPromptResponseData) SetChangeNote(changeNote *string) {
 func (r *RollbackPromptResponseData) SetIsCurrentVersion(isCurrentVersion bool) {
 	r.IsCurrentVersion = isCurrentVersion
 	r.require(rollbackPromptResponseDataFieldIsCurrentVersion)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseData) SetIsPublished(isPublished bool) {
+	r.IsPublished = isPublished
+	r.require(rollbackPromptResponseDataFieldIsPublished)
 }
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
@@ -2239,12 +2303,13 @@ var (
 	updatePromptVersionResponseDataFieldSystemPrompt            = big.NewInt(1 << 5)
 	updatePromptVersionResponseDataFieldChangeNote              = big.NewInt(1 << 6)
 	updatePromptVersionResponseDataFieldIsCurrentVersion        = big.NewInt(1 << 7)
-	updatePromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 8)
-	updatePromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 9)
-	updatePromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 10)
-	updatePromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 11)
-	updatePromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 12)
-	updatePromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 13)
+	updatePromptVersionResponseDataFieldIsPublished             = big.NewInt(1 << 8)
+	updatePromptVersionResponseDataFieldVariablesSchema         = big.NewInt(1 << 9)
+	updatePromptVersionResponseDataFieldCreatedByID             = big.NewInt(1 << 10)
+	updatePromptVersionResponseDataFieldCreatedByName           = big.NewInt(1 << 11)
+	updatePromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
+	updatePromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
+	updatePromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
 )
 
 type UpdatePromptVersionResponseData struct {
@@ -2256,6 +2321,7 @@ type UpdatePromptVersionResponseData struct {
 	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
 	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
 	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
 	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
@@ -2324,6 +2390,13 @@ func (u *UpdatePromptVersionResponseData) GetIsCurrentVersion() bool {
 		return false
 	}
 	return u.IsCurrentVersion
+}
+
+func (u *UpdatePromptVersionResponseData) GetIsPublished() bool {
+	if u == nil {
+		return false
+	}
+	return u.IsPublished
 }
 
 func (u *UpdatePromptVersionResponseData) GetVariablesSchema() map[string]interface{} {
@@ -2433,6 +2506,13 @@ func (u *UpdatePromptVersionResponseData) SetChangeNote(changeNote *string) {
 func (u *UpdatePromptVersionResponseData) SetIsCurrentVersion(isCurrentVersion bool) {
 	u.IsCurrentVersion = isCurrentVersion
 	u.require(updatePromptVersionResponseDataFieldIsCurrentVersion)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseData) SetIsPublished(isPublished bool) {
+	u.IsPublished = isPublished
+	u.require(updatePromptVersionResponseDataFieldIsPublished)
 }
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;

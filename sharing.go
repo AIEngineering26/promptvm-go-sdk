@@ -657,7 +657,8 @@ var (
 	accessSharedPromptResponseDataCurrentVersionFieldContent       = big.NewInt(1 << 3)
 	accessSharedPromptResponseDataCurrentVersionFieldSystemPrompt  = big.NewInt(1 << 4)
 	accessSharedPromptResponseDataCurrentVersionFieldChangeNote    = big.NewInt(1 << 5)
-	accessSharedPromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 6)
+	accessSharedPromptResponseDataCurrentVersionFieldIsPublished   = big.NewInt(1 << 6)
+	accessSharedPromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 7)
 )
 
 type AccessSharedPromptResponseDataCurrentVersion struct {
@@ -667,6 +668,7 @@ type AccessSharedPromptResponseDataCurrentVersion struct {
 	Content       *string    `json:"content,omitempty" url:"content,omitempty"`
 	SystemPrompt  *string    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote    *string    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished   *bool      `json:"isPublished,omitempty" url:"isPublished,omitempty"`
 	CreatedAt     *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -716,6 +718,13 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) GetChangeNote() *string {
 		return nil
 	}
 	return a.ChangeNote
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersion) GetIsPublished() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.IsPublished
 }
 
 func (a *AccessSharedPromptResponseDataCurrentVersion) GetCreatedAt() *time.Time {
@@ -776,6 +785,13 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) SetSystemPrompt(systemPro
 func (a *AccessSharedPromptResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
 	a.ChangeNote = changeNote
 	a.require(accessSharedPromptResponseDataCurrentVersionFieldChangeNote)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
+	a.IsPublished = isPublished
+	a.require(accessSharedPromptResponseDataCurrentVersionFieldIsPublished)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;

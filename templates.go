@@ -571,7 +571,8 @@ var (
 	convertPromptToTemplateResponseDataCurrentVersionFieldContent       = big.NewInt(1 << 3)
 	convertPromptToTemplateResponseDataCurrentVersionFieldSystemPrompt  = big.NewInt(1 << 4)
 	convertPromptToTemplateResponseDataCurrentVersionFieldChangeNote    = big.NewInt(1 << 5)
-	convertPromptToTemplateResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 6)
+	convertPromptToTemplateResponseDataCurrentVersionFieldIsPublished   = big.NewInt(1 << 6)
+	convertPromptToTemplateResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 7)
 )
 
 type ConvertPromptToTemplateResponseDataCurrentVersion struct {
@@ -581,6 +582,7 @@ type ConvertPromptToTemplateResponseDataCurrentVersion struct {
 	Content       *string    `json:"content,omitempty" url:"content,omitempty"`
 	SystemPrompt  *string    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote    *string    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished   *bool      `json:"isPublished,omitempty" url:"isPublished,omitempty"`
 	CreatedAt     *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -630,6 +632,13 @@ func (c *ConvertPromptToTemplateResponseDataCurrentVersion) GetChangeNote() *str
 		return nil
 	}
 	return c.ChangeNote
+}
+
+func (c *ConvertPromptToTemplateResponseDataCurrentVersion) GetIsPublished() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsPublished
 }
 
 func (c *ConvertPromptToTemplateResponseDataCurrentVersion) GetCreatedAt() *time.Time {
@@ -690,6 +699,13 @@ func (c *ConvertPromptToTemplateResponseDataCurrentVersion) SetSystemPrompt(syst
 func (c *ConvertPromptToTemplateResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
 	c.ChangeNote = changeNote
 	c.require(convertPromptToTemplateResponseDataCurrentVersionFieldChangeNote)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
+	c.IsPublished = isPublished
+	c.require(convertPromptToTemplateResponseDataCurrentVersionFieldIsPublished)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -1910,7 +1926,8 @@ var (
 	createPromptFromTemplateResponseDataCurrentVersionFieldContent       = big.NewInt(1 << 3)
 	createPromptFromTemplateResponseDataCurrentVersionFieldSystemPrompt  = big.NewInt(1 << 4)
 	createPromptFromTemplateResponseDataCurrentVersionFieldChangeNote    = big.NewInt(1 << 5)
-	createPromptFromTemplateResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 6)
+	createPromptFromTemplateResponseDataCurrentVersionFieldIsPublished   = big.NewInt(1 << 6)
+	createPromptFromTemplateResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 7)
 )
 
 type CreatePromptFromTemplateResponseDataCurrentVersion struct {
@@ -1920,6 +1937,7 @@ type CreatePromptFromTemplateResponseDataCurrentVersion struct {
 	Content       *string    `json:"content,omitempty" url:"content,omitempty"`
 	SystemPrompt  *string    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote    *string    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished   *bool      `json:"isPublished,omitempty" url:"isPublished,omitempty"`
 	CreatedAt     *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1969,6 +1987,13 @@ func (c *CreatePromptFromTemplateResponseDataCurrentVersion) GetChangeNote() *st
 		return nil
 	}
 	return c.ChangeNote
+}
+
+func (c *CreatePromptFromTemplateResponseDataCurrentVersion) GetIsPublished() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsPublished
 }
 
 func (c *CreatePromptFromTemplateResponseDataCurrentVersion) GetCreatedAt() *time.Time {
@@ -2029,6 +2054,13 @@ func (c *CreatePromptFromTemplateResponseDataCurrentVersion) SetSystemPrompt(sys
 func (c *CreatePromptFromTemplateResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
 	c.ChangeNote = changeNote
 	c.require(createPromptFromTemplateResponseDataCurrentVersionFieldChangeNote)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
+	c.IsPublished = isPublished
+	c.require(createPromptFromTemplateResponseDataCurrentVersionFieldIsPublished)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;

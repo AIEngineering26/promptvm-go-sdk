@@ -712,7 +712,8 @@ var (
 	createPromptResponseDataCurrentVersionFieldContent       = big.NewInt(1 << 3)
 	createPromptResponseDataCurrentVersionFieldSystemPrompt  = big.NewInt(1 << 4)
 	createPromptResponseDataCurrentVersionFieldChangeNote    = big.NewInt(1 << 5)
-	createPromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 6)
+	createPromptResponseDataCurrentVersionFieldIsPublished   = big.NewInt(1 << 6)
+	createPromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 7)
 )
 
 type CreatePromptResponseDataCurrentVersion struct {
@@ -722,6 +723,7 @@ type CreatePromptResponseDataCurrentVersion struct {
 	Content       *string    `json:"content,omitempty" url:"content,omitempty"`
 	SystemPrompt  *string    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote    *string    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished   *bool      `json:"isPublished,omitempty" url:"isPublished,omitempty"`
 	CreatedAt     *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -771,6 +773,13 @@ func (c *CreatePromptResponseDataCurrentVersion) GetChangeNote() *string {
 		return nil
 	}
 	return c.ChangeNote
+}
+
+func (c *CreatePromptResponseDataCurrentVersion) GetIsPublished() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsPublished
 }
 
 func (c *CreatePromptResponseDataCurrentVersion) GetCreatedAt() *time.Time {
@@ -831,6 +840,13 @@ func (c *CreatePromptResponseDataCurrentVersion) SetSystemPrompt(systemPrompt *s
 func (c *CreatePromptResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
 	c.ChangeNote = changeNote
 	c.require(createPromptResponseDataCurrentVersionFieldChangeNote)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
+	c.IsPublished = isPublished
+	c.require(createPromptResponseDataCurrentVersionFieldIsPublished)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -2130,7 +2146,8 @@ var (
 	getPromptResponseDataCurrentVersionFieldContent       = big.NewInt(1 << 3)
 	getPromptResponseDataCurrentVersionFieldSystemPrompt  = big.NewInt(1 << 4)
 	getPromptResponseDataCurrentVersionFieldChangeNote    = big.NewInt(1 << 5)
-	getPromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 6)
+	getPromptResponseDataCurrentVersionFieldIsPublished   = big.NewInt(1 << 6)
+	getPromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 7)
 )
 
 type GetPromptResponseDataCurrentVersion struct {
@@ -2140,6 +2157,7 @@ type GetPromptResponseDataCurrentVersion struct {
 	Content       *string    `json:"content,omitempty" url:"content,omitempty"`
 	SystemPrompt  *string    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote    *string    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished   *bool      `json:"isPublished,omitempty" url:"isPublished,omitempty"`
 	CreatedAt     *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2189,6 +2207,13 @@ func (g *GetPromptResponseDataCurrentVersion) GetChangeNote() *string {
 		return nil
 	}
 	return g.ChangeNote
+}
+
+func (g *GetPromptResponseDataCurrentVersion) GetIsPublished() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsPublished
 }
 
 func (g *GetPromptResponseDataCurrentVersion) GetCreatedAt() *time.Time {
@@ -2249,6 +2274,13 @@ func (g *GetPromptResponseDataCurrentVersion) SetSystemPrompt(systemPrompt *stri
 func (g *GetPromptResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
 	g.ChangeNote = changeNote
 	g.require(getPromptResponseDataCurrentVersionFieldChangeNote)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
+	g.IsPublished = isPublished
+	g.require(getPromptResponseDataCurrentVersionFieldIsPublished)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -4084,7 +4116,8 @@ var (
 	updatePromptResponseDataCurrentVersionFieldContent       = big.NewInt(1 << 3)
 	updatePromptResponseDataCurrentVersionFieldSystemPrompt  = big.NewInt(1 << 4)
 	updatePromptResponseDataCurrentVersionFieldChangeNote    = big.NewInt(1 << 5)
-	updatePromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 6)
+	updatePromptResponseDataCurrentVersionFieldIsPublished   = big.NewInt(1 << 6)
+	updatePromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 7)
 )
 
 type UpdatePromptResponseDataCurrentVersion struct {
@@ -4094,6 +4127,7 @@ type UpdatePromptResponseDataCurrentVersion struct {
 	Content       *string    `json:"content,omitempty" url:"content,omitempty"`
 	SystemPrompt  *string    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
 	ChangeNote    *string    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished   *bool      `json:"isPublished,omitempty" url:"isPublished,omitempty"`
 	CreatedAt     *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4143,6 +4177,13 @@ func (u *UpdatePromptResponseDataCurrentVersion) GetChangeNote() *string {
 		return nil
 	}
 	return u.ChangeNote
+}
+
+func (u *UpdatePromptResponseDataCurrentVersion) GetIsPublished() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.IsPublished
 }
 
 func (u *UpdatePromptResponseDataCurrentVersion) GetCreatedAt() *time.Time {
@@ -4203,6 +4244,13 @@ func (u *UpdatePromptResponseDataCurrentVersion) SetSystemPrompt(systemPrompt *s
 func (u *UpdatePromptResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
 	u.ChangeNote = changeNote
 	u.require(updatePromptResponseDataCurrentVersionFieldChangeNote)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
+	u.IsPublished = isPublished
+	u.require(updatePromptResponseDataCurrentVersionFieldIsPublished)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
