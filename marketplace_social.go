@@ -616,9 +616,12 @@ var (
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldIsFeatured    = big.NewInt(1 << 16)
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCategories    = big.NewInt(1 << 17)
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller        = big.NewInt(1 << 18)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt   = big.NewInt(1 << 19)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt     = big.NewInt(1 << 20)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 21)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind   = big.NewInt(1 << 19)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug    = big.NewInt(1 << 20)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill         = big.NewInt(1 << 21)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt   = big.NewInt(1 << 22)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt     = big.NewInt(1 << 23)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 24)
 )
 
 type GetAPIV1MarketplaceCreatorMeFeedResponseDataItem struct {
@@ -641,6 +644,9 @@ type GetAPIV1MarketplaceCreatorMeFeedResponseDataItem struct {
 	IsFeatured    *bool                                                             `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
 	Categories    []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
 	Seller        *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind   *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	PromptSlug    *string                                                           `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	Skill         *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
 	PublishedAt   *time.Time                                                        `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
 	CreatedAt     time.Time                                                         `json:"createdAt" url:"createdAt"`
 	UpdatedAt     time.Time                                                         `json:"updatedAt" url:"updatedAt"`
@@ -783,6 +789,27 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetSeller() *GetAPIV1
 		return nil
 	}
 	return g.Seller
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetContentKind() *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind {
+	if g == nil {
+		return nil
+	}
+	return g.ContentKind
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetPromptSlug() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PromptSlug
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetSkill() *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill {
+	if g == nil {
+		return nil
+	}
+	return g.Skill
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetPublishedAt() *time.Time {
@@ -948,6 +975,27 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetCategories(categor
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetSeller(seller *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) {
 	g.Seller = seller
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller)
+}
+
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetContentKind(contentKind *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind) {
+	g.ContentKind = contentKind
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind)
+}
+
+// SetPromptSlug sets the PromptSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetPromptSlug(promptSlug *string) {
+	g.PromptSlug = promptSlug
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug)
+}
+
+// SetSkill sets the Skill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetSkill(skill *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) {
+	g.Skill = skill
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill)
 }
 
 // SetPublishedAt sets the PublishedAt field and marks it as non-optional;
@@ -1206,6 +1254,28 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemCategoriesItem) String(
 	return fmt.Sprintf("%#v", g)
 }
 
+type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind string
+
+const (
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindPrompt GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "prompt"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill  GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "skill"
+)
+
+func NewGetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFromString(s string) (GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind, error) {
+	switch s {
+	case "prompt":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindPrompt, nil
+	case "skill":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill, nil
+	}
+	var t GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind) Ptr() *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind {
+	return &g
+}
+
 var (
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldUserID     = big.NewInt(1 << 0)
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldBio        = big.NewInt(1 << 1)
@@ -1305,6 +1375,132 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) MarshalJSON() (
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldSlug        = big.NewInt(1 << 0)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldFileCount   = big.NewInt(1 << 1)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldDescription = big.NewInt(1 << 2)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldWhenToUse   = big.NewInt(1 << 3)
+)
+
+type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill struct {
+	Slug        *string `json:"slug,omitempty" url:"slug,omitempty"`
+	FileCount   *int    `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	WhenToUse   *string `json:"when_to_use,omitempty" url:"when_to_use,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) GetSlug() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Slug
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) GetFileCount() *int {
+	if g == nil {
+		return nil
+	}
+	return g.FileCount
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) GetDescription() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Description
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) GetWhenToUse() *string {
+	if g == nil {
+		return nil
+	}
+	return g.WhenToUse
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) SetSlug(slug *string) {
+	g.Slug = slug
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldSlug)
+}
+
+// SetFileCount sets the FileCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) SetFileCount(fileCount *int) {
+	g.FileCount = fileCount
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldFileCount)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) SetDescription(description *string) {
+	g.Description = description
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldDescription)
+}
+
+// SetWhenToUse sets the WhenToUse field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) SetWhenToUse(whenToUse *string) {
+	g.WhenToUse = whenToUse
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSkillFieldWhenToUse)
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) MarshalJSON() ([]byte, error) {
+	type embed GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value

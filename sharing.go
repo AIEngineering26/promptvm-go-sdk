@@ -311,17 +311,19 @@ var (
 	accessSharedPromptResponseDataFieldDescription        = big.NewInt(1 << 3)
 	accessSharedPromptResponseDataFieldStatus             = big.NewInt(1 << 4)
 	accessSharedPromptResponseDataFieldKind               = big.NewInt(1 << 5)
-	accessSharedPromptResponseDataFieldTags               = big.NewInt(1 << 6)
-	accessSharedPromptResponseDataFieldIsPublic           = big.NewInt(1 << 7)
-	accessSharedPromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 8)
-	accessSharedPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
-	accessSharedPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
-	accessSharedPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	accessSharedPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
-	accessSharedPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
-	accessSharedPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
-	accessSharedPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
-	accessSharedPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
+	accessSharedPromptResponseDataFieldContentKind        = big.NewInt(1 << 6)
+	accessSharedPromptResponseDataFieldMetadata           = big.NewInt(1 << 7)
+	accessSharedPromptResponseDataFieldTags               = big.NewInt(1 << 8)
+	accessSharedPromptResponseDataFieldIsPublic           = big.NewInt(1 << 9)
+	accessSharedPromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
+	accessSharedPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
+	accessSharedPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
+	accessSharedPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
+	accessSharedPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
+	accessSharedPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
+	accessSharedPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
+	accessSharedPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
+	accessSharedPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
 )
 
 type AccessSharedPromptResponseData struct {
@@ -331,6 +333,8 @@ type AccessSharedPromptResponseData struct {
 	Description        *string                                       `json:"description,omitempty" url:"description,omitempty"`
 	Status             AccessSharedPromptResponseDataStatus          `json:"status" url:"status"`
 	Kind               AccessSharedPromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind        *AccessSharedPromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata           map[string]interface{}                        `json:"metadata,omitempty" url:"metadata,omitempty"`
 	Tags               []string                                      `json:"tags" url:"tags"`
 	IsPublic           bool                                          `json:"isPublic" url:"isPublic"`
 	WorkspaceID        string                                        `json:"workspaceId" url:"workspaceId"`
@@ -390,6 +394,20 @@ func (a *AccessSharedPromptResponseData) GetKind() AccessSharedPromptResponseDat
 		return ""
 	}
 	return a.Kind
+}
+
+func (a *AccessSharedPromptResponseData) GetContentKind() *AccessSharedPromptResponseDataContentKind {
+	if a == nil {
+		return nil
+	}
+	return a.ContentKind
+}
+
+func (a *AccessSharedPromptResponseData) GetMetadata() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.Metadata
 }
 
 func (a *AccessSharedPromptResponseData) GetTags() []string {
@@ -522,6 +540,20 @@ func (a *AccessSharedPromptResponseData) SetKind(kind AccessSharedPromptResponse
 	a.require(accessSharedPromptResponseDataFieldKind)
 }
 
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseData) SetContentKind(contentKind *AccessSharedPromptResponseDataContentKind) {
+	a.ContentKind = contentKind
+	a.require(accessSharedPromptResponseDataFieldContentKind)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseData) SetMetadata(metadata map[string]interface{}) {
+	a.Metadata = metadata
+	a.require(accessSharedPromptResponseDataFieldMetadata)
+}
+
 // SetTags sets the Tags field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *AccessSharedPromptResponseData) SetTags(tags []string) {
@@ -648,6 +680,28 @@ func (a *AccessSharedPromptResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", a)
+}
+
+type AccessSharedPromptResponseDataContentKind string
+
+const (
+	AccessSharedPromptResponseDataContentKindPrompt AccessSharedPromptResponseDataContentKind = "prompt"
+	AccessSharedPromptResponseDataContentKindSkill  AccessSharedPromptResponseDataContentKind = "skill"
+)
+
+func NewAccessSharedPromptResponseDataContentKindFromString(s string) (AccessSharedPromptResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return AccessSharedPromptResponseDataContentKindPrompt, nil
+	case "skill":
+		return AccessSharedPromptResponseDataContentKindSkill, nil
+	}
+	var t AccessSharedPromptResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AccessSharedPromptResponseDataContentKind) Ptr() *AccessSharedPromptResponseDataContentKind {
+	return &a
 }
 
 var (

@@ -8,6 +8,7 @@ import (
 	authentication "github.com/AIEngineering26/promptvm-go-sdk/authentication"
 	cliauth "github.com/AIEngineering26/promptvm-go-sdk/cliauth"
 	collections "github.com/AIEngineering26/promptvm-go-sdk/collections"
+	contexts "github.com/AIEngineering26/promptvm-go-sdk/contexts"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	directories "github.com/AIEngineering26/promptvm-go-sdk/directories"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
@@ -17,6 +18,7 @@ import (
 	marketplacecreatordashboard "github.com/AIEngineering26/promptvm-go-sdk/marketplacecreatordashboard"
 	marketplacelistings "github.com/AIEngineering26/promptvm-go-sdk/marketplacelistings"
 	marketplaceratings "github.com/AIEngineering26/promptvm-go-sdk/marketplaceratings"
+	marketplaceskillsfeed "github.com/AIEngineering26/promptvm-go-sdk/marketplaceskillsfeed"
 	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
 	marketplacesubscriptions "github.com/AIEngineering26/promptvm-go-sdk/marketplacesubscriptions"
 	onboarding "github.com/AIEngineering26/promptvm-go-sdk/onboarding"
@@ -31,6 +33,8 @@ import (
 	resources "github.com/AIEngineering26/promptvm-go-sdk/resources"
 	search "github.com/AIEngineering26/promptvm-go-sdk/search"
 	sharing "github.com/AIEngineering26/promptvm-go-sdk/sharing"
+	skills "github.com/AIEngineering26/promptvm-go-sdk/skills"
+	skillspublic "github.com/AIEngineering26/promptvm-go-sdk/skillspublic"
 	templates "github.com/AIEngineering26/promptvm-go-sdk/templates"
 	workspaces "github.com/AIEngineering26/promptvm-go-sdk/workspaces"
 )
@@ -39,6 +43,9 @@ type Client struct {
 	Authentication              *authentication.Client
 	CliAuth                     *cliauth.Client
 	AgentAPI                    *agentapi.Client
+	SkillsPublic                *skillspublic.Client
+	Contexts                    *contexts.Client
+	MarketplaceSkillsFeed       *marketplaceskillsfeed.Client
 	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
 	Onboarding                  *onboarding.Client
@@ -61,6 +68,7 @@ type Client struct {
 	PromptExport                *promptexport.Client
 	Directories                 *directories.Client
 	Resources                   *resources.Client
+	Skills                      *skills.Client
 	Workspaces                  *workspaces.Client
 	Search                      *search.Client
 
@@ -75,6 +83,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Authentication:              authentication.NewClient(options),
 		CliAuth:                     cliauth.NewClient(options),
 		AgentAPI:                    agentapi.NewClient(options),
+		SkillsPublic:                skillspublic.NewClient(options),
+		Contexts:                    contexts.NewClient(options),
+		MarketplaceSkillsFeed:       marketplaceskillsfeed.NewClient(options),
 		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
 		Onboarding:                  onboarding.NewClient(options),
@@ -97,6 +108,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		PromptExport:                promptexport.NewClient(options),
 		Directories:                 directories.NewClient(options),
 		Resources:                   resources.NewClient(options),
+		Skills:                      skills.NewClient(options),
 		Workspaces:                  workspaces.NewClient(options),
 		Search:                      search.NewClient(options),
 		options:                     options,

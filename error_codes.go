@@ -28,6 +28,11 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
+	400: func(apiError *core.APIError) error {
+		return &BadRequestError{
+			APIError: apiError,
+		}
+	},
 	410: func(apiError *core.APIError) error {
 		return &GoneError{
 			APIError: apiError,
@@ -35,11 +40,6 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 	},
 	403: func(apiError *core.APIError) error {
 		return &ForbiddenError{
-			APIError: apiError,
-		}
-	},
-	400: func(apiError *core.APIError) error {
-		return &BadRequestError{
 			APIError: apiError,
 		}
 	},

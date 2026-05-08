@@ -583,6 +583,203 @@ client.AgentAPI.AgentResolvePrompt(
 </dl>
 </details>
 
+## SkillsPublic
+<details><summary><code>client.SkillsPublic.GetPublicSkillBySlug(Slug) -> *promptvmgosdk.GetPublicSkillBySlugResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated read. Returns the parsed Agent Skills frontmatter as JSON, or the literal SKILL.md bytes when ?format=skill_md.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetPublicSkillBySlugRequest{
+        Slug: "slug",
+    }
+client.SkillsPublic.GetPublicSkillBySlug(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**slug:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `*promptvmgosdk.GetPublicSkillBySlugRequestFormat` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Contexts
+<details><summary><code>client.Contexts.ListContextKinds() -> *promptvmgosdk.ListContextKindsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the catalogue of supported content kinds (prompt, skill, ...) with their full KindDefinition. Stable shape — agents can build typed adapters from this response without consulting docs.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Contexts.ListContextKinds(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## MarketplaceSkillsFeed
+<details><summary><code>client.MarketplaceSkillsFeed.GetMarketplaceSkillsFeed() -> *promptvmgosdk.GetMarketplaceSkillsFeedResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated, paginated feed of all public skills. Use ?since=<ISO> to fetch only skills updated after a timestamp; use ?cursor= for continuation.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetMarketplaceSkillsFeedRequest{}
+client.MarketplaceSkillsFeed.GetMarketplaceSkillsFeed(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**since:** `*time.Time` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Sharing
 <details><summary><code>client.Sharing.AccessSharedPrompt(Token) -> *promptvmgosdk.AccessSharedPromptResponse</code></summary>
 <dl>
@@ -3089,7 +3286,7 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 <dl>
 <dd>
 
-**q:** `*string` — Search query
+**q:** `*string` — Search query — matches title/description plus the underlying prompt description and SKILL.md when_to_use.
     
 </dd>
 </dl>
@@ -3098,6 +3295,22 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 <dd>
 
 **categoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.ListMarketplaceListingsRequestKind` — Filter listings by their underlying content_kind.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag:** `*string` — Match a single listing tag (case-insensitive).
     
 </dd>
 </dl>
@@ -7388,6 +7601,413 @@ client.Resources.DetachPromptResource(
 <dd>
 
 **resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Skills
+<details><summary><code>client.Skills.ListSkills() -> *promptvmgosdk.ListSkillsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns paginated skills. Filter `q` matches name, description, AND when_to_use (the Claude/Agent Skills documented match basis). Filter `tag` matches the tags array exactly (case-insensitive).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListSkillsRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Skills.ListSkills(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*promptvmgosdk.ListSkillsRequestIsPublic` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Skills.CreateSkill(request) -> *promptvmgosdk.CreateSkillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a skill artifact (content_kind=skill). The full SKILL.md bytes (frontmatter + body) are stored verbatim. Frontmatter is parsed into a derived metadata cache used by the typed read shape.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateSkillRequest{
+        SkillMd: "skill_md",
+        WorkspaceID: "workspaceId",
+    }
+client.Skills.CreateSkill(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**skillMd:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**files:** `[]*promptvmgosdk.CreateSkillRequestFilesItem` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.CreateSkillRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Skills.GetSkill(SkillID) -> *promptvmgosdk.GetSkillResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetSkillRequest{
+        SkillID: "skillId",
+    }
+client.Skills.GetSkill(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**skillID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Skills.DeleteSkill(SkillID) -> *promptvmgosdk.DeleteSkillResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteSkillRequest{
+        SkillID: "skillId",
+    }
+client.Skills.DeleteSkill(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**skillID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Skills.UpdateSkill(SkillID, request) -> *promptvmgosdk.UpdateSkillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Replaces any subset of skill fields. Replacing skill_md re-runs ingest, regenerates the metadata cache, and creates a new version. Replacing files atomically rebinds resource references.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateSkillRequest{
+        SkillID: "skillId",
+    }
+client.Skills.UpdateSkill(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**skillID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**skillMd:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**files:** `[]*promptvmgosdk.UpdateSkillRequestFilesItem` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.UpdateSkillRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
     
 </dd>
 </dl>

@@ -225,17 +225,19 @@ var (
 	convertPromptToTemplateResponseDataFieldDescription        = big.NewInt(1 << 3)
 	convertPromptToTemplateResponseDataFieldStatus             = big.NewInt(1 << 4)
 	convertPromptToTemplateResponseDataFieldKind               = big.NewInt(1 << 5)
-	convertPromptToTemplateResponseDataFieldTags               = big.NewInt(1 << 6)
-	convertPromptToTemplateResponseDataFieldIsPublic           = big.NewInt(1 << 7)
-	convertPromptToTemplateResponseDataFieldWorkspaceID        = big.NewInt(1 << 8)
-	convertPromptToTemplateResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
-	convertPromptToTemplateResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
-	convertPromptToTemplateResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	convertPromptToTemplateResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
-	convertPromptToTemplateResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
-	convertPromptToTemplateResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
-	convertPromptToTemplateResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
-	convertPromptToTemplateResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
+	convertPromptToTemplateResponseDataFieldContentKind        = big.NewInt(1 << 6)
+	convertPromptToTemplateResponseDataFieldMetadata           = big.NewInt(1 << 7)
+	convertPromptToTemplateResponseDataFieldTags               = big.NewInt(1 << 8)
+	convertPromptToTemplateResponseDataFieldIsPublic           = big.NewInt(1 << 9)
+	convertPromptToTemplateResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
+	convertPromptToTemplateResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
+	convertPromptToTemplateResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
+	convertPromptToTemplateResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
+	convertPromptToTemplateResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
+	convertPromptToTemplateResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
+	convertPromptToTemplateResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
+	convertPromptToTemplateResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
+	convertPromptToTemplateResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
 )
 
 type ConvertPromptToTemplateResponseData struct {
@@ -245,6 +247,8 @@ type ConvertPromptToTemplateResponseData struct {
 	Description        *string                                            `json:"description,omitempty" url:"description,omitempty"`
 	Status             ConvertPromptToTemplateResponseDataStatus          `json:"status" url:"status"`
 	Kind               ConvertPromptToTemplateResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind        *ConvertPromptToTemplateResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata           map[string]interface{}                             `json:"metadata,omitempty" url:"metadata,omitempty"`
 	Tags               []string                                           `json:"tags" url:"tags"`
 	IsPublic           bool                                               `json:"isPublic" url:"isPublic"`
 	WorkspaceID        string                                             `json:"workspaceId" url:"workspaceId"`
@@ -304,6 +308,20 @@ func (c *ConvertPromptToTemplateResponseData) GetKind() ConvertPromptToTemplateR
 		return ""
 	}
 	return c.Kind
+}
+
+func (c *ConvertPromptToTemplateResponseData) GetContentKind() *ConvertPromptToTemplateResponseDataContentKind {
+	if c == nil {
+		return nil
+	}
+	return c.ContentKind
+}
+
+func (c *ConvertPromptToTemplateResponseData) GetMetadata() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.Metadata
 }
 
 func (c *ConvertPromptToTemplateResponseData) GetTags() []string {
@@ -436,6 +454,20 @@ func (c *ConvertPromptToTemplateResponseData) SetKind(kind ConvertPromptToTempla
 	c.require(convertPromptToTemplateResponseDataFieldKind)
 }
 
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseData) SetContentKind(contentKind *ConvertPromptToTemplateResponseDataContentKind) {
+	c.ContentKind = contentKind
+	c.require(convertPromptToTemplateResponseDataFieldContentKind)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseData) SetMetadata(metadata map[string]interface{}) {
+	c.Metadata = metadata
+	c.require(convertPromptToTemplateResponseDataFieldMetadata)
+}
+
 // SetTags sets the Tags field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *ConvertPromptToTemplateResponseData) SetTags(tags []string) {
@@ -562,6 +594,28 @@ func (c *ConvertPromptToTemplateResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ConvertPromptToTemplateResponseDataContentKind string
+
+const (
+	ConvertPromptToTemplateResponseDataContentKindPrompt ConvertPromptToTemplateResponseDataContentKind = "prompt"
+	ConvertPromptToTemplateResponseDataContentKindSkill  ConvertPromptToTemplateResponseDataContentKind = "skill"
+)
+
+func NewConvertPromptToTemplateResponseDataContentKindFromString(s string) (ConvertPromptToTemplateResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return ConvertPromptToTemplateResponseDataContentKindPrompt, nil
+	case "skill":
+		return ConvertPromptToTemplateResponseDataContentKindSkill, nil
+	}
+	var t ConvertPromptToTemplateResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ConvertPromptToTemplateResponseDataContentKind) Ptr() *ConvertPromptToTemplateResponseDataContentKind {
+	return &c
 }
 
 var (
@@ -1580,17 +1634,19 @@ var (
 	createPromptFromTemplateResponseDataFieldDescription        = big.NewInt(1 << 3)
 	createPromptFromTemplateResponseDataFieldStatus             = big.NewInt(1 << 4)
 	createPromptFromTemplateResponseDataFieldKind               = big.NewInt(1 << 5)
-	createPromptFromTemplateResponseDataFieldTags               = big.NewInt(1 << 6)
-	createPromptFromTemplateResponseDataFieldIsPublic           = big.NewInt(1 << 7)
-	createPromptFromTemplateResponseDataFieldWorkspaceID        = big.NewInt(1 << 8)
-	createPromptFromTemplateResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
-	createPromptFromTemplateResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
-	createPromptFromTemplateResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	createPromptFromTemplateResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
-	createPromptFromTemplateResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
-	createPromptFromTemplateResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
-	createPromptFromTemplateResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
-	createPromptFromTemplateResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
+	createPromptFromTemplateResponseDataFieldContentKind        = big.NewInt(1 << 6)
+	createPromptFromTemplateResponseDataFieldMetadata           = big.NewInt(1 << 7)
+	createPromptFromTemplateResponseDataFieldTags               = big.NewInt(1 << 8)
+	createPromptFromTemplateResponseDataFieldIsPublic           = big.NewInt(1 << 9)
+	createPromptFromTemplateResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
+	createPromptFromTemplateResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
+	createPromptFromTemplateResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
+	createPromptFromTemplateResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
+	createPromptFromTemplateResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
+	createPromptFromTemplateResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
+	createPromptFromTemplateResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
+	createPromptFromTemplateResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
+	createPromptFromTemplateResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
 )
 
 type CreatePromptFromTemplateResponseData struct {
@@ -1600,6 +1656,8 @@ type CreatePromptFromTemplateResponseData struct {
 	Description        *string                                             `json:"description,omitempty" url:"description,omitempty"`
 	Status             CreatePromptFromTemplateResponseDataStatus          `json:"status" url:"status"`
 	Kind               CreatePromptFromTemplateResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind        *CreatePromptFromTemplateResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata           map[string]interface{}                              `json:"metadata,omitempty" url:"metadata,omitempty"`
 	Tags               []string                                            `json:"tags" url:"tags"`
 	IsPublic           bool                                                `json:"isPublic" url:"isPublic"`
 	WorkspaceID        string                                              `json:"workspaceId" url:"workspaceId"`
@@ -1659,6 +1717,20 @@ func (c *CreatePromptFromTemplateResponseData) GetKind() CreatePromptFromTemplat
 		return ""
 	}
 	return c.Kind
+}
+
+func (c *CreatePromptFromTemplateResponseData) GetContentKind() *CreatePromptFromTemplateResponseDataContentKind {
+	if c == nil {
+		return nil
+	}
+	return c.ContentKind
+}
+
+func (c *CreatePromptFromTemplateResponseData) GetMetadata() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.Metadata
 }
 
 func (c *CreatePromptFromTemplateResponseData) GetTags() []string {
@@ -1791,6 +1863,20 @@ func (c *CreatePromptFromTemplateResponseData) SetKind(kind CreatePromptFromTemp
 	c.require(createPromptFromTemplateResponseDataFieldKind)
 }
 
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseData) SetContentKind(contentKind *CreatePromptFromTemplateResponseDataContentKind) {
+	c.ContentKind = contentKind
+	c.require(createPromptFromTemplateResponseDataFieldContentKind)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseData) SetMetadata(metadata map[string]interface{}) {
+	c.Metadata = metadata
+	c.require(createPromptFromTemplateResponseDataFieldMetadata)
+}
+
 // SetTags sets the Tags field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreatePromptFromTemplateResponseData) SetTags(tags []string) {
@@ -1917,6 +2003,28 @@ func (c *CreatePromptFromTemplateResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type CreatePromptFromTemplateResponseDataContentKind string
+
+const (
+	CreatePromptFromTemplateResponseDataContentKindPrompt CreatePromptFromTemplateResponseDataContentKind = "prompt"
+	CreatePromptFromTemplateResponseDataContentKindSkill  CreatePromptFromTemplateResponseDataContentKind = "skill"
+)
+
+func NewCreatePromptFromTemplateResponseDataContentKindFromString(s string) (CreatePromptFromTemplateResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return CreatePromptFromTemplateResponseDataContentKindPrompt, nil
+	case "skill":
+		return CreatePromptFromTemplateResponseDataContentKindSkill, nil
+	}
+	var t CreatePromptFromTemplateResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreatePromptFromTemplateResponseDataContentKind) Ptr() *CreatePromptFromTemplateResponseDataContentKind {
+	return &c
 }
 
 var (
@@ -2951,31 +3059,33 @@ var (
 	listTemplatesResponseDataItemFieldDescription   = big.NewInt(1 << 3)
 	listTemplatesResponseDataItemFieldStatus        = big.NewInt(1 << 4)
 	listTemplatesResponseDataItemFieldKind          = big.NewInt(1 << 5)
-	listTemplatesResponseDataItemFieldTags          = big.NewInt(1 << 6)
-	listTemplatesResponseDataItemFieldIsPublic      = big.NewInt(1 << 7)
-	listTemplatesResponseDataItemFieldWorkspaceID   = big.NewInt(1 << 8)
-	listTemplatesResponseDataItemFieldDirectoryID   = big.NewInt(1 << 9)
-	listTemplatesResponseDataItemFieldCreatedByID   = big.NewInt(1 << 10)
-	listTemplatesResponseDataItemFieldCreatedByName = big.NewInt(1 << 11)
-	listTemplatesResponseDataItemFieldCreatedAt     = big.NewInt(1 << 12)
-	listTemplatesResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 13)
+	listTemplatesResponseDataItemFieldContentKind   = big.NewInt(1 << 6)
+	listTemplatesResponseDataItemFieldTags          = big.NewInt(1 << 7)
+	listTemplatesResponseDataItemFieldIsPublic      = big.NewInt(1 << 8)
+	listTemplatesResponseDataItemFieldWorkspaceID   = big.NewInt(1 << 9)
+	listTemplatesResponseDataItemFieldDirectoryID   = big.NewInt(1 << 10)
+	listTemplatesResponseDataItemFieldCreatedByID   = big.NewInt(1 << 11)
+	listTemplatesResponseDataItemFieldCreatedByName = big.NewInt(1 << 12)
+	listTemplatesResponseDataItemFieldCreatedAt     = big.NewInt(1 << 13)
+	listTemplatesResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 14)
 )
 
 type ListTemplatesResponseDataItem struct {
-	ID            string                              `json:"id" url:"id"`
-	Name          string                              `json:"name" url:"name"`
-	Slug          string                              `json:"slug" url:"slug"`
-	Description   *string                             `json:"description,omitempty" url:"description,omitempty"`
-	Status        ListTemplatesResponseDataItemStatus `json:"status" url:"status"`
-	Kind          ListTemplatesResponseDataItemKind   `json:"kind" url:"kind"`
-	Tags          []string                            `json:"tags" url:"tags"`
-	IsPublic      bool                                `json:"isPublic" url:"isPublic"`
-	WorkspaceID   string                              `json:"workspaceId" url:"workspaceId"`
-	DirectoryID   *string                             `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	CreatedByID   *string                             `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedByName *string                             `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt     time.Time                           `json:"createdAt" url:"createdAt"`
-	UpdatedAt     time.Time                           `json:"updatedAt" url:"updatedAt"`
+	ID            string                                    `json:"id" url:"id"`
+	Name          string                                    `json:"name" url:"name"`
+	Slug          string                                    `json:"slug" url:"slug"`
+	Description   *string                                   `json:"description,omitempty" url:"description,omitempty"`
+	Status        ListTemplatesResponseDataItemStatus       `json:"status" url:"status"`
+	Kind          ListTemplatesResponseDataItemKind         `json:"kind" url:"kind"`
+	ContentKind   *ListTemplatesResponseDataItemContentKind `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Tags          []string                                  `json:"tags" url:"tags"`
+	IsPublic      bool                                      `json:"isPublic" url:"isPublic"`
+	WorkspaceID   string                                    `json:"workspaceId" url:"workspaceId"`
+	DirectoryID   *string                                   `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	CreatedByID   *string                                   `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName *string                                   `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt     time.Time                                 `json:"createdAt" url:"createdAt"`
+	UpdatedAt     time.Time                                 `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3024,6 +3134,13 @@ func (l *ListTemplatesResponseDataItem) GetKind() ListTemplatesResponseDataItemK
 		return ""
 	}
 	return l.Kind
+}
+
+func (l *ListTemplatesResponseDataItem) GetContentKind() *ListTemplatesResponseDataItemContentKind {
+	if l == nil {
+		return nil
+	}
+	return l.ContentKind
 }
 
 func (l *ListTemplatesResponseDataItem) GetTags() []string {
@@ -3135,6 +3252,13 @@ func (l *ListTemplatesResponseDataItem) SetKind(kind ListTemplatesResponseDataIt
 	l.require(listTemplatesResponseDataItemFieldKind)
 }
 
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTemplatesResponseDataItem) SetContentKind(contentKind *ListTemplatesResponseDataItemContentKind) {
+	l.ContentKind = contentKind
+	l.require(listTemplatesResponseDataItemFieldContentKind)
+}
+
 // SetTags sets the Tags field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListTemplatesResponseDataItem) SetTags(tags []string) {
@@ -3240,6 +3364,28 @@ func (l *ListTemplatesResponseDataItem) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
+}
+
+type ListTemplatesResponseDataItemContentKind string
+
+const (
+	ListTemplatesResponseDataItemContentKindPrompt ListTemplatesResponseDataItemContentKind = "prompt"
+	ListTemplatesResponseDataItemContentKindSkill  ListTemplatesResponseDataItemContentKind = "skill"
+)
+
+func NewListTemplatesResponseDataItemContentKindFromString(s string) (ListTemplatesResponseDataItemContentKind, error) {
+	switch s {
+	case "prompt":
+		return ListTemplatesResponseDataItemContentKindPrompt, nil
+	case "skill":
+		return ListTemplatesResponseDataItemContentKindSkill, nil
+	}
+	var t ListTemplatesResponseDataItemContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListTemplatesResponseDataItemContentKind) Ptr() *ListTemplatesResponseDataItemContentKind {
+	return &l
 }
 
 type ListTemplatesResponseDataItemKind string

@@ -467,9 +467,12 @@ var (
 	createMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 16)
 	createMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 17)
 	createMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 18)
-	createMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 19)
-	createMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 20)
-	createMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 21)
+	createMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 19)
+	createMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 20)
+	createMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 21)
+	createMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 22)
+	createMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 23)
+	createMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 24)
 )
 
 type CreateMarketplaceListingResponseData struct {
@@ -492,6 +495,9 @@ type CreateMarketplaceListingResponseData struct {
 	IsFeatured    *bool                                                 `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
 	Categories    []*CreateMarketplaceListingResponseDataCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
 	Seller        *CreateMarketplaceListingResponseDataSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind   *CreateMarketplaceListingResponseDataContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	PromptSlug    *string                                               `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	Skill         *CreateMarketplaceListingResponseDataSkill            `json:"skill,omitempty" url:"skill,omitempty"`
 	PublishedAt   *time.Time                                            `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
 	CreatedAt     time.Time                                             `json:"createdAt" url:"createdAt"`
 	UpdatedAt     time.Time                                             `json:"updatedAt" url:"updatedAt"`
@@ -634,6 +640,27 @@ func (c *CreateMarketplaceListingResponseData) GetSeller() *CreateMarketplaceLis
 		return nil
 	}
 	return c.Seller
+}
+
+func (c *CreateMarketplaceListingResponseData) GetContentKind() *CreateMarketplaceListingResponseDataContentKind {
+	if c == nil {
+		return nil
+	}
+	return c.ContentKind
+}
+
+func (c *CreateMarketplaceListingResponseData) GetPromptSlug() *string {
+	if c == nil {
+		return nil
+	}
+	return c.PromptSlug
+}
+
+func (c *CreateMarketplaceListingResponseData) GetSkill() *CreateMarketplaceListingResponseDataSkill {
+	if c == nil {
+		return nil
+	}
+	return c.Skill
 }
 
 func (c *CreateMarketplaceListingResponseData) GetPublishedAt() *time.Time {
@@ -799,6 +826,27 @@ func (c *CreateMarketplaceListingResponseData) SetCategories(categories []*Creat
 func (c *CreateMarketplaceListingResponseData) SetSeller(seller *CreateMarketplaceListingResponseDataSeller) {
 	c.Seller = seller
 	c.require(createMarketplaceListingResponseDataFieldSeller)
+}
+
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseData) SetContentKind(contentKind *CreateMarketplaceListingResponseDataContentKind) {
+	c.ContentKind = contentKind
+	c.require(createMarketplaceListingResponseDataFieldContentKind)
+}
+
+// SetPromptSlug sets the PromptSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseData) SetPromptSlug(promptSlug *string) {
+	c.PromptSlug = promptSlug
+	c.require(createMarketplaceListingResponseDataFieldPromptSlug)
+}
+
+// SetSkill sets the Skill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseData) SetSkill(skill *CreateMarketplaceListingResponseDataSkill) {
+	c.Skill = skill
+	c.require(createMarketplaceListingResponseDataFieldSkill)
 }
 
 // SetPublishedAt sets the PublishedAt field and marks it as non-optional;
@@ -1057,6 +1105,28 @@ func (c *CreateMarketplaceListingResponseDataCategoriesItem) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type CreateMarketplaceListingResponseDataContentKind string
+
+const (
+	CreateMarketplaceListingResponseDataContentKindPrompt CreateMarketplaceListingResponseDataContentKind = "prompt"
+	CreateMarketplaceListingResponseDataContentKindSkill  CreateMarketplaceListingResponseDataContentKind = "skill"
+)
+
+func NewCreateMarketplaceListingResponseDataContentKindFromString(s string) (CreateMarketplaceListingResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return CreateMarketplaceListingResponseDataContentKindPrompt, nil
+	case "skill":
+		return CreateMarketplaceListingResponseDataContentKindSkill, nil
+	}
+	var t CreateMarketplaceListingResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateMarketplaceListingResponseDataContentKind) Ptr() *CreateMarketplaceListingResponseDataContentKind {
+	return &c
+}
+
 var (
 	createMarketplaceListingResponseDataSellerFieldUserID     = big.NewInt(1 << 0)
 	createMarketplaceListingResponseDataSellerFieldBio        = big.NewInt(1 << 1)
@@ -1156,6 +1226,132 @@ func (c *CreateMarketplaceListingResponseDataSeller) MarshalJSON() ([]byte, erro
 }
 
 func (c *CreateMarketplaceListingResponseDataSeller) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createMarketplaceListingResponseDataSkillFieldSlug        = big.NewInt(1 << 0)
+	createMarketplaceListingResponseDataSkillFieldFileCount   = big.NewInt(1 << 1)
+	createMarketplaceListingResponseDataSkillFieldDescription = big.NewInt(1 << 2)
+	createMarketplaceListingResponseDataSkillFieldWhenToUse   = big.NewInt(1 << 3)
+)
+
+type CreateMarketplaceListingResponseDataSkill struct {
+	Slug        *string `json:"slug,omitempty" url:"slug,omitempty"`
+	FileCount   *int    `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	WhenToUse   *string `json:"when_to_use,omitempty" url:"when_to_use,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) GetSlug() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Slug
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) GetFileCount() *int {
+	if c == nil {
+		return nil
+	}
+	return c.FileCount
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) GetDescription() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Description
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) GetWhenToUse() *string {
+	if c == nil {
+		return nil
+	}
+	return c.WhenToUse
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseDataSkill) SetSlug(slug *string) {
+	c.Slug = slug
+	c.require(createMarketplaceListingResponseDataSkillFieldSlug)
+}
+
+// SetFileCount sets the FileCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseDataSkill) SetFileCount(fileCount *int) {
+	c.FileCount = fileCount
+	c.require(createMarketplaceListingResponseDataSkillFieldFileCount)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseDataSkill) SetDescription(description *string) {
+	c.Description = description
+	c.require(createMarketplaceListingResponseDataSkillFieldDescription)
+}
+
+// SetWhenToUse sets the WhenToUse field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseDataSkill) SetWhenToUse(whenToUse *string) {
+	c.WhenToUse = whenToUse
+	c.require(createMarketplaceListingResponseDataSkillFieldWhenToUse)
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateMarketplaceListingResponseDataSkill
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateMarketplaceListingResponseDataSkill(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) MarshalJSON() ([]byte, error) {
+	type embed CreateMarketplaceListingResponseDataSkill
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateMarketplaceListingResponseDataSkill) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1344,9 +1540,12 @@ var (
 	updateMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 16)
 	updateMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 17)
 	updateMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 18)
-	updateMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 19)
-	updateMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 20)
-	updateMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 21)
+	updateMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 19)
+	updateMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 20)
+	updateMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 21)
+	updateMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 22)
+	updateMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 23)
+	updateMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 24)
 )
 
 type UpdateMarketplaceListingResponseData struct {
@@ -1369,6 +1568,9 @@ type UpdateMarketplaceListingResponseData struct {
 	IsFeatured    *bool                                                 `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
 	Categories    []*UpdateMarketplaceListingResponseDataCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
 	Seller        *UpdateMarketplaceListingResponseDataSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind   *UpdateMarketplaceListingResponseDataContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	PromptSlug    *string                                               `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	Skill         *UpdateMarketplaceListingResponseDataSkill            `json:"skill,omitempty" url:"skill,omitempty"`
 	PublishedAt   *time.Time                                            `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
 	CreatedAt     time.Time                                             `json:"createdAt" url:"createdAt"`
 	UpdatedAt     time.Time                                             `json:"updatedAt" url:"updatedAt"`
@@ -1511,6 +1713,27 @@ func (u *UpdateMarketplaceListingResponseData) GetSeller() *UpdateMarketplaceLis
 		return nil
 	}
 	return u.Seller
+}
+
+func (u *UpdateMarketplaceListingResponseData) GetContentKind() *UpdateMarketplaceListingResponseDataContentKind {
+	if u == nil {
+		return nil
+	}
+	return u.ContentKind
+}
+
+func (u *UpdateMarketplaceListingResponseData) GetPromptSlug() *string {
+	if u == nil {
+		return nil
+	}
+	return u.PromptSlug
+}
+
+func (u *UpdateMarketplaceListingResponseData) GetSkill() *UpdateMarketplaceListingResponseDataSkill {
+	if u == nil {
+		return nil
+	}
+	return u.Skill
 }
 
 func (u *UpdateMarketplaceListingResponseData) GetPublishedAt() *time.Time {
@@ -1676,6 +1899,27 @@ func (u *UpdateMarketplaceListingResponseData) SetCategories(categories []*Updat
 func (u *UpdateMarketplaceListingResponseData) SetSeller(seller *UpdateMarketplaceListingResponseDataSeller) {
 	u.Seller = seller
 	u.require(updateMarketplaceListingResponseDataFieldSeller)
+}
+
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseData) SetContentKind(contentKind *UpdateMarketplaceListingResponseDataContentKind) {
+	u.ContentKind = contentKind
+	u.require(updateMarketplaceListingResponseDataFieldContentKind)
+}
+
+// SetPromptSlug sets the PromptSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseData) SetPromptSlug(promptSlug *string) {
+	u.PromptSlug = promptSlug
+	u.require(updateMarketplaceListingResponseDataFieldPromptSlug)
+}
+
+// SetSkill sets the Skill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseData) SetSkill(skill *UpdateMarketplaceListingResponseDataSkill) {
+	u.Skill = skill
+	u.require(updateMarketplaceListingResponseDataFieldSkill)
 }
 
 // SetPublishedAt sets the PublishedAt field and marks it as non-optional;
@@ -1934,6 +2178,28 @@ func (u *UpdateMarketplaceListingResponseDataCategoriesItem) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+type UpdateMarketplaceListingResponseDataContentKind string
+
+const (
+	UpdateMarketplaceListingResponseDataContentKindPrompt UpdateMarketplaceListingResponseDataContentKind = "prompt"
+	UpdateMarketplaceListingResponseDataContentKindSkill  UpdateMarketplaceListingResponseDataContentKind = "skill"
+)
+
+func NewUpdateMarketplaceListingResponseDataContentKindFromString(s string) (UpdateMarketplaceListingResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return UpdateMarketplaceListingResponseDataContentKindPrompt, nil
+	case "skill":
+		return UpdateMarketplaceListingResponseDataContentKindSkill, nil
+	}
+	var t UpdateMarketplaceListingResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateMarketplaceListingResponseDataContentKind) Ptr() *UpdateMarketplaceListingResponseDataContentKind {
+	return &u
+}
+
 var (
 	updateMarketplaceListingResponseDataSellerFieldUserID     = big.NewInt(1 << 0)
 	updateMarketplaceListingResponseDataSellerFieldBio        = big.NewInt(1 << 1)
@@ -2033,6 +2299,132 @@ func (u *UpdateMarketplaceListingResponseDataSeller) MarshalJSON() ([]byte, erro
 }
 
 func (u *UpdateMarketplaceListingResponseDataSeller) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateMarketplaceListingResponseDataSkillFieldSlug        = big.NewInt(1 << 0)
+	updateMarketplaceListingResponseDataSkillFieldFileCount   = big.NewInt(1 << 1)
+	updateMarketplaceListingResponseDataSkillFieldDescription = big.NewInt(1 << 2)
+	updateMarketplaceListingResponseDataSkillFieldWhenToUse   = big.NewInt(1 << 3)
+)
+
+type UpdateMarketplaceListingResponseDataSkill struct {
+	Slug        *string `json:"slug,omitempty" url:"slug,omitempty"`
+	FileCount   *int    `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	WhenToUse   *string `json:"when_to_use,omitempty" url:"when_to_use,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) GetSlug() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Slug
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) GetFileCount() *int {
+	if u == nil {
+		return nil
+	}
+	return u.FileCount
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) GetDescription() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Description
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) GetWhenToUse() *string {
+	if u == nil {
+		return nil
+	}
+	return u.WhenToUse
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseDataSkill) SetSlug(slug *string) {
+	u.Slug = slug
+	u.require(updateMarketplaceListingResponseDataSkillFieldSlug)
+}
+
+// SetFileCount sets the FileCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseDataSkill) SetFileCount(fileCount *int) {
+	u.FileCount = fileCount
+	u.require(updateMarketplaceListingResponseDataSkillFieldFileCount)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseDataSkill) SetDescription(description *string) {
+	u.Description = description
+	u.require(updateMarketplaceListingResponseDataSkillFieldDescription)
+}
+
+// SetWhenToUse sets the WhenToUse field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseDataSkill) SetWhenToUse(whenToUse *string) {
+	u.WhenToUse = whenToUse
+	u.require(updateMarketplaceListingResponseDataSkillFieldWhenToUse)
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateMarketplaceListingResponseDataSkill
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateMarketplaceListingResponseDataSkill(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) MarshalJSON() ([]byte, error) {
+	type embed UpdateMarketplaceListingResponseDataSkill
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateMarketplaceListingResponseDataSkill) String() string {
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value

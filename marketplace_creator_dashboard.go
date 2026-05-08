@@ -233,9 +233,12 @@ var (
 	listMarketplaceCreatorListingsResponseDataItemFieldIsFeatured    = big.NewInt(1 << 16)
 	listMarketplaceCreatorListingsResponseDataItemFieldCategories    = big.NewInt(1 << 17)
 	listMarketplaceCreatorListingsResponseDataItemFieldSeller        = big.NewInt(1 << 18)
-	listMarketplaceCreatorListingsResponseDataItemFieldPublishedAt   = big.NewInt(1 << 19)
-	listMarketplaceCreatorListingsResponseDataItemFieldCreatedAt     = big.NewInt(1 << 20)
-	listMarketplaceCreatorListingsResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 21)
+	listMarketplaceCreatorListingsResponseDataItemFieldContentKind   = big.NewInt(1 << 19)
+	listMarketplaceCreatorListingsResponseDataItemFieldPromptSlug    = big.NewInt(1 << 20)
+	listMarketplaceCreatorListingsResponseDataItemFieldSkill         = big.NewInt(1 << 21)
+	listMarketplaceCreatorListingsResponseDataItemFieldPublishedAt   = big.NewInt(1 << 22)
+	listMarketplaceCreatorListingsResponseDataItemFieldCreatedAt     = big.NewInt(1 << 23)
+	listMarketplaceCreatorListingsResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 24)
 )
 
 type ListMarketplaceCreatorListingsResponseDataItem struct {
@@ -258,6 +261,9 @@ type ListMarketplaceCreatorListingsResponseDataItem struct {
 	IsFeatured    *bool                                                           `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
 	Categories    []*ListMarketplaceCreatorListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
 	Seller        *ListMarketplaceCreatorListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind   *ListMarketplaceCreatorListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	PromptSlug    *string                                                         `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	Skill         *ListMarketplaceCreatorListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
 	PublishedAt   *time.Time                                                      `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
 	CreatedAt     time.Time                                                       `json:"createdAt" url:"createdAt"`
 	UpdatedAt     time.Time                                                       `json:"updatedAt" url:"updatedAt"`
@@ -400,6 +406,27 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) GetSeller() *ListMarket
 		return nil
 	}
 	return l.Seller
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItem) GetContentKind() *ListMarketplaceCreatorListingsResponseDataItemContentKind {
+	if l == nil {
+		return nil
+	}
+	return l.ContentKind
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItem) GetPromptSlug() *string {
+	if l == nil {
+		return nil
+	}
+	return l.PromptSlug
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItem) GetSkill() *ListMarketplaceCreatorListingsResponseDataItemSkill {
+	if l == nil {
+		return nil
+	}
+	return l.Skill
 }
 
 func (l *ListMarketplaceCreatorListingsResponseDataItem) GetPublishedAt() *time.Time {
@@ -565,6 +592,27 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) SetCategories(categorie
 func (l *ListMarketplaceCreatorListingsResponseDataItem) SetSeller(seller *ListMarketplaceCreatorListingsResponseDataItemSeller) {
 	l.Seller = seller
 	l.require(listMarketplaceCreatorListingsResponseDataItemFieldSeller)
+}
+
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItem) SetContentKind(contentKind *ListMarketplaceCreatorListingsResponseDataItemContentKind) {
+	l.ContentKind = contentKind
+	l.require(listMarketplaceCreatorListingsResponseDataItemFieldContentKind)
+}
+
+// SetPromptSlug sets the PromptSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItem) SetPromptSlug(promptSlug *string) {
+	l.PromptSlug = promptSlug
+	l.require(listMarketplaceCreatorListingsResponseDataItemFieldPromptSlug)
+}
+
+// SetSkill sets the Skill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItem) SetSkill(skill *ListMarketplaceCreatorListingsResponseDataItemSkill) {
+	l.Skill = skill
+	l.require(listMarketplaceCreatorListingsResponseDataItemFieldSkill)
 }
 
 // SetPublishedAt sets the PublishedAt field and marks it as non-optional;
@@ -823,6 +871,28 @@ func (l *ListMarketplaceCreatorListingsResponseDataItemCategoriesItem) String() 
 	return fmt.Sprintf("%#v", l)
 }
 
+type ListMarketplaceCreatorListingsResponseDataItemContentKind string
+
+const (
+	ListMarketplaceCreatorListingsResponseDataItemContentKindPrompt ListMarketplaceCreatorListingsResponseDataItemContentKind = "prompt"
+	ListMarketplaceCreatorListingsResponseDataItemContentKindSkill  ListMarketplaceCreatorListingsResponseDataItemContentKind = "skill"
+)
+
+func NewListMarketplaceCreatorListingsResponseDataItemContentKindFromString(s string) (ListMarketplaceCreatorListingsResponseDataItemContentKind, error) {
+	switch s {
+	case "prompt":
+		return ListMarketplaceCreatorListingsResponseDataItemContentKindPrompt, nil
+	case "skill":
+		return ListMarketplaceCreatorListingsResponseDataItemContentKindSkill, nil
+	}
+	var t ListMarketplaceCreatorListingsResponseDataItemContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListMarketplaceCreatorListingsResponseDataItemContentKind) Ptr() *ListMarketplaceCreatorListingsResponseDataItemContentKind {
+	return &l
+}
+
 var (
 	listMarketplaceCreatorListingsResponseDataItemSellerFieldUserID     = big.NewInt(1 << 0)
 	listMarketplaceCreatorListingsResponseDataItemSellerFieldBio        = big.NewInt(1 << 1)
@@ -922,6 +992,132 @@ func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) MarshalJSON() ([]
 }
 
 func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listMarketplaceCreatorListingsResponseDataItemSkillFieldSlug        = big.NewInt(1 << 0)
+	listMarketplaceCreatorListingsResponseDataItemSkillFieldFileCount   = big.NewInt(1 << 1)
+	listMarketplaceCreatorListingsResponseDataItemSkillFieldDescription = big.NewInt(1 << 2)
+	listMarketplaceCreatorListingsResponseDataItemSkillFieldWhenToUse   = big.NewInt(1 << 3)
+)
+
+type ListMarketplaceCreatorListingsResponseDataItemSkill struct {
+	Slug        *string `json:"slug,omitempty" url:"slug,omitempty"`
+	FileCount   *int    `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	WhenToUse   *string `json:"when_to_use,omitempty" url:"when_to_use,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) GetSlug() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Slug
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) GetFileCount() *int {
+	if l == nil {
+		return nil
+	}
+	return l.FileCount
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) GetDescription() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Description
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) GetWhenToUse() *string {
+	if l == nil {
+		return nil
+	}
+	return l.WhenToUse
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) SetSlug(slug *string) {
+	l.Slug = slug
+	l.require(listMarketplaceCreatorListingsResponseDataItemSkillFieldSlug)
+}
+
+// SetFileCount sets the FileCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) SetFileCount(fileCount *int) {
+	l.FileCount = fileCount
+	l.require(listMarketplaceCreatorListingsResponseDataItemSkillFieldFileCount)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) SetDescription(description *string) {
+	l.Description = description
+	l.require(listMarketplaceCreatorListingsResponseDataItemSkillFieldDescription)
+}
+
+// SetWhenToUse sets the WhenToUse field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) SetWhenToUse(whenToUse *string) {
+	l.WhenToUse = whenToUse
+	l.require(listMarketplaceCreatorListingsResponseDataItemSkillFieldWhenToUse)
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListMarketplaceCreatorListingsResponseDataItemSkill
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListMarketplaceCreatorListingsResponseDataItemSkill(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) MarshalJSON() ([]byte, error) {
+	type embed ListMarketplaceCreatorListingsResponseDataItemSkill
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSkill) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value

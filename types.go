@@ -138,6 +138,153 @@ func (b *BadRequestErrorBody) String() string {
 }
 
 var (
+	badRequestErrorBodyDetailsFieldKind     = big.NewInt(1 << 0)
+	badRequestErrorBodyDetailsFieldField    = big.NewInt(1 << 1)
+	badRequestErrorBodyDetailsFieldExpected = big.NewInt(1 << 2)
+	badRequestErrorBodyDetailsFieldActual   = big.NewInt(1 << 3)
+	badRequestErrorBodyDetailsFieldHint     = big.NewInt(1 << 4)
+)
+
+type BadRequestErrorBodyDetails struct {
+	Kind     *string `json:"kind,omitempty" url:"kind,omitempty"`
+	Field    *string `json:"field,omitempty" url:"field,omitempty"`
+	Expected *string `json:"expected,omitempty" url:"expected,omitempty"`
+	Actual   *string `json:"actual,omitempty" url:"actual,omitempty"`
+	Hint     *string `json:"hint,omitempty" url:"hint,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	ExtraProperties map[string]interface{} `json:"-" url:"-"`
+
+	rawJSON json.RawMessage
+}
+
+func (b *BadRequestErrorBodyDetails) GetKind() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Kind
+}
+
+func (b *BadRequestErrorBodyDetails) GetField() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Field
+}
+
+func (b *BadRequestErrorBodyDetails) GetExpected() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Expected
+}
+
+func (b *BadRequestErrorBodyDetails) GetActual() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Actual
+}
+
+func (b *BadRequestErrorBodyDetails) GetHint() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Hint
+}
+
+func (b *BadRequestErrorBodyDetails) GetExtraProperties() map[string]interface{} {
+	return b.ExtraProperties
+}
+
+func (b *BadRequestErrorBodyDetails) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBodyDetails) SetKind(kind *string) {
+	b.Kind = kind
+	b.require(badRequestErrorBodyDetailsFieldKind)
+}
+
+// SetField sets the Field field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBodyDetails) SetField(field *string) {
+	b.Field = field
+	b.require(badRequestErrorBodyDetailsFieldField)
+}
+
+// SetExpected sets the Expected field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBodyDetails) SetExpected(expected *string) {
+	b.Expected = expected
+	b.require(badRequestErrorBodyDetailsFieldExpected)
+}
+
+// SetActual sets the Actual field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBodyDetails) SetActual(actual *string) {
+	b.Actual = actual
+	b.require(badRequestErrorBodyDetailsFieldActual)
+}
+
+// SetHint sets the Hint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBodyDetails) SetHint(hint *string) {
+	b.Hint = hint
+	b.require(badRequestErrorBodyDetailsFieldHint)
+}
+
+func (b *BadRequestErrorBodyDetails) UnmarshalJSON(data []byte) error {
+	type embed BadRequestErrorBodyDetails
+	var unmarshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BadRequestErrorBodyDetails(unmarshaler.embed)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.ExtraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BadRequestErrorBodyDetails) MarshalJSON() ([]byte, error) {
+	type embed BadRequestErrorBodyDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return internal.MarshalJSONWithExtraProperties(explicitMarshaler, b.ExtraProperties)
+}
+
+func (b *BadRequestErrorBodyDetails) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
 	badRequestErrorBodyDetailsItemFieldField   = big.NewInt(1 << 0)
 	badRequestErrorBodyDetailsItemFieldMessage = big.NewInt(1 << 1)
 )

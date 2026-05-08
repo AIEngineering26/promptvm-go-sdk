@@ -232,17 +232,19 @@ var (
 	forkPromptResponseDataFieldDescription        = big.NewInt(1 << 3)
 	forkPromptResponseDataFieldStatus             = big.NewInt(1 << 4)
 	forkPromptResponseDataFieldKind               = big.NewInt(1 << 5)
-	forkPromptResponseDataFieldTags               = big.NewInt(1 << 6)
-	forkPromptResponseDataFieldIsPublic           = big.NewInt(1 << 7)
-	forkPromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 8)
-	forkPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
-	forkPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
-	forkPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	forkPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
-	forkPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
-	forkPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
-	forkPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
-	forkPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
+	forkPromptResponseDataFieldContentKind        = big.NewInt(1 << 6)
+	forkPromptResponseDataFieldMetadata           = big.NewInt(1 << 7)
+	forkPromptResponseDataFieldTags               = big.NewInt(1 << 8)
+	forkPromptResponseDataFieldIsPublic           = big.NewInt(1 << 9)
+	forkPromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
+	forkPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
+	forkPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
+	forkPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
+	forkPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
+	forkPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
+	forkPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
+	forkPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
+	forkPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
 )
 
 type ForkPromptResponseData struct {
@@ -252,6 +254,8 @@ type ForkPromptResponseData struct {
 	Description        *string                               `json:"description,omitempty" url:"description,omitempty"`
 	Status             ForkPromptResponseDataStatus          `json:"status" url:"status"`
 	Kind               ForkPromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind        *ForkPromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata           map[string]interface{}                `json:"metadata,omitempty" url:"metadata,omitempty"`
 	Tags               []string                              `json:"tags" url:"tags"`
 	IsPublic           bool                                  `json:"isPublic" url:"isPublic"`
 	WorkspaceID        string                                `json:"workspaceId" url:"workspaceId"`
@@ -311,6 +315,20 @@ func (f *ForkPromptResponseData) GetKind() ForkPromptResponseDataKind {
 		return ""
 	}
 	return f.Kind
+}
+
+func (f *ForkPromptResponseData) GetContentKind() *ForkPromptResponseDataContentKind {
+	if f == nil {
+		return nil
+	}
+	return f.ContentKind
+}
+
+func (f *ForkPromptResponseData) GetMetadata() map[string]interface{} {
+	if f == nil {
+		return nil
+	}
+	return f.Metadata
 }
 
 func (f *ForkPromptResponseData) GetTags() []string {
@@ -443,6 +461,20 @@ func (f *ForkPromptResponseData) SetKind(kind ForkPromptResponseDataKind) {
 	f.require(forkPromptResponseDataFieldKind)
 }
 
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseData) SetContentKind(contentKind *ForkPromptResponseDataContentKind) {
+	f.ContentKind = contentKind
+	f.require(forkPromptResponseDataFieldContentKind)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseData) SetMetadata(metadata map[string]interface{}) {
+	f.Metadata = metadata
+	f.require(forkPromptResponseDataFieldMetadata)
+}
+
 // SetTags sets the Tags field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (f *ForkPromptResponseData) SetTags(tags []string) {
@@ -569,6 +601,28 @@ func (f *ForkPromptResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", f)
+}
+
+type ForkPromptResponseDataContentKind string
+
+const (
+	ForkPromptResponseDataContentKindPrompt ForkPromptResponseDataContentKind = "prompt"
+	ForkPromptResponseDataContentKindSkill  ForkPromptResponseDataContentKind = "skill"
+)
+
+func NewForkPromptResponseDataContentKindFromString(s string) (ForkPromptResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return ForkPromptResponseDataContentKindPrompt, nil
+	case "skill":
+		return ForkPromptResponseDataContentKindSkill, nil
+	}
+	var t ForkPromptResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f ForkPromptResponseDataContentKind) Ptr() *ForkPromptResponseDataContentKind {
+	return &f
 }
 
 var (
@@ -2092,17 +2146,19 @@ var (
 	movePromptResponseDataFieldDescription        = big.NewInt(1 << 3)
 	movePromptResponseDataFieldStatus             = big.NewInt(1 << 4)
 	movePromptResponseDataFieldKind               = big.NewInt(1 << 5)
-	movePromptResponseDataFieldTags               = big.NewInt(1 << 6)
-	movePromptResponseDataFieldIsPublic           = big.NewInt(1 << 7)
-	movePromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 8)
-	movePromptResponseDataFieldDirectoryID        = big.NewInt(1 << 9)
-	movePromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 10)
-	movePromptResponseDataFieldCreatedByID        = big.NewInt(1 << 11)
-	movePromptResponseDataFieldCreatedByName      = big.NewInt(1 << 12)
-	movePromptResponseDataFieldCreatedAt          = big.NewInt(1 << 13)
-	movePromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 14)
-	movePromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 15)
-	movePromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 16)
+	movePromptResponseDataFieldContentKind        = big.NewInt(1 << 6)
+	movePromptResponseDataFieldMetadata           = big.NewInt(1 << 7)
+	movePromptResponseDataFieldTags               = big.NewInt(1 << 8)
+	movePromptResponseDataFieldIsPublic           = big.NewInt(1 << 9)
+	movePromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
+	movePromptResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
+	movePromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
+	movePromptResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
+	movePromptResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
+	movePromptResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
+	movePromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
+	movePromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
+	movePromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
 )
 
 type MovePromptResponseData struct {
@@ -2112,6 +2168,8 @@ type MovePromptResponseData struct {
 	Description        *string                               `json:"description,omitempty" url:"description,omitempty"`
 	Status             MovePromptResponseDataStatus          `json:"status" url:"status"`
 	Kind               MovePromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind        *MovePromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata           map[string]interface{}                `json:"metadata,omitempty" url:"metadata,omitempty"`
 	Tags               []string                              `json:"tags" url:"tags"`
 	IsPublic           bool                                  `json:"isPublic" url:"isPublic"`
 	WorkspaceID        string                                `json:"workspaceId" url:"workspaceId"`
@@ -2171,6 +2229,20 @@ func (m *MovePromptResponseData) GetKind() MovePromptResponseDataKind {
 		return ""
 	}
 	return m.Kind
+}
+
+func (m *MovePromptResponseData) GetContentKind() *MovePromptResponseDataContentKind {
+	if m == nil {
+		return nil
+	}
+	return m.ContentKind
+}
+
+func (m *MovePromptResponseData) GetMetadata() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.Metadata
 }
 
 func (m *MovePromptResponseData) GetTags() []string {
@@ -2303,6 +2375,20 @@ func (m *MovePromptResponseData) SetKind(kind MovePromptResponseDataKind) {
 	m.require(movePromptResponseDataFieldKind)
 }
 
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseData) SetContentKind(contentKind *MovePromptResponseDataContentKind) {
+	m.ContentKind = contentKind
+	m.require(movePromptResponseDataFieldContentKind)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseData) SetMetadata(metadata map[string]interface{}) {
+	m.Metadata = metadata
+	m.require(movePromptResponseDataFieldMetadata)
+}
+
 // SetTags sets the Tags field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (m *MovePromptResponseData) SetTags(tags []string) {
@@ -2429,6 +2515,28 @@ func (m *MovePromptResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
+}
+
+type MovePromptResponseDataContentKind string
+
+const (
+	MovePromptResponseDataContentKindPrompt MovePromptResponseDataContentKind = "prompt"
+	MovePromptResponseDataContentKindSkill  MovePromptResponseDataContentKind = "skill"
+)
+
+func NewMovePromptResponseDataContentKindFromString(s string) (MovePromptResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return MovePromptResponseDataContentKindPrompt, nil
+	case "skill":
+		return MovePromptResponseDataContentKindSkill, nil
+	}
+	var t MovePromptResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m MovePromptResponseDataContentKind) Ptr() *MovePromptResponseDataContentKind {
+	return &m
 }
 
 var (
