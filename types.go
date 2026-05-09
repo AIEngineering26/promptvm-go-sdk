@@ -10,19 +10,13 @@ import (
 	time "time"
 )
 
-// Invalid request
+// Storage failure
 var (
-	badRequestErrorBodyFieldStatusCode = big.NewInt(1 << 0)
-	badRequestErrorBodyFieldError      = big.NewInt(1 << 1)
-	badRequestErrorBodyFieldMessage    = big.NewInt(1 << 2)
-	badRequestErrorBodyFieldRequestID  = big.NewInt(1 << 3)
+	badGatewayErrorBodyFieldData = big.NewInt(1 << 0)
 )
 
-type BadRequestErrorBody struct {
-	StatusCode int     `json:"statusCode" url:"statusCode"`
-	Error      string  `json:"error" url:"error"`
-	Message    string  `json:"message" url:"message"`
-	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+type BadGatewayErrorBody struct {
+	Data *BadGatewayErrorBodyData `json:"data" url:"data"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -31,11 +25,165 @@ type BadRequestErrorBody struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BadRequestErrorBody) GetStatusCode() int {
+func (b *BadGatewayErrorBody) GetData() *BadGatewayErrorBodyData {
 	if b == nil {
-		return 0
+		return nil
 	}
-	return b.StatusCode
+	return b.Data
+}
+
+func (b *BadGatewayErrorBody) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BadGatewayErrorBody) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadGatewayErrorBody) SetData(data *BadGatewayErrorBodyData) {
+	b.Data = data
+	b.require(badGatewayErrorBodyFieldData)
+}
+
+func (b *BadGatewayErrorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BadGatewayErrorBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BadGatewayErrorBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BadGatewayErrorBody) MarshalJSON() ([]byte, error) {
+	type embed BadGatewayErrorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BadGatewayErrorBody) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	badGatewayErrorBodyDataFieldAccepted = big.NewInt(1 << 0)
+)
+
+type BadGatewayErrorBodyData struct {
+	Accepted bool `json:"accepted" url:"accepted"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BadGatewayErrorBodyData) GetAccepted() bool {
+	if b == nil {
+		return false
+	}
+	return b.Accepted
+}
+
+func (b *BadGatewayErrorBodyData) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BadGatewayErrorBodyData) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetAccepted sets the Accepted field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadGatewayErrorBodyData) SetAccepted(accepted bool) {
+	b.Accepted = accepted
+	b.require(badGatewayErrorBodyDataFieldAccepted)
+}
+
+func (b *BadGatewayErrorBodyData) UnmarshalJSON(data []byte) error {
+	type unmarshaler BadGatewayErrorBodyData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BadGatewayErrorBodyData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BadGatewayErrorBodyData) MarshalJSON() ([]byte, error) {
+	type embed BadGatewayErrorBodyData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BadGatewayErrorBodyData) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// Bad input
+var (
+	badRequestErrorBodyFieldError     = big.NewInt(1 << 0)
+	badRequestErrorBodyFieldRequestID = big.NewInt(1 << 1)
+	badRequestErrorBodyFieldMessage   = big.NewInt(1 << 2)
+)
+
+type BadRequestErrorBody struct {
+	Error     string  `json:"error" url:"error"`
+	RequestID string  `json:"requestId" url:"requestId"`
+	Message   *string `json:"message,omitempty" url:"message,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
 func (b *BadRequestErrorBody) GetError() string {
@@ -45,18 +193,18 @@ func (b *BadRequestErrorBody) GetError() string {
 	return b.Error
 }
 
-func (b *BadRequestErrorBody) GetMessage() string {
+func (b *BadRequestErrorBody) GetRequestID() string {
 	if b == nil {
 		return ""
 	}
-	return b.Message
+	return b.RequestID
 }
 
-func (b *BadRequestErrorBody) GetRequestID() *string {
+func (b *BadRequestErrorBody) GetMessage() *string {
 	if b == nil {
 		return nil
 	}
-	return b.RequestID
+	return b.Message
 }
 
 func (b *BadRequestErrorBody) GetExtraProperties() map[string]interface{} {
@@ -70,13 +218,6 @@ func (b *BadRequestErrorBody) require(field *big.Int) {
 	b.explicitFields.Or(b.explicitFields, field)
 }
 
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BadRequestErrorBody) SetStatusCode(statusCode int) {
-	b.StatusCode = statusCode
-	b.require(badRequestErrorBodyFieldStatusCode)
-}
-
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (b *BadRequestErrorBody) SetError(error_ string) {
@@ -84,18 +225,18 @@ func (b *BadRequestErrorBody) SetError(error_ string) {
 	b.require(badRequestErrorBodyFieldError)
 }
 
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BadRequestErrorBody) SetMessage(message string) {
-	b.Message = message
-	b.require(badRequestErrorBodyFieldMessage)
-}
-
 // SetRequestID sets the RequestID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BadRequestErrorBody) SetRequestID(requestID *string) {
+func (b *BadRequestErrorBody) SetRequestID(requestID string) {
 	b.RequestID = requestID
 	b.require(badRequestErrorBodyFieldRequestID)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadRequestErrorBody) SetMessage(message *string) {
+	b.Message = message
+	b.require(badRequestErrorBodyFieldMessage)
 }
 
 func (b *BadRequestErrorBody) UnmarshalJSON(data []byte) error {
@@ -507,32 +648,23 @@ func (c *ConflictErrorBody) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Forbidden
+// Key revoked or scope denied
 var (
-	forbiddenErrorBodyFieldStatusCode = big.NewInt(1 << 0)
-	forbiddenErrorBodyFieldError      = big.NewInt(1 << 1)
-	forbiddenErrorBodyFieldMessage    = big.NewInt(1 << 2)
-	forbiddenErrorBodyFieldRequestID  = big.NewInt(1 << 3)
+	forbiddenErrorBodyFieldError     = big.NewInt(1 << 0)
+	forbiddenErrorBodyFieldRequestID = big.NewInt(1 << 1)
+	forbiddenErrorBodyFieldMessage   = big.NewInt(1 << 2)
 )
 
 type ForbiddenErrorBody struct {
-	StatusCode int     `json:"statusCode" url:"statusCode"`
-	Error      string  `json:"error" url:"error"`
-	Message    string  `json:"message" url:"message"`
-	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+	Error     string  `json:"error" url:"error"`
+	RequestID string  `json:"requestId" url:"requestId"`
+	Message   *string `json:"message,omitempty" url:"message,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (f *ForbiddenErrorBody) GetStatusCode() int {
-	if f == nil {
-		return 0
-	}
-	return f.StatusCode
 }
 
 func (f *ForbiddenErrorBody) GetError() string {
@@ -542,18 +674,18 @@ func (f *ForbiddenErrorBody) GetError() string {
 	return f.Error
 }
 
-func (f *ForbiddenErrorBody) GetMessage() string {
+func (f *ForbiddenErrorBody) GetRequestID() string {
 	if f == nil {
 		return ""
 	}
-	return f.Message
+	return f.RequestID
 }
 
-func (f *ForbiddenErrorBody) GetRequestID() *string {
+func (f *ForbiddenErrorBody) GetMessage() *string {
 	if f == nil {
 		return nil
 	}
-	return f.RequestID
+	return f.Message
 }
 
 func (f *ForbiddenErrorBody) GetExtraProperties() map[string]interface{} {
@@ -567,13 +699,6 @@ func (f *ForbiddenErrorBody) require(field *big.Int) {
 	f.explicitFields.Or(f.explicitFields, field)
 }
 
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForbiddenErrorBody) SetStatusCode(statusCode int) {
-	f.StatusCode = statusCode
-	f.require(forbiddenErrorBodyFieldStatusCode)
-}
-
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (f *ForbiddenErrorBody) SetError(error_ string) {
@@ -581,18 +706,18 @@ func (f *ForbiddenErrorBody) SetError(error_ string) {
 	f.require(forbiddenErrorBodyFieldError)
 }
 
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForbiddenErrorBody) SetMessage(message string) {
-	f.Message = message
-	f.require(forbiddenErrorBodyFieldMessage)
-}
-
 // SetRequestID sets the RequestID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForbiddenErrorBody) SetRequestID(requestID *string) {
+func (f *ForbiddenErrorBody) SetRequestID(requestID string) {
 	f.RequestID = requestID
 	f.require(forbiddenErrorBodyFieldRequestID)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForbiddenErrorBody) SetMessage(message *string) {
+	f.Message = message
+	f.require(forbiddenErrorBodyFieldMessage)
 }
 
 func (f *ForbiddenErrorBody) UnmarshalJSON(data []byte) error {
@@ -1214,32 +1339,23 @@ func (i *InternalServerErrorBody) String() string {
 	return fmt.Sprintf("%#v", i)
 }
 
-// Organization not found
+// Token not found
 var (
-	notFoundErrorBodyFieldStatusCode = big.NewInt(1 << 0)
-	notFoundErrorBodyFieldError      = big.NewInt(1 << 1)
-	notFoundErrorBodyFieldMessage    = big.NewInt(1 << 2)
-	notFoundErrorBodyFieldRequestID  = big.NewInt(1 << 3)
+	notFoundErrorBodyFieldError     = big.NewInt(1 << 0)
+	notFoundErrorBodyFieldRequestID = big.NewInt(1 << 1)
+	notFoundErrorBodyFieldMessage   = big.NewInt(1 << 2)
 )
 
 type NotFoundErrorBody struct {
-	StatusCode int     `json:"statusCode" url:"statusCode"`
-	Error      string  `json:"error" url:"error"`
-	Message    string  `json:"message" url:"message"`
-	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+	Error     string  `json:"error" url:"error"`
+	RequestID string  `json:"requestId" url:"requestId"`
+	Message   *string `json:"message,omitempty" url:"message,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (n *NotFoundErrorBody) GetStatusCode() int {
-	if n == nil {
-		return 0
-	}
-	return n.StatusCode
 }
 
 func (n *NotFoundErrorBody) GetError() string {
@@ -1249,18 +1365,18 @@ func (n *NotFoundErrorBody) GetError() string {
 	return n.Error
 }
 
-func (n *NotFoundErrorBody) GetMessage() string {
+func (n *NotFoundErrorBody) GetRequestID() string {
 	if n == nil {
 		return ""
 	}
-	return n.Message
+	return n.RequestID
 }
 
-func (n *NotFoundErrorBody) GetRequestID() *string {
+func (n *NotFoundErrorBody) GetMessage() *string {
 	if n == nil {
 		return nil
 	}
-	return n.RequestID
+	return n.Message
 }
 
 func (n *NotFoundErrorBody) GetExtraProperties() map[string]interface{} {
@@ -1274,13 +1390,6 @@ func (n *NotFoundErrorBody) require(field *big.Int) {
 	n.explicitFields.Or(n.explicitFields, field)
 }
 
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotFoundErrorBody) SetStatusCode(statusCode int) {
-	n.StatusCode = statusCode
-	n.require(notFoundErrorBodyFieldStatusCode)
-}
-
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (n *NotFoundErrorBody) SetError(error_ string) {
@@ -1288,18 +1397,18 @@ func (n *NotFoundErrorBody) SetError(error_ string) {
 	n.require(notFoundErrorBodyFieldError)
 }
 
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotFoundErrorBody) SetMessage(message string) {
-	n.Message = message
-	n.require(notFoundErrorBodyFieldMessage)
-}
-
 // SetRequestID sets the RequestID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotFoundErrorBody) SetRequestID(requestID *string) {
+func (n *NotFoundErrorBody) SetRequestID(requestID string) {
 	n.RequestID = requestID
 	n.require(notFoundErrorBodyFieldRequestID)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotFoundErrorBody) SetMessage(message *string) {
+	n.Message = message
+	n.require(notFoundErrorBodyFieldMessage)
 }
 
 func (n *NotFoundErrorBody) UnmarshalJSON(data []byte) error {
@@ -1343,30 +1452,21 @@ func (n *NotFoundErrorBody) String() string {
 
 // Rate limited
 var (
-	tooManyRequestsErrorBodyFieldStatusCode = big.NewInt(1 << 0)
-	tooManyRequestsErrorBodyFieldError      = big.NewInt(1 << 1)
-	tooManyRequestsErrorBodyFieldMessage    = big.NewInt(1 << 2)
-	tooManyRequestsErrorBodyFieldRetryAfter = big.NewInt(1 << 3)
+	tooManyRequestsErrorBodyFieldError     = big.NewInt(1 << 0)
+	tooManyRequestsErrorBodyFieldRequestID = big.NewInt(1 << 1)
+	tooManyRequestsErrorBodyFieldMessage   = big.NewInt(1 << 2)
 )
 
 type TooManyRequestsErrorBody struct {
-	StatusCode int    `json:"statusCode" url:"statusCode"`
-	Error      string `json:"error" url:"error"`
-	Message    string `json:"message" url:"message"`
-	RetryAfter *int   `json:"retryAfter,omitempty" url:"retryAfter,omitempty"`
+	Error     string  `json:"error" url:"error"`
+	RequestID string  `json:"requestId" url:"requestId"`
+	Message   *string `json:"message,omitempty" url:"message,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (t *TooManyRequestsErrorBody) GetStatusCode() int {
-	if t == nil {
-		return 0
-	}
-	return t.StatusCode
 }
 
 func (t *TooManyRequestsErrorBody) GetError() string {
@@ -1376,18 +1476,18 @@ func (t *TooManyRequestsErrorBody) GetError() string {
 	return t.Error
 }
 
-func (t *TooManyRequestsErrorBody) GetMessage() string {
+func (t *TooManyRequestsErrorBody) GetRequestID() string {
 	if t == nil {
 		return ""
 	}
-	return t.Message
+	return t.RequestID
 }
 
-func (t *TooManyRequestsErrorBody) GetRetryAfter() *int {
+func (t *TooManyRequestsErrorBody) GetMessage() *string {
 	if t == nil {
 		return nil
 	}
-	return t.RetryAfter
+	return t.Message
 }
 
 func (t *TooManyRequestsErrorBody) GetExtraProperties() map[string]interface{} {
@@ -1401,13 +1501,6 @@ func (t *TooManyRequestsErrorBody) require(field *big.Int) {
 	t.explicitFields.Or(t.explicitFields, field)
 }
 
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TooManyRequestsErrorBody) SetStatusCode(statusCode int) {
-	t.StatusCode = statusCode
-	t.require(tooManyRequestsErrorBodyFieldStatusCode)
-}
-
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (t *TooManyRequestsErrorBody) SetError(error_ string) {
@@ -1415,18 +1508,18 @@ func (t *TooManyRequestsErrorBody) SetError(error_ string) {
 	t.require(tooManyRequestsErrorBodyFieldError)
 }
 
-// SetMessage sets the Message field and marks it as non-optional;
+// SetRequestID sets the RequestID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TooManyRequestsErrorBody) SetMessage(message string) {
-	t.Message = message
-	t.require(tooManyRequestsErrorBodyFieldMessage)
+func (t *TooManyRequestsErrorBody) SetRequestID(requestID string) {
+	t.RequestID = requestID
+	t.require(tooManyRequestsErrorBodyFieldRequestID)
 }
 
-// SetRetryAfter sets the RetryAfter field and marks it as non-optional;
+// SetMessage sets the Message field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TooManyRequestsErrorBody) SetRetryAfter(retryAfter *int) {
-	t.RetryAfter = retryAfter
-	t.require(tooManyRequestsErrorBodyFieldRetryAfter)
+func (t *TooManyRequestsErrorBody) SetMessage(message *string) {
+	t.Message = message
+	t.require(tooManyRequestsErrorBodyFieldMessage)
 }
 
 func (t *TooManyRequestsErrorBody) UnmarshalJSON(data []byte) error {
@@ -1606,32 +1699,23 @@ func (t *TooManyRequestsErrorBodyRateLimit) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-// Unauthorized
+// Auth failed
 var (
-	unauthorizedErrorBodyFieldStatusCode = big.NewInt(1 << 0)
-	unauthorizedErrorBodyFieldError      = big.NewInt(1 << 1)
-	unauthorizedErrorBodyFieldMessage    = big.NewInt(1 << 2)
-	unauthorizedErrorBodyFieldRequestID  = big.NewInt(1 << 3)
+	unauthorizedErrorBodyFieldError     = big.NewInt(1 << 0)
+	unauthorizedErrorBodyFieldRequestID = big.NewInt(1 << 1)
+	unauthorizedErrorBodyFieldMessage   = big.NewInt(1 << 2)
 )
 
 type UnauthorizedErrorBody struct {
-	StatusCode int     `json:"statusCode" url:"statusCode"`
-	Error      string  `json:"error" url:"error"`
-	Message    string  `json:"message" url:"message"`
-	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+	Error     string  `json:"error" url:"error"`
+	RequestID string  `json:"requestId" url:"requestId"`
+	Message   *string `json:"message,omitempty" url:"message,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (u *UnauthorizedErrorBody) GetStatusCode() int {
-	if u == nil {
-		return 0
-	}
-	return u.StatusCode
 }
 
 func (u *UnauthorizedErrorBody) GetError() string {
@@ -1641,18 +1725,18 @@ func (u *UnauthorizedErrorBody) GetError() string {
 	return u.Error
 }
 
-func (u *UnauthorizedErrorBody) GetMessage() string {
+func (u *UnauthorizedErrorBody) GetRequestID() string {
 	if u == nil {
 		return ""
 	}
-	return u.Message
+	return u.RequestID
 }
 
-func (u *UnauthorizedErrorBody) GetRequestID() *string {
+func (u *UnauthorizedErrorBody) GetMessage() *string {
 	if u == nil {
 		return nil
 	}
-	return u.RequestID
+	return u.Message
 }
 
 func (u *UnauthorizedErrorBody) GetExtraProperties() map[string]interface{} {
@@ -1666,13 +1750,6 @@ func (u *UnauthorizedErrorBody) require(field *big.Int) {
 	u.explicitFields.Or(u.explicitFields, field)
 }
 
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UnauthorizedErrorBody) SetStatusCode(statusCode int) {
-	u.StatusCode = statusCode
-	u.require(unauthorizedErrorBodyFieldStatusCode)
-}
-
 // SetError sets the Error field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UnauthorizedErrorBody) SetError(error_ string) {
@@ -1680,18 +1757,18 @@ func (u *UnauthorizedErrorBody) SetError(error_ string) {
 	u.require(unauthorizedErrorBodyFieldError)
 }
 
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UnauthorizedErrorBody) SetMessage(message string) {
-	u.Message = message
-	u.require(unauthorizedErrorBodyFieldMessage)
-}
-
 // SetRequestID sets the RequestID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UnauthorizedErrorBody) SetRequestID(requestID *string) {
+func (u *UnauthorizedErrorBody) SetRequestID(requestID string) {
 	u.RequestID = requestID
 	u.require(unauthorizedErrorBodyFieldRequestID)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UnauthorizedErrorBody) SetMessage(message *string) {
+	u.Message = message
+	u.require(unauthorizedErrorBodyFieldMessage)
 }
 
 func (u *UnauthorizedErrorBody) UnmarshalJSON(data []byte) error {

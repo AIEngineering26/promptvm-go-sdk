@@ -7,6 +7,30 @@ import (
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 )
 
+// Storage failure
+type BadGatewayError struct {
+	*core.APIError
+	Body *BadGatewayErrorBody
+}
+
+func (b *BadGatewayError) UnmarshalJSON(data []byte) error {
+	var body *BadGatewayErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	b.StatusCode = 502
+	b.Body = body
+	return nil
+}
+
+func (b *BadGatewayError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(b.Body)
+}
+
+func (b *BadGatewayError) Unwrap() error {
+	return b.APIError
+}
+
 // Invalid query
 type BadRequestError struct {
 	*core.APIError

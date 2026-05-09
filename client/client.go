@@ -21,6 +21,8 @@ import (
 	marketplaceskillsfeed "github.com/AIEngineering26/promptvm-go-sdk/marketplaceskillsfeed"
 	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
 	marketplacesubscriptions "github.com/AIEngineering26/promptvm-go-sdk/marketplacesubscriptions"
+	mcp "github.com/AIEngineering26/promptvm-go-sdk/mcp"
+	mcpinternal "github.com/AIEngineering26/promptvm-go-sdk/mcpinternal"
 	onboarding "github.com/AIEngineering26/promptvm-go-sdk/onboarding"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	organizations "github.com/AIEngineering26/promptvm-go-sdk/organizations"
@@ -71,6 +73,8 @@ type Client struct {
 	Skills                      *skills.Client
 	Workspaces                  *workspaces.Client
 	Search                      *search.Client
+	Mcp                         *mcp.Client
+	McpInternal                 *mcpinternal.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -111,6 +115,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Skills:                      skills.NewClient(options),
 		Workspaces:                  workspaces.NewClient(options),
 		Search:                      search.NewClient(options),
+		Mcp:                         mcp.NewClient(options),
+		McpInternal:                 mcpinternal.NewClient(options),
 		options:                     options,
 		baseURL:                     options.BaseURL,
 		caller: internal.NewCaller(

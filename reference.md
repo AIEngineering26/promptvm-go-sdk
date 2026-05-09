@@ -8656,3 +8656,419 @@ client.Search.Organization(
 </dd>
 </dl>
 </details>
+
+## Mcp
+<details><summary><code>client.Mcp.ListMcpSessionTokens() -> *promptvmgosdk.ListMcpSessionTokensResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Mcp.ListMcpSessionTokens(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Mcp.MintMcpSessionToken(request) -> *promptvmgosdk.MintMcpSessionTokenResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a short-lived opaque session token bound to the caller. The plaintext token is returned exactly once. See contracts/session-token.md.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.MintMcpSessionTokenRequest{}
+client.Mcp.MintMcpSessionToken(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**label:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ttlSeconds:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**defaultWorkspaceID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scopes:** `[]*promptvmgosdk.MintMcpSessionTokenRequestScopesItem` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client:** `*promptvmgosdk.MintMcpSessionTokenRequestClient` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Mcp.RevokeMcpSessionToken(TokenID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RevokeMcpSessionTokenRequest{
+        TokenID: "tokenId",
+    }
+client.Mcp.RevokeMcpSessionToken(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tokenID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## McpInternal
+<details><summary><code>client.McpInternal.VerifyMcpSessionTokenInternal(request) -> *promptvmgosdk.VerifyMcpSessionTokenInternalResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.VerifyMcpSessionTokenInternalRequest{
+        Token: "token",
+    }
+client.McpInternal.VerifyMcpSessionTokenInternal(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.McpInternal.VerifyMcpPkskInternal(request) -> *promptvmgosdk.VerifyMcpPkskInternalResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.VerifyMcpPkskInternalRequest{
+        PublicKey: "publicKey",
+        SecretKey: "secretKey",
+    }
+client.McpInternal.VerifyMcpPkskInternal(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**publicKey:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secretKey:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.McpInternal.WriteMcpAuditInternal(request) -> *promptvmgosdk.WriteMcpAuditInternalResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.WriteMcpAuditInternalRequest{
+        EventID: "eventId",
+        EventType: promptvmgosdk.WriteMcpAuditInternalRequestEventTypeMcpSessionTokenUsed,
+        OccurredAt: promptvmgosdk.MustParseDateTime(
+            "2024-01-15T09:30:00Z",
+        ),
+        ActorSubjectID: "actorSubjectId",
+        ActorKind: promptvmgosdk.WriteMcpAuditInternalRequestActorKindSession,
+        OrgID: "orgId",
+        RequestID: "requestId",
+        ClientIPHash: "clientIpHash",
+        Result: promptvmgosdk.WriteMcpAuditInternalRequestResultSuccess,
+    }
+client.McpInternal.WriteMcpAuditInternal(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**eventID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**eventType:** `*promptvmgosdk.WriteMcpAuditInternalRequestEventType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**occurredAt:** `time.Time` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**actorSubjectID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**actorKind:** `*promptvmgosdk.WriteMcpAuditInternalRequestActorKind` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**toolName:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientUserAgent:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientIPHash:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**result:** `*promptvmgosdk.WriteMcpAuditInternalRequestResult` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
