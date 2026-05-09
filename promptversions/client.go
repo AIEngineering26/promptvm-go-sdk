@@ -64,6 +64,23 @@ func (c *Client) CreatePromptVersion(
 	return response.Body, nil
 }
 
+// Creates a new version from an older version's content.
+func (c *Client) RollbackPrompt(
+	ctx context.Context,
+	request *promptvmgosdk.RollbackPromptRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.RollbackPromptResponse, error) {
+	response, err := c.WithRawResponse.RollbackPrompt(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 func (c *Client) GetPromptVersion(
 	ctx context.Context,
 	request *promptvmgosdk.GetPromptVersionRequest,
@@ -103,23 +120,6 @@ func (c *Client) DiffPromptVersions(
 	opts ...option.RequestOption,
 ) (*promptvmgosdk.DiffPromptVersionsResponse, error) {
 	response, err := c.WithRawResponse.DiffPromptVersions(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Creates a new version from an older version's content.
-func (c *Client) RollbackPrompt(
-	ctx context.Context,
-	request *promptvmgosdk.RollbackPromptRequest,
-	opts ...option.RequestOption,
-) (*promptvmgosdk.RollbackPromptResponse, error) {
-	response, err := c.WithRawResponse.RollbackPrompt(
 		ctx,
 		request,
 		opts...,

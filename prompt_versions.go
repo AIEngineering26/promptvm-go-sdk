@@ -11,15 +11,18 @@ import (
 )
 
 var (
-	createPromptVersionRequestFieldPromptID        = big.NewInt(1 << 0)
-	createPromptVersionRequestFieldContent         = big.NewInt(1 << 1)
-	createPromptVersionRequestFieldSystemPrompt    = big.NewInt(1 << 2)
-	createPromptVersionRequestFieldChangeNote      = big.NewInt(1 << 3)
-	createPromptVersionRequestFieldVersionLabel    = big.NewInt(1 << 4)
-	createPromptVersionRequestFieldVariablesSchema = big.NewInt(1 << 5)
+	createPromptVersionRequestFieldIdempotencyKey  = big.NewInt(1 << 0)
+	createPromptVersionRequestFieldPromptID        = big.NewInt(1 << 1)
+	createPromptVersionRequestFieldContent         = big.NewInt(1 << 2)
+	createPromptVersionRequestFieldSystemPrompt    = big.NewInt(1 << 3)
+	createPromptVersionRequestFieldChangeNote      = big.NewInt(1 << 4)
+	createPromptVersionRequestFieldVersionLabel    = big.NewInt(1 << 5)
+	createPromptVersionRequestFieldVariablesSchema = big.NewInt(1 << 6)
 )
 
 type CreatePromptVersionRequest struct {
+	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+	IdempotencyKey  *string                `json:"-" url:"-"`
 	PromptID        string                 `json:"-" url:"-"`
 	Content         string                 `json:"content" url:"-"`
 	SystemPrompt    *string                `json:"systemPrompt,omitempty" url:"-"`
@@ -36,6 +39,13 @@ func (c *CreatePromptVersionRequest) require(field *big.Int) {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionRequest) SetIdempotencyKey(idempotencyKey *string) {
+	c.IdempotencyKey = idempotencyKey
+	c.require(createPromptVersionRequestFieldIdempotencyKey)
 }
 
 // SetPromptID sets the PromptID field and marks it as non-optional;
@@ -201,13 +211,16 @@ func (l *ListPromptVersionsRequest) SetLimit(limit *string) {
 }
 
 var (
-	rollbackPromptRequestFieldPromptID      = big.NewInt(1 << 0)
-	rollbackPromptRequestFieldTargetVersion = big.NewInt(1 << 1)
+	rollbackPromptRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	rollbackPromptRequestFieldPromptID       = big.NewInt(1 << 1)
+	rollbackPromptRequestFieldTargetVersion  = big.NewInt(1 << 2)
 )
 
 type RollbackPromptRequest struct {
-	PromptID      string `json:"-" url:"-"`
-	TargetVersion int    `json:"targetVersion" url:"-"`
+	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+	IdempotencyKey *string `json:"-" url:"-"`
+	PromptID       string  `json:"-" url:"-"`
+	TargetVersion  int     `json:"targetVersion" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -218,6 +231,13 @@ func (r *RollbackPromptRequest) require(field *big.Int) {
 		r.explicitFields = big.NewInt(0)
 	}
 	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptRequest) SetIdempotencyKey(idempotencyKey *string) {
+	r.IdempotencyKey = idempotencyKey
+	r.require(rollbackPromptRequestFieldIdempotencyKey)
 }
 
 // SetPromptID sets the PromptID field and marks it as non-optional;

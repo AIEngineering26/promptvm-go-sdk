@@ -223,7 +223,7 @@ func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
 }
 
-// Circular reference or max depth
+// Idempotency conflict
 type UnprocessableEntityError struct {
 	*core.APIError
 	Body interface{}

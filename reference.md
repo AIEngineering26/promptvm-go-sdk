@@ -1068,6 +1068,14 @@ client.Sharing.CreatePromptShareLink(
 <dl>
 <dd>
 
+**idempotencyKey:** `*string` — Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **permission:** `*promptvmgosdk.CreatePromptShareLinkRequestPermission` 
     
 </dd>
@@ -4722,6 +4730,14 @@ client.Prompts.CreatePrompt(
 <dl>
 <dd>
 
+**idempotencyKey:** `*string` — Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **name:** `string` 
     
 </dd>
@@ -4985,6 +5001,14 @@ client.Prompts.UpdatePrompt(
 <dl>
 <dd>
 
+**idempotencyKey:** `*string` — Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **name:** `*string` 
     
 </dd>
@@ -5145,6 +5169,14 @@ client.PromptVersions.CreatePromptVersion(
 <dl>
 <dd>
 
+**idempotencyKey:** `*string` — Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **content:** `string` 
     
 </dd>
@@ -5178,6 +5210,84 @@ client.PromptVersions.CreatePromptVersion(
 <dd>
 
 **variablesSchema:** `map[string]any` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PromptVersions.RollbackPrompt(PromptID, request) -> *promptvmgosdk.RollbackPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new version from an older version's content.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RollbackPromptRequest{
+        PromptID: "promptId",
+        TargetVersion: 1,
+    }
+client.PromptVersions.RollbackPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*string` — Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetVersion:** `int` 
     
 </dd>
 </dl>
@@ -5401,76 +5511,6 @@ client.PromptVersions.DiffPromptVersions(
 <dd>
 
 **to:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PromptVersions.RollbackPrompt(PromptID, request) -> *promptvmgosdk.RollbackPromptResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a new version from an older version's content.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.RollbackPromptRequest{
-        PromptID: "promptId",
-        TargetVersion: 1,
-    }
-client.PromptVersions.RollbackPrompt(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**promptID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**targetVersion:** `int` 
     
 </dd>
 </dl>

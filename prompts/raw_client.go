@@ -94,6 +94,9 @@ func (r *RawClient) CreatePrompt(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotency-key", *request.IdempotencyKey)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response *promptvmgosdk.CreatePromptResponse
 	raw, err := r.caller.Call(
@@ -228,6 +231,9 @@ func (r *RawClient) UpdatePrompt(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotency-key", *request.IdempotencyKey)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response *promptvmgosdk.UpdatePromptResponse
 	raw, err := r.caller.Call(

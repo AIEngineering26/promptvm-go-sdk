@@ -115,6 +115,33 @@ func TestPromptVersionsCreatePromptVersionWithWireMock(
 	VerifyRequestCount(t, "TestPromptVersionsCreatePromptVersionWithWireMock", "POST", "/api/v1/prompts/promptId/versions", nil, 1)
 }
 
+func TestPromptVersionsRollbackPromptWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.RollbackPromptRequest{
+		PromptID:      "promptId",
+		TargetVersion: 1,
+	}
+	_, invocationErr := client.PromptVersions.RollbackPrompt(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPromptVersionsRollbackPromptWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPromptVersionsRollbackPromptWithWireMock", "POST", "/api/v1/prompts/promptId/rollback", nil, 1)
+}
+
 func TestPromptVersionsGetPromptVersionWithWireMock(
 	t *testing.T,
 ) {
@@ -195,31 +222,4 @@ func TestPromptVersionsDiffPromptVersionsWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestPromptVersionsDiffPromptVersionsWithWireMock", "GET", "/api/v1/prompts/promptId/diff", map[string]string{"from": "from", "to": "to"}, 1)
-}
-
-func TestPromptVersionsRollbackPromptWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.RollbackPromptRequest{
-		PromptID:      "promptId",
-		TargetVersion: 1,
-	}
-	_, invocationErr := client.PromptVersions.RollbackPrompt(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPromptVersionsRollbackPromptWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPromptVersionsRollbackPromptWithWireMock", "POST", "/api/v1/prompts/promptId/rollback", nil, 1)
 }

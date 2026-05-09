@@ -45,15 +45,18 @@ func (a *AccessSharedPromptRequest) SetPassword(password *string) {
 }
 
 var (
-	createPromptShareLinkRequestFieldPromptID       = big.NewInt(1 << 0)
-	createPromptShareLinkRequestFieldPermission     = big.NewInt(1 << 1)
-	createPromptShareLinkRequestFieldPassword       = big.NewInt(1 << 2)
-	createPromptShareLinkRequestFieldExpiresInHours = big.NewInt(1 << 3)
-	createPromptShareLinkRequestFieldMaxUses        = big.NewInt(1 << 4)
-	createPromptShareLinkRequestFieldVersionNumber  = big.NewInt(1 << 5)
+	createPromptShareLinkRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	createPromptShareLinkRequestFieldPromptID       = big.NewInt(1 << 1)
+	createPromptShareLinkRequestFieldPermission     = big.NewInt(1 << 2)
+	createPromptShareLinkRequestFieldPassword       = big.NewInt(1 << 3)
+	createPromptShareLinkRequestFieldExpiresInHours = big.NewInt(1 << 4)
+	createPromptShareLinkRequestFieldMaxUses        = big.NewInt(1 << 5)
+	createPromptShareLinkRequestFieldVersionNumber  = big.NewInt(1 << 6)
 )
 
 type CreatePromptShareLinkRequest struct {
+	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+	IdempotencyKey *string                                 `json:"-" url:"-"`
 	PromptID       string                                  `json:"-" url:"-"`
 	Permission     *CreatePromptShareLinkRequestPermission `json:"permission,omitempty" url:"-"`
 	Password       *string                                 `json:"password,omitempty" url:"-"`
@@ -70,6 +73,13 @@ func (c *CreatePromptShareLinkRequest) require(field *big.Int) {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkRequest) SetIdempotencyKey(idempotencyKey *string) {
+	c.IdempotencyKey = idempotencyKey
+	c.require(createPromptShareLinkRequestFieldIdempotencyKey)
 }
 
 // SetPromptID sets the PromptID field and marks it as non-optional;

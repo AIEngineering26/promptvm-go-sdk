@@ -11,29 +11,32 @@ import (
 )
 
 var (
-	createPromptRequestFieldName         = big.NewInt(1 << 0)
-	createPromptRequestFieldDescription  = big.NewInt(1 << 1)
-	createPromptRequestFieldWorkspaceID  = big.NewInt(1 << 2)
-	createPromptRequestFieldDirectoryID  = big.NewInt(1 << 3)
-	createPromptRequestFieldContent      = big.NewInt(1 << 4)
-	createPromptRequestFieldSystemPrompt = big.NewInt(1 << 5)
-	createPromptRequestFieldKind         = big.NewInt(1 << 6)
-	createPromptRequestFieldTags         = big.NewInt(1 << 7)
-	createPromptRequestFieldIsPublic     = big.NewInt(1 << 8)
-	createPromptRequestFieldStatus       = big.NewInt(1 << 9)
+	createPromptRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	createPromptRequestFieldName           = big.NewInt(1 << 1)
+	createPromptRequestFieldDescription    = big.NewInt(1 << 2)
+	createPromptRequestFieldWorkspaceID    = big.NewInt(1 << 3)
+	createPromptRequestFieldDirectoryID    = big.NewInt(1 << 4)
+	createPromptRequestFieldContent        = big.NewInt(1 << 5)
+	createPromptRequestFieldSystemPrompt   = big.NewInt(1 << 6)
+	createPromptRequestFieldKind           = big.NewInt(1 << 7)
+	createPromptRequestFieldTags           = big.NewInt(1 << 8)
+	createPromptRequestFieldIsPublic       = big.NewInt(1 << 9)
+	createPromptRequestFieldStatus         = big.NewInt(1 << 10)
 )
 
 type CreatePromptRequest struct {
-	Name         string                     `json:"name" url:"-"`
-	Description  *string                    `json:"description,omitempty" url:"-"`
-	WorkspaceID  string                     `json:"workspaceId" url:"-"`
-	DirectoryID  *string                    `json:"directoryId,omitempty" url:"-"`
-	Content      string                     `json:"content" url:"-"`
-	SystemPrompt *string                    `json:"systemPrompt,omitempty" url:"-"`
-	Kind         *CreatePromptRequestKind   `json:"kind,omitempty" url:"-"`
-	Tags         []string                   `json:"tags,omitempty" url:"-"`
-	IsPublic     *bool                      `json:"isPublic,omitempty" url:"-"`
-	Status       *CreatePromptRequestStatus `json:"status,omitempty" url:"-"`
+	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+	IdempotencyKey *string                    `json:"-" url:"-"`
+	Name           string                     `json:"name" url:"-"`
+	Description    *string                    `json:"description,omitempty" url:"-"`
+	WorkspaceID    string                     `json:"workspaceId" url:"-"`
+	DirectoryID    *string                    `json:"directoryId,omitempty" url:"-"`
+	Content        string                     `json:"content" url:"-"`
+	SystemPrompt   *string                    `json:"systemPrompt,omitempty" url:"-"`
+	Kind           *CreatePromptRequestKind   `json:"kind,omitempty" url:"-"`
+	Tags           []string                   `json:"tags,omitempty" url:"-"`
+	IsPublic       *bool                      `json:"isPublic,omitempty" url:"-"`
+	Status         *CreatePromptRequestStatus `json:"status,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -44,6 +47,13 @@ func (c *CreatePromptRequest) require(field *big.Int) {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptRequest) SetIdempotencyKey(idempotencyKey *string) {
+	c.IdempotencyKey = idempotencyKey
+	c.require(createPromptRequestFieldIdempotencyKey)
 }
 
 // SetName sets the Name field and marks it as non-optional;
@@ -5240,23 +5250,26 @@ func (u UpdatePromptResponseDataStatus) Ptr() *UpdatePromptResponseDataStatus {
 }
 
 var (
-	updatePromptRequestFieldPromptID    = big.NewInt(1 << 0)
-	updatePromptRequestFieldName        = big.NewInt(1 << 1)
-	updatePromptRequestFieldDescription = big.NewInt(1 << 2)
-	updatePromptRequestFieldStatus      = big.NewInt(1 << 3)
-	updatePromptRequestFieldTags        = big.NewInt(1 << 4)
-	updatePromptRequestFieldIsPublic    = big.NewInt(1 << 5)
-	updatePromptRequestFieldDirectoryID = big.NewInt(1 << 6)
+	updatePromptRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	updatePromptRequestFieldPromptID       = big.NewInt(1 << 1)
+	updatePromptRequestFieldName           = big.NewInt(1 << 2)
+	updatePromptRequestFieldDescription    = big.NewInt(1 << 3)
+	updatePromptRequestFieldStatus         = big.NewInt(1 << 4)
+	updatePromptRequestFieldTags           = big.NewInt(1 << 5)
+	updatePromptRequestFieldIsPublic       = big.NewInt(1 << 6)
+	updatePromptRequestFieldDirectoryID    = big.NewInt(1 << 7)
 )
 
 type UpdatePromptRequest struct {
-	PromptID    string                     `json:"-" url:"-"`
-	Name        *string                    `json:"name,omitempty" url:"-"`
-	Description *string                    `json:"description,omitempty" url:"-"`
-	Status      *UpdatePromptRequestStatus `json:"status,omitempty" url:"-"`
-	Tags        []string                   `json:"tags,omitempty" url:"-"`
-	IsPublic    *bool                      `json:"isPublic,omitempty" url:"-"`
-	DirectoryID *string                    `json:"directoryId,omitempty" url:"-"`
+	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+	IdempotencyKey *string                    `json:"-" url:"-"`
+	PromptID       string                     `json:"-" url:"-"`
+	Name           *string                    `json:"name,omitempty" url:"-"`
+	Description    *string                    `json:"description,omitempty" url:"-"`
+	Status         *UpdatePromptRequestStatus `json:"status,omitempty" url:"-"`
+	Tags           []string                   `json:"tags,omitempty" url:"-"`
+	IsPublic       *bool                      `json:"isPublic,omitempty" url:"-"`
+	DirectoryID    *string                    `json:"directoryId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5267,6 +5280,13 @@ func (u *UpdatePromptRequest) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptRequest) SetIdempotencyKey(idempotencyKey *string) {
+	u.IdempotencyKey = idempotencyKey
+	u.require(updatePromptRequestFieldIdempotencyKey)
 }
 
 // SetPromptID sets the PromptID field and marks it as non-optional;

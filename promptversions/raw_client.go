@@ -100,6 +100,9 @@ func (r *RawClient) CreatePromptVersion(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotency-key", *request.IdempotencyKey)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response *promptvmgosdk.CreatePromptVersionResponse
 	raw, err := r.caller.Call(
@@ -121,6 +124,55 @@ func (r *RawClient) CreatePromptVersion(
 		return nil, err
 	}
 	return &core.Response[*promptvmgosdk.CreatePromptVersionResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) RollbackPrompt(
+	ctx context.Context,
+	request *promptvmgosdk.RollbackPromptRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.RollbackPromptResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/prompts/%v/rollback",
+		request.PromptID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotency-key", *request.IdempotencyKey)
+	}
+	headers.Add("Content-Type", "application/json")
+	var response *promptvmgosdk.RollbackPromptResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.RollbackPromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -264,52 +316,6 @@ func (r *RawClient) DiffPromptVersions(
 		return nil, err
 	}
 	return &core.Response[*promptvmgosdk.DiffPromptVersionsResponse]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) RollbackPrompt(
-	ctx context.Context,
-	request *promptvmgosdk.RollbackPromptRequest,
-	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.RollbackPromptResponse], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"http://localhost:3000",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/v1/prompts/%v/rollback",
-		request.PromptID,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.RollbackPromptResponse
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*promptvmgosdk.RollbackPromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -235,6 +235,9 @@ func (r *RawClient) CreatePromptShareLink(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotency-key", *request.IdempotencyKey)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response *promptvmgosdk.CreatePromptShareLinkResponse
 	raw, err := r.caller.Call(
