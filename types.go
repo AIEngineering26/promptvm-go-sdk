@@ -10,164 +10,7 @@ import (
 	time "time"
 )
 
-// Storage failure
-var (
-	badGatewayErrorBodyFieldData = big.NewInt(1 << 0)
-)
-
-type BadGatewayErrorBody struct {
-	Data *BadGatewayErrorBodyData `json:"data" url:"data"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BadGatewayErrorBody) GetData() *BadGatewayErrorBodyData {
-	if b == nil {
-		return nil
-	}
-	return b.Data
-}
-
-func (b *BadGatewayErrorBody) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BadGatewayErrorBody) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BadGatewayErrorBody) SetData(data *BadGatewayErrorBodyData) {
-	b.Data = data
-	b.require(badGatewayErrorBodyFieldData)
-}
-
-func (b *BadGatewayErrorBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler BadGatewayErrorBody
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BadGatewayErrorBody(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BadGatewayErrorBody) MarshalJSON() ([]byte, error) {
-	type embed BadGatewayErrorBody
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*b),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BadGatewayErrorBody) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	badGatewayErrorBodyDataFieldAccepted = big.NewInt(1 << 0)
-)
-
-type BadGatewayErrorBodyData struct {
-	Accepted bool `json:"accepted" url:"accepted"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BadGatewayErrorBodyData) GetAccepted() bool {
-	if b == nil {
-		return false
-	}
-	return b.Accepted
-}
-
-func (b *BadGatewayErrorBodyData) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BadGatewayErrorBodyData) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetAccepted sets the Accepted field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BadGatewayErrorBodyData) SetAccepted(accepted bool) {
-	b.Accepted = accepted
-	b.require(badGatewayErrorBodyDataFieldAccepted)
-}
-
-func (b *BadGatewayErrorBodyData) UnmarshalJSON(data []byte) error {
-	type unmarshaler BadGatewayErrorBodyData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BadGatewayErrorBodyData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BadGatewayErrorBodyData) MarshalJSON() ([]byte, error) {
-	type embed BadGatewayErrorBodyData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*b),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BadGatewayErrorBodyData) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-// Bad input
+// Invalid request
 var (
 	badRequestErrorBodyFieldError     = big.NewInt(1 << 0)
 	badRequestErrorBodyFieldRequestID = big.NewInt(1 << 1)
@@ -648,7 +491,7 @@ func (c *ConflictErrorBody) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Key revoked or scope denied
+// Scope denied or not an org member
 var (
 	forbiddenErrorBodyFieldError     = big.NewInt(1 << 0)
 	forbiddenErrorBodyFieldRequestID = big.NewInt(1 << 1)
@@ -1450,7 +1293,7 @@ func (n *NotFoundErrorBody) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
-// Rate limited
+// Rate limited or quota exceeded
 var (
 	tooManyRequestsErrorBodyFieldError     = big.NewInt(1 << 0)
 	tooManyRequestsErrorBodyFieldRequestID = big.NewInt(1 << 1)
@@ -1699,7 +1542,7 @@ func (t *TooManyRequestsErrorBodyRateLimit) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-// Auth failed
+// Unauthorized
 var (
 	unauthorizedErrorBodyFieldError     = big.NewInt(1 << 0)
 	unauthorizedErrorBodyFieldRequestID = big.NewInt(1 << 1)

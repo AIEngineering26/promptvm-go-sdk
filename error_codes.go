@@ -53,9 +53,4 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	502: func(apiError *core.APIError) error {
-		return &BadGatewayError{
-			APIError: apiError,
-		}
-	},
 }
