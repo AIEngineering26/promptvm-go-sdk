@@ -24,36 +24,41 @@ A full reference for this library is available [here](https://github.com/AIEngin
 
 ## Usage
 
-Instantiate and use the client with the following:
+Instantiate and use the client with the following. Both `publicKey`
+(`pk_live_...`) and `secretKey` (`sk_live_...`) are required — find
+them on the API keys page in the dashboard
+(<https://app.promptvm.ai/settings/api-keys>).
 
 ```go
 package example
 
 import (
+    "context"
+    "os"
+
     client "github.com/AIEngineering26/promptvm-go-sdk/client"
     option "github.com/AIEngineering26/promptvm-go-sdk/option"
     promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-    context "context"
 )
 
 func do() {
-    client := client.NewClient(
-        option.WithAPIKey(
-            "<value>",
+    c := client.NewClient(
+        option.WithCredentials(
+            os.Getenv("PROMPTVM_PUBLIC_KEY"),
+            os.Getenv("PROMPTVM_SECRET_KEY"),
         ),
     )
-    request := &promptvmgosdk.CliAuthorizeRequest{
-        CodeChallenge: "code_challenge",
-        CodeChallengeMethod: promptvmgosdk.CliAuthorizeRequestCodeChallengeMethodS256,
-        RedirectURI: "redirect_uri",
-        ClientID: promptvmgosdk.CliAuthorizeRequestClientIDPromptvmCli,
-    }
-    client.CliAuth.CliAuthorize(
+    _, _ = c.Prompts.ListPrompts(
         context.TODO(),
-        request,
+        &promptvmgosdk.ListPromptsRequest{WorkspaceID: "..."},
     )
 }
 ```
+
+> **Upgrading from v0.x?** v1.0 replaced `option.WithAPIKey(string)` with
+> `option.WithCredentials(publicKey, secretKey)`. The legacy
+> `WithAPIKey` is kept as a panic stub so callers compiling against
+> v0.x land on a clear migration message — see [MIGRATION.md](./MIGRATION.md).
 
 ## Environments
 
