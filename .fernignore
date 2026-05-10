@@ -1,1 +1,12 @@
 # Specify files that shouldn't be modified by Fern
+#
+# Auth options — manually maintained for dual-header auth (v1.0).
+# The Fern overlay in services/backend/fern/sdk-overlays.yml declares
+# the dual-header scheme so a clean regeneration produces the same
+# code, but pinning here protects the manual edits if generator
+# behaviour changes.
+core/request_option.go
+option/request_option.go
+option/credentials_test.go
+MIGRATION.md
+CHANGELOG.md
