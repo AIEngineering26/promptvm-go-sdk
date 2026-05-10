@@ -44,6 +44,50 @@ func (r *ResolvePromptRequest) SetVersionID(versionID *string) {
 }
 
 var (
+	resolvePromptPostRequestFieldPromptID  = big.NewInt(1 << 0)
+	resolvePromptPostRequestFieldVersionID = big.NewInt(1 << 1)
+	resolvePromptPostRequestFieldVariables = big.NewInt(1 << 2)
+)
+
+type ResolvePromptPostRequest struct {
+	PromptID  string  `json:"-" url:"-"`
+	VersionID *string `json:"versionId,omitempty" url:"-"`
+	// Optional caller-supplied values for `{{name}}` tokens in the prompt. Unknown variables remain literal in the response. Never throws.
+	Variables map[string]string `json:"variables,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *ResolvePromptPostRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetPromptID sets the PromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostRequest) SetPromptID(promptID string) {
+	r.PromptID = promptID
+	r.require(resolvePromptPostRequestFieldPromptID)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostRequest) SetVersionID(versionID *string) {
+	r.VersionID = versionID
+	r.require(resolvePromptPostRequestFieldVersionID)
+}
+
+// SetVariables sets the Variables field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostRequest) SetVariables(variables map[string]string) {
+	r.Variables = variables
+	r.require(resolvePromptPostRequestFieldVariables)
+}
+
+var (
 	resolvePromptStreamRequestFieldPromptID  = big.NewInt(1 << 0)
 	resolvePromptStreamRequestFieldVersionID = big.NewInt(1 << 1)
 )
@@ -75,6 +119,289 @@ func (r *ResolvePromptStreamRequest) SetPromptID(promptID string) {
 func (r *ResolvePromptStreamRequest) SetVersionID(versionID *string) {
 	r.VersionID = versionID
 	r.require(resolvePromptStreamRequestFieldVersionID)
+}
+
+// Resolved content
+var (
+	resolvePromptPostResponseFieldData = big.NewInt(1 << 0)
+)
+
+type ResolvePromptPostResponse struct {
+	Data *ResolvePromptPostResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ResolvePromptPostResponse) GetData() *ResolvePromptPostResponseData {
+	if r == nil {
+		return nil
+	}
+	return r.Data
+}
+
+func (r *ResolvePromptPostResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ResolvePromptPostResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostResponse) SetData(data *ResolvePromptPostResponseData) {
+	r.Data = data
+	r.require(resolvePromptPostResponseFieldData)
+}
+
+func (r *ResolvePromptPostResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ResolvePromptPostResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ResolvePromptPostResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ResolvePromptPostResponse) MarshalJSON() ([]byte, error) {
+	type embed ResolvePromptPostResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ResolvePromptPostResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	resolvePromptPostResponseDataFieldResolvedContent = big.NewInt(1 << 0)
+	resolvePromptPostResponseDataFieldMetadata        = big.NewInt(1 << 1)
+)
+
+type ResolvePromptPostResponseData struct {
+	ResolvedContent string                                 `json:"resolvedContent" url:"resolvedContent"`
+	Metadata        *ResolvePromptPostResponseDataMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ResolvePromptPostResponseData) GetResolvedContent() string {
+	if r == nil {
+		return ""
+	}
+	return r.ResolvedContent
+}
+
+func (r *ResolvePromptPostResponseData) GetMetadata() *ResolvePromptPostResponseDataMetadata {
+	if r == nil {
+		return nil
+	}
+	return r.Metadata
+}
+
+func (r *ResolvePromptPostResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ResolvePromptPostResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetResolvedContent sets the ResolvedContent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostResponseData) SetResolvedContent(resolvedContent string) {
+	r.ResolvedContent = resolvedContent
+	r.require(resolvePromptPostResponseDataFieldResolvedContent)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostResponseData) SetMetadata(metadata *ResolvePromptPostResponseDataMetadata) {
+	r.Metadata = metadata
+	r.require(resolvePromptPostResponseDataFieldMetadata)
+}
+
+func (r *ResolvePromptPostResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ResolvePromptPostResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ResolvePromptPostResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ResolvePromptPostResponseData) MarshalJSON() ([]byte, error) {
+	type embed ResolvePromptPostResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ResolvePromptPostResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	resolvePromptPostResponseDataMetadataFieldReferences = big.NewInt(1 << 0)
+	resolvePromptPostResponseDataMetadataFieldVariables  = big.NewInt(1 << 1)
+	resolvePromptPostResponseDataMetadataFieldDepth      = big.NewInt(1 << 2)
+)
+
+type ResolvePromptPostResponseDataMetadata struct {
+	References []map[string]interface{} `json:"references,omitempty" url:"references,omitempty"`
+	Variables  []map[string]interface{} `json:"variables,omitempty" url:"variables,omitempty"`
+	Depth      *int                     `json:"depth,omitempty" url:"depth,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) GetReferences() []map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.References
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) GetVariables() []map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.Variables
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) GetDepth() *int {
+	if r == nil {
+		return nil
+	}
+	return r.Depth
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetReferences sets the References field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostResponseDataMetadata) SetReferences(references []map[string]interface{}) {
+	r.References = references
+	r.require(resolvePromptPostResponseDataMetadataFieldReferences)
+}
+
+// SetVariables sets the Variables field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostResponseDataMetadata) SetVariables(variables []map[string]interface{}) {
+	r.Variables = variables
+	r.require(resolvePromptPostResponseDataMetadataFieldVariables)
+}
+
+// SetDepth sets the Depth field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResolvePromptPostResponseDataMetadata) SetDepth(depth *int) {
+	r.Depth = depth
+	r.require(resolvePromptPostResponseDataMetadataFieldDepth)
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) UnmarshalJSON(data []byte) error {
+	type unmarshaler ResolvePromptPostResponseDataMetadata
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ResolvePromptPostResponseDataMetadata(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) MarshalJSON() ([]byte, error) {
+	type embed ResolvePromptPostResponseDataMetadata
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ResolvePromptPostResponseDataMetadata) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }
 
 // Resolved content

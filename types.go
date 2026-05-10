@@ -1293,6 +1293,133 @@ func (n *NotFoundErrorBody) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+// POST resolve is disabled by feature flag
+var (
+	serviceUnavailableErrorBodyFieldStatusCode = big.NewInt(1 << 0)
+	serviceUnavailableErrorBodyFieldError      = big.NewInt(1 << 1)
+	serviceUnavailableErrorBodyFieldMessage    = big.NewInt(1 << 2)
+	serviceUnavailableErrorBodyFieldRequestID  = big.NewInt(1 << 3)
+)
+
+type ServiceUnavailableErrorBody struct {
+	StatusCode int     `json:"statusCode" url:"statusCode"`
+	Error      string  `json:"error" url:"error"`
+	Message    string  `json:"message" url:"message"`
+	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ServiceUnavailableErrorBody) GetStatusCode() int {
+	if s == nil {
+		return 0
+	}
+	return s.StatusCode
+}
+
+func (s *ServiceUnavailableErrorBody) GetError() string {
+	if s == nil {
+		return ""
+	}
+	return s.Error
+}
+
+func (s *ServiceUnavailableErrorBody) GetMessage() string {
+	if s == nil {
+		return ""
+	}
+	return s.Message
+}
+
+func (s *ServiceUnavailableErrorBody) GetRequestID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RequestID
+}
+
+func (s *ServiceUnavailableErrorBody) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *ServiceUnavailableErrorBody) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetStatusCode sets the StatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetStatusCode(statusCode int) {
+	s.StatusCode = statusCode
+	s.require(serviceUnavailableErrorBodyFieldStatusCode)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetError(error_ string) {
+	s.Error = error_
+	s.require(serviceUnavailableErrorBodyFieldError)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetMessage(message string) {
+	s.Message = message
+	s.require(serviceUnavailableErrorBodyFieldMessage)
+}
+
+// SetRequestID sets the RequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetRequestID(requestID *string) {
+	s.RequestID = requestID
+	s.require(serviceUnavailableErrorBodyFieldRequestID)
+}
+
+func (s *ServiceUnavailableErrorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler ServiceUnavailableErrorBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ServiceUnavailableErrorBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ServiceUnavailableErrorBody) MarshalJSON() ([]byte, error) {
+	type embed ServiceUnavailableErrorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *ServiceUnavailableErrorBody) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 // Rate limited or quota exceeded
 var (
 	tooManyRequestsErrorBodyFieldError     = big.NewInt(1 << 0)
@@ -1651,6 +1778,50 @@ func (u *UnauthorizedErrorBody) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
+}
+
+// Stable machine-readable failure code. SDKs switch on this; humans read `message`.
+type UnauthorizedErrorBodyCode string
+
+const (
+	UnauthorizedErrorBodyCodeMissingCredentials UnauthorizedErrorBodyCode = "missing_credentials"
+	UnauthorizedErrorBodyCodeInvalidCredentials UnauthorizedErrorBodyCode = "invalid_credentials"
+	UnauthorizedErrorBodyCodeKeyExpired         UnauthorizedErrorBodyCode = "key_expired"
+	UnauthorizedErrorBodyCodeKeyRevoked         UnauthorizedErrorBodyCode = "key_revoked"
+	UnauthorizedErrorBodyCodeInsufficientTier   UnauthorizedErrorBodyCode = "insufficient_tier"
+	UnauthorizedErrorBodyCodeUnauthorized       UnauthorizedErrorBodyCode = "unauthorized"
+	UnauthorizedErrorBodyCodeForbidden          UnauthorizedErrorBodyCode = "forbidden"
+	UnauthorizedErrorBodyCodeUserRemoved        UnauthorizedErrorBodyCode = "user_removed"
+	UnauthorizedErrorBodyCodeUnknown            UnauthorizedErrorBodyCode = "unknown"
+)
+
+func NewUnauthorizedErrorBodyCodeFromString(s string) (UnauthorizedErrorBodyCode, error) {
+	switch s {
+	case "missing_credentials":
+		return UnauthorizedErrorBodyCodeMissingCredentials, nil
+	case "invalid_credentials":
+		return UnauthorizedErrorBodyCodeInvalidCredentials, nil
+	case "key_expired":
+		return UnauthorizedErrorBodyCodeKeyExpired, nil
+	case "key_revoked":
+		return UnauthorizedErrorBodyCodeKeyRevoked, nil
+	case "insufficient_tier":
+		return UnauthorizedErrorBodyCodeInsufficientTier, nil
+	case "unauthorized":
+		return UnauthorizedErrorBodyCodeUnauthorized, nil
+	case "forbidden":
+		return UnauthorizedErrorBodyCodeForbidden, nil
+	case "user_removed":
+		return UnauthorizedErrorBodyCodeUserRemoved, nil
+	case "unknown":
+		return UnauthorizedErrorBodyCodeUnknown, nil
+	}
+	var t UnauthorizedErrorBodyCode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UnauthorizedErrorBodyCode) Ptr() *UnauthorizedErrorBodyCode {
+	return &u
 }
 
 // Resource not yet confirmed

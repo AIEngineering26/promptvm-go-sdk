@@ -5672,6 +5672,83 @@ client.PromptResolution.ResolvePrompt(
 </dl>
 </details>
 
+<details><summary><code>client.PromptResolution.ResolvePromptPost(PromptID, request) -> *promptvmgosdk.ResolvePromptPostResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Resolves [[include:]] references and {{variable}} substitutions. Read-safe: identical semantics to GET /prompts/{promptId}/resolve, but accepts a JSON body so callers can pass a Record<string,string> `variables` map cleanly. Idempotent — no `Idempotency-Key` header is required or honoured. Unknown variables remain literal in the output (e.g. `{{unknown}}`); the endpoint never throws on missing keys. Gated by the `RESOLVE_POST_ENABLED` env flag (default true); when disabled the endpoint returns 503 and SDK/CLI clients should fall back to the GET path with `variables` ignored.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ResolvePromptPostRequest{
+        PromptID: "promptId",
+    }
+client.PromptResolution.ResolvePromptPost(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**versionID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**variables:** `map[string]string` — Optional caller-supplied values for `{{name}}` tokens in the prompt. Unknown variables remain literal in the response. Never throws.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.PromptResolution.ResolvePromptStream(PromptID) -> error</code></summary>
 <dl>
 <dd>

@@ -53,4 +53,9 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
+	503: func(apiError *core.APIError) error {
+		return &ServiceUnavailableError{
+			APIError: apiError,
+		}
+	},
 }

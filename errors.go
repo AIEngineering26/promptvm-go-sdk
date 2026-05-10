@@ -151,6 +151,30 @@ func (n *NotFoundError) Unwrap() error {
 	return n.APIError
 }
 
+// POST resolve is disabled by feature flag
+type ServiceUnavailableError struct {
+	*core.APIError
+	Body *ServiceUnavailableErrorBody
+}
+
+func (s *ServiceUnavailableError) UnmarshalJSON(data []byte) error {
+	var body *ServiceUnavailableErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	s.StatusCode = 503
+	s.Body = body
+	return nil
+}
+
+func (s *ServiceUnavailableError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(s.Body)
+}
+
+func (s *ServiceUnavailableError) Unwrap() error {
+	return s.APIError
+}
+
 // Rate limit exceeded
 type TooManyRequestsError struct {
 	*core.APIError

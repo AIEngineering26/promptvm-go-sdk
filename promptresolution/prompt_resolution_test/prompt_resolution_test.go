@@ -88,6 +88,32 @@ func TestPromptResolutionResolvePromptWithWireMock(
 	VerifyRequestCount(t, "TestPromptResolutionResolvePromptWithWireMock", "GET", "/api/v1/prompts/promptId/resolve", nil, 1)
 }
 
+func TestPromptResolutionResolvePromptPostWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ResolvePromptPostRequest{
+		PromptID: "promptId",
+	}
+	_, invocationErr := client.PromptResolution.ResolvePromptPost(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPromptResolutionResolvePromptPostWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPromptResolutionResolvePromptPostWithWireMock", "POST", "/api/v1/prompts/promptId/resolve", nil, 1)
+}
+
 func TestPromptResolutionResolvePromptStreamWithWireMock(
 	t *testing.T,
 ) {

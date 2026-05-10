@@ -49,6 +49,23 @@ func (c *Client) ResolvePrompt(
 	return response.Body, nil
 }
 
+// Resolves [[include:]] references and {{variable}} substitutions. Read-safe: identical semantics to GET /prompts/{promptId}/resolve, but accepts a JSON body so callers can pass a Record<string,string> `variables` map cleanly. Idempotent — no `Idempotency-Key` header is required or honoured. Unknown variables remain literal in the output (e.g. `{{unknown}}`); the endpoint never throws on missing keys. Gated by the `RESOLVE_POST_ENABLED` env flag (default true); when disabled the endpoint returns 503 and SDK/CLI clients should fall back to the GET path with `variables` ignored.
+func (c *Client) ResolvePromptPost(
+	ctx context.Context,
+	request *promptvmgosdk.ResolvePromptPostRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ResolvePromptPostResponse, error) {
+	response, err := c.WithRawResponse.ResolvePromptPost(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Same as /resolve but delivers content as Server-Sent Events for large payloads.
 func (c *Client) ResolvePromptStream(
 	ctx context.Context,
