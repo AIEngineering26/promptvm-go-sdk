@@ -3524,6 +3524,14 @@ client.MarketplaceListings.CreateMarketplaceListing(
 <dl>
 <dd>
 
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **title:** `string` 
     
 </dd>

@@ -600,34 +600,36 @@ var (
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldID            = big.NewInt(1 << 0)
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptID      = big.NewInt(1 << 1)
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionID  = big.NewInt(1 << 2)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSellerID      = big.NewInt(1 << 3)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTitle         = big.NewInt(1 << 4)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDescription   = big.NewInt(1 << 5)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldStatus        = big.NewInt(1 << 6)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPriceCents    = big.NewInt(1 << 7)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCurrency      = big.NewInt(1 << 8)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAccessType    = big.NewInt(1 << 9)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAvgRating     = big.NewInt(1 << 10)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldRatingCount   = big.NewInt(1 << 11)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldViewCount     = big.NewInt(1 << 12)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPurchaseCount = big.NewInt(1 << 13)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldImportCount   = big.NewInt(1 << 14)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTags          = big.NewInt(1 << 15)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldIsFeatured    = big.NewInt(1 << 16)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCategories    = big.NewInt(1 << 17)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller        = big.NewInt(1 << 18)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind   = big.NewInt(1 << 19)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug    = big.NewInt(1 << 20)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill         = big.NewInt(1 << 21)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt   = big.NewInt(1 << 22)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt     = big.NewInt(1 << 23)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 24)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDirectoryID   = big.NewInt(1 << 3)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSellerID      = big.NewInt(1 << 4)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTitle         = big.NewInt(1 << 5)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDescription   = big.NewInt(1 << 6)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldStatus        = big.NewInt(1 << 7)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPriceCents    = big.NewInt(1 << 8)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCurrency      = big.NewInt(1 << 9)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAccessType    = big.NewInt(1 << 10)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAvgRating     = big.NewInt(1 << 11)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldRatingCount   = big.NewInt(1 << 12)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldViewCount     = big.NewInt(1 << 13)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPurchaseCount = big.NewInt(1 << 14)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldImportCount   = big.NewInt(1 << 15)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTags          = big.NewInt(1 << 16)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldIsFeatured    = big.NewInt(1 << 17)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCategories    = big.NewInt(1 << 18)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller        = big.NewInt(1 << 19)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind   = big.NewInt(1 << 20)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug    = big.NewInt(1 << 21)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill         = big.NewInt(1 << 22)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt   = big.NewInt(1 << 23)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt     = big.NewInt(1 << 24)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 25)
 )
 
 type GetAPIV1MarketplaceCreatorMeFeedResponseDataItem struct {
 	ID            string                                                            `json:"id" url:"id"`
 	PromptID      *string                                                           `json:"promptId,omitempty" url:"promptId,omitempty"`
 	CollectionID  *string                                                           `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID   *string                                                           `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	SellerID      string                                                            `json:"sellerId" url:"sellerId"`
 	Title         string                                                            `json:"title" url:"title"`
 	Description   *string                                                           `json:"description,omitempty" url:"description,omitempty"`
@@ -677,6 +679,13 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetCollectionID() *st
 		return nil
 	}
 	return g.CollectionID
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetDirectoryID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DirectoryID
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetSellerID() string {
@@ -863,6 +872,13 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetPromptID(promptID 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetCollectionID(collectionID *string) {
 	g.CollectionID = collectionID
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionID)
+}
+
+// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetDirectoryID(directoryID *string) {
+	g.DirectoryID = directoryID
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDirectoryID)
 }
 
 // SetSellerID sets the SellerID field and marks it as non-optional;
@@ -1259,6 +1275,7 @@ type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind string
 const (
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindPrompt GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "prompt"
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill  GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "skill"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFolder GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "folder"
 )
 
 func NewGetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFromString(s string) (GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind, error) {
@@ -1267,6 +1284,8 @@ func NewGetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFromString(s 
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindPrompt, nil
 	case "skill":
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill, nil
+	case "folder":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFolder, nil
 	}
 	var t GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

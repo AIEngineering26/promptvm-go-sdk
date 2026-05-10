@@ -72,17 +72,19 @@ func (c *ClaimMarketplaceListingRequest) SetWorkspaceID(workspaceID string) {
 var (
 	createMarketplaceListingRequestFieldPromptID     = big.NewInt(1 << 0)
 	createMarketplaceListingRequestFieldCollectionID = big.NewInt(1 << 1)
-	createMarketplaceListingRequestFieldTitle        = big.NewInt(1 << 2)
-	createMarketplaceListingRequestFieldDescription  = big.NewInt(1 << 3)
-	createMarketplaceListingRequestFieldCategoryIDs  = big.NewInt(1 << 4)
-	createMarketplaceListingRequestFieldTags         = big.NewInt(1 << 5)
-	createMarketplaceListingRequestFieldPriceCents   = big.NewInt(1 << 6)
-	createMarketplaceListingRequestFieldAccessType   = big.NewInt(1 << 7)
+	createMarketplaceListingRequestFieldDirectoryID  = big.NewInt(1 << 2)
+	createMarketplaceListingRequestFieldTitle        = big.NewInt(1 << 3)
+	createMarketplaceListingRequestFieldDescription  = big.NewInt(1 << 4)
+	createMarketplaceListingRequestFieldCategoryIDs  = big.NewInt(1 << 5)
+	createMarketplaceListingRequestFieldTags         = big.NewInt(1 << 6)
+	createMarketplaceListingRequestFieldPriceCents   = big.NewInt(1 << 7)
+	createMarketplaceListingRequestFieldAccessType   = big.NewInt(1 << 8)
 )
 
 type CreateMarketplaceListingRequest struct {
 	PromptID     *string                                    `json:"promptId,omitempty" url:"-"`
 	CollectionID *string                                    `json:"collectionId,omitempty" url:"-"`
+	DirectoryID  *string                                    `json:"directoryId,omitempty" url:"-"`
 	Title        string                                     `json:"title" url:"-"`
 	Description  string                                     `json:"description" url:"-"`
 	CategoryIDs  []string                                   `json:"categoryIds,omitempty" url:"-"`
@@ -113,6 +115,13 @@ func (c *CreateMarketplaceListingRequest) SetPromptID(promptID *string) {
 func (c *CreateMarketplaceListingRequest) SetCollectionID(collectionID *string) {
 	c.CollectionID = collectionID
 	c.require(createMarketplaceListingRequestFieldCollectionID)
+}
+
+// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingRequest) SetDirectoryID(directoryID *string) {
+	c.DirectoryID = directoryID
+	c.require(createMarketplaceListingRequestFieldDirectoryID)
 }
 
 // SetTitle sets the Title field and marks it as non-optional;
@@ -451,34 +460,36 @@ var (
 	createMarketplaceListingResponseDataFieldID            = big.NewInt(1 << 0)
 	createMarketplaceListingResponseDataFieldPromptID      = big.NewInt(1 << 1)
 	createMarketplaceListingResponseDataFieldCollectionID  = big.NewInt(1 << 2)
-	createMarketplaceListingResponseDataFieldSellerID      = big.NewInt(1 << 3)
-	createMarketplaceListingResponseDataFieldTitle         = big.NewInt(1 << 4)
-	createMarketplaceListingResponseDataFieldDescription   = big.NewInt(1 << 5)
-	createMarketplaceListingResponseDataFieldStatus        = big.NewInt(1 << 6)
-	createMarketplaceListingResponseDataFieldPriceCents    = big.NewInt(1 << 7)
-	createMarketplaceListingResponseDataFieldCurrency      = big.NewInt(1 << 8)
-	createMarketplaceListingResponseDataFieldAccessType    = big.NewInt(1 << 9)
-	createMarketplaceListingResponseDataFieldAvgRating     = big.NewInt(1 << 10)
-	createMarketplaceListingResponseDataFieldRatingCount   = big.NewInt(1 << 11)
-	createMarketplaceListingResponseDataFieldViewCount     = big.NewInt(1 << 12)
-	createMarketplaceListingResponseDataFieldPurchaseCount = big.NewInt(1 << 13)
-	createMarketplaceListingResponseDataFieldImportCount   = big.NewInt(1 << 14)
-	createMarketplaceListingResponseDataFieldTags          = big.NewInt(1 << 15)
-	createMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 16)
-	createMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 17)
-	createMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 18)
-	createMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 19)
-	createMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 20)
-	createMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 21)
-	createMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 22)
-	createMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 23)
-	createMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 24)
+	createMarketplaceListingResponseDataFieldDirectoryID   = big.NewInt(1 << 3)
+	createMarketplaceListingResponseDataFieldSellerID      = big.NewInt(1 << 4)
+	createMarketplaceListingResponseDataFieldTitle         = big.NewInt(1 << 5)
+	createMarketplaceListingResponseDataFieldDescription   = big.NewInt(1 << 6)
+	createMarketplaceListingResponseDataFieldStatus        = big.NewInt(1 << 7)
+	createMarketplaceListingResponseDataFieldPriceCents    = big.NewInt(1 << 8)
+	createMarketplaceListingResponseDataFieldCurrency      = big.NewInt(1 << 9)
+	createMarketplaceListingResponseDataFieldAccessType    = big.NewInt(1 << 10)
+	createMarketplaceListingResponseDataFieldAvgRating     = big.NewInt(1 << 11)
+	createMarketplaceListingResponseDataFieldRatingCount   = big.NewInt(1 << 12)
+	createMarketplaceListingResponseDataFieldViewCount     = big.NewInt(1 << 13)
+	createMarketplaceListingResponseDataFieldPurchaseCount = big.NewInt(1 << 14)
+	createMarketplaceListingResponseDataFieldImportCount   = big.NewInt(1 << 15)
+	createMarketplaceListingResponseDataFieldTags          = big.NewInt(1 << 16)
+	createMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 17)
+	createMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 18)
+	createMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 19)
+	createMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 20)
+	createMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 21)
+	createMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 22)
+	createMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 23)
+	createMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 24)
+	createMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 25)
 )
 
 type CreateMarketplaceListingResponseData struct {
 	ID            string                                                `json:"id" url:"id"`
 	PromptID      *string                                               `json:"promptId,omitempty" url:"promptId,omitempty"`
 	CollectionID  *string                                               `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID   *string                                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	SellerID      string                                                `json:"sellerId" url:"sellerId"`
 	Title         string                                                `json:"title" url:"title"`
 	Description   *string                                               `json:"description,omitempty" url:"description,omitempty"`
@@ -528,6 +539,13 @@ func (c *CreateMarketplaceListingResponseData) GetCollectionID() *string {
 		return nil
 	}
 	return c.CollectionID
+}
+
+func (c *CreateMarketplaceListingResponseData) GetDirectoryID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.DirectoryID
 }
 
 func (c *CreateMarketplaceListingResponseData) GetSellerID() string {
@@ -714,6 +732,13 @@ func (c *CreateMarketplaceListingResponseData) SetPromptID(promptID *string) {
 func (c *CreateMarketplaceListingResponseData) SetCollectionID(collectionID *string) {
 	c.CollectionID = collectionID
 	c.require(createMarketplaceListingResponseDataFieldCollectionID)
+}
+
+// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseData) SetDirectoryID(directoryID *string) {
+	c.DirectoryID = directoryID
+	c.require(createMarketplaceListingResponseDataFieldDirectoryID)
 }
 
 // SetSellerID sets the SellerID field and marks it as non-optional;
@@ -1110,6 +1135,7 @@ type CreateMarketplaceListingResponseDataContentKind string
 const (
 	CreateMarketplaceListingResponseDataContentKindPrompt CreateMarketplaceListingResponseDataContentKind = "prompt"
 	CreateMarketplaceListingResponseDataContentKindSkill  CreateMarketplaceListingResponseDataContentKind = "skill"
+	CreateMarketplaceListingResponseDataContentKindFolder CreateMarketplaceListingResponseDataContentKind = "folder"
 )
 
 func NewCreateMarketplaceListingResponseDataContentKindFromString(s string) (CreateMarketplaceListingResponseDataContentKind, error) {
@@ -1118,6 +1144,8 @@ func NewCreateMarketplaceListingResponseDataContentKindFromString(s string) (Cre
 		return CreateMarketplaceListingResponseDataContentKindPrompt, nil
 	case "skill":
 		return CreateMarketplaceListingResponseDataContentKindSkill, nil
+	case "folder":
+		return CreateMarketplaceListingResponseDataContentKindFolder, nil
 	}
 	var t CreateMarketplaceListingResponseDataContentKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -1524,34 +1552,36 @@ var (
 	updateMarketplaceListingResponseDataFieldID            = big.NewInt(1 << 0)
 	updateMarketplaceListingResponseDataFieldPromptID      = big.NewInt(1 << 1)
 	updateMarketplaceListingResponseDataFieldCollectionID  = big.NewInt(1 << 2)
-	updateMarketplaceListingResponseDataFieldSellerID      = big.NewInt(1 << 3)
-	updateMarketplaceListingResponseDataFieldTitle         = big.NewInt(1 << 4)
-	updateMarketplaceListingResponseDataFieldDescription   = big.NewInt(1 << 5)
-	updateMarketplaceListingResponseDataFieldStatus        = big.NewInt(1 << 6)
-	updateMarketplaceListingResponseDataFieldPriceCents    = big.NewInt(1 << 7)
-	updateMarketplaceListingResponseDataFieldCurrency      = big.NewInt(1 << 8)
-	updateMarketplaceListingResponseDataFieldAccessType    = big.NewInt(1 << 9)
-	updateMarketplaceListingResponseDataFieldAvgRating     = big.NewInt(1 << 10)
-	updateMarketplaceListingResponseDataFieldRatingCount   = big.NewInt(1 << 11)
-	updateMarketplaceListingResponseDataFieldViewCount     = big.NewInt(1 << 12)
-	updateMarketplaceListingResponseDataFieldPurchaseCount = big.NewInt(1 << 13)
-	updateMarketplaceListingResponseDataFieldImportCount   = big.NewInt(1 << 14)
-	updateMarketplaceListingResponseDataFieldTags          = big.NewInt(1 << 15)
-	updateMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 16)
-	updateMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 17)
-	updateMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 18)
-	updateMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 19)
-	updateMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 20)
-	updateMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 21)
-	updateMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 22)
-	updateMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 23)
-	updateMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 24)
+	updateMarketplaceListingResponseDataFieldDirectoryID   = big.NewInt(1 << 3)
+	updateMarketplaceListingResponseDataFieldSellerID      = big.NewInt(1 << 4)
+	updateMarketplaceListingResponseDataFieldTitle         = big.NewInt(1 << 5)
+	updateMarketplaceListingResponseDataFieldDescription   = big.NewInt(1 << 6)
+	updateMarketplaceListingResponseDataFieldStatus        = big.NewInt(1 << 7)
+	updateMarketplaceListingResponseDataFieldPriceCents    = big.NewInt(1 << 8)
+	updateMarketplaceListingResponseDataFieldCurrency      = big.NewInt(1 << 9)
+	updateMarketplaceListingResponseDataFieldAccessType    = big.NewInt(1 << 10)
+	updateMarketplaceListingResponseDataFieldAvgRating     = big.NewInt(1 << 11)
+	updateMarketplaceListingResponseDataFieldRatingCount   = big.NewInt(1 << 12)
+	updateMarketplaceListingResponseDataFieldViewCount     = big.NewInt(1 << 13)
+	updateMarketplaceListingResponseDataFieldPurchaseCount = big.NewInt(1 << 14)
+	updateMarketplaceListingResponseDataFieldImportCount   = big.NewInt(1 << 15)
+	updateMarketplaceListingResponseDataFieldTags          = big.NewInt(1 << 16)
+	updateMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 17)
+	updateMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 18)
+	updateMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 19)
+	updateMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 20)
+	updateMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 21)
+	updateMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 22)
+	updateMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 23)
+	updateMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 24)
+	updateMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 25)
 )
 
 type UpdateMarketplaceListingResponseData struct {
 	ID            string                                                `json:"id" url:"id"`
 	PromptID      *string                                               `json:"promptId,omitempty" url:"promptId,omitempty"`
 	CollectionID  *string                                               `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID   *string                                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	SellerID      string                                                `json:"sellerId" url:"sellerId"`
 	Title         string                                                `json:"title" url:"title"`
 	Description   *string                                               `json:"description,omitempty" url:"description,omitempty"`
@@ -1601,6 +1631,13 @@ func (u *UpdateMarketplaceListingResponseData) GetCollectionID() *string {
 		return nil
 	}
 	return u.CollectionID
+}
+
+func (u *UpdateMarketplaceListingResponseData) GetDirectoryID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DirectoryID
 }
 
 func (u *UpdateMarketplaceListingResponseData) GetSellerID() string {
@@ -1787,6 +1824,13 @@ func (u *UpdateMarketplaceListingResponseData) SetPromptID(promptID *string) {
 func (u *UpdateMarketplaceListingResponseData) SetCollectionID(collectionID *string) {
 	u.CollectionID = collectionID
 	u.require(updateMarketplaceListingResponseDataFieldCollectionID)
+}
+
+// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseData) SetDirectoryID(directoryID *string) {
+	u.DirectoryID = directoryID
+	u.require(updateMarketplaceListingResponseDataFieldDirectoryID)
 }
 
 // SetSellerID sets the SellerID field and marks it as non-optional;
@@ -2183,6 +2227,7 @@ type UpdateMarketplaceListingResponseDataContentKind string
 const (
 	UpdateMarketplaceListingResponseDataContentKindPrompt UpdateMarketplaceListingResponseDataContentKind = "prompt"
 	UpdateMarketplaceListingResponseDataContentKindSkill  UpdateMarketplaceListingResponseDataContentKind = "skill"
+	UpdateMarketplaceListingResponseDataContentKindFolder UpdateMarketplaceListingResponseDataContentKind = "folder"
 )
 
 func NewUpdateMarketplaceListingResponseDataContentKindFromString(s string) (UpdateMarketplaceListingResponseDataContentKind, error) {
@@ -2191,6 +2236,8 @@ func NewUpdateMarketplaceListingResponseDataContentKindFromString(s string) (Upd
 		return UpdateMarketplaceListingResponseDataContentKindPrompt, nil
 	case "skill":
 		return UpdateMarketplaceListingResponseDataContentKindSkill, nil
+	case "folder":
+		return UpdateMarketplaceListingResponseDataContentKindFolder, nil
 	}
 	var t UpdateMarketplaceListingResponseDataContentKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
