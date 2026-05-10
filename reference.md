@@ -8060,7 +8060,7 @@ client.Skills.UpdateSkill(
 </details>
 
 ## Workspaces
-<details><summary><code>client.Workspaces.ListWorkspaces() -> error</code></summary>
+<details><summary><code>client.Workspaces.ListWorkspaces() -> *promptvmgosdk.ListWorkspacesResponse</code></summary>
 <dl>
 <dd>
 

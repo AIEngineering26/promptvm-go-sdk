@@ -76,7 +76,7 @@ func TestWorkspacesListWorkspacesWithWireMock(
 	request := &promptvmgosdk.ListWorkspacesRequest{
 		OrganizationID: "organizationId",
 	}
-	invocationErr := client.Workspaces.ListWorkspaces(
+	_, invocationErr := client.Workspaces.ListWorkspaces(
 		context.TODO(),
 		request,
 		option.WithHTTPHeader(

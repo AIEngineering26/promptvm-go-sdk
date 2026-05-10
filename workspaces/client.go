@@ -37,16 +37,16 @@ func (c *Client) ListWorkspaces(
 	ctx context.Context,
 	request *promptvmgosdk.ListWorkspacesRequest,
 	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.ListWorkspaces(
+) (*promptvmgosdk.ListWorkspacesResponse, error) {
+	response, err := c.WithRawResponse.ListWorkspaces(
 		ctx,
 		request,
 		opts...,
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return response.Body, nil
 }
 
 // Creates a new workspace within an organization. The creator is added as owner.

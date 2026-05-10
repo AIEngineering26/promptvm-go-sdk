@@ -7,6 +7,7 @@ import (
 	fmt "fmt"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	time "time"
 )
 
 var (
@@ -486,6 +487,724 @@ func (g *GetWorkspaceResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+// Workspaces list
+var (
+	listWorkspacesResponseFieldData       = big.NewInt(1 << 0)
+	listWorkspacesResponseFieldMeta       = big.NewInt(1 << 1)
+	listWorkspacesResponseFieldPagination = big.NewInt(1 << 2)
+)
+
+type ListWorkspacesResponse struct {
+	Data       []*ListWorkspacesResponseDataItem `json:"data,omitempty" url:"data,omitempty"`
+	Meta       *ListWorkspacesResponseMeta       `json:"meta,omitempty" url:"meta,omitempty"`
+	Pagination *ListWorkspacesResponsePagination `json:"pagination,omitempty" url:"pagination,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListWorkspacesResponse) GetData() []*ListWorkspacesResponseDataItem {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListWorkspacesResponse) GetMeta() *ListWorkspacesResponseMeta {
+	if l == nil {
+		return nil
+	}
+	return l.Meta
+}
+
+func (l *ListWorkspacesResponse) GetPagination() *ListWorkspacesResponsePagination {
+	if l == nil {
+		return nil
+	}
+	return l.Pagination
+}
+
+func (l *ListWorkspacesResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListWorkspacesResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponse) SetData(data []*ListWorkspacesResponseDataItem) {
+	l.Data = data
+	l.require(listWorkspacesResponseFieldData)
+}
+
+// SetMeta sets the Meta field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponse) SetMeta(meta *ListWorkspacesResponseMeta) {
+	l.Meta = meta
+	l.require(listWorkspacesResponseFieldMeta)
+}
+
+// SetPagination sets the Pagination field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponse) SetPagination(pagination *ListWorkspacesResponsePagination) {
+	l.Pagination = pagination
+	l.require(listWorkspacesResponseFieldPagination)
+}
+
+func (l *ListWorkspacesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListWorkspacesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListWorkspacesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListWorkspacesResponse) MarshalJSON() ([]byte, error) {
+	type embed ListWorkspacesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListWorkspacesResponse) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listWorkspacesResponseDataItemFieldID             = big.NewInt(1 << 0)
+	listWorkspacesResponseDataItemFieldName           = big.NewInt(1 << 1)
+	listWorkspacesResponseDataItemFieldSlug           = big.NewInt(1 << 2)
+	listWorkspacesResponseDataItemFieldDescription    = big.NewInt(1 << 3)
+	listWorkspacesResponseDataItemFieldVisibility     = big.NewInt(1 << 4)
+	listWorkspacesResponseDataItemFieldIcon           = big.NewInt(1 << 5)
+	listWorkspacesResponseDataItemFieldIsDefault      = big.NewInt(1 << 6)
+	listWorkspacesResponseDataItemFieldIsPinned       = big.NewInt(1 << 7)
+	listWorkspacesResponseDataItemFieldMemberCount    = big.NewInt(1 << 8)
+	listWorkspacesResponseDataItemFieldPromptCount    = big.NewInt(1 << 9)
+	listWorkspacesResponseDataItemFieldOwnerID        = big.NewInt(1 << 10)
+	listWorkspacesResponseDataItemFieldOrganizationID = big.NewInt(1 << 11)
+	listWorkspacesResponseDataItemFieldCreatedBy      = big.NewInt(1 << 12)
+	listWorkspacesResponseDataItemFieldCreatedAt      = big.NewInt(1 << 13)
+	listWorkspacesResponseDataItemFieldUpdatedAt      = big.NewInt(1 << 14)
+	listWorkspacesResponseDataItemFieldIsActive       = big.NewInt(1 << 15)
+	listWorkspacesResponseDataItemFieldSettings       = big.NewInt(1 << 16)
+)
+
+type ListWorkspacesResponseDataItem struct {
+	ID             string                                    `json:"id" url:"id"`
+	Name           string                                    `json:"name" url:"name"`
+	Slug           string                                    `json:"slug" url:"slug"`
+	Description    *string                                   `json:"description,omitempty" url:"description,omitempty"`
+	Visibility     *ListWorkspacesResponseDataItemVisibility `json:"visibility,omitempty" url:"visibility,omitempty"`
+	Icon           *string                                   `json:"icon,omitempty" url:"icon,omitempty"`
+	IsDefault      *bool                                     `json:"isDefault,omitempty" url:"isDefault,omitempty"`
+	IsPinned       *bool                                     `json:"isPinned,omitempty" url:"isPinned,omitempty"`
+	MemberCount    *int                                      `json:"memberCount,omitempty" url:"memberCount,omitempty"`
+	PromptCount    *int                                      `json:"promptCount,omitempty" url:"promptCount,omitempty"`
+	OwnerID        *string                                   `json:"ownerId,omitempty" url:"ownerId,omitempty"`
+	OrganizationID *string                                   `json:"organizationId,omitempty" url:"organizationId,omitempty"`
+	CreatedBy      *string                                   `json:"createdBy,omitempty" url:"createdBy,omitempty"`
+	CreatedAt      time.Time                                 `json:"createdAt" url:"createdAt"`
+	UpdatedAt      time.Time                                 `json:"updatedAt" url:"updatedAt"`
+	IsActive       *bool                                     `json:"isActive,omitempty" url:"isActive,omitempty"`
+	Settings       map[string]interface{}                    `json:"settings,omitempty" url:"settings,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListWorkspacesResponseDataItem) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListWorkspacesResponseDataItem) GetName() string {
+	if l == nil {
+		return ""
+	}
+	return l.Name
+}
+
+func (l *ListWorkspacesResponseDataItem) GetSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.Slug
+}
+
+func (l *ListWorkspacesResponseDataItem) GetDescription() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Description
+}
+
+func (l *ListWorkspacesResponseDataItem) GetVisibility() *ListWorkspacesResponseDataItemVisibility {
+	if l == nil {
+		return nil
+	}
+	return l.Visibility
+}
+
+func (l *ListWorkspacesResponseDataItem) GetIcon() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Icon
+}
+
+func (l *ListWorkspacesResponseDataItem) GetIsDefault() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.IsDefault
+}
+
+func (l *ListWorkspacesResponseDataItem) GetIsPinned() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.IsPinned
+}
+
+func (l *ListWorkspacesResponseDataItem) GetMemberCount() *int {
+	if l == nil {
+		return nil
+	}
+	return l.MemberCount
+}
+
+func (l *ListWorkspacesResponseDataItem) GetPromptCount() *int {
+	if l == nil {
+		return nil
+	}
+	return l.PromptCount
+}
+
+func (l *ListWorkspacesResponseDataItem) GetOwnerID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.OwnerID
+}
+
+func (l *ListWorkspacesResponseDataItem) GetOrganizationID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.OrganizationID
+}
+
+func (l *ListWorkspacesResponseDataItem) GetCreatedBy() *string {
+	if l == nil {
+		return nil
+	}
+	return l.CreatedBy
+}
+
+func (l *ListWorkspacesResponseDataItem) GetCreatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.CreatedAt
+}
+
+func (l *ListWorkspacesResponseDataItem) GetUpdatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.UpdatedAt
+}
+
+func (l *ListWorkspacesResponseDataItem) GetIsActive() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.IsActive
+}
+
+func (l *ListWorkspacesResponseDataItem) GetSettings() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.Settings
+}
+
+func (l *ListWorkspacesResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListWorkspacesResponseDataItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetID(id string) {
+	l.ID = id
+	l.require(listWorkspacesResponseDataItemFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetName(name string) {
+	l.Name = name
+	l.require(listWorkspacesResponseDataItemFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetSlug(slug string) {
+	l.Slug = slug
+	l.require(listWorkspacesResponseDataItemFieldSlug)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetDescription(description *string) {
+	l.Description = description
+	l.require(listWorkspacesResponseDataItemFieldDescription)
+}
+
+// SetVisibility sets the Visibility field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetVisibility(visibility *ListWorkspacesResponseDataItemVisibility) {
+	l.Visibility = visibility
+	l.require(listWorkspacesResponseDataItemFieldVisibility)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetIcon(icon *string) {
+	l.Icon = icon
+	l.require(listWorkspacesResponseDataItemFieldIcon)
+}
+
+// SetIsDefault sets the IsDefault field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetIsDefault(isDefault *bool) {
+	l.IsDefault = isDefault
+	l.require(listWorkspacesResponseDataItemFieldIsDefault)
+}
+
+// SetIsPinned sets the IsPinned field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetIsPinned(isPinned *bool) {
+	l.IsPinned = isPinned
+	l.require(listWorkspacesResponseDataItemFieldIsPinned)
+}
+
+// SetMemberCount sets the MemberCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetMemberCount(memberCount *int) {
+	l.MemberCount = memberCount
+	l.require(listWorkspacesResponseDataItemFieldMemberCount)
+}
+
+// SetPromptCount sets the PromptCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetPromptCount(promptCount *int) {
+	l.PromptCount = promptCount
+	l.require(listWorkspacesResponseDataItemFieldPromptCount)
+}
+
+// SetOwnerID sets the OwnerID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetOwnerID(ownerID *string) {
+	l.OwnerID = ownerID
+	l.require(listWorkspacesResponseDataItemFieldOwnerID)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetOrganizationID(organizationID *string) {
+	l.OrganizationID = organizationID
+	l.require(listWorkspacesResponseDataItemFieldOrganizationID)
+}
+
+// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetCreatedBy(createdBy *string) {
+	l.CreatedBy = createdBy
+	l.require(listWorkspacesResponseDataItemFieldCreatedBy)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetCreatedAt(createdAt time.Time) {
+	l.CreatedAt = createdAt
+	l.require(listWorkspacesResponseDataItemFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetUpdatedAt(updatedAt time.Time) {
+	l.UpdatedAt = updatedAt
+	l.require(listWorkspacesResponseDataItemFieldUpdatedAt)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetIsActive(isActive *bool) {
+	l.IsActive = isActive
+	l.require(listWorkspacesResponseDataItemFieldIsActive)
+}
+
+// SetSettings sets the Settings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseDataItem) SetSettings(settings map[string]interface{}) {
+	l.Settings = settings
+	l.require(listWorkspacesResponseDataItemFieldSettings)
+}
+
+func (l *ListWorkspacesResponseDataItem) UnmarshalJSON(data []byte) error {
+	type embed ListWorkspacesResponseDataItem
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = ListWorkspacesResponseDataItem(unmarshaler.embed)
+	l.CreatedAt = unmarshaler.CreatedAt.Time()
+	l.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListWorkspacesResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed ListWorkspacesResponseDataItem
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed:     embed(*l),
+		CreatedAt: internal.NewDateTime(l.CreatedAt),
+		UpdatedAt: internal.NewDateTime(l.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListWorkspacesResponseDataItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListWorkspacesResponseDataItemVisibility string
+
+const (
+	ListWorkspacesResponseDataItemVisibilityPrivate  ListWorkspacesResponseDataItemVisibility = "private"
+	ListWorkspacesResponseDataItemVisibilityPublic   ListWorkspacesResponseDataItemVisibility = "public"
+	ListWorkspacesResponseDataItemVisibilityInternal ListWorkspacesResponseDataItemVisibility = "internal"
+)
+
+func NewListWorkspacesResponseDataItemVisibilityFromString(s string) (ListWorkspacesResponseDataItemVisibility, error) {
+	switch s {
+	case "private":
+		return ListWorkspacesResponseDataItemVisibilityPrivate, nil
+	case "public":
+		return ListWorkspacesResponseDataItemVisibilityPublic, nil
+	case "internal":
+		return ListWorkspacesResponseDataItemVisibilityInternal, nil
+	}
+	var t ListWorkspacesResponseDataItemVisibility
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListWorkspacesResponseDataItemVisibility) Ptr() *ListWorkspacesResponseDataItemVisibility {
+	return &l
+}
+
+var (
+	listWorkspacesResponseMetaFieldCount = big.NewInt(1 << 0)
+	listWorkspacesResponseMetaFieldLimit = big.NewInt(1 << 1)
+	listWorkspacesResponseMetaFieldTier  = big.NewInt(1 << 2)
+)
+
+type ListWorkspacesResponseMeta struct {
+	Count *int    `json:"count,omitempty" url:"count,omitempty"`
+	Limit *int    `json:"limit,omitempty" url:"limit,omitempty"`
+	Tier  *string `json:"tier,omitempty" url:"tier,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListWorkspacesResponseMeta) GetCount() *int {
+	if l == nil {
+		return nil
+	}
+	return l.Count
+}
+
+func (l *ListWorkspacesResponseMeta) GetLimit() *int {
+	if l == nil {
+		return nil
+	}
+	return l.Limit
+}
+
+func (l *ListWorkspacesResponseMeta) GetTier() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Tier
+}
+
+func (l *ListWorkspacesResponseMeta) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListWorkspacesResponseMeta) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseMeta) SetCount(count *int) {
+	l.Count = count
+	l.require(listWorkspacesResponseMetaFieldCount)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseMeta) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listWorkspacesResponseMetaFieldLimit)
+}
+
+// SetTier sets the Tier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponseMeta) SetTier(tier *string) {
+	l.Tier = tier
+	l.require(listWorkspacesResponseMetaFieldTier)
+}
+
+func (l *ListWorkspacesResponseMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListWorkspacesResponseMeta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListWorkspacesResponseMeta(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListWorkspacesResponseMeta) MarshalJSON() ([]byte, error) {
+	type embed ListWorkspacesResponseMeta
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListWorkspacesResponseMeta) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listWorkspacesResponsePaginationFieldPage       = big.NewInt(1 << 0)
+	listWorkspacesResponsePaginationFieldLimit      = big.NewInt(1 << 1)
+	listWorkspacesResponsePaginationFieldTotal      = big.NewInt(1 << 2)
+	listWorkspacesResponsePaginationFieldTotalPages = big.NewInt(1 << 3)
+)
+
+type ListWorkspacesResponsePagination struct {
+	Page       *int `json:"page,omitempty" url:"page,omitempty"`
+	Limit      *int `json:"limit,omitempty" url:"limit,omitempty"`
+	Total      *int `json:"total,omitempty" url:"total,omitempty"`
+	TotalPages *int `json:"totalPages,omitempty" url:"totalPages,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListWorkspacesResponsePagination) GetPage() *int {
+	if l == nil {
+		return nil
+	}
+	return l.Page
+}
+
+func (l *ListWorkspacesResponsePagination) GetLimit() *int {
+	if l == nil {
+		return nil
+	}
+	return l.Limit
+}
+
+func (l *ListWorkspacesResponsePagination) GetTotal() *int {
+	if l == nil {
+		return nil
+	}
+	return l.Total
+}
+
+func (l *ListWorkspacesResponsePagination) GetTotalPages() *int {
+	if l == nil {
+		return nil
+	}
+	return l.TotalPages
+}
+
+func (l *ListWorkspacesResponsePagination) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListWorkspacesResponsePagination) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponsePagination) SetPage(page *int) {
+	l.Page = page
+	l.require(listWorkspacesResponsePaginationFieldPage)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponsePagination) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listWorkspacesResponsePaginationFieldLimit)
+}
+
+// SetTotal sets the Total field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponsePagination) SetTotal(total *int) {
+	l.Total = total
+	l.require(listWorkspacesResponsePaginationFieldTotal)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspacesResponsePagination) SetTotalPages(totalPages *int) {
+	l.TotalPages = totalPages
+	l.require(listWorkspacesResponsePaginationFieldTotalPages)
+}
+
+func (l *ListWorkspacesResponsePagination) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListWorkspacesResponsePagination
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListWorkspacesResponsePagination(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListWorkspacesResponsePagination) MarshalJSON() ([]byte, error) {
+	type embed ListWorkspacesResponsePagination
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListWorkspacesResponsePagination) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
 }
 
 // Ownership transferred

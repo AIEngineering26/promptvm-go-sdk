@@ -34,7 +34,7 @@ func (r *RawClient) ListWorkspaces(
 	ctx context.Context,
 	request *promptvmgosdk.ListWorkspacesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[any], error) {
+) (*core.Response[*promptvmgosdk.ListWorkspacesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,6 +53,7 @@ func (r *RawClient) ListWorkspaces(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	var response *promptvmgosdk.ListWorkspacesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -63,16 +64,17 @@ func (r *RawClient) ListWorkspaces(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
+			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[any]{
+	return &core.Response[*promptvmgosdk.ListWorkspacesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
-		Body:       nil,
+		Body:       response,
 	}, nil
 }
 
