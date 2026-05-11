@@ -62,6 +62,33 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+func TestAuthenticationMcpAuthorizeWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.McpAuthorizeRequest{
+		RedirectURI: "redirect_uri",
+		State:       "state",
+	}
+	invocationErr := client.Authentication.McpAuthorize(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestAuthenticationMcpAuthorizeWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestAuthenticationMcpAuthorizeWithWireMock", "GET", "/api/v1/auth/mcp-authorize", map[string]string{"redirect_uri": "redirect_uri", "state": "state"}, 1)
+}
+
 func TestAuthenticationUpdateUIPreferencesWithWireMock(
 	t *testing.T,
 ) {

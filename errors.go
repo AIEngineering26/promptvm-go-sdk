@@ -7,7 +7,7 @@ import (
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 )
 
-// Invalid query
+// Invalid request parameters
 type BadRequestError struct {
 	*core.APIError
 	Body interface{}

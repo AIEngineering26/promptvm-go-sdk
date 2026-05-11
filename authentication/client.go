@@ -32,6 +32,23 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+// Browser-facing endpoint used by the MCP server to authenticate users via the backend session. If the user has a valid session, issues a one-time auth code and redirects back to the MCP callback URL.
+func (c *Client) McpAuthorize(
+	ctx context.Context,
+	request *promptvmgosdk.McpAuthorizeRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.McpAuthorize(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Merges the provided UI preferences (panel collapse state, widths, etc.) with the user's existing preferences. Cached in Redis with a 1-hour TTL using a write-through strategy so subsequent reads hit cache.
 func (c *Client) UpdateUIPreferences(
 	ctx context.Context,

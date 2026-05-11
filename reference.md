@@ -1,5 +1,83 @@
 # Reference
 ## Authentication
+<details><summary><code>client.Authentication.McpAuthorize() -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Browser-facing endpoint used by the MCP server to authenticate users via the backend session. If the user has a valid session, issues a one-time auth code and redirects back to the MCP callback URL.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.McpAuthorizeRequest{
+        RedirectURI: "redirect_uri",
+        State: "state",
+    }
+client.Authentication.McpAuthorize(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**redirectURI:** `string` — MCP callback URL to redirect to after auth
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**state:** `string` — Opaque state from the MCP OAuth flow
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope:** `*string` — Requested OAuth scopes (space-separated)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Authentication.UpdateUIPreferences(request) -> *promptvmgosdk.UpdateUIPreferencesResponse</code></summary>
 <dl>
 <dd>

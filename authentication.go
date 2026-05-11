@@ -9,6 +9,52 @@ import (
 	big "math/big"
 )
 
+var (
+	mcpAuthorizeRequestFieldRedirectURI = big.NewInt(1 << 0)
+	mcpAuthorizeRequestFieldState       = big.NewInt(1 << 1)
+	mcpAuthorizeRequestFieldScope       = big.NewInt(1 << 2)
+)
+
+type McpAuthorizeRequest struct {
+	// MCP callback URL to redirect to after auth
+	RedirectURI string `json:"-" url:"redirect_uri"`
+	// Opaque state from the MCP OAuth flow
+	State string `json:"-" url:"state"`
+	// Requested OAuth scopes (space-separated)
+	Scope *string `json:"-" url:"scope,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (m *McpAuthorizeRequest) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetRedirectURI sets the RedirectURI field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McpAuthorizeRequest) SetRedirectURI(redirectURI string) {
+	m.RedirectURI = redirectURI
+	m.require(mcpAuthorizeRequestFieldRedirectURI)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McpAuthorizeRequest) SetState(state string) {
+	m.State = state
+	m.require(mcpAuthorizeRequestFieldState)
+}
+
+// SetScope sets the Scope field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McpAuthorizeRequest) SetScope(scope *string) {
+	m.Scope = scope
+	m.require(mcpAuthorizeRequestFieldScope)
+}
+
 // Preferences updated
 var (
 	updateUIPreferencesResponseFieldUIPreferences = big.NewInt(1 << 0)
