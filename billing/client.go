@@ -132,6 +132,23 @@ func (c *Client) ResumeBillingSubscription(
 	return response.Body, nil
 }
 
+// Returns a paginated, owner/admin-gated history of Stripe invoices mirrored locally by the webhook worker (US-02-4). Rows are ordered `created_at desc, id desc` and paginated via an opaque cursor (`?cursor`). Default page size is 20, maximum 50 (FR-02-12). The response always includes Stripe-hosted `hostedInvoiceUrl` + `invoicePdfUrl` so the frontend can deep-link to receipts without a second round-trip.
+func (c *Client) ListBillingInvoices(
+	ctx context.Context,
+	request *promptvmgosdk.ListBillingInvoicesRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ListBillingInvoicesResponse, error) {
+	response, err := c.WithRawResponse.ListBillingInvoices(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
 func (c *Client) GetBillingStatus(
 	ctx context.Context,

@@ -218,6 +218,32 @@ func TestBillingResumeBillingSubscriptionWithWireMock(
 	VerifyRequestCount(t, "TestBillingResumeBillingSubscriptionWithWireMock", "POST", "/api/v1/billing/resume", nil, 1)
 }
 
+func TestBillingListBillingInvoicesWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ListBillingInvoicesRequest{
+		OrgID: "018e4a3b-0000-0000-0000-000000000001",
+	}
+	_, invocationErr := client.Billing.ListBillingInvoices(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingListBillingInvoicesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingListBillingInvoicesWithWireMock", "GET", "/api/v1/billing/invoices", nil, 1)
+}
+
 func TestBillingGetBillingStatusWithWireMock(
 	t *testing.T,
 ) {

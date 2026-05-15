@@ -201,6 +201,52 @@ func (g *GetBillingStatusRequest) SetOrgID(orgID *string) {
 }
 
 var (
+	listBillingInvoicesRequestFieldOrgID  = big.NewInt(1 << 0)
+	listBillingInvoicesRequestFieldLimit  = big.NewInt(1 << 1)
+	listBillingInvoicesRequestFieldCursor = big.NewInt(1 << 2)
+)
+
+type ListBillingInvoicesRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+	// Maximum number of invoices to return on this page. Default 20, max 50.
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Opaque base64 cursor from a prior response's `nextCursor`. Omit to start at the most recent invoice.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListBillingInvoicesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesRequest) SetOrgID(orgID string) {
+	l.OrgID = orgID
+	l.require(listBillingInvoicesRequestFieldOrgID)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listBillingInvoicesRequestFieldLimit)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listBillingInvoicesRequestFieldCursor)
+}
+
+var (
 	resumeBillingSubscriptionRequestFieldOrgID = big.NewInt(1 << 0)
 )
 
@@ -1597,6 +1643,369 @@ func (g *GetBillingStatusResponseUsage) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+// Paginated history of mirrored Stripe invoices for the active org, ordered `created_at desc, id desc`.
+var (
+	listBillingInvoicesResponseFieldInvoices   = big.NewInt(1 << 0)
+	listBillingInvoicesResponseFieldNextCursor = big.NewInt(1 << 1)
+)
+
+type ListBillingInvoicesResponse struct {
+	// Up to `limit` invoices, most recent first.
+	Invoices []*ListBillingInvoicesResponseInvoicesItem `json:"invoices" url:"invoices"`
+	// Opaque cursor for the next page. `null` when the final page was returned.
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListBillingInvoicesResponse) GetInvoices() []*ListBillingInvoicesResponseInvoicesItem {
+	if l == nil {
+		return nil
+	}
+	return l.Invoices
+}
+
+func (l *ListBillingInvoicesResponse) GetNextCursor() *string {
+	if l == nil {
+		return nil
+	}
+	return l.NextCursor
+}
+
+func (l *ListBillingInvoicesResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListBillingInvoicesResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetInvoices sets the Invoices field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponse) SetInvoices(invoices []*ListBillingInvoicesResponseInvoicesItem) {
+	l.Invoices = invoices
+	l.require(listBillingInvoicesResponseFieldInvoices)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponse) SetNextCursor(nextCursor *string) {
+	l.NextCursor = nextCursor
+	l.require(listBillingInvoicesResponseFieldNextCursor)
+}
+
+func (l *ListBillingInvoicesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBillingInvoicesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBillingInvoicesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBillingInvoicesResponse) MarshalJSON() ([]byte, error) {
+	type embed ListBillingInvoicesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListBillingInvoicesResponse) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// A single mirrored Stripe invoice for the active org.
+var (
+	listBillingInvoicesResponseInvoicesItemFieldID               = big.NewInt(1 << 0)
+	listBillingInvoicesResponseInvoicesItemFieldStripeInvoiceID  = big.NewInt(1 << 1)
+	listBillingInvoicesResponseInvoicesItemFieldNumber           = big.NewInt(1 << 2)
+	listBillingInvoicesResponseInvoicesItemFieldStatus           = big.NewInt(1 << 3)
+	listBillingInvoicesResponseInvoicesItemFieldAmountPaidCents  = big.NewInt(1 << 4)
+	listBillingInvoicesResponseInvoicesItemFieldCurrency         = big.NewInt(1 << 5)
+	listBillingInvoicesResponseInvoicesItemFieldPeriodStart      = big.NewInt(1 << 6)
+	listBillingInvoicesResponseInvoicesItemFieldPeriodEnd        = big.NewInt(1 << 7)
+	listBillingInvoicesResponseInvoicesItemFieldHostedInvoiceURL = big.NewInt(1 << 8)
+	listBillingInvoicesResponseInvoicesItemFieldInvoicePdfURL    = big.NewInt(1 << 9)
+	listBillingInvoicesResponseInvoicesItemFieldCreatedAt        = big.NewInt(1 << 10)
+)
+
+type ListBillingInvoicesResponseInvoicesItem struct {
+	// PromptVM invoice id (UUID primary key).
+	ID string `json:"id" url:"id"`
+	// Stripe invoice id (`in_…`). Unique across all orgs.
+	StripeInvoiceID string `json:"stripeInvoiceId" url:"stripeInvoiceId"`
+	// Stripe-visible invoice number (e.g. `B7E9F1A2-0001`). `null` for draft invoices.
+	Number *string `json:"number,omitempty" url:"number,omitempty"`
+	// Mirror of Stripe `invoice.status`: draft|open|paid|uncollectible|void.
+	Status string `json:"status" url:"status"`
+	// Amount paid, in the smallest currency unit (cents).
+	AmountPaidCents int `json:"amountPaidCents" url:"amountPaidCents"`
+	// ISO-4217 currency code (lowercased, matches Stripe).
+	Currency string `json:"currency" url:"currency"`
+	// ISO-8601 start of the billing period covered.
+	PeriodStart time.Time `json:"periodStart" url:"periodStart"`
+	// ISO-8601 end of the billing period covered.
+	PeriodEnd time.Time `json:"periodEnd" url:"periodEnd"`
+	// Stripe-hosted invoice receipt URL. `null` until Stripe finalizes the invoice.
+	HostedInvoiceURL *string `json:"hostedInvoiceUrl,omitempty" url:"hostedInvoiceUrl,omitempty"`
+	// Downloadable PDF for the invoice. `null` until Stripe finalizes the invoice.
+	InvoicePdfURL *string `json:"invoicePdfUrl,omitempty" url:"invoicePdfUrl,omitempty"`
+	// ISO-8601 timestamp the invoice was mirrored locally.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetStripeInvoiceID() string {
+	if l == nil {
+		return ""
+	}
+	return l.StripeInvoiceID
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetNumber() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Number
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetStatus() string {
+	if l == nil {
+		return ""
+	}
+	return l.Status
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetAmountPaidCents() int {
+	if l == nil {
+		return 0
+	}
+	return l.AmountPaidCents
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetCurrency() string {
+	if l == nil {
+		return ""
+	}
+	return l.Currency
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetPeriodStart() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.PeriodStart
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetPeriodEnd() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.PeriodEnd
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetHostedInvoiceURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.HostedInvoiceURL
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetInvoicePdfURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.InvoicePdfURL
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetCreatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.CreatedAt
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetID(id string) {
+	l.ID = id
+	l.require(listBillingInvoicesResponseInvoicesItemFieldID)
+}
+
+// SetStripeInvoiceID sets the StripeInvoiceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetStripeInvoiceID(stripeInvoiceID string) {
+	l.StripeInvoiceID = stripeInvoiceID
+	l.require(listBillingInvoicesResponseInvoicesItemFieldStripeInvoiceID)
+}
+
+// SetNumber sets the Number field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetNumber(number *string) {
+	l.Number = number
+	l.require(listBillingInvoicesResponseInvoicesItemFieldNumber)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetStatus(status string) {
+	l.Status = status
+	l.require(listBillingInvoicesResponseInvoicesItemFieldStatus)
+}
+
+// SetAmountPaidCents sets the AmountPaidCents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetAmountPaidCents(amountPaidCents int) {
+	l.AmountPaidCents = amountPaidCents
+	l.require(listBillingInvoicesResponseInvoicesItemFieldAmountPaidCents)
+}
+
+// SetCurrency sets the Currency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetCurrency(currency string) {
+	l.Currency = currency
+	l.require(listBillingInvoicesResponseInvoicesItemFieldCurrency)
+}
+
+// SetPeriodStart sets the PeriodStart field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetPeriodStart(periodStart time.Time) {
+	l.PeriodStart = periodStart
+	l.require(listBillingInvoicesResponseInvoicesItemFieldPeriodStart)
+}
+
+// SetPeriodEnd sets the PeriodEnd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetPeriodEnd(periodEnd time.Time) {
+	l.PeriodEnd = periodEnd
+	l.require(listBillingInvoicesResponseInvoicesItemFieldPeriodEnd)
+}
+
+// SetHostedInvoiceURL sets the HostedInvoiceURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetHostedInvoiceURL(hostedInvoiceURL *string) {
+	l.HostedInvoiceURL = hostedInvoiceURL
+	l.require(listBillingInvoicesResponseInvoicesItemFieldHostedInvoiceURL)
+}
+
+// SetInvoicePdfURL sets the InvoicePdfURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetInvoicePdfURL(invoicePdfURL *string) {
+	l.InvoicePdfURL = invoicePdfURL
+	l.require(listBillingInvoicesResponseInvoicesItemFieldInvoicePdfURL)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingInvoicesResponseInvoicesItem) SetCreatedAt(createdAt time.Time) {
+	l.CreatedAt = createdAt
+	l.require(listBillingInvoicesResponseInvoicesItemFieldCreatedAt)
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) UnmarshalJSON(data []byte) error {
+	type embed ListBillingInvoicesResponseInvoicesItem
+	var unmarshaler = struct {
+		embed
+		PeriodStart *internal.DateTime `json:"periodStart"`
+		PeriodEnd   *internal.DateTime `json:"periodEnd"`
+		CreatedAt   *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = ListBillingInvoicesResponseInvoicesItem(unmarshaler.embed)
+	l.PeriodStart = unmarshaler.PeriodStart.Time()
+	l.PeriodEnd = unmarshaler.PeriodEnd.Time()
+	l.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) MarshalJSON() ([]byte, error) {
+	type embed ListBillingInvoicesResponseInvoicesItem
+	var marshaler = struct {
+		embed
+		PeriodStart *internal.DateTime `json:"periodStart"`
+		PeriodEnd   *internal.DateTime `json:"periodEnd"`
+		CreatedAt   *internal.DateTime `json:"createdAt"`
+	}{
+		embed:       embed(*l),
+		PeriodStart: internal.NewDateTime(l.PeriodStart),
+		PeriodEnd:   internal.NewDateTime(l.PeriodEnd),
+		CreatedAt:   internal.NewDateTime(l.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListBillingInvoicesResponseInvoicesItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
 }
 
 // A publicly visible subscription plan returned by GET /api/v1/billing/plans.
