@@ -81,6 +81,23 @@ func (c *Client) CreateBillingPortalSession(
 	return response.Body, nil
 }
 
+// Routes through the Phase 02 change-plan algorithm: detects upgrade/downgrade/seat-adjust direction, releases any pending `subscription_schedule` first (FR-02-5a), then writes the change to Stripe (immediate proration on upgrade, scheduled phase on downgrade). Owner/admin only. Rate-limited per org via Redis SET NX with TTL `BILLING_CHANGE_PLAN_COOLDOWN_SECONDS` (default 60, 0 in tests). The authoritative state lands in our DB via the `customer.subscription.updated` webhook (US-01-4) — clients should re-read `/billing/status` after a 200.
+func (c *Client) ChangeBillingPlan(
+	ctx context.Context,
+	request *promptvmgosdk.ChangeBillingPlanRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ChangeBillingPlanResponse, error) {
+	response, err := c.WithRawResponse.ChangeBillingPlan(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
 func (c *Client) GetBillingStatus(
 	ctx context.Context,

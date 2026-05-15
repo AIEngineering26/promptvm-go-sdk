@@ -774,6 +774,93 @@ client.Billing.CreateBillingPortalSession(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.ChangeBillingPlan(request) -> *promptvmgosdk.ChangeBillingPlanResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Routes through the Phase 02 change-plan algorithm: detects upgrade/downgrade/seat-adjust direction, releases any pending `subscription_schedule` first (FR-02-5a), then writes the change to Stripe (immediate proration on upgrade, scheduled phase on downgrade). Owner/admin only. Rate-limited per org via Redis SET NX with TTL `BILLING_CHANGE_PLAN_COOLDOWN_SECONDS` (default 60, 0 in tests). The authoritative state lands in our DB via the `customer.subscription.updated` webhook (US-01-4) — clients should re-read `/billing/status` after a 200.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ChangeBillingPlanRequest{
+        OrgID: "018e4a3b-0000-0000-0000-000000000001",
+        PlanSlug: "teams",
+        Interval: promptvmgosdk.ChangeBillingPlanRequestIntervalMonth,
+    }
+client.Billing.ChangeBillingPlan(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planSlug:** `string` — Target subscription plan slug from the catalog (e.g. "pro", "teams"). Free is rejected — use `/billing/cancel` to schedule a downgrade to Free.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval:** `*promptvmgosdk.ChangeBillingPlanRequestInterval` — Target billing interval. month→year=upgrade, year→month=downgrade (FR-02-4).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**seats:** `*int` — Seat quantity for per-seat plans. Required when the target plan has `is_per_seat=true`; rejected otherwise. Must satisfy `min_seats ≤ seats ≤ max_seats` and `seats ≥ used_seats` (FR-02-5b).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.GetBillingStatus() -> *promptvmgosdk.GetBillingStatusResponse</code></summary>
 <dl>
 <dd>

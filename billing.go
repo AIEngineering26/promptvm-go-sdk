@@ -11,6 +11,62 @@ import (
 )
 
 var (
+	changeBillingPlanRequestFieldOrgID    = big.NewInt(1 << 0)
+	changeBillingPlanRequestFieldPlanSlug = big.NewInt(1 << 1)
+	changeBillingPlanRequestFieldInterval = big.NewInt(1 << 2)
+	changeBillingPlanRequestFieldSeats    = big.NewInt(1 << 3)
+)
+
+type ChangeBillingPlanRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+	// Target subscription plan slug from the catalog (e.g. "pro", "teams"). Free is rejected — use `/billing/cancel` to schedule a downgrade to Free.
+	PlanSlug string `json:"planSlug" url:"-"`
+	// Target billing interval. month→year=upgrade, year→month=downgrade (FR-02-4).
+	Interval ChangeBillingPlanRequestInterval `json:"interval" url:"-"`
+	// Seat quantity for per-seat plans. Required when the target plan has `is_per_seat=true`; rejected otherwise. Must satisfy `min_seats ≤ seats ≤ max_seats` and `seats ≥ used_seats` (FR-02-5b).
+	Seats *int `json:"seats,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *ChangeBillingPlanRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanRequest) SetOrgID(orgID string) {
+	c.OrgID = orgID
+	c.require(changeBillingPlanRequestFieldOrgID)
+}
+
+// SetPlanSlug sets the PlanSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanRequest) SetPlanSlug(planSlug string) {
+	c.PlanSlug = planSlug
+	c.require(changeBillingPlanRequestFieldPlanSlug)
+}
+
+// SetInterval sets the Interval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanRequest) SetInterval(interval ChangeBillingPlanRequestInterval) {
+	c.Interval = interval
+	c.require(changeBillingPlanRequestFieldInterval)
+}
+
+// SetSeats sets the Seats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanRequest) SetSeats(seats *int) {
+	c.Seats = seats
+	c.require(changeBillingPlanRequestFieldSeats)
+}
+
+var (
 	createBillingCheckoutSessionRequestFieldOrgID    = big.NewInt(1 << 0)
 	createBillingCheckoutSessionRequestFieldPlanSlug = big.NewInt(1 << 1)
 	createBillingCheckoutSessionRequestFieldInterval = big.NewInt(1 << 2)
@@ -116,6 +172,316 @@ func (g *GetBillingStatusRequest) require(field *big.Int) {
 func (g *GetBillingStatusRequest) SetOrgID(orgID *string) {
 	g.OrgID = orgID
 	g.require(getBillingStatusRequestFieldOrgID)
+}
+
+// Target billing interval. month→year=upgrade, year→month=downgrade (FR-02-4).
+type ChangeBillingPlanRequestInterval string
+
+const (
+	ChangeBillingPlanRequestIntervalMonth ChangeBillingPlanRequestInterval = "month"
+	ChangeBillingPlanRequestIntervalYear  ChangeBillingPlanRequestInterval = "year"
+)
+
+func NewChangeBillingPlanRequestIntervalFromString(s string) (ChangeBillingPlanRequestInterval, error) {
+	switch s {
+	case "month":
+		return ChangeBillingPlanRequestIntervalMonth, nil
+	case "year":
+		return ChangeBillingPlanRequestIntervalYear, nil
+	}
+	var t ChangeBillingPlanRequestInterval
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ChangeBillingPlanRequestInterval) Ptr() *ChangeBillingPlanRequestInterval {
+	return &c
+}
+
+var (
+	changeBillingPlanResponseFieldDirection      = big.NewInt(1 << 0)
+	changeBillingPlanResponseFieldTarget         = big.NewInt(1 << 1)
+	changeBillingPlanResponseFieldSubscriptionID = big.NewInt(1 << 2)
+	changeBillingPlanResponseFieldScheduleID     = big.NewInt(1 << 3)
+)
+
+type ChangeBillingPlanResponse struct {
+	// Which branch of the change-plan algorithm ran.
+	Direction ChangeBillingPlanResponseDirection `json:"direction" url:"direction"`
+	Target    *ChangeBillingPlanResponseTarget   `json:"target" url:"target"`
+	// Stripe subscription id (`sub_…`).
+	SubscriptionID string `json:"subscriptionId" url:"subscriptionId"`
+	// Stripe `subscription_schedule` id, present only on downgrade outcomes.
+	ScheduleID *string `json:"scheduleId,omitempty" url:"scheduleId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ChangeBillingPlanResponse) GetDirection() ChangeBillingPlanResponseDirection {
+	if c == nil {
+		return ""
+	}
+	return c.Direction
+}
+
+func (c *ChangeBillingPlanResponse) GetTarget() *ChangeBillingPlanResponseTarget {
+	if c == nil {
+		return nil
+	}
+	return c.Target
+}
+
+func (c *ChangeBillingPlanResponse) GetSubscriptionID() string {
+	if c == nil {
+		return ""
+	}
+	return c.SubscriptionID
+}
+
+func (c *ChangeBillingPlanResponse) GetScheduleID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ScheduleID
+}
+
+func (c *ChangeBillingPlanResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ChangeBillingPlanResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetDirection sets the Direction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanResponse) SetDirection(direction ChangeBillingPlanResponseDirection) {
+	c.Direction = direction
+	c.require(changeBillingPlanResponseFieldDirection)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanResponse) SetTarget(target *ChangeBillingPlanResponseTarget) {
+	c.Target = target
+	c.require(changeBillingPlanResponseFieldTarget)
+}
+
+// SetSubscriptionID sets the SubscriptionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanResponse) SetSubscriptionID(subscriptionID string) {
+	c.SubscriptionID = subscriptionID
+	c.require(changeBillingPlanResponseFieldSubscriptionID)
+}
+
+// SetScheduleID sets the ScheduleID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanResponse) SetScheduleID(scheduleID *string) {
+	c.ScheduleID = scheduleID
+	c.require(changeBillingPlanResponseFieldScheduleID)
+}
+
+func (c *ChangeBillingPlanResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ChangeBillingPlanResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ChangeBillingPlanResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ChangeBillingPlanResponse) MarshalJSON() ([]byte, error) {
+	type embed ChangeBillingPlanResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ChangeBillingPlanResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Which branch of the change-plan algorithm ran.
+type ChangeBillingPlanResponseDirection string
+
+const (
+	ChangeBillingPlanResponseDirectionUpgrade    ChangeBillingPlanResponseDirection = "upgrade"
+	ChangeBillingPlanResponseDirectionDowngrade  ChangeBillingPlanResponseDirection = "downgrade"
+	ChangeBillingPlanResponseDirectionSeatAdjust ChangeBillingPlanResponseDirection = "seat_adjust"
+)
+
+func NewChangeBillingPlanResponseDirectionFromString(s string) (ChangeBillingPlanResponseDirection, error) {
+	switch s {
+	case "upgrade":
+		return ChangeBillingPlanResponseDirectionUpgrade, nil
+	case "downgrade":
+		return ChangeBillingPlanResponseDirectionDowngrade, nil
+	case "seat_adjust":
+		return ChangeBillingPlanResponseDirectionSeatAdjust, nil
+	}
+	var t ChangeBillingPlanResponseDirection
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ChangeBillingPlanResponseDirection) Ptr() *ChangeBillingPlanResponseDirection {
+	return &c
+}
+
+var (
+	changeBillingPlanResponseTargetFieldPlanSlug = big.NewInt(1 << 0)
+	changeBillingPlanResponseTargetFieldInterval = big.NewInt(1 << 1)
+	changeBillingPlanResponseTargetFieldSeats    = big.NewInt(1 << 2)
+)
+
+type ChangeBillingPlanResponseTarget struct {
+	PlanSlug string                                  `json:"planSlug" url:"planSlug"`
+	Interval ChangeBillingPlanResponseTargetInterval `json:"interval" url:"interval"`
+	Seats    int                                     `json:"seats" url:"seats"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ChangeBillingPlanResponseTarget) GetPlanSlug() string {
+	if c == nil {
+		return ""
+	}
+	return c.PlanSlug
+}
+
+func (c *ChangeBillingPlanResponseTarget) GetInterval() ChangeBillingPlanResponseTargetInterval {
+	if c == nil {
+		return ""
+	}
+	return c.Interval
+}
+
+func (c *ChangeBillingPlanResponseTarget) GetSeats() int {
+	if c == nil {
+		return 0
+	}
+	return c.Seats
+}
+
+func (c *ChangeBillingPlanResponseTarget) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ChangeBillingPlanResponseTarget) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetPlanSlug sets the PlanSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanResponseTarget) SetPlanSlug(planSlug string) {
+	c.PlanSlug = planSlug
+	c.require(changeBillingPlanResponseTargetFieldPlanSlug)
+}
+
+// SetInterval sets the Interval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanResponseTarget) SetInterval(interval ChangeBillingPlanResponseTargetInterval) {
+	c.Interval = interval
+	c.require(changeBillingPlanResponseTargetFieldInterval)
+}
+
+// SetSeats sets the Seats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangeBillingPlanResponseTarget) SetSeats(seats int) {
+	c.Seats = seats
+	c.require(changeBillingPlanResponseTargetFieldSeats)
+}
+
+func (c *ChangeBillingPlanResponseTarget) UnmarshalJSON(data []byte) error {
+	type unmarshaler ChangeBillingPlanResponseTarget
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ChangeBillingPlanResponseTarget(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ChangeBillingPlanResponseTarget) MarshalJSON() ([]byte, error) {
+	type embed ChangeBillingPlanResponseTarget
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ChangeBillingPlanResponseTarget) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ChangeBillingPlanResponseTargetInterval string
+
+const (
+	ChangeBillingPlanResponseTargetIntervalMonth ChangeBillingPlanResponseTargetInterval = "month"
+	ChangeBillingPlanResponseTargetIntervalYear  ChangeBillingPlanResponseTargetInterval = "year"
+)
+
+func NewChangeBillingPlanResponseTargetIntervalFromString(s string) (ChangeBillingPlanResponseTargetInterval, error) {
+	switch s {
+	case "month":
+		return ChangeBillingPlanResponseTargetIntervalMonth, nil
+	case "year":
+		return ChangeBillingPlanResponseTargetIntervalYear, nil
+	}
+	var t ChangeBillingPlanResponseTargetInterval
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ChangeBillingPlanResponseTargetInterval) Ptr() *ChangeBillingPlanResponseTargetInterval {
+	return &c
 }
 
 // Billing interval. Must match a `subscription_plans` row paired with `planSlug`.
