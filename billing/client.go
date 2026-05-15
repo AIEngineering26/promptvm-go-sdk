@@ -63,3 +63,20 @@ func (c *Client) CreateBillingCheckoutSession(
 	}
 	return response.Body, nil
 }
+
+// Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
+func (c *Client) GetBillingStatus(
+	ctx context.Context,
+	request *promptvmgosdk.GetBillingStatusRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetBillingStatusResponse, error) {
+	response, err := c.WithRawResponse.GetBillingStatus(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

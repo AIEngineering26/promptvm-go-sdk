@@ -7,6 +7,7 @@ import (
 	fmt "fmt"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	time "time"
 )
 
 var (
@@ -63,6 +64,32 @@ func (c *CreateBillingCheckoutSessionRequest) SetInterval(interval CreateBilling
 func (c *CreateBillingCheckoutSessionRequest) SetSeats(seats *int) {
 	c.Seats = seats
 	c.require(createBillingCheckoutSessionRequestFieldSeats)
+}
+
+var (
+	getBillingStatusRequestFieldOrgID = big.NewInt(1 << 0)
+)
+
+type GetBillingStatusRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetBillingStatusRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusRequest) SetOrgID(orgID *string) {
+	g.OrgID = orgID
+	g.require(getBillingStatusRequestFieldOrgID)
 }
 
 // Billing interval. Must match a `subscription_plans` row paired with `planSlug`.
@@ -165,6 +192,763 @@ func (c *CreateBillingCheckoutSessionResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+// Authoritative read-model for the active org's billing state. Combines the Stripe-mirrored subscription projection, plan-derived entitlements, and a usage snapshot. Cached server-side in Redis (`billing:status:{orgId}`, TTL 30s) and invalidated by the webhook worker on every event apply.
+var (
+	getBillingStatusResponseFieldSubscription  = big.NewInt(1 << 0)
+	getBillingStatusResponseFieldEntitlements  = big.NewInt(1 << 1)
+	getBillingStatusResponseFieldUsage         = big.NewInt(1 << 2)
+	getBillingStatusResponseFieldPaymentMethod = big.NewInt(1 << 3)
+)
+
+type GetBillingStatusResponse struct {
+	// Projection of the org's active subscription.
+	Subscription *GetBillingStatusResponseSubscription `json:"subscription" url:"subscription"`
+	// Machine-readable entitlement limits used for feature gating. null = unlimited.
+	Entitlements *GetBillingStatusResponseEntitlements `json:"entitlements" url:"entitlements"`
+	// Resource usage snapshot for the active org. Counts non-deleted rows only.
+	Usage *GetBillingStatusResponseUsage `json:"usage" url:"usage"`
+	// Reserved for Phase 02 — always `null` in Phase 01.
+	PaymentMethod interface{} `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetBillingStatusResponse) GetSubscription() *GetBillingStatusResponseSubscription {
+	if g == nil {
+		return nil
+	}
+	return g.Subscription
+}
+
+func (g *GetBillingStatusResponse) GetEntitlements() *GetBillingStatusResponseEntitlements {
+	if g == nil {
+		return nil
+	}
+	return g.Entitlements
+}
+
+func (g *GetBillingStatusResponse) GetUsage() *GetBillingStatusResponseUsage {
+	if g == nil {
+		return nil
+	}
+	return g.Usage
+}
+
+func (g *GetBillingStatusResponse) GetPaymentMethod() interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.PaymentMethod
+}
+
+func (g *GetBillingStatusResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetBillingStatusResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetSubscription sets the Subscription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponse) SetSubscription(subscription *GetBillingStatusResponseSubscription) {
+	g.Subscription = subscription
+	g.require(getBillingStatusResponseFieldSubscription)
+}
+
+// SetEntitlements sets the Entitlements field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponse) SetEntitlements(entitlements *GetBillingStatusResponseEntitlements) {
+	g.Entitlements = entitlements
+	g.require(getBillingStatusResponseFieldEntitlements)
+}
+
+// SetUsage sets the Usage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponse) SetUsage(usage *GetBillingStatusResponseUsage) {
+	g.Usage = usage
+	g.require(getBillingStatusResponseFieldUsage)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponse) SetPaymentMethod(paymentMethod interface{}) {
+	g.PaymentMethod = paymentMethod
+	g.require(getBillingStatusResponseFieldPaymentMethod)
+}
+
+func (g *GetBillingStatusResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetBillingStatusResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetBillingStatusResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetBillingStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed GetBillingStatusResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetBillingStatusResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Machine-readable entitlement limits used for feature gating. null = unlimited.
+var (
+	getBillingStatusResponseEntitlementsFieldWorkspaces          = big.NewInt(1 << 0)
+	getBillingStatusResponseEntitlementsFieldPrompts             = big.NewInt(1 << 1)
+	getBillingStatusResponseEntitlementsFieldAPIRequestsPerMonth = big.NewInt(1 << 2)
+	getBillingStatusResponseEntitlementsFieldSharingPublic       = big.NewInt(1 << 3)
+	getBillingStatusResponseEntitlementsFieldSharingPrivate      = big.NewInt(1 << 4)
+	getBillingStatusResponseEntitlementsFieldAPIAccess           = big.NewInt(1 << 5)
+	getBillingStatusResponseEntitlementsFieldPremiumLibrary      = big.NewInt(1 << 6)
+	getBillingStatusResponseEntitlementsFieldAuditLogs           = big.NewInt(1 << 7)
+	getBillingStatusResponseEntitlementsFieldPrioritySupport     = big.NewInt(1 << 8)
+	getBillingStatusResponseEntitlementsFieldSSO                 = big.NewInt(1 << 9)
+)
+
+type GetBillingStatusResponseEntitlements struct {
+	Workspaces          *int `json:"workspaces,omitempty" url:"workspaces,omitempty"`
+	Prompts             *int `json:"prompts,omitempty" url:"prompts,omitempty"`
+	APIRequestsPerMonth *int `json:"apiRequestsPerMonth,omitempty" url:"apiRequestsPerMonth,omitempty"`
+	SharingPublic       bool `json:"sharingPublic" url:"sharingPublic"`
+	SharingPrivate      bool `json:"sharingPrivate" url:"sharingPrivate"`
+	APIAccess           bool `json:"apiAccess" url:"apiAccess"`
+	PremiumLibrary      bool `json:"premiumLibrary" url:"premiumLibrary"`
+	AuditLogs           bool `json:"auditLogs" url:"auditLogs"`
+	PrioritySupport     bool `json:"prioritySupport" url:"prioritySupport"`
+	SSO                 bool `json:"sso" url:"sso"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetWorkspaces() *int {
+	if g == nil {
+		return nil
+	}
+	return g.Workspaces
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetPrompts() *int {
+	if g == nil {
+		return nil
+	}
+	return g.Prompts
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetAPIRequestsPerMonth() *int {
+	if g == nil {
+		return nil
+	}
+	return g.APIRequestsPerMonth
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetSharingPublic() bool {
+	if g == nil {
+		return false
+	}
+	return g.SharingPublic
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetSharingPrivate() bool {
+	if g == nil {
+		return false
+	}
+	return g.SharingPrivate
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetAPIAccess() bool {
+	if g == nil {
+		return false
+	}
+	return g.APIAccess
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetPremiumLibrary() bool {
+	if g == nil {
+		return false
+	}
+	return g.PremiumLibrary
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetAuditLogs() bool {
+	if g == nil {
+		return false
+	}
+	return g.AuditLogs
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetPrioritySupport() bool {
+	if g == nil {
+		return false
+	}
+	return g.PrioritySupport
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetSSO() bool {
+	if g == nil {
+		return false
+	}
+	return g.SSO
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetBillingStatusResponseEntitlements) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetWorkspaces sets the Workspaces field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetWorkspaces(workspaces *int) {
+	g.Workspaces = workspaces
+	g.require(getBillingStatusResponseEntitlementsFieldWorkspaces)
+}
+
+// SetPrompts sets the Prompts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetPrompts(prompts *int) {
+	g.Prompts = prompts
+	g.require(getBillingStatusResponseEntitlementsFieldPrompts)
+}
+
+// SetAPIRequestsPerMonth sets the APIRequestsPerMonth field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetAPIRequestsPerMonth(apiRequestsPerMonth *int) {
+	g.APIRequestsPerMonth = apiRequestsPerMonth
+	g.require(getBillingStatusResponseEntitlementsFieldAPIRequestsPerMonth)
+}
+
+// SetSharingPublic sets the SharingPublic field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetSharingPublic(sharingPublic bool) {
+	g.SharingPublic = sharingPublic
+	g.require(getBillingStatusResponseEntitlementsFieldSharingPublic)
+}
+
+// SetSharingPrivate sets the SharingPrivate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetSharingPrivate(sharingPrivate bool) {
+	g.SharingPrivate = sharingPrivate
+	g.require(getBillingStatusResponseEntitlementsFieldSharingPrivate)
+}
+
+// SetAPIAccess sets the APIAccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetAPIAccess(apiAccess bool) {
+	g.APIAccess = apiAccess
+	g.require(getBillingStatusResponseEntitlementsFieldAPIAccess)
+}
+
+// SetPremiumLibrary sets the PremiumLibrary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetPremiumLibrary(premiumLibrary bool) {
+	g.PremiumLibrary = premiumLibrary
+	g.require(getBillingStatusResponseEntitlementsFieldPremiumLibrary)
+}
+
+// SetAuditLogs sets the AuditLogs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetAuditLogs(auditLogs bool) {
+	g.AuditLogs = auditLogs
+	g.require(getBillingStatusResponseEntitlementsFieldAuditLogs)
+}
+
+// SetPrioritySupport sets the PrioritySupport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetPrioritySupport(prioritySupport bool) {
+	g.PrioritySupport = prioritySupport
+	g.require(getBillingStatusResponseEntitlementsFieldPrioritySupport)
+}
+
+// SetSSO sets the SSO field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetSSO(sso bool) {
+	g.SSO = sso
+	g.require(getBillingStatusResponseEntitlementsFieldSSO)
+}
+
+func (g *GetBillingStatusResponseEntitlements) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetBillingStatusResponseEntitlements
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetBillingStatusResponseEntitlements(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetBillingStatusResponseEntitlements) MarshalJSON() ([]byte, error) {
+	type embed GetBillingStatusResponseEntitlements
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetBillingStatusResponseEntitlements) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Projection of the org's active subscription.
+var (
+	getBillingStatusResponseSubscriptionFieldPlan              = big.NewInt(1 << 0)
+	getBillingStatusResponseSubscriptionFieldInterval          = big.NewInt(1 << 1)
+	getBillingStatusResponseSubscriptionFieldStatus            = big.NewInt(1 << 2)
+	getBillingStatusResponseSubscriptionFieldCurrentPeriodEnd  = big.NewInt(1 << 3)
+	getBillingStatusResponseSubscriptionFieldCancelAtPeriodEnd = big.NewInt(1 << 4)
+	getBillingStatusResponseSubscriptionFieldSeats             = big.NewInt(1 << 5)
+)
+
+type GetBillingStatusResponseSubscription struct {
+	// Plan slug — `free` for Free orgs, otherwise the paid tier slug.
+	Plan string `json:"plan" url:"plan"`
+	// Billing interval. `null` for Free orgs (no billing cycle).
+	Interval *GetBillingStatusResponseSubscriptionInterval `json:"interval,omitempty" url:"interval,omitempty"`
+	// Stripe subscription status (`active`, `trialing`, `past_due`, `canceled`, `incomplete`, …).
+	Status string `json:"status" url:"status"`
+	// ISO-8601 timestamp of the current billing period end. `null` for Free orgs.
+	CurrentPeriodEnd *time.Time `json:"currentPeriodEnd,omitempty" url:"currentPeriodEnd,omitempty"`
+	// True when the subscription is scheduled to cancel at the current period end.
+	CancelAtPeriodEnd bool                                       `json:"cancelAtPeriodEnd" url:"cancelAtPeriodEnd"`
+	Seats             *GetBillingStatusResponseSubscriptionSeats `json:"seats" url:"seats"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetBillingStatusResponseSubscription) GetPlan() string {
+	if g == nil {
+		return ""
+	}
+	return g.Plan
+}
+
+func (g *GetBillingStatusResponseSubscription) GetInterval() *GetBillingStatusResponseSubscriptionInterval {
+	if g == nil {
+		return nil
+	}
+	return g.Interval
+}
+
+func (g *GetBillingStatusResponseSubscription) GetStatus() string {
+	if g == nil {
+		return ""
+	}
+	return g.Status
+}
+
+func (g *GetBillingStatusResponseSubscription) GetCurrentPeriodEnd() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.CurrentPeriodEnd
+}
+
+func (g *GetBillingStatusResponseSubscription) GetCancelAtPeriodEnd() bool {
+	if g == nil {
+		return false
+	}
+	return g.CancelAtPeriodEnd
+}
+
+func (g *GetBillingStatusResponseSubscription) GetSeats() *GetBillingStatusResponseSubscriptionSeats {
+	if g == nil {
+		return nil
+	}
+	return g.Seats
+}
+
+func (g *GetBillingStatusResponseSubscription) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetBillingStatusResponseSubscription) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetPlan sets the Plan field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscription) SetPlan(plan string) {
+	g.Plan = plan
+	g.require(getBillingStatusResponseSubscriptionFieldPlan)
+}
+
+// SetInterval sets the Interval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscription) SetInterval(interval *GetBillingStatusResponseSubscriptionInterval) {
+	g.Interval = interval
+	g.require(getBillingStatusResponseSubscriptionFieldInterval)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscription) SetStatus(status string) {
+	g.Status = status
+	g.require(getBillingStatusResponseSubscriptionFieldStatus)
+}
+
+// SetCurrentPeriodEnd sets the CurrentPeriodEnd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscription) SetCurrentPeriodEnd(currentPeriodEnd *time.Time) {
+	g.CurrentPeriodEnd = currentPeriodEnd
+	g.require(getBillingStatusResponseSubscriptionFieldCurrentPeriodEnd)
+}
+
+// SetCancelAtPeriodEnd sets the CancelAtPeriodEnd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscription) SetCancelAtPeriodEnd(cancelAtPeriodEnd bool) {
+	g.CancelAtPeriodEnd = cancelAtPeriodEnd
+	g.require(getBillingStatusResponseSubscriptionFieldCancelAtPeriodEnd)
+}
+
+// SetSeats sets the Seats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscription) SetSeats(seats *GetBillingStatusResponseSubscriptionSeats) {
+	g.Seats = seats
+	g.require(getBillingStatusResponseSubscriptionFieldSeats)
+}
+
+func (g *GetBillingStatusResponseSubscription) UnmarshalJSON(data []byte) error {
+	type embed GetBillingStatusResponseSubscription
+	var unmarshaler = struct {
+		embed
+		CurrentPeriodEnd *internal.DateTime `json:"currentPeriodEnd,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetBillingStatusResponseSubscription(unmarshaler.embed)
+	g.CurrentPeriodEnd = unmarshaler.CurrentPeriodEnd.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetBillingStatusResponseSubscription) MarshalJSON() ([]byte, error) {
+	type embed GetBillingStatusResponseSubscription
+	var marshaler = struct {
+		embed
+		CurrentPeriodEnd *internal.DateTime `json:"currentPeriodEnd,omitempty"`
+	}{
+		embed:            embed(*g),
+		CurrentPeriodEnd: internal.NewOptionalDateTime(g.CurrentPeriodEnd),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetBillingStatusResponseSubscription) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Billing interval. `null` for Free orgs (no billing cycle).
+type GetBillingStatusResponseSubscriptionInterval string
+
+const (
+	GetBillingStatusResponseSubscriptionIntervalMonth GetBillingStatusResponseSubscriptionInterval = "month"
+	GetBillingStatusResponseSubscriptionIntervalYear  GetBillingStatusResponseSubscriptionInterval = "year"
+)
+
+func NewGetBillingStatusResponseSubscriptionIntervalFromString(s string) (GetBillingStatusResponseSubscriptionInterval, error) {
+	switch s {
+	case "month":
+		return GetBillingStatusResponseSubscriptionIntervalMonth, nil
+	case "year":
+		return GetBillingStatusResponseSubscriptionIntervalYear, nil
+	}
+	var t GetBillingStatusResponseSubscriptionInterval
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetBillingStatusResponseSubscriptionInterval) Ptr() *GetBillingStatusResponseSubscriptionInterval {
+	return &g
+}
+
+var (
+	getBillingStatusResponseSubscriptionSeatsFieldTotal = big.NewInt(1 << 0)
+	getBillingStatusResponseSubscriptionSeatsFieldUsed  = big.NewInt(1 << 1)
+)
+
+type GetBillingStatusResponseSubscriptionSeats struct {
+	Total int `json:"total" url:"total"`
+	Used  int `json:"used" url:"used"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetBillingStatusResponseSubscriptionSeats) GetTotal() int {
+	if g == nil {
+		return 0
+	}
+	return g.Total
+}
+
+func (g *GetBillingStatusResponseSubscriptionSeats) GetUsed() int {
+	if g == nil {
+		return 0
+	}
+	return g.Used
+}
+
+func (g *GetBillingStatusResponseSubscriptionSeats) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetBillingStatusResponseSubscriptionSeats) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetTotal sets the Total field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscriptionSeats) SetTotal(total int) {
+	g.Total = total
+	g.require(getBillingStatusResponseSubscriptionSeatsFieldTotal)
+}
+
+// SetUsed sets the Used field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseSubscriptionSeats) SetUsed(used int) {
+	g.Used = used
+	g.require(getBillingStatusResponseSubscriptionSeatsFieldUsed)
+}
+
+func (g *GetBillingStatusResponseSubscriptionSeats) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetBillingStatusResponseSubscriptionSeats
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetBillingStatusResponseSubscriptionSeats(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetBillingStatusResponseSubscriptionSeats) MarshalJSON() ([]byte, error) {
+	type embed GetBillingStatusResponseSubscriptionSeats
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetBillingStatusResponseSubscriptionSeats) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Resource usage snapshot for the active org. Counts non-deleted rows only.
+var (
+	getBillingStatusResponseUsageFieldWorkspaces            = big.NewInt(1 << 0)
+	getBillingStatusResponseUsageFieldPrompts               = big.NewInt(1 << 1)
+	getBillingStatusResponseUsageFieldAPIRequestsThisPeriod = big.NewInt(1 << 2)
+)
+
+type GetBillingStatusResponseUsage struct {
+	// Count of non-deleted workspaces scoped to the active org.
+	Workspaces int `json:"workspaces" url:"workspaces"`
+	// Count of non-deleted prompt files in the active org (via workspaces).
+	Prompts int `json:"prompts" url:"prompts"`
+	// API requests in the current billing period. Wired in Phase 04 — returns 0 until then.
+	APIRequestsThisPeriod int `json:"apiRequestsThisPeriod" url:"apiRequestsThisPeriod"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetBillingStatusResponseUsage) GetWorkspaces() int {
+	if g == nil {
+		return 0
+	}
+	return g.Workspaces
+}
+
+func (g *GetBillingStatusResponseUsage) GetPrompts() int {
+	if g == nil {
+		return 0
+	}
+	return g.Prompts
+}
+
+func (g *GetBillingStatusResponseUsage) GetAPIRequestsThisPeriod() int {
+	if g == nil {
+		return 0
+	}
+	return g.APIRequestsThisPeriod
+}
+
+func (g *GetBillingStatusResponseUsage) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetBillingStatusResponseUsage) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetWorkspaces sets the Workspaces field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseUsage) SetWorkspaces(workspaces int) {
+	g.Workspaces = workspaces
+	g.require(getBillingStatusResponseUsageFieldWorkspaces)
+}
+
+// SetPrompts sets the Prompts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseUsage) SetPrompts(prompts int) {
+	g.Prompts = prompts
+	g.require(getBillingStatusResponseUsageFieldPrompts)
+}
+
+// SetAPIRequestsThisPeriod sets the APIRequestsThisPeriod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseUsage) SetAPIRequestsThisPeriod(apiRequestsThisPeriod int) {
+	g.APIRequestsThisPeriod = apiRequestsThisPeriod
+	g.require(getBillingStatusResponseUsageFieldAPIRequestsThisPeriod)
+}
+
+func (g *GetBillingStatusResponseUsage) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetBillingStatusResponseUsage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetBillingStatusResponseUsage(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetBillingStatusResponseUsage) MarshalJSON() ([]byte, error) {
+	type embed GetBillingStatusResponseUsage
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetBillingStatusResponseUsage) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 // A publicly visible subscription plan returned by GET /api/v1/billing/plans.

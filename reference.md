@@ -713,6 +713,69 @@ client.Billing.CreateBillingCheckoutSession(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.GetBillingStatus() -> *promptvmgosdk.GetBillingStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetBillingStatusRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Billing.GetBillingStatus(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## AgentAPI
 <details><summary><code>client.AgentAPI.AgentResolvePrompt(Slug) -> error</code></summary>
 <dl>
