@@ -98,6 +98,40 @@ func (c *Client) ChangeBillingPlan(
 	return response.Body, nil
 }
 
+// Owner/admin only. Sets `cancel_at_period_end = true` on the Stripe subscription. Releases any pending downgrade schedule first (FR-02-15) so the update can apply cleanly. The cancellation is scheduled, not immediate — billing continues through the current period and access ends at `cancelAt`. Re-invoking with the same period is a no-op (FR-02-14 idempotency).
+func (c *Client) CancelBillingSubscription(
+	ctx context.Context,
+	request *promptvmgosdk.CancelBillingSubscriptionRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.CancelBillingSubscriptionResponse, error) {
+	response, err := c.WithRawResponse.CancelBillingSubscription(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Owner/admin only. Sets `cancel_at_period_end = false` on the Stripe subscription. Does NOT recreate any previously scheduled downgrade — the user must re-request that via `/change-plan` (FR-02-15). Re-invoking with the same period is a no-op (FR-02-14 idempotency).
+func (c *Client) ResumeBillingSubscription(
+	ctx context.Context,
+	request *promptvmgosdk.ResumeBillingSubscriptionRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ResumeBillingSubscriptionResponse, error) {
+	response, err := c.WithRawResponse.ResumeBillingSubscription(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
 func (c *Client) GetBillingStatus(
 	ctx context.Context,

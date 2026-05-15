@@ -11,6 +11,32 @@ import (
 )
 
 var (
+	cancelBillingSubscriptionRequestFieldOrgID = big.NewInt(1 << 0)
+)
+
+type CancelBillingSubscriptionRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CancelBillingSubscriptionRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelBillingSubscriptionRequest) SetOrgID(orgID string) {
+	c.OrgID = orgID
+	c.require(cancelBillingSubscriptionRequestFieldOrgID)
+}
+
+var (
 	changeBillingPlanRequestFieldOrgID    = big.NewInt(1 << 0)
 	changeBillingPlanRequestFieldPlanSlug = big.NewInt(1 << 1)
 	changeBillingPlanRequestFieldInterval = big.NewInt(1 << 2)
@@ -172,6 +198,157 @@ func (g *GetBillingStatusRequest) require(field *big.Int) {
 func (g *GetBillingStatusRequest) SetOrgID(orgID *string) {
 	g.OrgID = orgID
 	g.require(getBillingStatusRequestFieldOrgID)
+}
+
+var (
+	resumeBillingSubscriptionRequestFieldOrgID = big.NewInt(1 << 0)
+)
+
+type ResumeBillingSubscriptionRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *ResumeBillingSubscriptionRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResumeBillingSubscriptionRequest) SetOrgID(orgID string) {
+	r.OrgID = orgID
+	r.require(resumeBillingSubscriptionRequestFieldOrgID)
+}
+
+// Response from POST /billing/cancel. The cancellation is scheduled for `cancelAt`, not immediate.
+var (
+	cancelBillingSubscriptionResponseFieldStatus   = big.NewInt(1 << 0)
+	cancelBillingSubscriptionResponseFieldCancelAt = big.NewInt(1 << 1)
+)
+
+type CancelBillingSubscriptionResponse struct {
+	// Stable status string; always `will_cancel` for this endpoint.
+	Status CancelBillingSubscriptionResponseStatus `json:"status" url:"status"`
+	// ISO-8601 timestamp at which the subscription will fully cancel.
+	CancelAt time.Time `json:"cancelAt" url:"cancelAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CancelBillingSubscriptionResponse) GetStatus() CancelBillingSubscriptionResponseStatus {
+	if c == nil {
+		return ""
+	}
+	return c.Status
+}
+
+func (c *CancelBillingSubscriptionResponse) GetCancelAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CancelAt
+}
+
+func (c *CancelBillingSubscriptionResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CancelBillingSubscriptionResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelBillingSubscriptionResponse) SetStatus(status CancelBillingSubscriptionResponseStatus) {
+	c.Status = status
+	c.require(cancelBillingSubscriptionResponseFieldStatus)
+}
+
+// SetCancelAt sets the CancelAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelBillingSubscriptionResponse) SetCancelAt(cancelAt time.Time) {
+	c.CancelAt = cancelAt
+	c.require(cancelBillingSubscriptionResponseFieldCancelAt)
+}
+
+func (c *CancelBillingSubscriptionResponse) UnmarshalJSON(data []byte) error {
+	type embed CancelBillingSubscriptionResponse
+	var unmarshaler = struct {
+		embed
+		CancelAt *internal.DateTime `json:"cancelAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CancelBillingSubscriptionResponse(unmarshaler.embed)
+	c.CancelAt = unmarshaler.CancelAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelBillingSubscriptionResponse) MarshalJSON() ([]byte, error) {
+	type embed CancelBillingSubscriptionResponse
+	var marshaler = struct {
+		embed
+		CancelAt *internal.DateTime `json:"cancelAt"`
+	}{
+		embed:    embed(*c),
+		CancelAt: internal.NewDateTime(c.CancelAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CancelBillingSubscriptionResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Stable status string; always `will_cancel` for this endpoint.
+type CancelBillingSubscriptionResponseStatus string
+
+const (
+	CancelBillingSubscriptionResponseStatusWillCancel CancelBillingSubscriptionResponseStatus = "will_cancel"
+)
+
+func NewCancelBillingSubscriptionResponseStatusFromString(s string) (CancelBillingSubscriptionResponseStatus, error) {
+	switch s {
+	case "will_cancel":
+		return CancelBillingSubscriptionResponseStatusWillCancel, nil
+	}
+	var t CancelBillingSubscriptionResponseStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CancelBillingSubscriptionResponseStatus) Ptr() *CancelBillingSubscriptionResponseStatus {
+	return &c
 }
 
 // Target billing interval. month→year=upgrade, year→month=downgrade (FR-02-4).
@@ -1921,4 +2098,129 @@ func (l *ListBillingPlansResponseItemFeatures) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
+}
+
+// Response from POST /billing/resume. Clears the scheduled cancellation.
+var (
+	resumeBillingSubscriptionResponseFieldStatus           = big.NewInt(1 << 0)
+	resumeBillingSubscriptionResponseFieldCurrentPeriodEnd = big.NewInt(1 << 1)
+)
+
+type ResumeBillingSubscriptionResponse struct {
+	// Stable status string; always `resumed` for this endpoint.
+	Status ResumeBillingSubscriptionResponseStatus `json:"status" url:"status"`
+	// ISO-8601 timestamp of the current billing period end (still billed through).
+	CurrentPeriodEnd time.Time `json:"currentPeriodEnd" url:"currentPeriodEnd"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ResumeBillingSubscriptionResponse) GetStatus() ResumeBillingSubscriptionResponseStatus {
+	if r == nil {
+		return ""
+	}
+	return r.Status
+}
+
+func (r *ResumeBillingSubscriptionResponse) GetCurrentPeriodEnd() time.Time {
+	if r == nil {
+		return time.Time{}
+	}
+	return r.CurrentPeriodEnd
+}
+
+func (r *ResumeBillingSubscriptionResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ResumeBillingSubscriptionResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResumeBillingSubscriptionResponse) SetStatus(status ResumeBillingSubscriptionResponseStatus) {
+	r.Status = status
+	r.require(resumeBillingSubscriptionResponseFieldStatus)
+}
+
+// SetCurrentPeriodEnd sets the CurrentPeriodEnd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResumeBillingSubscriptionResponse) SetCurrentPeriodEnd(currentPeriodEnd time.Time) {
+	r.CurrentPeriodEnd = currentPeriodEnd
+	r.require(resumeBillingSubscriptionResponseFieldCurrentPeriodEnd)
+}
+
+func (r *ResumeBillingSubscriptionResponse) UnmarshalJSON(data []byte) error {
+	type embed ResumeBillingSubscriptionResponse
+	var unmarshaler = struct {
+		embed
+		CurrentPeriodEnd *internal.DateTime `json:"currentPeriodEnd"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*r = ResumeBillingSubscriptionResponse(unmarshaler.embed)
+	r.CurrentPeriodEnd = unmarshaler.CurrentPeriodEnd.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ResumeBillingSubscriptionResponse) MarshalJSON() ([]byte, error) {
+	type embed ResumeBillingSubscriptionResponse
+	var marshaler = struct {
+		embed
+		CurrentPeriodEnd *internal.DateTime `json:"currentPeriodEnd"`
+	}{
+		embed:            embed(*r),
+		CurrentPeriodEnd: internal.NewDateTime(r.CurrentPeriodEnd),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ResumeBillingSubscriptionResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+// Stable status string; always `resumed` for this endpoint.
+type ResumeBillingSubscriptionResponseStatus string
+
+const (
+	ResumeBillingSubscriptionResponseStatusResumed ResumeBillingSubscriptionResponseStatus = "resumed"
+)
+
+func NewResumeBillingSubscriptionResponseStatusFromString(s string) (ResumeBillingSubscriptionResponseStatus, error) {
+	switch s {
+	case "resumed":
+		return ResumeBillingSubscriptionResponseStatusResumed, nil
+	}
+	var t ResumeBillingSubscriptionResponseStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r ResumeBillingSubscriptionResponseStatus) Ptr() *ResumeBillingSubscriptionResponseStatus {
+	return &r
 }

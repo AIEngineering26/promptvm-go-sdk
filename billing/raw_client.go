@@ -196,6 +196,88 @@ func (r *RawClient) ChangeBillingPlan(
 	}, nil
 }
 
+func (r *RawClient) CancelBillingSubscription(
+	ctx context.Context,
+	request *promptvmgosdk.CancelBillingSubscriptionRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.CancelBillingSubscriptionResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/billing/cancel"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("x-org-id", request.OrgID)
+	var response *promptvmgosdk.CancelBillingSubscriptionResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.CancelBillingSubscriptionResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ResumeBillingSubscription(
+	ctx context.Context,
+	request *promptvmgosdk.ResumeBillingSubscriptionRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.ResumeBillingSubscriptionResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/billing/resume"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("x-org-id", request.OrgID)
+	var response *promptvmgosdk.ResumeBillingSubscriptionResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.ResumeBillingSubscriptionResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) GetBillingStatus(
 	ctx context.Context,
 	request *promptvmgosdk.GetBillingStatusRequest,

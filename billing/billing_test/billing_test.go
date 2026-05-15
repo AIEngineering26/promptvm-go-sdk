@@ -166,6 +166,58 @@ func TestBillingChangeBillingPlanWithWireMock(
 	VerifyRequestCount(t, "TestBillingChangeBillingPlanWithWireMock", "POST", "/api/v1/billing/change-plan", nil, 1)
 }
 
+func TestBillingCancelBillingSubscriptionWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.CancelBillingSubscriptionRequest{
+		OrgID: "018e4a3b-0000-0000-0000-000000000001",
+	}
+	_, invocationErr := client.Billing.CancelBillingSubscription(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingCancelBillingSubscriptionWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingCancelBillingSubscriptionWithWireMock", "POST", "/api/v1/billing/cancel", nil, 1)
+}
+
+func TestBillingResumeBillingSubscriptionWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ResumeBillingSubscriptionRequest{
+		OrgID: "018e4a3b-0000-0000-0000-000000000001",
+	}
+	_, invocationErr := client.Billing.ResumeBillingSubscription(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingResumeBillingSubscriptionWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingResumeBillingSubscriptionWithWireMock", "POST", "/api/v1/billing/resume", nil, 1)
+}
+
 func TestBillingGetBillingStatusWithWireMock(
 	t *testing.T,
 ) {
