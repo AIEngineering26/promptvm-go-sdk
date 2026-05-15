@@ -584,6 +584,67 @@ client.CliAuth.CliDeviceToken(
 </details>
 
 ## Billing
+<details><summary><code>client.Billing.GetPromoOffer(Token) -> *promptvmgosdk.GetPromoOfferResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Public endpoint that returns the offer metadata and status for a single-use redemption token. No authentication is required. Returns 200 when the token is valid and the offer is available. Returns 410 Gone for any non-available status (already used, disabled, expired, or exhausted) so the frontend can render a user-friendly "link no longer valid" view without leaking token existence. Rate-limited to 30 requests/minute per IP.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetPromoOfferRequest{
+        Token: "token",
+    }
+client.Billing.GetPromoOffer(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` — URL-safe redemption token (base64url, 32 chars). e.g. ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.ListBillingPlans() -> []*promptvmgosdk.ListBillingPlansResponseItem</code></summary>
 <dl>
 <dd>

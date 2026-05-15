@@ -62,6 +62,32 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+func TestBillingGetPromoOfferWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetPromoOfferRequest{
+		Token: "token",
+	}
+	_, invocationErr := client.Billing.GetPromoOffer(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingGetPromoOfferWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingGetPromoOfferWithWireMock", "GET", "/api/v1/promotional-offers/token", nil, 1)
+}
+
 func TestBillingListBillingPlansWithWireMock(
 	t *testing.T,
 ) {

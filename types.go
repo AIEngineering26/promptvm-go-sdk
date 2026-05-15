@@ -1055,6 +1055,243 @@ func (g *GoneErrorBody) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+// Promotional offer metadata. Present only when status is "available".
+var (
+	goneErrorBodyOfferFieldDescription             = big.NewInt(1 << 0)
+	goneErrorBodyOfferFieldTargetPlan              = big.NewInt(1 << 1)
+	goneErrorBodyOfferFieldTargetInterval          = big.NewInt(1 << 2)
+	goneErrorBodyOfferFieldTrialDays               = big.NewInt(1 << 3)
+	goneErrorBodyOfferFieldAfterTrialPriceCents    = big.NewInt(1 << 4)
+	goneErrorBodyOfferFieldAfterTrialIntervalLabel = big.NewInt(1 << 5)
+	goneErrorBodyOfferFieldSeatsDefault            = big.NewInt(1 << 6)
+)
+
+type GoneErrorBodyOffer struct {
+	// Human-readable description of the promotional offer.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Plan slug of the offered subscription tier.
+	TargetPlan string `json:"targetPlan" url:"targetPlan"`
+	// Billing interval of the offered subscription.
+	TargetInterval GoneErrorBodyOfferTargetInterval `json:"targetInterval" url:"targetInterval"`
+	// Number of free trial days.
+	TrialDays int `json:"trialDays" url:"trialDays"`
+	// Price in cents charged after the trial ends. null if the plan row is not found in the catalog (e.g. inactive plan).
+	AfterTrialPriceCents *int `json:"afterTrialPriceCents,omitempty" url:"afterTrialPriceCents,omitempty"`
+	// Human-readable interval label used after the trial (matches targetInterval).
+	AfterTrialIntervalLabel string `json:"afterTrialIntervalLabel" url:"afterTrialIntervalLabel"`
+	// Default seat count used as the Stripe Checkout line-item quantity.
+	SeatsDefault int `json:"seatsDefault" url:"seatsDefault"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GoneErrorBodyOffer) GetDescription() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Description
+}
+
+func (g *GoneErrorBodyOffer) GetTargetPlan() string {
+	if g == nil {
+		return ""
+	}
+	return g.TargetPlan
+}
+
+func (g *GoneErrorBodyOffer) GetTargetInterval() GoneErrorBodyOfferTargetInterval {
+	if g == nil {
+		return ""
+	}
+	return g.TargetInterval
+}
+
+func (g *GoneErrorBodyOffer) GetTrialDays() int {
+	if g == nil {
+		return 0
+	}
+	return g.TrialDays
+}
+
+func (g *GoneErrorBodyOffer) GetAfterTrialPriceCents() *int {
+	if g == nil {
+		return nil
+	}
+	return g.AfterTrialPriceCents
+}
+
+func (g *GoneErrorBodyOffer) GetAfterTrialIntervalLabel() string {
+	if g == nil {
+		return ""
+	}
+	return g.AfterTrialIntervalLabel
+}
+
+func (g *GoneErrorBodyOffer) GetSeatsDefault() int {
+	if g == nil {
+		return 0
+	}
+	return g.SeatsDefault
+}
+
+func (g *GoneErrorBodyOffer) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GoneErrorBodyOffer) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GoneErrorBodyOffer) SetDescription(description *string) {
+	g.Description = description
+	g.require(goneErrorBodyOfferFieldDescription)
+}
+
+// SetTargetPlan sets the TargetPlan field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GoneErrorBodyOffer) SetTargetPlan(targetPlan string) {
+	g.TargetPlan = targetPlan
+	g.require(goneErrorBodyOfferFieldTargetPlan)
+}
+
+// SetTargetInterval sets the TargetInterval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GoneErrorBodyOffer) SetTargetInterval(targetInterval GoneErrorBodyOfferTargetInterval) {
+	g.TargetInterval = targetInterval
+	g.require(goneErrorBodyOfferFieldTargetInterval)
+}
+
+// SetTrialDays sets the TrialDays field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GoneErrorBodyOffer) SetTrialDays(trialDays int) {
+	g.TrialDays = trialDays
+	g.require(goneErrorBodyOfferFieldTrialDays)
+}
+
+// SetAfterTrialPriceCents sets the AfterTrialPriceCents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GoneErrorBodyOffer) SetAfterTrialPriceCents(afterTrialPriceCents *int) {
+	g.AfterTrialPriceCents = afterTrialPriceCents
+	g.require(goneErrorBodyOfferFieldAfterTrialPriceCents)
+}
+
+// SetAfterTrialIntervalLabel sets the AfterTrialIntervalLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GoneErrorBodyOffer) SetAfterTrialIntervalLabel(afterTrialIntervalLabel string) {
+	g.AfterTrialIntervalLabel = afterTrialIntervalLabel
+	g.require(goneErrorBodyOfferFieldAfterTrialIntervalLabel)
+}
+
+// SetSeatsDefault sets the SeatsDefault field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GoneErrorBodyOffer) SetSeatsDefault(seatsDefault int) {
+	g.SeatsDefault = seatsDefault
+	g.require(goneErrorBodyOfferFieldSeatsDefault)
+}
+
+func (g *GoneErrorBodyOffer) UnmarshalJSON(data []byte) error {
+	type unmarshaler GoneErrorBodyOffer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GoneErrorBodyOffer(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GoneErrorBodyOffer) MarshalJSON() ([]byte, error) {
+	type embed GoneErrorBodyOffer
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GoneErrorBodyOffer) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Billing interval of the offered subscription.
+type GoneErrorBodyOfferTargetInterval string
+
+const (
+	GoneErrorBodyOfferTargetIntervalMonth GoneErrorBodyOfferTargetInterval = "month"
+	GoneErrorBodyOfferTargetIntervalYear  GoneErrorBodyOfferTargetInterval = "year"
+)
+
+func NewGoneErrorBodyOfferTargetIntervalFromString(s string) (GoneErrorBodyOfferTargetInterval, error) {
+	switch s {
+	case "month":
+		return GoneErrorBodyOfferTargetIntervalMonth, nil
+	case "year":
+		return GoneErrorBodyOfferTargetIntervalYear, nil
+	}
+	var t GoneErrorBodyOfferTargetInterval
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GoneErrorBodyOfferTargetInterval) Ptr() *GoneErrorBodyOfferTargetInterval {
+	return &g
+}
+
+// "available" → render offer summary + CTA. Any other value → render "link no longer valid" page.
+type GoneErrorBodyStatus string
+
+const (
+	GoneErrorBodyStatusAvailable     GoneErrorBodyStatus = "available"
+	GoneErrorBodyStatusAlreadyUsed   GoneErrorBodyStatus = "already_used"
+	GoneErrorBodyStatusOfferDisabled GoneErrorBodyStatus = "offer_disabled"
+	GoneErrorBodyStatusOfferExpired  GoneErrorBodyStatus = "offer_expired"
+	GoneErrorBodyStatusExhausted     GoneErrorBodyStatus = "exhausted"
+)
+
+func NewGoneErrorBodyStatusFromString(s string) (GoneErrorBodyStatus, error) {
+	switch s {
+	case "available":
+		return GoneErrorBodyStatusAvailable, nil
+	case "already_used":
+		return GoneErrorBodyStatusAlreadyUsed, nil
+	case "offer_disabled":
+		return GoneErrorBodyStatusOfferDisabled, nil
+	case "offer_expired":
+		return GoneErrorBodyStatusOfferExpired, nil
+	case "exhausted":
+		return GoneErrorBodyStatusExhausted, nil
+	}
+	var t GoneErrorBodyStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GoneErrorBodyStatus) Ptr() *GoneErrorBodyStatus {
+	return &g
+}
+
 // Server error
 var (
 	internalServerErrorBodyFieldStatusCode = big.NewInt(1 << 0)

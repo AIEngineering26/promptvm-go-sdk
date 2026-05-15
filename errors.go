@@ -79,14 +79,14 @@ func (f *ForbiddenError) Unwrap() error {
 	return f.APIError
 }
 
-// Link expired or max uses reached
+// Public promotional-offer metadata. Returned for both available and non-available tokens so the frontend can branch on `status` without leaking token existence.
 type GoneError struct {
 	*core.APIError
-	Body *GoneErrorBody
+	Body interface{}
 }
 
 func (g *GoneError) UnmarshalJSON(data []byte) error {
-	var body *GoneErrorBody
+	var body interface{}
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

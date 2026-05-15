@@ -32,6 +32,23 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+// Public endpoint that returns the offer metadata and status for a single-use redemption token. No authentication is required. Returns 200 when the token is valid and the offer is available. Returns 410 Gone for any non-available status (already used, disabled, expired, or exhausted) so the frontend can render a user-friendly "link no longer valid" view without leaking token existence. Rate-limited to 30 requests/minute per IP.
+func (c *Client) GetPromoOffer(
+	ctx context.Context,
+	request *promptvmgosdk.GetPromoOfferRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetPromoOfferResponse, error) {
+	response, err := c.WithRawResponse.GetPromoOffer(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns all active, public subscription plans sorted by display order. No authentication required. Values are DB-driven: tier names, prices, feature bullets, and seat limits are all set via SQL — no frontend code changes are needed when the catalog changes.
 func (c *Client) ListBillingPlans(
 	ctx context.Context,

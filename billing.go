@@ -237,6 +237,32 @@ func (g *GetBillingStatusRequest) SetOrgID(orgID *string) {
 }
 
 var (
+	getPromoOfferRequestFieldToken = big.NewInt(1 << 0)
+)
+
+type GetPromoOfferRequest struct {
+	// URL-safe redemption token (base64url, 32 chars). e.g. ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef
+	Token string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetPromoOfferRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetToken sets the Token field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferRequest) SetToken(token string) {
+	g.Token = token
+	g.require(getPromoOfferRequestFieldToken)
+}
+
+var (
 	listBillingInvoicesRequestFieldOrgID  = big.NewInt(1 << 0)
 	listBillingInvoicesRequestFieldLimit  = big.NewInt(1 << 1)
 	listBillingInvoicesRequestFieldCursor = big.NewInt(1 << 2)
@@ -1809,6 +1835,340 @@ func (g *GetBillingStatusResponseUsage) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+// Public promotional-offer metadata. Returned for both available and non-available tokens so the frontend can branch on `status` without leaking token existence.
+var (
+	getPromoOfferResponseFieldStatus = big.NewInt(1 << 0)
+	getPromoOfferResponseFieldOffer  = big.NewInt(1 << 1)
+)
+
+type GetPromoOfferResponse struct {
+	// "available" → render offer summary + CTA. Any other value → render "link no longer valid" page.
+	Status GetPromoOfferResponseStatus `json:"status" url:"status"`
+	// Offer metadata. Present only when status is "available"; null otherwise.
+	Offer *GetPromoOfferResponseOffer `json:"offer,omitempty" url:"offer,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetPromoOfferResponse) GetStatus() GetPromoOfferResponseStatus {
+	if g == nil {
+		return ""
+	}
+	return g.Status
+}
+
+func (g *GetPromoOfferResponse) GetOffer() *GetPromoOfferResponseOffer {
+	if g == nil {
+		return nil
+	}
+	return g.Offer
+}
+
+func (g *GetPromoOfferResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetPromoOfferResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponse) SetStatus(status GetPromoOfferResponseStatus) {
+	g.Status = status
+	g.require(getPromoOfferResponseFieldStatus)
+}
+
+// SetOffer sets the Offer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponse) SetOffer(offer *GetPromoOfferResponseOffer) {
+	g.Offer = offer
+	g.require(getPromoOfferResponseFieldOffer)
+}
+
+func (g *GetPromoOfferResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetPromoOfferResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetPromoOfferResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetPromoOfferResponse) MarshalJSON() ([]byte, error) {
+	type embed GetPromoOfferResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetPromoOfferResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Promotional offer metadata. Present only when status is "available".
+var (
+	getPromoOfferResponseOfferFieldDescription             = big.NewInt(1 << 0)
+	getPromoOfferResponseOfferFieldTargetPlan              = big.NewInt(1 << 1)
+	getPromoOfferResponseOfferFieldTargetInterval          = big.NewInt(1 << 2)
+	getPromoOfferResponseOfferFieldTrialDays               = big.NewInt(1 << 3)
+	getPromoOfferResponseOfferFieldAfterTrialPriceCents    = big.NewInt(1 << 4)
+	getPromoOfferResponseOfferFieldAfterTrialIntervalLabel = big.NewInt(1 << 5)
+	getPromoOfferResponseOfferFieldSeatsDefault            = big.NewInt(1 << 6)
+)
+
+type GetPromoOfferResponseOffer struct {
+	// Human-readable description of the promotional offer.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Plan slug of the offered subscription tier.
+	TargetPlan string `json:"targetPlan" url:"targetPlan"`
+	// Billing interval of the offered subscription.
+	TargetInterval GetPromoOfferResponseOfferTargetInterval `json:"targetInterval" url:"targetInterval"`
+	// Number of free trial days.
+	TrialDays int `json:"trialDays" url:"trialDays"`
+	// Price in cents charged after the trial ends. null if the plan row is not found in the catalog (e.g. inactive plan).
+	AfterTrialPriceCents *int `json:"afterTrialPriceCents,omitempty" url:"afterTrialPriceCents,omitempty"`
+	// Human-readable interval label used after the trial (matches targetInterval).
+	AfterTrialIntervalLabel string `json:"afterTrialIntervalLabel" url:"afterTrialIntervalLabel"`
+	// Default seat count used as the Stripe Checkout line-item quantity.
+	SeatsDefault int `json:"seatsDefault" url:"seatsDefault"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetPromoOfferResponseOffer) GetDescription() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Description
+}
+
+func (g *GetPromoOfferResponseOffer) GetTargetPlan() string {
+	if g == nil {
+		return ""
+	}
+	return g.TargetPlan
+}
+
+func (g *GetPromoOfferResponseOffer) GetTargetInterval() GetPromoOfferResponseOfferTargetInterval {
+	if g == nil {
+		return ""
+	}
+	return g.TargetInterval
+}
+
+func (g *GetPromoOfferResponseOffer) GetTrialDays() int {
+	if g == nil {
+		return 0
+	}
+	return g.TrialDays
+}
+
+func (g *GetPromoOfferResponseOffer) GetAfterTrialPriceCents() *int {
+	if g == nil {
+		return nil
+	}
+	return g.AfterTrialPriceCents
+}
+
+func (g *GetPromoOfferResponseOffer) GetAfterTrialIntervalLabel() string {
+	if g == nil {
+		return ""
+	}
+	return g.AfterTrialIntervalLabel
+}
+
+func (g *GetPromoOfferResponseOffer) GetSeatsDefault() int {
+	if g == nil {
+		return 0
+	}
+	return g.SeatsDefault
+}
+
+func (g *GetPromoOfferResponseOffer) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetPromoOfferResponseOffer) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponseOffer) SetDescription(description *string) {
+	g.Description = description
+	g.require(getPromoOfferResponseOfferFieldDescription)
+}
+
+// SetTargetPlan sets the TargetPlan field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponseOffer) SetTargetPlan(targetPlan string) {
+	g.TargetPlan = targetPlan
+	g.require(getPromoOfferResponseOfferFieldTargetPlan)
+}
+
+// SetTargetInterval sets the TargetInterval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponseOffer) SetTargetInterval(targetInterval GetPromoOfferResponseOfferTargetInterval) {
+	g.TargetInterval = targetInterval
+	g.require(getPromoOfferResponseOfferFieldTargetInterval)
+}
+
+// SetTrialDays sets the TrialDays field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponseOffer) SetTrialDays(trialDays int) {
+	g.TrialDays = trialDays
+	g.require(getPromoOfferResponseOfferFieldTrialDays)
+}
+
+// SetAfterTrialPriceCents sets the AfterTrialPriceCents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponseOffer) SetAfterTrialPriceCents(afterTrialPriceCents *int) {
+	g.AfterTrialPriceCents = afterTrialPriceCents
+	g.require(getPromoOfferResponseOfferFieldAfterTrialPriceCents)
+}
+
+// SetAfterTrialIntervalLabel sets the AfterTrialIntervalLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponseOffer) SetAfterTrialIntervalLabel(afterTrialIntervalLabel string) {
+	g.AfterTrialIntervalLabel = afterTrialIntervalLabel
+	g.require(getPromoOfferResponseOfferFieldAfterTrialIntervalLabel)
+}
+
+// SetSeatsDefault sets the SeatsDefault field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromoOfferResponseOffer) SetSeatsDefault(seatsDefault int) {
+	g.SeatsDefault = seatsDefault
+	g.require(getPromoOfferResponseOfferFieldSeatsDefault)
+}
+
+func (g *GetPromoOfferResponseOffer) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetPromoOfferResponseOffer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetPromoOfferResponseOffer(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetPromoOfferResponseOffer) MarshalJSON() ([]byte, error) {
+	type embed GetPromoOfferResponseOffer
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetPromoOfferResponseOffer) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Billing interval of the offered subscription.
+type GetPromoOfferResponseOfferTargetInterval string
+
+const (
+	GetPromoOfferResponseOfferTargetIntervalMonth GetPromoOfferResponseOfferTargetInterval = "month"
+	GetPromoOfferResponseOfferTargetIntervalYear  GetPromoOfferResponseOfferTargetInterval = "year"
+)
+
+func NewGetPromoOfferResponseOfferTargetIntervalFromString(s string) (GetPromoOfferResponseOfferTargetInterval, error) {
+	switch s {
+	case "month":
+		return GetPromoOfferResponseOfferTargetIntervalMonth, nil
+	case "year":
+		return GetPromoOfferResponseOfferTargetIntervalYear, nil
+	}
+	var t GetPromoOfferResponseOfferTargetInterval
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetPromoOfferResponseOfferTargetInterval) Ptr() *GetPromoOfferResponseOfferTargetInterval {
+	return &g
+}
+
+// "available" → render offer summary + CTA. Any other value → render "link no longer valid" page.
+type GetPromoOfferResponseStatus string
+
+const (
+	GetPromoOfferResponseStatusAvailable     GetPromoOfferResponseStatus = "available"
+	GetPromoOfferResponseStatusAlreadyUsed   GetPromoOfferResponseStatus = "already_used"
+	GetPromoOfferResponseStatusOfferDisabled GetPromoOfferResponseStatus = "offer_disabled"
+	GetPromoOfferResponseStatusOfferExpired  GetPromoOfferResponseStatus = "offer_expired"
+	GetPromoOfferResponseStatusExhausted     GetPromoOfferResponseStatus = "exhausted"
+)
+
+func NewGetPromoOfferResponseStatusFromString(s string) (GetPromoOfferResponseStatus, error) {
+	switch s {
+	case "available":
+		return GetPromoOfferResponseStatusAvailable, nil
+	case "already_used":
+		return GetPromoOfferResponseStatusAlreadyUsed, nil
+	case "offer_disabled":
+		return GetPromoOfferResponseStatusOfferDisabled, nil
+	case "offer_expired":
+		return GetPromoOfferResponseStatusOfferExpired, nil
+	case "exhausted":
+		return GetPromoOfferResponseStatusExhausted, nil
+	}
+	var t GetPromoOfferResponseStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetPromoOfferResponseStatus) Ptr() *GetPromoOfferResponseStatus {
+	return &g
 }
 
 // Paginated history of mirrored Stripe invoices for the active org, ordered `created_at desc, id desc`.
