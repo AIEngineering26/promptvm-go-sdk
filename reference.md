@@ -861,6 +861,76 @@ client.Billing.ChangeBillingPlan(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.AdjustBillingSeats(request) -> *promptvmgosdk.AdjustBillingSeatsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Owner/admin only. Pushes a `quantity` change to the Stripe subscription item with `proration_behavior=create_prorations`. Increases generate a prorated charge on the next invoice; decreases (still ≥ used_seats) generate a prorated credit on the next invoice (no card refund). Per-seat plans only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AdjustBillingSeatsRequest{
+        OrgID: "018e4a3b-0000-0000-0000-000000000001",
+        Seats: 5,
+    }
+client.Billing.AdjustBillingSeats(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**seats:** `int` — New total seat count for the active subscription. Must satisfy `min_seats ≤ seats ≤ max_seats` from the plan, and `seats ≥ used_seats`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.CancelBillingSubscription() -> *promptvmgosdk.CancelBillingSubscriptionResponse</code></summary>
 <dl>
 <dd>

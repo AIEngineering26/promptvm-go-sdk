@@ -166,6 +166,33 @@ func TestBillingChangeBillingPlanWithWireMock(
 	VerifyRequestCount(t, "TestBillingChangeBillingPlanWithWireMock", "POST", "/api/v1/billing/change-plan", nil, 1)
 }
 
+func TestBillingAdjustBillingSeatsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.AdjustBillingSeatsRequest{
+		OrgID: "018e4a3b-0000-0000-0000-000000000001",
+		Seats: 5,
+	}
+	_, invocationErr := client.Billing.AdjustBillingSeats(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingAdjustBillingSeatsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingAdjustBillingSeatsWithWireMock", "POST", "/api/v1/billing/seats", nil, 1)
+}
+
 func TestBillingCancelBillingSubscriptionWithWireMock(
 	t *testing.T,
 ) {

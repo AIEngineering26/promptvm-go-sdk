@@ -98,6 +98,23 @@ func (c *Client) ChangeBillingPlan(
 	return response.Body, nil
 }
 
+// Owner/admin only. Pushes a `quantity` change to the Stripe subscription item with `proration_behavior=create_prorations`. Increases generate a prorated charge on the next invoice; decreases (still ≥ used_seats) generate a prorated credit on the next invoice (no card refund). Per-seat plans only.
+func (c *Client) AdjustBillingSeats(
+	ctx context.Context,
+	request *promptvmgosdk.AdjustBillingSeatsRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.AdjustBillingSeatsResponse, error) {
+	response, err := c.WithRawResponse.AdjustBillingSeats(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Owner/admin only. Sets `cancel_at_period_end = true` on the Stripe subscription. Releases any pending downgrade schedule first (FR-02-15) so the update can apply cleanly. The cancellation is scheduled, not immediate — billing continues through the current period and access ends at `cancelAt`. Re-invoking with the same period is a no-op (FR-02-14 idempotency).
 func (c *Client) CancelBillingSubscription(
 	ctx context.Context,

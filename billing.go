@@ -11,6 +11,42 @@ import (
 )
 
 var (
+	adjustBillingSeatsRequestFieldOrgID = big.NewInt(1 << 0)
+	adjustBillingSeatsRequestFieldSeats = big.NewInt(1 << 1)
+)
+
+type AdjustBillingSeatsRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+	// New total seat count for the active subscription. Must satisfy `min_seats ≤ seats ≤ max_seats` from the plan, and `seats ≥ used_seats`.
+	Seats int `json:"seats" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdjustBillingSeatsRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdjustBillingSeatsRequest) SetOrgID(orgID string) {
+	a.OrgID = orgID
+	a.require(adjustBillingSeatsRequestFieldOrgID)
+}
+
+// SetSeats sets the Seats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdjustBillingSeatsRequest) SetSeats(seats int) {
+	a.Seats = seats
+	a.require(adjustBillingSeatsRequestFieldSeats)
+}
+
+var (
 	cancelBillingSubscriptionRequestFieldOrgID = big.NewInt(1 << 0)
 )
 
@@ -270,6 +306,136 @@ func (r *ResumeBillingSubscriptionRequest) require(field *big.Int) {
 func (r *ResumeBillingSubscriptionRequest) SetOrgID(orgID string) {
 	r.OrgID = orgID
 	r.require(resumeBillingSubscriptionRequestFieldOrgID)
+}
+
+var (
+	adjustBillingSeatsResponseFieldSubscriptionID     = big.NewInt(1 << 0)
+	adjustBillingSeatsResponseFieldSubscriptionItemID = big.NewInt(1 << 1)
+	adjustBillingSeatsResponseFieldTotalSeats         = big.NewInt(1 << 2)
+	adjustBillingSeatsResponseFieldUsedSeats          = big.NewInt(1 << 3)
+)
+
+type AdjustBillingSeatsResponse struct {
+	// Stripe subscription id (`sub_…`) that received the update.
+	SubscriptionID string `json:"subscriptionId" url:"subscriptionId"`
+	// Stripe subscription-item id (`si_…`) whose `quantity` was updated.
+	SubscriptionItemID string `json:"subscriptionItemId" url:"subscriptionItemId"`
+	// Requested new total seat count. Reflects the value sent to Stripe; the local `subscription_seats.total_seats` will catch up once the `customer.subscription.updated` webhook lands.
+	TotalSeats int `json:"totalSeats" url:"totalSeats"`
+	// Current `subscription_seats.used_seats` at the moment of the request. Useful for clients that want to render "5 of 5 seats in use" without a second round-trip.
+	UsedSeats int `json:"usedSeats" url:"usedSeats"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdjustBillingSeatsResponse) GetSubscriptionID() string {
+	if a == nil {
+		return ""
+	}
+	return a.SubscriptionID
+}
+
+func (a *AdjustBillingSeatsResponse) GetSubscriptionItemID() string {
+	if a == nil {
+		return ""
+	}
+	return a.SubscriptionItemID
+}
+
+func (a *AdjustBillingSeatsResponse) GetTotalSeats() int {
+	if a == nil {
+		return 0
+	}
+	return a.TotalSeats
+}
+
+func (a *AdjustBillingSeatsResponse) GetUsedSeats() int {
+	if a == nil {
+		return 0
+	}
+	return a.UsedSeats
+}
+
+func (a *AdjustBillingSeatsResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdjustBillingSeatsResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetSubscriptionID sets the SubscriptionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdjustBillingSeatsResponse) SetSubscriptionID(subscriptionID string) {
+	a.SubscriptionID = subscriptionID
+	a.require(adjustBillingSeatsResponseFieldSubscriptionID)
+}
+
+// SetSubscriptionItemID sets the SubscriptionItemID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdjustBillingSeatsResponse) SetSubscriptionItemID(subscriptionItemID string) {
+	a.SubscriptionItemID = subscriptionItemID
+	a.require(adjustBillingSeatsResponseFieldSubscriptionItemID)
+}
+
+// SetTotalSeats sets the TotalSeats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdjustBillingSeatsResponse) SetTotalSeats(totalSeats int) {
+	a.TotalSeats = totalSeats
+	a.require(adjustBillingSeatsResponseFieldTotalSeats)
+}
+
+// SetUsedSeats sets the UsedSeats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdjustBillingSeatsResponse) SetUsedSeats(usedSeats int) {
+	a.UsedSeats = usedSeats
+	a.require(adjustBillingSeatsResponseFieldUsedSeats)
+}
+
+func (a *AdjustBillingSeatsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdjustBillingSeatsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdjustBillingSeatsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdjustBillingSeatsResponse) MarshalJSON() ([]byte, error) {
+	type embed AdjustBillingSeatsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdjustBillingSeatsResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
 }
 
 // Response from POST /billing/cancel. The cancellation is scheduled for `cancelAt`, not immediate.
