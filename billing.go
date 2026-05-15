@@ -309,6 +309,42 @@ func (l *ListBillingInvoicesRequest) SetCursor(cursor *string) {
 }
 
 var (
+	redeemPromotionalOfferRequestFieldOrgID = big.NewInt(1 << 0)
+	redeemPromotionalOfferRequestFieldToken = big.NewInt(1 << 1)
+)
+
+type RedeemPromotionalOfferRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+	// Single-use promotional-redemption token from a /invite/:token link.
+	Token string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RedeemPromotionalOfferRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RedeemPromotionalOfferRequest) SetOrgID(orgID string) {
+	r.OrgID = orgID
+	r.require(redeemPromotionalOfferRequestFieldOrgID)
+}
+
+// SetToken sets the Token field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RedeemPromotionalOfferRequest) SetToken(token string) {
+	r.Token = token
+	r.require(redeemPromotionalOfferRequestFieldToken)
+}
+
+var (
 	resumeBillingSubscriptionRequestFieldOrgID = big.NewInt(1 << 0)
 )
 
@@ -3033,6 +3069,85 @@ func (l *ListBillingPlansResponseItemFeatures) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	redeemPromotionalOfferResponseFieldURL = big.NewInt(1 << 0)
+)
+
+type RedeemPromotionalOfferResponse struct {
+	// Stripe-hosted Checkout URL configured with trial_period_days and payment_method_collection=always. Open via top-level navigation.
+	URL string `json:"url" url:"url"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RedeemPromotionalOfferResponse) GetURL() string {
+	if r == nil {
+		return ""
+	}
+	return r.URL
+}
+
+func (r *RedeemPromotionalOfferResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RedeemPromotionalOfferResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetURL sets the URL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RedeemPromotionalOfferResponse) SetURL(url string) {
+	r.URL = url
+	r.require(redeemPromotionalOfferResponseFieldURL)
+}
+
+func (r *RedeemPromotionalOfferResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RedeemPromotionalOfferResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RedeemPromotionalOfferResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RedeemPromotionalOfferResponse) MarshalJSON() ([]byte, error) {
+	type embed RedeemPromotionalOfferResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RedeemPromotionalOfferResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }
 
 // Response from POST /billing/resume. Clears the scheduled cancellation.

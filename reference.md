@@ -1191,6 +1191,76 @@ client.Billing.ListBillingInvoices(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.RedeemPromotionalOffer(Token) -> *promptvmgosdk.RedeemPromotionalOfferResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RedeemPromotionalOfferRequest{
+        Token: "abcdef0123456789ABCDEF0123456789",
+        OrgID: "018e4a3b-0000-0000-0000-000000000001",
+    }
+client.Billing.RedeemPromotionalOffer(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` — Single-use promotional-redemption token from a /invite/:token link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.GetBillingStatus() -> *promptvmgosdk.GetBillingStatusResponse</code></summary>
 <dl>
 <dd>

@@ -297,6 +297,33 @@ func TestBillingListBillingInvoicesWithWireMock(
 	VerifyRequestCount(t, "TestBillingListBillingInvoicesWithWireMock", "GET", "/api/v1/billing/invoices", nil, 1)
 }
 
+func TestBillingRedeemPromotionalOfferWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.RedeemPromotionalOfferRequest{
+		Token: "abcdef0123456789ABCDEF0123456789",
+		OrgID: "018e4a3b-0000-0000-0000-000000000001",
+	}
+	_, invocationErr := client.Billing.RedeemPromotionalOffer(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingRedeemPromotionalOfferWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingRedeemPromotionalOfferWithWireMock", "POST", "/api/v1/promotional-offers/abcdef0123456789ABCDEF0123456789/redeem", nil, 1)
+}
+
 func TestBillingGetBillingStatusWithWireMock(
 	t *testing.T,
 ) {

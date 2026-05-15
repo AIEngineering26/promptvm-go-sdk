@@ -183,6 +183,23 @@ func (c *Client) ListBillingInvoices(
 	return response.Body, nil
 }
 
+// Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9).
+func (c *Client) RedeemPromotionalOffer(
+	ctx context.Context,
+	request *promptvmgosdk.RedeemPromotionalOfferRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.RedeemPromotionalOfferResponse, error) {
+	response, err := c.WithRawResponse.RedeemPromotionalOffer(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
 func (c *Client) GetBillingStatus(
 	ctx context.Context,
