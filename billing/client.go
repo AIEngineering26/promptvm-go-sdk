@@ -46,3 +46,20 @@ func (c *Client) ListBillingPlans(
 	}
 	return response.Body, nil
 }
+
+// Returns a Stripe-hosted Checkout URL for the caller to complete payment. Owner/admin only. Rate-limited 5/min/org. The frontend redirects the browser to the returned URL; the actual subscription state lands in our DB via the `customer.subscription.created` webhook (US-01-4), not via the success URL.
+func (c *Client) CreateBillingCheckoutSession(
+	ctx context.Context,
+	request *promptvmgosdk.CreateBillingCheckoutSessionRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.CreateBillingCheckoutSessionResponse, error) {
+	response, err := c.WithRawResponse.CreateBillingCheckoutSession(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

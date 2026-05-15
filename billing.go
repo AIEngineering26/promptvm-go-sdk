@@ -9,6 +9,164 @@ import (
 	big "math/big"
 )
 
+var (
+	createBillingCheckoutSessionRequestFieldOrgID    = big.NewInt(1 << 0)
+	createBillingCheckoutSessionRequestFieldPlanSlug = big.NewInt(1 << 1)
+	createBillingCheckoutSessionRequestFieldInterval = big.NewInt(1 << 2)
+	createBillingCheckoutSessionRequestFieldSeats    = big.NewInt(1 << 3)
+)
+
+type CreateBillingCheckoutSessionRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+	// Subscription plan slug from the catalog (e.g. "pro", "teams"). Free is rejected — Free orgs use the backfill row, not Checkout.
+	PlanSlug string `json:"planSlug" url:"-"`
+	// Billing interval. Must match a `subscription_plans` row paired with `planSlug`.
+	Interval CreateBillingCheckoutSessionRequestInterval `json:"interval" url:"-"`
+	// Seat quantity for per-seat plans. Required when the resolved plan has `is_per_seat=true`; rejected otherwise.
+	Seats *int `json:"seats,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CreateBillingCheckoutSessionRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBillingCheckoutSessionRequest) SetOrgID(orgID string) {
+	c.OrgID = orgID
+	c.require(createBillingCheckoutSessionRequestFieldOrgID)
+}
+
+// SetPlanSlug sets the PlanSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBillingCheckoutSessionRequest) SetPlanSlug(planSlug string) {
+	c.PlanSlug = planSlug
+	c.require(createBillingCheckoutSessionRequestFieldPlanSlug)
+}
+
+// SetInterval sets the Interval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBillingCheckoutSessionRequest) SetInterval(interval CreateBillingCheckoutSessionRequestInterval) {
+	c.Interval = interval
+	c.require(createBillingCheckoutSessionRequestFieldInterval)
+}
+
+// SetSeats sets the Seats field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBillingCheckoutSessionRequest) SetSeats(seats *int) {
+	c.Seats = seats
+	c.require(createBillingCheckoutSessionRequestFieldSeats)
+}
+
+// Billing interval. Must match a `subscription_plans` row paired with `planSlug`.
+type CreateBillingCheckoutSessionRequestInterval string
+
+const (
+	CreateBillingCheckoutSessionRequestIntervalMonth CreateBillingCheckoutSessionRequestInterval = "month"
+	CreateBillingCheckoutSessionRequestIntervalYear  CreateBillingCheckoutSessionRequestInterval = "year"
+)
+
+func NewCreateBillingCheckoutSessionRequestIntervalFromString(s string) (CreateBillingCheckoutSessionRequestInterval, error) {
+	switch s {
+	case "month":
+		return CreateBillingCheckoutSessionRequestIntervalMonth, nil
+	case "year":
+		return CreateBillingCheckoutSessionRequestIntervalYear, nil
+	}
+	var t CreateBillingCheckoutSessionRequestInterval
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateBillingCheckoutSessionRequestInterval) Ptr() *CreateBillingCheckoutSessionRequestInterval {
+	return &c
+}
+
+var (
+	createBillingCheckoutSessionResponseFieldURL = big.NewInt(1 << 0)
+)
+
+type CreateBillingCheckoutSessionResponse struct {
+	// Stripe-hosted Checkout URL. Open via top-level navigation, not iframe.
+	URL string `json:"url" url:"url"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateBillingCheckoutSessionResponse) GetURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.URL
+}
+
+func (c *CreateBillingCheckoutSessionResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateBillingCheckoutSessionResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetURL sets the URL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBillingCheckoutSessionResponse) SetURL(url string) {
+	c.URL = url
+	c.require(createBillingCheckoutSessionResponseFieldURL)
+}
+
+func (c *CreateBillingCheckoutSessionResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateBillingCheckoutSessionResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateBillingCheckoutSessionResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateBillingCheckoutSessionResponse) MarshalJSON() ([]byte, error) {
+	type embed CreateBillingCheckoutSessionResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateBillingCheckoutSessionResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // A publicly visible subscription plan returned by GET /api/v1/billing/plans.
 var (
 	listBillingPlansResponseItemFieldID                = big.NewInt(1 << 0)

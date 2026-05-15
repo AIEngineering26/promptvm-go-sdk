@@ -6,6 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	client "github.com/AIEngineering26/promptvm-go-sdk/client"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
@@ -81,4 +82,32 @@ func TestBillingListBillingPlansWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestBillingListBillingPlansWithWireMock", "GET", "/api/v1/billing/plans", nil, 1)
+}
+
+func TestBillingCreateBillingCheckoutSessionWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.CreateBillingCheckoutSessionRequest{
+		OrgID:    "018e4a3b-0000-0000-0000-000000000001",
+		PlanSlug: "pro",
+		Interval: promptvmgosdk.CreateBillingCheckoutSessionRequestIntervalMonth,
+	}
+	_, invocationErr := client.Billing.CreateBillingCheckoutSession(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingCreateBillingCheckoutSessionWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingCreateBillingCheckoutSessionWithWireMock", "POST", "/api/v1/billing/checkout-session", nil, 1)
 }

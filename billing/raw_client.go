@@ -68,3 +68,46 @@ func (r *RawClient) ListBillingPlans(
 		Body:       response,
 	}, nil
 }
+
+func (r *RawClient) CreateBillingCheckoutSession(
+	ctx context.Context,
+	request *promptvmgosdk.CreateBillingCheckoutSessionRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.CreateBillingCheckoutSessionResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/billing/checkout-session"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("x-org-id", request.OrgID)
+	headers.Add("Content-Type", "application/json")
+	var response *promptvmgosdk.CreateBillingCheckoutSessionResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.CreateBillingCheckoutSessionResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
