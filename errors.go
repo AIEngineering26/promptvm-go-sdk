@@ -151,6 +151,30 @@ func (n *NotFoundError) Unwrap() error {
 	return n.APIError
 }
 
+// Payment Required — the active org's plan does not grant the requested feature or its numeric limit has been reached. Spec: FR-04-4.
+type PaymentRequiredError struct {
+	*core.APIError
+	Body interface{}
+}
+
+func (p *PaymentRequiredError) UnmarshalJSON(data []byte) error {
+	var body interface{}
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	p.StatusCode = 402
+	p.Body = body
+	return nil
+}
+
+func (p *PaymentRequiredError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
+}
+
+func (p *PaymentRequiredError) Unwrap() error {
+	return p.APIError
+}
+
 // POST resolve is disabled by feature flag
 type ServiceUnavailableError struct {
 	*core.APIError

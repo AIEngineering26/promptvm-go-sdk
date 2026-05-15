@@ -1293,6 +1293,253 @@ func (n *NotFoundErrorBody) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+// Payment Required — the active org's plan does not grant the requested feature or its numeric limit has been reached. Spec: FR-04-4.
+var (
+	paymentRequiredErrorBodyFieldStatusCode   = big.NewInt(1 << 0)
+	paymentRequiredErrorBodyFieldError        = big.NewInt(1 << 1)
+	paymentRequiredErrorBodyFieldCode         = big.NewInt(1 << 2)
+	paymentRequiredErrorBodyFieldLimit        = big.NewInt(1 << 3)
+	paymentRequiredErrorBodyFieldCurrentUsage = big.NewInt(1 << 4)
+	paymentRequiredErrorBodyFieldRequiredPlan = big.NewInt(1 << 5)
+	paymentRequiredErrorBodyFieldUpgradeURL   = big.NewInt(1 << 6)
+	paymentRequiredErrorBodyFieldRequestID    = big.NewInt(1 << 7)
+)
+
+type PaymentRequiredErrorBody struct {
+	StatusCode int                           `json:"statusCode" url:"statusCode"`
+	Error      PaymentRequiredErrorBodyError `json:"error" url:"error"`
+	// Stable snake_case error code consumed by the SDK / frontend store. Examples: api_access_locked, workspaces_limit_reached, prompts_limit_reached, api_requests_per_month_limit_reached.
+	Code string `json:"code" url:"code"`
+	// Numeric limit that was hit, or null for boolean feature locks.
+	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
+	// Current usage at the moment the gate fired, or null for boolean feature locks.
+	CurrentUsage *int `json:"currentUsage,omitempty" url:"currentUsage,omitempty"`
+	// Cheapest plan slug that satisfies the requested feature / limit.
+	RequiredPlan PaymentRequiredErrorBodyRequiredPlan `json:"requiredPlan" url:"requiredPlan"`
+	// Deep link template (carries the {slug} placeholder) the frontend opens to upgrade.
+	UpgradeURL string  `json:"upgradeUrl" url:"upgradeUrl"`
+	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaymentRequiredErrorBody) GetStatusCode() int {
+	if p == nil {
+		return 0
+	}
+	return p.StatusCode
+}
+
+func (p *PaymentRequiredErrorBody) GetError() PaymentRequiredErrorBodyError {
+	if p == nil {
+		return ""
+	}
+	return p.Error
+}
+
+func (p *PaymentRequiredErrorBody) GetCode() string {
+	if p == nil {
+		return ""
+	}
+	return p.Code
+}
+
+func (p *PaymentRequiredErrorBody) GetLimit() *int {
+	if p == nil {
+		return nil
+	}
+	return p.Limit
+}
+
+func (p *PaymentRequiredErrorBody) GetCurrentUsage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.CurrentUsage
+}
+
+func (p *PaymentRequiredErrorBody) GetRequiredPlan() PaymentRequiredErrorBodyRequiredPlan {
+	if p == nil {
+		return ""
+	}
+	return p.RequiredPlan
+}
+
+func (p *PaymentRequiredErrorBody) GetUpgradeURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.UpgradeURL
+}
+
+func (p *PaymentRequiredErrorBody) GetRequestID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.RequestID
+}
+
+func (p *PaymentRequiredErrorBody) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PaymentRequiredErrorBody) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetStatusCode sets the StatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetStatusCode(statusCode int) {
+	p.StatusCode = statusCode
+	p.require(paymentRequiredErrorBodyFieldStatusCode)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetError(error_ PaymentRequiredErrorBodyError) {
+	p.Error = error_
+	p.require(paymentRequiredErrorBodyFieldError)
+}
+
+// SetCode sets the Code field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetCode(code string) {
+	p.Code = code
+	p.require(paymentRequiredErrorBodyFieldCode)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetLimit(limit *int) {
+	p.Limit = limit
+	p.require(paymentRequiredErrorBodyFieldLimit)
+}
+
+// SetCurrentUsage sets the CurrentUsage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetCurrentUsage(currentUsage *int) {
+	p.CurrentUsage = currentUsage
+	p.require(paymentRequiredErrorBodyFieldCurrentUsage)
+}
+
+// SetRequiredPlan sets the RequiredPlan field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetRequiredPlan(requiredPlan PaymentRequiredErrorBodyRequiredPlan) {
+	p.RequiredPlan = requiredPlan
+	p.require(paymentRequiredErrorBodyFieldRequiredPlan)
+}
+
+// SetUpgradeURL sets the UpgradeURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetUpgradeURL(upgradeURL string) {
+	p.UpgradeURL = upgradeURL
+	p.require(paymentRequiredErrorBodyFieldUpgradeURL)
+}
+
+// SetRequestID sets the RequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentRequiredErrorBody) SetRequestID(requestID *string) {
+	p.RequestID = requestID
+	p.require(paymentRequiredErrorBodyFieldRequestID)
+}
+
+func (p *PaymentRequiredErrorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentRequiredErrorBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaymentRequiredErrorBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaymentRequiredErrorBody) MarshalJSON() ([]byte, error) {
+	type embed PaymentRequiredErrorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaymentRequiredErrorBody) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PaymentRequiredErrorBodyError string
+
+const (
+	PaymentRequiredErrorBodyErrorPaymentRequired PaymentRequiredErrorBodyError = "payment_required"
+)
+
+func NewPaymentRequiredErrorBodyErrorFromString(s string) (PaymentRequiredErrorBodyError, error) {
+	switch s {
+	case "payment_required":
+		return PaymentRequiredErrorBodyErrorPaymentRequired, nil
+	}
+	var t PaymentRequiredErrorBodyError
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PaymentRequiredErrorBodyError) Ptr() *PaymentRequiredErrorBodyError {
+	return &p
+}
+
+// Cheapest plan slug that satisfies the requested feature / limit.
+type PaymentRequiredErrorBodyRequiredPlan string
+
+const (
+	PaymentRequiredErrorBodyRequiredPlanFree       PaymentRequiredErrorBodyRequiredPlan = "free"
+	PaymentRequiredErrorBodyRequiredPlanHobby      PaymentRequiredErrorBodyRequiredPlan = "hobby"
+	PaymentRequiredErrorBodyRequiredPlanPro        PaymentRequiredErrorBodyRequiredPlan = "pro"
+	PaymentRequiredErrorBodyRequiredPlanTeams      PaymentRequiredErrorBodyRequiredPlan = "teams"
+	PaymentRequiredErrorBodyRequiredPlanEnterprise PaymentRequiredErrorBodyRequiredPlan = "enterprise"
+)
+
+func NewPaymentRequiredErrorBodyRequiredPlanFromString(s string) (PaymentRequiredErrorBodyRequiredPlan, error) {
+	switch s {
+	case "free":
+		return PaymentRequiredErrorBodyRequiredPlanFree, nil
+	case "hobby":
+		return PaymentRequiredErrorBodyRequiredPlanHobby, nil
+	case "pro":
+		return PaymentRequiredErrorBodyRequiredPlanPro, nil
+	case "teams":
+		return PaymentRequiredErrorBodyRequiredPlanTeams, nil
+	case "enterprise":
+		return PaymentRequiredErrorBodyRequiredPlanEnterprise, nil
+	}
+	var t PaymentRequiredErrorBodyRequiredPlan
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PaymentRequiredErrorBodyRequiredPlan) Ptr() *PaymentRequiredErrorBodyRequiredPlan {
+	return &p
+}
+
 // POST resolve is disabled by feature flag
 var (
 	serviceUnavailableErrorBodyFieldStatusCode = big.NewInt(1 << 0)
