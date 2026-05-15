@@ -67,6 +67,32 @@ func (c *CreateBillingCheckoutSessionRequest) SetSeats(seats *int) {
 }
 
 var (
+	createBillingPortalSessionRequestFieldOrgID = big.NewInt(1 << 0)
+)
+
+type CreateBillingPortalSessionRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CreateBillingPortalSessionRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBillingPortalSessionRequest) SetOrgID(orgID string) {
+	c.OrgID = orgID
+	c.require(createBillingPortalSessionRequestFieldOrgID)
+}
+
+var (
 	getBillingStatusRequestFieldOrgID = big.NewInt(1 << 0)
 )
 
@@ -183,6 +209,85 @@ func (c *CreateBillingCheckoutSessionResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateBillingCheckoutSessionResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createBillingPortalSessionResponseFieldURL = big.NewInt(1 << 0)
+)
+
+type CreateBillingPortalSessionResponse struct {
+	// Stripe-hosted Customer Portal URL. Open via top-level navigation, not iframe. The user returns to `${FRONTEND_URL}/${slug}/settings/billing-tiers?tab=payment&portal_return=1` when they finish.
+	URL string `json:"url" url:"url"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateBillingPortalSessionResponse) GetURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.URL
+}
+
+func (c *CreateBillingPortalSessionResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateBillingPortalSessionResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetURL sets the URL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBillingPortalSessionResponse) SetURL(url string) {
+	c.URL = url
+	c.require(createBillingPortalSessionResponseFieldURL)
+}
+
+func (c *CreateBillingPortalSessionResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateBillingPortalSessionResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateBillingPortalSessionResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateBillingPortalSessionResponse) MarshalJSON() ([]byte, error) {
+	type embed CreateBillingPortalSessionResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateBillingPortalSessionResponse) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value

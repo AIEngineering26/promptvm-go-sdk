@@ -112,6 +112,32 @@ func TestBillingCreateBillingCheckoutSessionWithWireMock(
 	VerifyRequestCount(t, "TestBillingCreateBillingCheckoutSessionWithWireMock", "POST", "/api/v1/billing/checkout-session", nil, 1)
 }
 
+func TestBillingCreateBillingPortalSessionWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.CreateBillingPortalSessionRequest{
+		OrgID: "018e4a3b-0000-0000-0000-000000000001",
+	}
+	_, invocationErr := client.Billing.CreateBillingPortalSession(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingCreateBillingPortalSessionWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingCreateBillingPortalSessionWithWireMock", "POST", "/api/v1/billing/portal-session", nil, 1)
+}
+
 func TestBillingGetBillingStatusWithWireMock(
 	t *testing.T,
 ) {

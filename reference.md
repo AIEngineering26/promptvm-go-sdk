@@ -713,6 +713,67 @@ client.Billing.CreateBillingCheckoutSession(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.CreateBillingPortalSession() -> *promptvmgosdk.CreateBillingPortalSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a Stripe-hosted Customer Portal URL the caller can use to update their payment method, view invoices, edit billing details, or cancel their subscription. Owner/admin only. Rate-limited 5/min/org. Plan switching is intentionally disabled in the Portal — use `/billing/change-plan` for that.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateBillingPortalSessionRequest{
+        OrgID: "018e4a3b-0000-0000-0000-000000000001",
+    }
+client.Billing.CreateBillingPortalSession(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.GetBillingStatus() -> *promptvmgosdk.GetBillingStatusResponse</code></summary>
 <dl>
 <dd>

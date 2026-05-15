@@ -64,6 +64,23 @@ func (c *Client) CreateBillingCheckoutSession(
 	return response.Body, nil
 }
 
+// Returns a Stripe-hosted Customer Portal URL the caller can use to update their payment method, view invoices, edit billing details, or cancel their subscription. Owner/admin only. Rate-limited 5/min/org. Plan switching is intentionally disabled in the Portal — use `/billing/change-plan` for that.
+func (c *Client) CreateBillingPortalSession(
+	ctx context.Context,
+	request *promptvmgosdk.CreateBillingPortalSessionRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.CreateBillingPortalSessionResponse, error) {
+	response, err := c.WithRawResponse.CreateBillingPortalSession(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
 func (c *Client) GetBillingStatus(
 	ctx context.Context,
