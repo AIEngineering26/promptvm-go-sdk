@@ -583,6 +583,49 @@ client.CliAuth.CliDeviceToken(
 </dl>
 </details>
 
+## Billing
+<details><summary><code>client.Billing.ListBillingPlans() -> []*promptvmgosdk.ListBillingPlansResponseItem</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all active, public subscription plans sorted by display order. No authentication required. Values are DB-driven: tier names, prices, feature bullets, and seat limits are all set via SQL — no frontend code changes are needed when the catalog changes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Billing.ListBillingPlans(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## AgentAPI
 <details><summary><code>client.AgentAPI.AgentResolvePrompt(Slug) -> error</code></summary>
 <dl>

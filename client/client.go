@@ -6,6 +6,7 @@ import (
 	agentapi "github.com/AIEngineering26/promptvm-go-sdk/agentapi"
 	apikeys "github.com/AIEngineering26/promptvm-go-sdk/apikeys"
 	authentication "github.com/AIEngineering26/promptvm-go-sdk/authentication"
+	billing "github.com/AIEngineering26/promptvm-go-sdk/billing"
 	cliauth "github.com/AIEngineering26/promptvm-go-sdk/cliauth"
 	collections "github.com/AIEngineering26/promptvm-go-sdk/collections"
 	contexts "github.com/AIEngineering26/promptvm-go-sdk/contexts"
@@ -43,6 +44,7 @@ import (
 type Client struct {
 	Authentication              *authentication.Client
 	CliAuth                     *cliauth.Client
+	Billing                     *billing.Client
 	AgentAPI                    *agentapi.Client
 	SkillsPublic                *skillspublic.Client
 	Contexts                    *contexts.Client
@@ -84,6 +86,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 	return &Client{
 		Authentication:              authentication.NewClient(options),
 		CliAuth:                     cliauth.NewClient(options),
+		Billing:                     billing.NewClient(options),
 		AgentAPI:                    agentapi.NewClient(options),
 		SkillsPublic:                skillspublic.NewClient(options),
 		Contexts:                    contexts.NewClient(options),
