@@ -309,6 +309,72 @@ func (l *ListBillingInvoicesRequest) SetCursor(cursor *string) {
 }
 
 var (
+	listBillingWebhookErrorsRequestFieldOrgID  = big.NewInt(1 << 0)
+	listBillingWebhookErrorsRequestFieldLimit  = big.NewInt(1 << 1)
+	listBillingWebhookErrorsRequestFieldCursor = big.NewInt(1 << 2)
+	listBillingWebhookErrorsRequestFieldSince  = big.NewInt(1 << 3)
+	listBillingWebhookErrorsRequestFieldKind   = big.NewInt(1 << 4)
+)
+
+type ListBillingWebhookErrorsRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID string `json:"-" url:"-"`
+	// Maximum number of events to return on this page. Default 50, max 200.
+	Limit *int `json:"-" url:"limit,omitempty"`
+	// Opaque base64 cursor from a prior response's `nextCursor`. Omit to start at the most recent error.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// ISO-8601 timestamp lower bound — returns events with `received_at > since`. Use to scope to the last 24h / 1h.
+	Since *time.Time `json:"-" url:"since,omitempty"`
+	// Case-insensitive substring match against the error text. Useful for parked classes like `unknown_price`, `unmapped_subscription`.
+	Kind *string `json:"-" url:"kind,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListBillingWebhookErrorsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsRequest) SetOrgID(orgID string) {
+	l.OrgID = orgID
+	l.require(listBillingWebhookErrorsRequestFieldOrgID)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsRequest) SetLimit(limit *int) {
+	l.Limit = limit
+	l.require(listBillingWebhookErrorsRequestFieldLimit)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsRequest) SetCursor(cursor *string) {
+	l.Cursor = cursor
+	l.require(listBillingWebhookErrorsRequestFieldCursor)
+}
+
+// SetSince sets the Since field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsRequest) SetSince(since *time.Time) {
+	l.Since = since
+	l.require(listBillingWebhookErrorsRequestFieldSince)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsRequest) SetKind(kind *string) {
+	l.Kind = kind
+	l.require(listBillingWebhookErrorsRequestFieldKind)
+}
+
+var (
 	redeemPromotionalOfferRequestFieldOrgID = big.NewInt(1 << 0)
 	redeemPromotionalOfferRequestFieldToken = big.NewInt(1 << 1)
 )
@@ -3060,6 +3126,263 @@ func (l *ListBillingPlansResponseItemFeatures) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListBillingPlansResponseItemFeatures) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// Paginated dead-letter view of failed Stripe webhook events, ordered `received_at desc, id desc`. Admin-only.
+var (
+	listBillingWebhookErrorsResponseFieldEvents     = big.NewInt(1 << 0)
+	listBillingWebhookErrorsResponseFieldNextCursor = big.NewInt(1 << 1)
+)
+
+type ListBillingWebhookErrorsResponse struct {
+	// Up to `limit` failed events, most recent first.
+	Events []*ListBillingWebhookErrorsResponseEventsItem `json:"events" url:"events"`
+	// Opaque cursor for the next page. `null` when the final page was returned.
+	NextCursor *string `json:"nextCursor,omitempty" url:"nextCursor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListBillingWebhookErrorsResponse) GetEvents() []*ListBillingWebhookErrorsResponseEventsItem {
+	if l == nil {
+		return nil
+	}
+	return l.Events
+}
+
+func (l *ListBillingWebhookErrorsResponse) GetNextCursor() *string {
+	if l == nil {
+		return nil
+	}
+	return l.NextCursor
+}
+
+func (l *ListBillingWebhookErrorsResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListBillingWebhookErrorsResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetEvents sets the Events field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsResponse) SetEvents(events []*ListBillingWebhookErrorsResponseEventsItem) {
+	l.Events = events
+	l.require(listBillingWebhookErrorsResponseFieldEvents)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsResponse) SetNextCursor(nextCursor *string) {
+	l.NextCursor = nextCursor
+	l.require(listBillingWebhookErrorsResponseFieldNextCursor)
+}
+
+func (l *ListBillingWebhookErrorsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListBillingWebhookErrorsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListBillingWebhookErrorsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBillingWebhookErrorsResponse) MarshalJSON() ([]byte, error) {
+	type embed ListBillingWebhookErrorsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListBillingWebhookErrorsResponse) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// A failed Stripe webhook event from the FR-05-11 dead-letter view. `payload` is intentionally absent (PII risk).
+var (
+	listBillingWebhookErrorsResponseEventsItemFieldID          = big.NewInt(1 << 0)
+	listBillingWebhookErrorsResponseEventsItemFieldType        = big.NewInt(1 << 1)
+	listBillingWebhookErrorsResponseEventsItemFieldReceivedAt  = big.NewInt(1 << 2)
+	listBillingWebhookErrorsResponseEventsItemFieldProcessedAt = big.NewInt(1 << 3)
+	listBillingWebhookErrorsResponseEventsItemFieldError       = big.NewInt(1 << 4)
+)
+
+type ListBillingWebhookErrorsResponseEventsItem struct {
+	// Stripe event id (`evt_…`). Primary key of `stripe_webhook_events`.
+	ID string `json:"id" url:"id"`
+	// Stripe event type, e.g. `customer.subscription.updated`.
+	Type string `json:"type" url:"type"`
+	// ISO-8601 timestamp the webhook was received by the backend.
+	ReceivedAt time.Time `json:"receivedAt" url:"receivedAt"`
+	// ISO-8601 timestamp the worker stamped the row as processed. `null` while the row is still in-flight (queued or actively retrying).
+	ProcessedAt *time.Time `json:"processedAt,omitempty" url:"processedAt,omitempty"`
+	// Human-readable failure reason. Free-form text — short codes like `unknown_price`, `unmapped_subscription`, or full exception messages.
+	Error string `json:"error" url:"error"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) GetType() string {
+	if l == nil {
+		return ""
+	}
+	return l.Type
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) GetReceivedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.ReceivedAt
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) GetProcessedAt() *time.Time {
+	if l == nil {
+		return nil
+	}
+	return l.ProcessedAt
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) GetError() string {
+	if l == nil {
+		return ""
+	}
+	return l.Error
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsResponseEventsItem) SetID(id string) {
+	l.ID = id
+	l.require(listBillingWebhookErrorsResponseEventsItemFieldID)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsResponseEventsItem) SetType(type_ string) {
+	l.Type = type_
+	l.require(listBillingWebhookErrorsResponseEventsItemFieldType)
+}
+
+// SetReceivedAt sets the ReceivedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsResponseEventsItem) SetReceivedAt(receivedAt time.Time) {
+	l.ReceivedAt = receivedAt
+	l.require(listBillingWebhookErrorsResponseEventsItemFieldReceivedAt)
+}
+
+// SetProcessedAt sets the ProcessedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsResponseEventsItem) SetProcessedAt(processedAt *time.Time) {
+	l.ProcessedAt = processedAt
+	l.require(listBillingWebhookErrorsResponseEventsItemFieldProcessedAt)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillingWebhookErrorsResponseEventsItem) SetError(error_ string) {
+	l.Error = error_
+	l.require(listBillingWebhookErrorsResponseEventsItemFieldError)
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) UnmarshalJSON(data []byte) error {
+	type embed ListBillingWebhookErrorsResponseEventsItem
+	var unmarshaler = struct {
+		embed
+		ReceivedAt  *internal.DateTime `json:"receivedAt"`
+		ProcessedAt *internal.DateTime `json:"processedAt,omitempty"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = ListBillingWebhookErrorsResponseEventsItem(unmarshaler.embed)
+	l.ReceivedAt = unmarshaler.ReceivedAt.Time()
+	l.ProcessedAt = unmarshaler.ProcessedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) MarshalJSON() ([]byte, error) {
+	type embed ListBillingWebhookErrorsResponseEventsItem
+	var marshaler = struct {
+		embed
+		ReceivedAt  *internal.DateTime `json:"receivedAt"`
+		ProcessedAt *internal.DateTime `json:"processedAt,omitempty"`
+	}{
+		embed:       embed(*l),
+		ReceivedAt:  internal.NewDateTime(l.ReceivedAt),
+		ProcessedAt: internal.NewOptionalDateTime(l.ProcessedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListBillingWebhookErrorsResponseEventsItem) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value

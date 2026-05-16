@@ -1324,6 +1324,99 @@ client.Billing.GetBillingStatus(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.ListBillingWebhookErrors() -> *promptvmgosdk.ListBillingWebhookErrorsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the FR-05-11 dead-letter view: `stripe_webhook_events` rows where `error IS NOT NULL`. Ordered `received_at DESC, id DESC` with opaque cursor pagination. Default `limit=50`, max `200`. Supports `?since=<ISO8601>` and `?kind=<error-keyword>` filters. The `payload` jsonb column is INTENTIONALLY EXCLUDED — Stripe payloads can carry PII (customer email, billing address); ops reads the full payload from the worker logs or the Stripe Dashboard, not from this endpoint. Currently gated by `requireOwnerOrAdmin` (org-scoped) as a placeholder — a future PR will swap in a platform-admin middleware.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListBillingWebhookErrorsRequest{
+        OrgID: "018e4a3b-0000-0000-0000-000000000001",
+    }
+client.Billing.ListBillingWebhookErrors(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `*int` — Maximum number of events to return on this page. Default 50, max 200.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` — Opaque base64 cursor from a prior response's `nextCursor`. Omit to start at the most recent error.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**since:** `*time.Time` — ISO-8601 timestamp lower bound — returns events with `received_at > since`. Use to scope to the last 24h / 1h.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*string` — Case-insensitive substring match against the error text. Useful for parked classes like `unknown_price`, `unmapped_subscription`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## AgentAPI
 <details><summary><code>client.AgentAPI.AgentResolvePrompt(Slug) -> error</code></summary>
 <dl>

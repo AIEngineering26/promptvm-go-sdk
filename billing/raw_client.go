@@ -500,3 +500,51 @@ func (r *RawClient) GetBillingStatus(
 		Body:       response,
 	}, nil
 }
+
+func (r *RawClient) ListBillingWebhookErrors(
+	ctx context.Context,
+	request *promptvmgosdk.ListBillingWebhookErrorsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.ListBillingWebhookErrorsResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/admin/billing/webhook-errors"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("x-org-id", request.OrgID)
+	var response *promptvmgosdk.ListBillingWebhookErrorsResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.ListBillingWebhookErrorsResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}

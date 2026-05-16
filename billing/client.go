@@ -216,3 +216,20 @@ func (c *Client) GetBillingStatus(
 	}
 	return response.Body, nil
 }
+
+// Returns the FR-05-11 dead-letter view: `stripe_webhook_events` rows where `error IS NOT NULL`. Ordered `received_at DESC, id DESC` with opaque cursor pagination. Default `limit=50`, max `200`. Supports `?since=<ISO8601>` and `?kind=<error-keyword>` filters. The `payload` jsonb column is INTENTIONALLY EXCLUDED — Stripe payloads can carry PII (customer email, billing address); ops reads the full payload from the worker logs or the Stripe Dashboard, not from this endpoint. Currently gated by `requireOwnerOrAdmin` (org-scoped) as a placeholder — a future PR will swap in a platform-admin middleware.
+func (c *Client) ListBillingWebhookErrors(
+	ctx context.Context,
+	request *promptvmgosdk.ListBillingWebhookErrorsRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ListBillingWebhookErrorsResponse, error) {
+	response, err := c.WithRawResponse.ListBillingWebhookErrors(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

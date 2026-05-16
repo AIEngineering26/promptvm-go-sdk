@@ -351,3 +351,29 @@ func TestBillingGetBillingStatusWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestBillingGetBillingStatusWithWireMock", "GET", "/api/v1/billing/status", nil, 1)
 }
+
+func TestBillingListBillingWebhookErrorsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ListBillingWebhookErrorsRequest{
+		OrgID: "018e4a3b-0000-0000-0000-000000000001",
+	}
+	_, invocationErr := client.Billing.ListBillingWebhookErrors(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBillingListBillingWebhookErrorsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBillingListBillingWebhookErrorsWithWireMock", "GET", "/api/v1/admin/billing/webhook-errors", nil, 1)
+}
