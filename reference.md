@@ -1336,7 +1336,7 @@ client.Billing.GetBillingStatus(
 <dl>
 <dd>
 
-Returns the FR-05-11 dead-letter view: `stripe_webhook_events` rows where `error IS NOT NULL`. Ordered `received_at DESC, id DESC` with opaque cursor pagination. Default `limit=50`, max `200`. Supports `?since=<ISO8601>` and `?kind=<error-keyword>` filters. The `payload` jsonb column is INTENTIONALLY EXCLUDED — Stripe payloads can carry PII (customer email, billing address); ops reads the full payload from the worker logs or the Stripe Dashboard, not from this endpoint. Currently gated by `requireOwnerOrAdmin` (org-scoped) as a placeholder — a future PR will swap in a platform-admin middleware.
+Returns the FR-05-11 dead-letter view: `stripe_webhook_events` rows where `error IS NOT NULL` AND `org_id = X-Org-Id` (US-05-7a-FIX). Ordered `received_at DESC, id DESC` with opaque cursor pagination. Default `limit=50`, max `200`. Supports `?since=<ISO8601>` and `?kind=<error-keyword>` filters. The `payload` jsonb column is INTENTIONALLY EXCLUDED — Stripe payloads can carry PII (customer email, billing address); ops reads the full payload from the worker logs or the Stripe Dashboard, not from this endpoint. Events whose `org_id` could not be resolved at ingress time (`org_id IS NULL`) are intentionally NOT returned — a future platform-admin route will surface them. Currently gated by `requireOwnerOrAdmin` (org-scoped) as a placeholder.
 </dd>
 </dl>
 </dd>
