@@ -144,6 +144,7 @@ func (r *RawClient) CreateBillingCheckoutSession(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -228,6 +229,7 @@ func (r *RawClient) ChangeBillingPlan(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {

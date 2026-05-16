@@ -64,7 +64,7 @@ func (c *Client) ListBillingPlans(
 	return response.Body, nil
 }
 
-// Returns a Stripe-hosted Checkout URL for the caller to complete payment. Owner/admin only. Rate-limited 5/min/org. The frontend redirects the browser to the returned URL; the actual subscription state lands in our DB via the `customer.subscription.created` webhook (US-01-4), not via the success URL.
+// Returns a Stripe-hosted Checkout URL for the caller to complete payment. Owner/admin only. Rate-limited 5/min/org. The frontend redirects the browser to the returned URL; the actual subscription state lands in our DB via the `customer.subscription.created` webhook (US-01-4), not via the success URL. Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9) — clients should render an Upgrade-disabled state and route users to sales.
 func (c *Client) CreateBillingCheckoutSession(
 	ctx context.Context,
 	request *promptvmgosdk.CreateBillingCheckoutSessionRequest,
@@ -98,7 +98,7 @@ func (c *Client) CreateBillingPortalSession(
 	return response.Body, nil
 }
 
-// Routes through the Phase 02 change-plan algorithm: detects upgrade/downgrade/seat-adjust direction, releases any pending `subscription_schedule` first (FR-02-5a), then writes the change to Stripe (immediate proration on upgrade, scheduled phase on downgrade). Owner/admin only. Rate-limited per org via Redis SET NX with TTL `BILLING_CHANGE_PLAN_COOLDOWN_SECONDS` (default 60, 0 in tests). The authoritative state lands in our DB via the `customer.subscription.updated` webhook (US-01-4) — clients should re-read `/billing/status` after a 200.
+// Routes through the Phase 02 change-plan algorithm: detects upgrade/downgrade/seat-adjust direction, releases any pending `subscription_schedule` first (FR-02-5a), then writes the change to Stripe (immediate proration on upgrade, scheduled phase on downgrade). Owner/admin only. Rate-limited per org via Redis SET NX with TTL `BILLING_CHANGE_PLAN_COOLDOWN_SECONDS` (default 60, 0 in tests). The authoritative state lands in our DB via the `customer.subscription.updated` webhook (US-01-4) — clients should re-read `/billing/status` after a 200. Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) ChangeBillingPlan(
 	ctx context.Context,
 	request *promptvmgosdk.ChangeBillingPlanRequest,

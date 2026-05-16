@@ -175,14 +175,14 @@ func (p *PaymentRequiredError) Unwrap() error {
 	return p.APIError
 }
 
-// POST resolve is disabled by feature flag
+// Default Response
 type ServiceUnavailableError struct {
 	*core.APIError
-	Body *ServiceUnavailableErrorBody
+	Body interface{}
 }
 
 func (s *ServiceUnavailableError) UnmarshalJSON(data []byte) error {
-	var body *ServiceUnavailableErrorBody
+	var body interface{}
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
