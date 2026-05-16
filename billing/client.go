@@ -81,7 +81,7 @@ func (c *Client) CreateBillingCheckoutSession(
 	return response.Body, nil
 }
 
-// Returns a Stripe-hosted Customer Portal URL the caller can use to update their payment method, view invoices, edit billing details, or cancel their subscription. Owner/admin only. Rate-limited 5/min/org. Plan switching is intentionally disabled in the Portal — use `/billing/change-plan` for that.
+// Returns a Stripe-hosted Customer Portal URL the caller can use to update their payment method, view invoices, edit billing details, or cancel their subscription. Owner/admin only. Rate-limited 5/min/org. Plan switching is intentionally disabled in the Portal — use `/billing/change-plan` for that. Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) CreateBillingPortalSession(
 	ctx context.Context,
 	request *promptvmgosdk.CreateBillingPortalSessionRequest,
@@ -115,7 +115,7 @@ func (c *Client) ChangeBillingPlan(
 	return response.Body, nil
 }
 
-// Owner/admin only. Pushes a `quantity` change to the Stripe subscription item with `proration_behavior=create_prorations`. Increases generate a prorated charge on the next invoice; decreases (still ≥ used_seats) generate a prorated credit on the next invoice (no card refund). Per-seat plans only. Rate-limited 5/min/org (US-05-8 F-1).
+// Owner/admin only. Pushes a `quantity` change to the Stripe subscription item with `proration_behavior=create_prorations`. Increases generate a prorated charge on the next invoice; decreases (still ≥ used_seats) generate a prorated credit on the next invoice (no card refund). Per-seat plans only. Rate-limited 5/min/org (US-05-8 F-1). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) AdjustBillingSeats(
 	ctx context.Context,
 	request *promptvmgosdk.AdjustBillingSeatsRequest,
@@ -132,7 +132,7 @@ func (c *Client) AdjustBillingSeats(
 	return response.Body, nil
 }
 
-// Owner/admin only. Sets `cancel_at_period_end = true` on the Stripe subscription. Releases any pending downgrade schedule first (FR-02-15) so the update can apply cleanly. The cancellation is scheduled, not immediate — billing continues through the current period and access ends at `cancelAt`. Re-invoking with the same period is a no-op (FR-02-14 idempotency).
+// Owner/admin only. Sets `cancel_at_period_end = true` on the Stripe subscription. Releases any pending downgrade schedule first (FR-02-15) so the update can apply cleanly. The cancellation is scheduled, not immediate — billing continues through the current period and access ends at `cancelAt`. Re-invoking with the same period is a no-op (FR-02-14 idempotency). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) CancelBillingSubscription(
 	ctx context.Context,
 	request *promptvmgosdk.CancelBillingSubscriptionRequest,
@@ -149,7 +149,7 @@ func (c *Client) CancelBillingSubscription(
 	return response.Body, nil
 }
 
-// Owner/admin only. Sets `cancel_at_period_end = false` on the Stripe subscription. Does NOT recreate any previously scheduled downgrade — the user must re-request that via `/change-plan` (FR-02-15). Re-invoking with the same period is a no-op (FR-02-14 idempotency).
+// Owner/admin only. Sets `cancel_at_period_end = false` on the Stripe subscription. Does NOT recreate any previously scheduled downgrade — the user must re-request that via `/change-plan` (FR-02-15). Re-invoking with the same period is a no-op (FR-02-14 idempotency). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) ResumeBillingSubscription(
 	ctx context.Context,
 	request *promptvmgosdk.ResumeBillingSubscriptionRequest,
@@ -183,7 +183,7 @@ func (c *Client) ListBillingInvoices(
 	return response.Body, nil
 }
 
-// Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9).
+// Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) RedeemPromotionalOffer(
 	ctx context.Context,
 	request *promptvmgosdk.RedeemPromotionalOfferRequest,

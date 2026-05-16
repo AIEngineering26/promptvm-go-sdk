@@ -186,6 +186,7 @@ func (r *RawClient) CreateBillingPortalSession(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -315,6 +316,7 @@ func (r *RawClient) CancelBillingSubscription(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -356,6 +358,7 @@ func (r *RawClient) ResumeBillingSubscription(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -448,6 +451,7 @@ func (r *RawClient) RedeemPromotionalOffer(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
