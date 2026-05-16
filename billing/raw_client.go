@@ -273,6 +273,7 @@ func (r *RawClient) AdjustBillingSeats(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {

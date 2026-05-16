@@ -115,7 +115,7 @@ func (c *Client) ChangeBillingPlan(
 	return response.Body, nil
 }
 
-// Owner/admin only. Pushes a `quantity` change to the Stripe subscription item with `proration_behavior=create_prorations`. Increases generate a prorated charge on the next invoice; decreases (still ≥ used_seats) generate a prorated credit on the next invoice (no card refund). Per-seat plans only.
+// Owner/admin only. Pushes a `quantity` change to the Stripe subscription item with `proration_behavior=create_prorations`. Increases generate a prorated charge on the next invoice; decreases (still ≥ used_seats) generate a prorated credit on the next invoice (no card refund). Per-seat plans only. Rate-limited 5/min/org (US-05-8 F-1).
 func (c *Client) AdjustBillingSeats(
 	ctx context.Context,
 	request *promptvmgosdk.AdjustBillingSeatsRequest,
