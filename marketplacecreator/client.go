@@ -4,10 +4,10 @@ package marketplacecreator
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetMyMarketplaceCreatorProfile(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMyMarketplaceCreatorProfileResponse, error) {
+) (*sdk.GetMyMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.GetMyMarketplaceCreatorProfile(
 		ctx,
 		opts...,
@@ -48,9 +48,9 @@ func (c *Client) GetMyMarketplaceCreatorProfile(
 
 func (c *Client) UpdateMyMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest,
+	request *sdk.UpdateMyMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse, error) {
+) (*sdk.UpdateMyMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.UpdateMyMarketplaceCreatorProfile(
 		ctx,
 		request,
@@ -64,9 +64,9 @@ func (c *Client) UpdateMyMarketplaceCreatorProfile(
 
 func (c *Client) CreateMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *promptvmgosdk.CreateMarketplaceCreatorProfileRequest,
+	request *sdk.CreateMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreateMarketplaceCreatorProfileResponse, error) {
+) (*sdk.CreateMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.CreateMarketplaceCreatorProfile(
 		ctx,
 		request,
@@ -80,9 +80,9 @@ func (c *Client) CreateMarketplaceCreatorProfile(
 
 func (c *Client) GetMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *promptvmgosdk.GetMarketplaceCreatorProfileRequest,
+	request *sdk.GetMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMarketplaceCreatorProfileResponse, error) {
+) (*sdk.GetMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceCreatorProfile(
 		ctx,
 		request,

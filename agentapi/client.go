@@ -4,10 +4,10 @@ package agentapi
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns resolved prompt content as plain text or JSON. Pass ?version=latest (default) or ?version=<number>. Pass ?format=json for structured output. Any other query params are treated as variable values.
 func (c *Client) AgentResolvePrompt(
 	ctx context.Context,
-	request *promptvmgosdk.AgentResolvePromptRequest,
+	request *sdk.AgentResolvePromptRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.AgentResolvePrompt(

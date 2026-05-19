@@ -3,8 +3,8 @@
 package api
 
 import (
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
+	core "sdk/core"
+	internal "sdk/internal"
 )
 
 var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
@@ -60,6 +60,16 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 	},
 	422: func(apiError *core.APIError) error {
 		return &UnprocessableEntityError{
+			APIError: apiError,
+		}
+	},
+	502: func(apiError *core.APIError) error {
+		return &BadGatewayError{
+			APIError: apiError,
+		}
+	},
+	504: func(apiError *core.APIError) error {
+		return &GatewayTimeoutError{
 			APIError: apiError,
 		}
 	},

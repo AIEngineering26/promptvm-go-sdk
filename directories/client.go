@@ -4,10 +4,10 @@ package directories
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns all active directories in a workspace.
 func (c *Client) ListDirectories(
 	ctx context.Context,
-	request *promptvmgosdk.ListDirectoriesRequest,
+	request *sdk.ListDirectoriesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListDirectoriesResponse, error) {
+) (*sdk.ListDirectoriesResponse, error) {
 	response, err := c.WithRawResponse.ListDirectories(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListDirectories(
 // Creates a persisted directory inside a workspace.
 func (c *Client) CreateDirectory(
 	ctx context.Context,
-	request *promptvmgosdk.CreateDirectoryRequest,
+	request *sdk.CreateDirectoryRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreateDirectoryResponse, error) {
+) (*sdk.CreateDirectoryResponse, error) {
 	response, err := c.WithRawResponse.CreateDirectory(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) CreateDirectory(
 // Deletes an empty directory.
 func (c *Client) DeleteDirectory(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteDirectoryRequest,
+	request *sdk.DeleteDirectoryRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.DeleteDirectoryResponse, error) {
+) (*sdk.DeleteDirectoryResponse, error) {
 	response, err := c.WithRawResponse.DeleteDirectory(
 		ctx,
 		request,
@@ -86,9 +86,9 @@ func (c *Client) DeleteDirectory(
 // Updates persisted directory metadata.
 func (c *Client) UpdateDirectory(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateDirectoryRequest,
+	request *sdk.UpdateDirectoryRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateDirectoryResponse, error) {
+) (*sdk.UpdateDirectoryResponse, error) {
 	response, err := c.WithRawResponse.UpdateDirectory(
 		ctx,
 		request,

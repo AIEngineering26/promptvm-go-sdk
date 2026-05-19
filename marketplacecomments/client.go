@@ -4,10 +4,10 @@ package marketplacecomments
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListThreadedCommentsOnAListing(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest,
+	request *sdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse, error) {
+) (*sdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse, error) {
 	response, err := c.WithRawResponse.ListThreadedCommentsOnAListing(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) ListThreadedCommentsOnAListing(
 
 func (c *Client) CreateACommentOrReplyOnAListing(
 	ctx context.Context,
-	request *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest,
+	request *sdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse, error) {
+) (*sdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse, error) {
 	response, err := c.WithRawResponse.CreateACommentOrReplyOnAListing(
 		ctx,
 		request,
@@ -66,7 +66,7 @@ func (c *Client) CreateACommentOrReplyOnAListing(
 
 func (c *Client) SoftDeleteMyComment(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest,
+	request *sdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.SoftDeleteMyComment(

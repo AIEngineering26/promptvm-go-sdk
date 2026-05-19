@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/AIEngineering26/promptvm-go-sdk/core"
+	"sdk/core"
 )
 
 // ErrorCodes maps HTTP status codes to error constructors.

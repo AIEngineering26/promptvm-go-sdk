@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "sdk"
+	client "sdk/client"
+	option "sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestPromptVersionsListPromptVersionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListPromptVersionsRequest{
+	request := &sdk.ListPromptVersionsRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.PromptVersions.ListPromptVersions(
@@ -99,7 +99,7 @@ func TestPromptVersionsCreatePromptVersionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreatePromptVersionRequest{
+	request := &sdk.CreatePromptVersionRequest{
 		PromptID: "promptId",
 		Content:  "content",
 	}
@@ -126,7 +126,7 @@ func TestPromptVersionsRollbackPromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.RollbackPromptRequest{
+	request := &sdk.RollbackPromptRequest{
 		PromptID:      "promptId",
 		TargetVersion: 1,
 	}
@@ -153,7 +153,7 @@ func TestPromptVersionsGetPromptVersionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetPromptVersionRequest{
+	request := &sdk.GetPromptVersionRequest{
 		PromptID:  "promptId",
 		VersionID: "versionId",
 	}
@@ -180,7 +180,7 @@ func TestPromptVersionsUpdatePromptVersionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdatePromptVersionRequest{
+	request := &sdk.UpdatePromptVersionRequest{
 		PromptID:  "promptId",
 		VersionID: "versionId",
 	}
@@ -207,7 +207,7 @@ func TestPromptVersionsDiffPromptVersionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DiffPromptVersionsRequest{
+	request := &sdk.DiffPromptVersionsRequest{
 		PromptID: "promptId",
 		From:     "from",
 		To:       "to",

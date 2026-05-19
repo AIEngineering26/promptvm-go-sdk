@@ -4,10 +4,10 @@ package promptorganization
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Moves a prompt to a different directory and/or workspace.
 func (c *Client) MovePrompt(
 	ctx context.Context,
-	request *promptvmgosdk.MovePromptRequest,
+	request *sdk.MovePromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.MovePromptResponse, error) {
+) (*sdk.MovePromptResponse, error) {
 	response, err := c.WithRawResponse.MovePrompt(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) MovePrompt(
 // Creates a copy in the specified workspace with forkedFromPromptId set.
 func (c *Client) ForkPrompt(
 	ctx context.Context,
-	request *promptvmgosdk.ForkPromptRequest,
+	request *sdk.ForkPromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ForkPromptResponse, error) {
+) (*sdk.ForkPromptResponse, error) {
 	response, err := c.WithRawResponse.ForkPrompt(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) ForkPrompt(
 // Returns all [[include:]] references in the current version.
 func (c *Client) ListPromptReferences(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptReferencesRequest,
+	request *sdk.ListPromptReferencesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListPromptReferencesResponse, error) {
+) (*sdk.ListPromptReferencesResponse, error) {
 	response, err := c.WithRawResponse.ListPromptReferences(
 		ctx,
 		request,
@@ -86,9 +86,9 @@ func (c *Client) ListPromptReferences(
 // Returns all prompts that reference this one.
 func (c *Client) ListPromptDependents(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptDependentsRequest,
+	request *sdk.ListPromptDependentsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListPromptDependentsResponse, error) {
+) (*sdk.ListPromptDependentsResponse, error) {
 	response, err := c.WithRawResponse.ListPromptDependents(
 		ctx,
 		request,

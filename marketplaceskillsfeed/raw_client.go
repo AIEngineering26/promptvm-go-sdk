@@ -4,11 +4,11 @@ package marketplaceskillsfeed
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	http "net/http"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetMarketplaceSkillsFeed(
 	ctx context.Context,
-	request *promptvmgosdk.GetMarketplaceSkillsFeedRequest,
+	request *sdk.GetMarketplaceSkillsFeedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetMarketplaceSkillsFeedResponse], error) {
+) (*core.Response[*sdk.GetMarketplaceSkillsFeedResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) GetMarketplaceSkillsFeed(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetMarketplaceSkillsFeedResponse
+	var response *sdk.GetMarketplaceSkillsFeedResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) GetMarketplaceSkillsFeed(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetMarketplaceSkillsFeedResponse]{
+	return &core.Response[*sdk.GetMarketplaceSkillsFeedResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

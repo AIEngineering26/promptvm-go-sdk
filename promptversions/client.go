@@ -4,10 +4,10 @@ package promptversions
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListPromptVersions(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptVersionsRequest,
+	request *sdk.ListPromptVersionsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListPromptVersionsResponse, error) {
+) (*sdk.ListPromptVersionsResponse, error) {
 	response, err := c.WithRawResponse.ListPromptVersions(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) ListPromptVersions(
 
 func (c *Client) CreatePromptVersion(
 	ctx context.Context,
-	request *promptvmgosdk.CreatePromptVersionRequest,
+	request *sdk.CreatePromptVersionRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreatePromptVersionResponse, error) {
+) (*sdk.CreatePromptVersionResponse, error) {
 	response, err := c.WithRawResponse.CreatePromptVersion(
 		ctx,
 		request,
@@ -67,9 +67,9 @@ func (c *Client) CreatePromptVersion(
 // Creates a new version from an older version's content.
 func (c *Client) RollbackPrompt(
 	ctx context.Context,
-	request *promptvmgosdk.RollbackPromptRequest,
+	request *sdk.RollbackPromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.RollbackPromptResponse, error) {
+) (*sdk.RollbackPromptResponse, error) {
 	response, err := c.WithRawResponse.RollbackPrompt(
 		ctx,
 		request,
@@ -83,9 +83,9 @@ func (c *Client) RollbackPrompt(
 
 func (c *Client) GetPromptVersion(
 	ctx context.Context,
-	request *promptvmgosdk.GetPromptVersionRequest,
+	request *sdk.GetPromptVersionRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetPromptVersionResponse, error) {
+) (*sdk.GetPromptVersionResponse, error) {
 	response, err := c.WithRawResponse.GetPromptVersion(
 		ctx,
 		request,
@@ -99,9 +99,9 @@ func (c *Client) GetPromptVersion(
 
 func (c *Client) UpdatePromptVersion(
 	ctx context.Context,
-	request *promptvmgosdk.UpdatePromptVersionRequest,
+	request *sdk.UpdatePromptVersionRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdatePromptVersionResponse, error) {
+) (*sdk.UpdatePromptVersionResponse, error) {
 	response, err := c.WithRawResponse.UpdatePromptVersion(
 		ctx,
 		request,
@@ -116,9 +116,9 @@ func (c *Client) UpdatePromptVersion(
 // Returns a unified diff between two version numbers.
 func (c *Client) DiffPromptVersions(
 	ctx context.Context,
-	request *promptvmgosdk.DiffPromptVersionsRequest,
+	request *sdk.DiffPromptVersionsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.DiffPromptVersionsResponse, error) {
+) (*sdk.DiffPromptVersionsResponse, error) {
 	response, err := c.WithRawResponse.DiffPromptVersions(
 		ctx,
 		request,

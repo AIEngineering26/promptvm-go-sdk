@@ -1,4 +1,4 @@
-module github.com/AIEngineering26/promptvm-go-sdk
+module sdk
 
 go 1.21
 

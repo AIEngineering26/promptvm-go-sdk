@@ -4,11 +4,11 @@ package skillspublic
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	http "net/http"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetPublicSkillBySlug(
 	ctx context.Context,
-	request *promptvmgosdk.GetPublicSkillBySlugRequest,
+	request *sdk.GetPublicSkillBySlugRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetPublicSkillBySlugResponse], error) {
+) (*core.Response[*sdk.GetPublicSkillBySlugResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) GetPublicSkillBySlug(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetPublicSkillBySlugResponse
+	var response *sdk.GetPublicSkillBySlugResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,13 +68,13 @@ func (r *RawClient) GetPublicSkillBySlug(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetPublicSkillBySlugResponse]{
+	return &core.Response[*sdk.GetPublicSkillBySlugResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "sdk/internal"
 	time "time"
 )
 
@@ -1196,9 +1196,8 @@ type GetBillingStatusResponse struct {
 	// Machine-readable entitlement limits used for feature gating. null = unlimited.
 	Entitlements *GetBillingStatusResponseEntitlements `json:"entitlements" url:"entitlements"`
 	// Resource usage snapshot for the active org. Counts non-deleted rows only.
-	Usage *GetBillingStatusResponseUsage `json:"usage" url:"usage"`
-	// Reserved for Phase 02 — always `null` in Phase 01.
-	PaymentMethod interface{} `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+	Usage         *GetBillingStatusResponseUsage         `json:"usage" url:"usage"`
+	PaymentMethod *GetBillingStatusResponsePaymentMethod `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1228,7 +1227,7 @@ func (g *GetBillingStatusResponse) GetUsage() *GetBillingStatusResponseUsage {
 	return g.Usage
 }
 
-func (g *GetBillingStatusResponse) GetPaymentMethod() interface{} {
+func (g *GetBillingStatusResponse) GetPaymentMethod() *GetBillingStatusResponsePaymentMethod {
 	if g == nil {
 		return nil
 	}
@@ -1269,7 +1268,7 @@ func (g *GetBillingStatusResponse) SetUsage(usage *GetBillingStatusResponseUsage
 
 // SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetBillingStatusResponse) SetPaymentMethod(paymentMethod interface{}) {
+func (g *GetBillingStatusResponse) SetPaymentMethod(paymentMethod *GetBillingStatusResponsePaymentMethod) {
 	g.PaymentMethod = paymentMethod
 	g.require(getBillingStatusResponseFieldPaymentMethod)
 }
@@ -1525,6 +1524,132 @@ func (g *GetBillingStatusResponseEntitlements) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetBillingStatusResponseEntitlements) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getBillingStatusResponsePaymentMethodFieldBrand    = big.NewInt(1 << 0)
+	getBillingStatusResponsePaymentMethodFieldLast4    = big.NewInt(1 << 1)
+	getBillingStatusResponsePaymentMethodFieldExpMonth = big.NewInt(1 << 2)
+	getBillingStatusResponsePaymentMethodFieldExpYear  = big.NewInt(1 << 3)
+)
+
+type GetBillingStatusResponsePaymentMethod struct {
+	Brand    string `json:"brand" url:"brand"`
+	Last4    string `json:"last4" url:"last4"`
+	ExpMonth int    `json:"expMonth" url:"expMonth"`
+	ExpYear  int    `json:"expYear" url:"expYear"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) GetBrand() string {
+	if g == nil {
+		return ""
+	}
+	return g.Brand
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) GetLast4() string {
+	if g == nil {
+		return ""
+	}
+	return g.Last4
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) GetExpMonth() int {
+	if g == nil {
+		return 0
+	}
+	return g.ExpMonth
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) GetExpYear() int {
+	if g == nil {
+		return 0
+	}
+	return g.ExpYear
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetBrand sets the Brand field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponsePaymentMethod) SetBrand(brand string) {
+	g.Brand = brand
+	g.require(getBillingStatusResponsePaymentMethodFieldBrand)
+}
+
+// SetLast4 sets the Last4 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponsePaymentMethod) SetLast4(last4 string) {
+	g.Last4 = last4
+	g.require(getBillingStatusResponsePaymentMethodFieldLast4)
+}
+
+// SetExpMonth sets the ExpMonth field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponsePaymentMethod) SetExpMonth(expMonth int) {
+	g.ExpMonth = expMonth
+	g.require(getBillingStatusResponsePaymentMethodFieldExpMonth)
+}
+
+// SetExpYear sets the ExpYear field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponsePaymentMethod) SetExpYear(expYear int) {
+	g.ExpYear = expYear
+	g.require(getBillingStatusResponsePaymentMethodFieldExpYear)
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetBillingStatusResponsePaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetBillingStatusResponsePaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) MarshalJSON() ([]byte, error) {
+	type embed GetBillingStatusResponsePaymentMethod
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetBillingStatusResponsePaymentMethod) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value

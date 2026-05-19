@@ -3,9 +3,9 @@
 package client
 
 import (
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	assert "github.com/stretchr/testify/assert"
 	http "net/http"
+	option "sdk/option"
 	testing "testing"
 	time "time"
 )

@@ -4,10 +4,10 @@ package contexts
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -36,7 +36,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) ListContextKinds(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListContextKindsResponse, error) {
+) (*sdk.ListContextKindsResponse, error) {
 	response, err := c.WithRawResponse.ListContextKinds(
 		ctx,
 		opts...,

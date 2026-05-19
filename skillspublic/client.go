@@ -4,10 +4,10 @@ package skillspublic
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Unauthenticated read. Returns the parsed Agent Skills frontmatter as JSON, or the literal SKILL.md bytes when ?format=skill_md.
 func (c *Client) GetPublicSkillBySlug(
 	ctx context.Context,
-	request *promptvmgosdk.GetPublicSkillBySlugRequest,
+	request *sdk.GetPublicSkillBySlugRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetPublicSkillBySlugResponse, error) {
+) (*sdk.GetPublicSkillBySlugResponse, error) {
 	response, err := c.WithRawResponse.GetPublicSkillBySlug(
 		ctx,
 		request,

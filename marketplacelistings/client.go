@@ -4,10 +4,10 @@ package marketplacelistings
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Publishes a prompt or collection to the marketplace. Requires a creator profile.
 func (c *Client) CreateMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.CreateMarketplaceListingRequest,
+	request *sdk.CreateMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreateMarketplaceListingResponse, error) {
+) (*sdk.CreateMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.CreateMarketplaceListing(
 		ctx,
 		request,
@@ -51,7 +51,7 @@ func (c *Client) CreateMarketplaceListing(
 
 func (c *Client) ArchiveMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.ArchiveMarketplaceListingRequest,
+	request *sdk.ArchiveMarketplaceListingRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ArchiveMarketplaceListing(
@@ -67,9 +67,9 @@ func (c *Client) ArchiveMarketplaceListing(
 
 func (c *Client) UpdateMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateMarketplaceListingRequest,
+	request *sdk.UpdateMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateMarketplaceListingResponse, error) {
+) (*sdk.UpdateMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.UpdateMarketplaceListing(
 		ctx,
 		request,
@@ -84,9 +84,9 @@ func (c *Client) UpdateMarketplaceListing(
 // Claims a free listing and copies the prompt/collection into the user workspace.
 func (c *Client) ClaimMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.ClaimMarketplaceListingRequest,
+	request *sdk.ClaimMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ClaimMarketplaceListingResponse, error) {
+) (*sdk.ClaimMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.ClaimMarketplaceListing(
 		ctx,
 		request,

@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "sdk"
+	client "sdk/client"
+	option "sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestPromptOrganizationMovePromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.MovePromptRequest{
+	request := &sdk.MovePromptRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.PromptOrganization.MovePrompt(
@@ -99,7 +99,7 @@ func TestPromptOrganizationForkPromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ForkPromptRequest{
+	request := &sdk.ForkPromptRequest{
 		PromptID:    "promptId",
 		WorkspaceID: "workspaceId",
 	}
@@ -126,7 +126,7 @@ func TestPromptOrganizationListPromptReferencesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListPromptReferencesRequest{
+	request := &sdk.ListPromptReferencesRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.PromptOrganization.ListPromptReferences(
@@ -152,7 +152,7 @@ func TestPromptOrganizationListPromptDependentsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListPromptDependentsRequest{
+	request := &sdk.ListPromptDependentsRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.PromptOrganization.ListPromptDependents(

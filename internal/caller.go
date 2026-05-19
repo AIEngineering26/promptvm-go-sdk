@@ -12,7 +12,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/AIEngineering26/promptvm-go-sdk/core"
+	"sdk/core"
 )
 
 const (

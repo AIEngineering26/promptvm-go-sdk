@@ -4,11 +4,11 @@ package promptdeployments
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	http "net/http"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) DeployPromptVersion(
 	ctx context.Context,
-	request *promptvmgosdk.DeployPromptVersionRequest,
+	request *sdk.DeployPromptVersionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.DeployPromptVersionResponse], error) {
+) (*core.Response[*sdk.DeployPromptVersionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -50,7 +50,7 @@ func (r *RawClient) DeployPromptVersion(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.DeployPromptVersionResponse
+	var response *sdk.DeployPromptVersionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -63,13 +63,13 @@ func (r *RawClient) DeployPromptVersion(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.DeployPromptVersionResponse]{
+	return &core.Response[*sdk.DeployPromptVersionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

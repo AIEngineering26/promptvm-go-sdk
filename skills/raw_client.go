@@ -4,11 +4,11 @@ package skills
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	http "net/http"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListSkills(
 	ctx context.Context,
-	request *promptvmgosdk.ListSkillsRequest,
+	request *sdk.ListSkillsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListSkillsResponse], error) {
+) (*core.Response[*sdk.ListSkillsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListSkills(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ListSkillsResponse
+	var response *sdk.ListSkillsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListSkills(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListSkillsResponse]{
+	return &core.Response[*sdk.ListSkillsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListSkills(
 
 func (r *RawClient) CreateSkill(
 	ctx context.Context,
-	request *promptvmgosdk.CreateSkillRequest,
+	request *sdk.CreateSkillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CreateSkillResponse], error) {
+) (*core.Response[*sdk.CreateSkillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateSkill(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CreateSkillResponse
+	var response *sdk.CreateSkillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) CreateSkill(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CreateSkillResponse]{
+	return &core.Response[*sdk.CreateSkillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -123,9 +123,9 @@ func (r *RawClient) CreateSkill(
 
 func (r *RawClient) GetSkill(
 	ctx context.Context,
-	request *promptvmgosdk.GetSkillRequest,
+	request *sdk.GetSkillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetSkillResponse], error) {
+) (*core.Response[*sdk.GetSkillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetSkill(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetSkillResponse
+	var response *sdk.GetSkillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,13 +152,13 @@ func (r *RawClient) GetSkill(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetSkillResponse]{
+	return &core.Response[*sdk.GetSkillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -167,9 +167,9 @@ func (r *RawClient) GetSkill(
 
 func (r *RawClient) DeleteSkill(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteSkillRequest,
+	request *sdk.DeleteSkillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.DeleteSkillResponse], error) {
+) (*core.Response[*sdk.DeleteSkillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteSkill(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.DeleteSkillResponse
+	var response *sdk.DeleteSkillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -196,13 +196,13 @@ func (r *RawClient) DeleteSkill(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.DeleteSkillResponse]{
+	return &core.Response[*sdk.DeleteSkillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -211,9 +211,9 @@ func (r *RawClient) DeleteSkill(
 
 func (r *RawClient) UpdateSkill(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateSkillRequest,
+	request *sdk.UpdateSkillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateSkillResponse], error) {
+) (*core.Response[*sdk.UpdateSkillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateSkill(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateSkillResponse
+	var response *sdk.UpdateSkillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -242,13 +242,13 @@ func (r *RawClient) UpdateSkill(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateSkillResponse]{
+	return &core.Response[*sdk.UpdateSkillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -4,10 +4,10 @@ package prompts
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns a paginated list of prompts in a workspace.
 func (c *Client) ListPrompts(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptsRequest,
+	request *sdk.ListPromptsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListPromptsResponse, error) {
+) (*sdk.ListPromptsResponse, error) {
 	response, err := c.WithRawResponse.ListPrompts(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListPrompts(
 // Creates a new prompt with an initial version (v1). Requires edit permission on the target workspace.
 func (c *Client) CreatePrompt(
 	ctx context.Context,
-	request *promptvmgosdk.CreatePromptRequest,
+	request *sdk.CreatePromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreatePromptResponse, error) {
+) (*sdk.CreatePromptResponse, error) {
 	response, err := c.WithRawResponse.CreatePrompt(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) CreatePrompt(
 // Returns a prompt with its current version content.
 func (c *Client) GetPrompt(
 	ctx context.Context,
-	request *promptvmgosdk.GetPromptRequest,
+	request *sdk.GetPromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetPromptResponse, error) {
+) (*sdk.GetPromptResponse, error) {
 	response, err := c.WithRawResponse.GetPrompt(
 		ctx,
 		request,
@@ -86,9 +86,9 @@ func (c *Client) GetPrompt(
 // Soft-deletes a prompt by setting deletedAt on its file record.
 func (c *Client) DeletePrompt(
 	ctx context.Context,
-	request *promptvmgosdk.DeletePromptRequest,
+	request *sdk.DeletePromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.DeletePromptResponse, error) {
+) (*sdk.DeletePromptResponse, error) {
 	response, err := c.WithRawResponse.DeletePrompt(
 		ctx,
 		request,
@@ -103,9 +103,9 @@ func (c *Client) DeletePrompt(
 // Updates name, description, status, tags, or isPublic. Does not create a new version.
 func (c *Client) UpdatePrompt(
 	ctx context.Context,
-	request *promptvmgosdk.UpdatePromptRequest,
+	request *sdk.UpdatePromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdatePromptResponse, error) {
+) (*sdk.UpdatePromptResponse, error) {
 	response, err := c.WithRawResponse.UpdatePrompt(
 		ctx,
 		request,

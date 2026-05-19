@@ -4,10 +4,10 @@ package sharing
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Public endpoint — no authentication required.
 func (c *Client) AccessSharedPrompt(
 	ctx context.Context,
-	request *promptvmgosdk.AccessSharedPromptRequest,
+	request *sdk.AccessSharedPromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.AccessSharedPromptResponse, error) {
+) (*sdk.AccessSharedPromptResponse, error) {
 	response, err := c.WithRawResponse.AccessSharedPrompt(
 		ctx,
 		request,
@@ -51,9 +51,9 @@ func (c *Client) AccessSharedPrompt(
 
 func (c *Client) SharePrompt(
 	ctx context.Context,
-	request *promptvmgosdk.SharePromptRequest,
+	request *sdk.SharePromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.SharePromptResponse, error) {
+) (*sdk.SharePromptResponse, error) {
 	response, err := c.WithRawResponse.SharePrompt(
 		ctx,
 		request,
@@ -67,9 +67,9 @@ func (c *Client) SharePrompt(
 
 func (c *Client) ListPromptCollaborators(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptCollaboratorsRequest,
+	request *sdk.ListPromptCollaboratorsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListPromptCollaboratorsResponse, error) {
+) (*sdk.ListPromptCollaboratorsResponse, error) {
 	response, err := c.WithRawResponse.ListPromptCollaborators(
 		ctx,
 		request,
@@ -83,9 +83,9 @@ func (c *Client) ListPromptCollaborators(
 
 func (c *Client) RevokePromptCollaborator(
 	ctx context.Context,
-	request *promptvmgosdk.RevokePromptCollaboratorRequest,
+	request *sdk.RevokePromptCollaboratorRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.RevokePromptCollaboratorResponse, error) {
+) (*sdk.RevokePromptCollaboratorResponse, error) {
 	response, err := c.WithRawResponse.RevokePromptCollaborator(
 		ctx,
 		request,
@@ -99,9 +99,9 @@ func (c *Client) RevokePromptCollaborator(
 
 func (c *Client) CreatePromptShareLink(
 	ctx context.Context,
-	request *promptvmgosdk.CreatePromptShareLinkRequest,
+	request *sdk.CreatePromptShareLinkRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreatePromptShareLinkResponse, error) {
+) (*sdk.CreatePromptShareLinkResponse, error) {
 	response, err := c.WithRawResponse.CreatePromptShareLink(
 		ctx,
 		request,

@@ -3,42 +3,44 @@
 package client
 
 import (
-	agentapi "github.com/AIEngineering26/promptvm-go-sdk/agentapi"
-	apikeys "github.com/AIEngineering26/promptvm-go-sdk/apikeys"
-	authentication "github.com/AIEngineering26/promptvm-go-sdk/authentication"
-	billing "github.com/AIEngineering26/promptvm-go-sdk/billing"
-	cliauth "github.com/AIEngineering26/promptvm-go-sdk/cliauth"
-	collections "github.com/AIEngineering26/promptvm-go-sdk/collections"
-	contexts "github.com/AIEngineering26/promptvm-go-sdk/contexts"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	directories "github.com/AIEngineering26/promptvm-go-sdk/directories"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	marketplacebrowse "github.com/AIEngineering26/promptvm-go-sdk/marketplacebrowse"
-	marketplacecomments "github.com/AIEngineering26/promptvm-go-sdk/marketplacecomments"
-	marketplacecreator "github.com/AIEngineering26/promptvm-go-sdk/marketplacecreator"
-	marketplacecreatordashboard "github.com/AIEngineering26/promptvm-go-sdk/marketplacecreatordashboard"
-	marketplacelistings "github.com/AIEngineering26/promptvm-go-sdk/marketplacelistings"
-	marketplaceratings "github.com/AIEngineering26/promptvm-go-sdk/marketplaceratings"
-	marketplaceskillsfeed "github.com/AIEngineering26/promptvm-go-sdk/marketplaceskillsfeed"
-	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
-	marketplacesubscriptions "github.com/AIEngineering26/promptvm-go-sdk/marketplacesubscriptions"
-	mcp "github.com/AIEngineering26/promptvm-go-sdk/mcp"
-	onboarding "github.com/AIEngineering26/promptvm-go-sdk/onboarding"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	organizations "github.com/AIEngineering26/promptvm-go-sdk/organizations"
-	promptdeployments "github.com/AIEngineering26/promptvm-go-sdk/promptdeployments"
-	promptexport "github.com/AIEngineering26/promptvm-go-sdk/promptexport"
-	promptorganization "github.com/AIEngineering26/promptvm-go-sdk/promptorganization"
-	promptresolution "github.com/AIEngineering26/promptvm-go-sdk/promptresolution"
-	prompts "github.com/AIEngineering26/promptvm-go-sdk/prompts"
-	promptversions "github.com/AIEngineering26/promptvm-go-sdk/promptversions"
-	resources "github.com/AIEngineering26/promptvm-go-sdk/resources"
-	search "github.com/AIEngineering26/promptvm-go-sdk/search"
-	sharing "github.com/AIEngineering26/promptvm-go-sdk/sharing"
-	skills "github.com/AIEngineering26/promptvm-go-sdk/skills"
-	skillspublic "github.com/AIEngineering26/promptvm-go-sdk/skillspublic"
-	templates "github.com/AIEngineering26/promptvm-go-sdk/templates"
-	workspaces "github.com/AIEngineering26/promptvm-go-sdk/workspaces"
+	agentapi "sdk/agentapi"
+	ai "sdk/ai"
+	apikeys "sdk/apikeys"
+	authentication "sdk/authentication"
+	billing "sdk/billing"
+	cliauth "sdk/cliauth"
+	collections "sdk/collections"
+	contexts "sdk/contexts"
+	core "sdk/core"
+	directories "sdk/directories"
+	internal "sdk/internal"
+	marketplacebrowse "sdk/marketplacebrowse"
+	marketplacecomments "sdk/marketplacecomments"
+	marketplacecreator "sdk/marketplacecreator"
+	marketplacecreatordashboard "sdk/marketplacecreatordashboard"
+	marketplacelistings "sdk/marketplacelistings"
+	marketplaceratings "sdk/marketplaceratings"
+	marketplaceskillsfeed "sdk/marketplaceskillsfeed"
+	marketplacesocial "sdk/marketplacesocial"
+	marketplacesubscriptions "sdk/marketplacesubscriptions"
+	mcp "sdk/mcp"
+	onboarding "sdk/onboarding"
+	option "sdk/option"
+	organizations "sdk/organizations"
+	promptdeployments "sdk/promptdeployments"
+	promptexport "sdk/promptexport"
+	promptorganization "sdk/promptorganization"
+	promptresolution "sdk/promptresolution"
+	prompts "sdk/prompts"
+	promptversions "sdk/promptversions"
+	resources "sdk/resources"
+	search "sdk/search"
+	settings "sdk/settings"
+	sharing "sdk/sharing"
+	skills "sdk/skills"
+	skillspublic "sdk/skillspublic"
+	templates "sdk/templates"
+	workspaces "sdk/workspaces"
 )
 
 type Client struct {
@@ -61,6 +63,7 @@ type Client struct {
 	MarketplaceSubscriptions    *marketplacesubscriptions.Client
 	MarketplaceRatings          *marketplaceratings.Client
 	MarketplaceComments         *marketplacecomments.Client
+	Settings                    *settings.Client
 	Prompts                     *prompts.Client
 	PromptVersions              *promptversions.Client
 	PromptDeployments           *promptdeployments.Client
@@ -74,6 +77,7 @@ type Client struct {
 	Skills                      *skills.Client
 	Workspaces                  *workspaces.Client
 	Search                      *search.Client
+	Ai                          *ai.Client
 	Mcp                         *mcp.Client
 
 	options *core.RequestOptions
@@ -103,6 +107,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		MarketplaceSubscriptions:    marketplacesubscriptions.NewClient(options),
 		MarketplaceRatings:          marketplaceratings.NewClient(options),
 		MarketplaceComments:         marketplacecomments.NewClient(options),
+		Settings:                    settings.NewClient(options),
 		Prompts:                     prompts.NewClient(options),
 		PromptVersions:              promptversions.NewClient(options),
 		PromptDeployments:           promptdeployments.NewClient(options),
@@ -116,6 +121,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Skills:                      skills.NewClient(options),
 		Workspaces:                  workspaces.NewClient(options),
 		Search:                      search.NewClient(options),
+		Ai:                          ai.NewClient(options),
 		Mcp:                         mcp.NewClient(options),
 		options:                     options,
 		baseURL:                     options.BaseURL,

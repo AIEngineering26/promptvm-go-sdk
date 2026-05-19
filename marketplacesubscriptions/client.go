@@ -4,10 +4,10 @@ package marketplacesubscriptions
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) SubscribeToMarketplaceCreator(
 	ctx context.Context,
-	request *promptvmgosdk.SubscribeToMarketplaceCreatorRequest,
+	request *sdk.SubscribeToMarketplaceCreatorRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.SubscribeToMarketplaceCreatorResponse, error) {
+) (*sdk.SubscribeToMarketplaceCreatorResponse, error) {
 	response, err := c.WithRawResponse.SubscribeToMarketplaceCreator(
 		ctx,
 		request,
@@ -50,7 +50,7 @@ func (c *Client) SubscribeToMarketplaceCreator(
 
 func (c *Client) UnsubscribeFromMarketplaceCreator(
 	ctx context.Context,
-	request *promptvmgosdk.UnsubscribeFromMarketplaceCreatorRequest,
+	request *sdk.UnsubscribeFromMarketplaceCreatorRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.UnsubscribeFromMarketplaceCreator(

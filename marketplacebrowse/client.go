@@ -4,10 +4,10 @@ package marketplacebrowse
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Paginated browse with optional search, category filter, and sort.
 func (c *Client) ListMarketplaceListings(
 	ctx context.Context,
-	request *promptvmgosdk.ListMarketplaceListingsRequest,
+	request *sdk.ListMarketplaceListingsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListMarketplaceListingsResponse, error) {
+) (*sdk.ListMarketplaceListingsResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceListings(
 		ctx,
 		request,
@@ -51,9 +51,9 @@ func (c *Client) ListMarketplaceListings(
 
 func (c *Client) GetMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.GetMarketplaceListingRequest,
+	request *sdk.GetMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMarketplaceListingResponse, error) {
+) (*sdk.GetMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceListing(
 		ctx,
 		request,
@@ -68,7 +68,7 @@ func (c *Client) GetMarketplaceListing(
 func (c *Client) ListFeaturedMarketplaceListings(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListFeaturedMarketplaceListingsResponse, error) {
+) (*sdk.ListFeaturedMarketplaceListingsResponse, error) {
 	response, err := c.WithRawResponse.ListFeaturedMarketplaceListings(
 		ctx,
 		opts...,
@@ -82,7 +82,7 @@ func (c *Client) ListFeaturedMarketplaceListings(
 func (c *Client) ListMarketplaceCategories(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListMarketplaceCategoriesResponse, error) {
+) (*sdk.ListMarketplaceCategoriesResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceCategories(
 		ctx,
 		opts...,

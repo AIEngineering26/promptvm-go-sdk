@@ -4,11 +4,11 @@ package cliauth
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	http "net/http"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) CliAuthorize(
 	ctx context.Context,
-	request *promptvmgosdk.CliAuthorizeRequest,
+	request *sdk.CliAuthorizeRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CliAuthorizeResponse], error) {
+) (*core.Response[*sdk.CliAuthorizeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,7 +47,7 @@ func (r *RawClient) CliAuthorize(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CliAuthorizeResponse
+	var response *sdk.CliAuthorizeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,7 +65,7 @@ func (r *RawClient) CliAuthorize(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CliAuthorizeResponse]{
+	return &core.Response[*sdk.CliAuthorizeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -74,9 +74,9 @@ func (r *RawClient) CliAuthorize(
 
 func (r *RawClient) CliDeviceAuthorize(
 	ctx context.Context,
-	request *promptvmgosdk.CliDeviceAuthorizeRequest,
+	request *sdk.CliDeviceAuthorizeRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CliDeviceAuthorizeResponse], error) {
+) (*core.Response[*sdk.CliDeviceAuthorizeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -89,7 +89,7 @@ func (r *RawClient) CliDeviceAuthorize(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CliDeviceAuthorizeResponse
+	var response *sdk.CliDeviceAuthorizeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -107,7 +107,7 @@ func (r *RawClient) CliDeviceAuthorize(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CliDeviceAuthorizeResponse]{
+	return &core.Response[*sdk.CliDeviceAuthorizeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -117,7 +117,7 @@ func (r *RawClient) CliDeviceAuthorize(
 func (r *RawClient) ListCliSessions(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[[]*promptvmgosdk.ListCliSessionsResponseItem], error) {
+) (*core.Response[[]*sdk.ListCliSessionsResponseItem], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -129,7 +129,7 @@ func (r *RawClient) ListCliSessions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*promptvmgosdk.ListCliSessionsResponseItem
+	var response []*sdk.ListCliSessionsResponseItem
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -146,7 +146,7 @@ func (r *RawClient) ListCliSessions(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*promptvmgosdk.ListCliSessionsResponseItem]{
+	return &core.Response[[]*sdk.ListCliSessionsResponseItem]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -155,7 +155,7 @@ func (r *RawClient) ListCliSessions(
 
 func (r *RawClient) RevokeCliSession(
 	ctx context.Context,
-	request *promptvmgosdk.RevokeCliSessionRequest,
+	request *sdk.RevokeCliSessionRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -196,7 +196,7 @@ func (r *RawClient) RevokeCliSession(
 
 func (r *RawClient) CliTokenExchange(
 	ctx context.Context,
-	request *promptvmgosdk.CliTokenExchangeRequest,
+	request *sdk.CliTokenExchangeRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -235,9 +235,9 @@ func (r *RawClient) CliTokenExchange(
 
 func (r *RawClient) CliDeviceCode(
 	ctx context.Context,
-	request *promptvmgosdk.CliDeviceCodeRequest,
+	request *sdk.CliDeviceCodeRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CliDeviceCodeResponse], error) {
+) (*core.Response[*sdk.CliDeviceCodeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -250,7 +250,7 @@ func (r *RawClient) CliDeviceCode(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CliDeviceCodeResponse
+	var response *sdk.CliDeviceCodeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -268,7 +268,7 @@ func (r *RawClient) CliDeviceCode(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CliDeviceCodeResponse]{
+	return &core.Response[*sdk.CliDeviceCodeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -277,7 +277,7 @@ func (r *RawClient) CliDeviceCode(
 
 func (r *RawClient) CliDeviceToken(
 	ctx context.Context,
-	request *promptvmgosdk.CliDeviceTokenRequest,
+	request *sdk.CliDeviceTokenRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)

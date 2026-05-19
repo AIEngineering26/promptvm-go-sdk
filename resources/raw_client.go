@@ -4,11 +4,11 @@ package resources
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	http "net/http"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListWorkspaceResources(
 	ctx context.Context,
-	request *promptvmgosdk.ListWorkspaceResourcesRequest,
+	request *sdk.ListWorkspaceResourcesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListWorkspaceResourcesResponse], error) {
+) (*core.Response[*sdk.ListWorkspaceResourcesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListWorkspaceResources(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ListWorkspaceResourcesResponse
+	var response *sdk.ListWorkspaceResourcesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListWorkspaceResources(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListWorkspaceResourcesResponse]{
+	return &core.Response[*sdk.ListWorkspaceResourcesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListWorkspaceResources(
 
 func (r *RawClient) InitiateResourceUpload(
 	ctx context.Context,
-	request *promptvmgosdk.InitiateResourceUploadRequest,
+	request *sdk.InitiateResourceUploadRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.InitiateResourceUploadResponse], error) {
+) (*core.Response[*sdk.InitiateResourceUploadResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) InitiateResourceUpload(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.InitiateResourceUploadResponse
+	var response *sdk.InitiateResourceUploadResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) InitiateResourceUpload(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.InitiateResourceUploadResponse]{
+	return &core.Response[*sdk.InitiateResourceUploadResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -123,9 +123,9 @@ func (r *RawClient) InitiateResourceUpload(
 
 func (r *RawClient) ConfirmResourceUpload(
 	ctx context.Context,
-	request *promptvmgosdk.ConfirmResourceUploadRequest,
+	request *sdk.ConfirmResourceUploadRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ConfirmResourceUploadResponse], error) {
+) (*core.Response[*sdk.ConfirmResourceUploadResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -141,7 +141,7 @@ func (r *RawClient) ConfirmResourceUpload(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.ConfirmResourceUploadResponse
+	var response *sdk.ConfirmResourceUploadResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -154,13 +154,13 @@ func (r *RawClient) ConfirmResourceUpload(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ConfirmResourceUploadResponse]{
+	return &core.Response[*sdk.ConfirmResourceUploadResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -169,9 +169,9 @@ func (r *RawClient) ConfirmResourceUpload(
 
 func (r *RawClient) GetResource(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceRequest,
+	request *sdk.GetResourceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetResourceResponse], error) {
+) (*core.Response[*sdk.GetResourceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -186,7 +186,7 @@ func (r *RawClient) GetResource(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetResourceResponse
+	var response *sdk.GetResourceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -198,13 +198,13 @@ func (r *RawClient) GetResource(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetResourceResponse]{
+	return &core.Response[*sdk.GetResourceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -213,7 +213,7 @@ func (r *RawClient) GetResource(
 
 func (r *RawClient) DeleteResource(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteResourceRequest,
+	request *sdk.DeleteResourceRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -240,7 +240,7 @@ func (r *RawClient) DeleteResource(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -255,9 +255,9 @@ func (r *RawClient) DeleteResource(
 
 func (r *RawClient) UpdateResource(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateResourceRequest,
+	request *sdk.UpdateResourceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateResourceResponse], error) {
+) (*core.Response[*sdk.UpdateResourceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -273,7 +273,7 @@ func (r *RawClient) UpdateResource(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateResourceResponse
+	var response *sdk.UpdateResourceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -286,13 +286,13 @@ func (r *RawClient) UpdateResource(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateResourceResponse]{
+	return &core.Response[*sdk.UpdateResourceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -301,9 +301,9 @@ func (r *RawClient) UpdateResource(
 
 func (r *RawClient) GetResourceDownloadURL(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceDownloadURLRequest,
+	request *sdk.GetResourceDownloadURLRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetResourceDownloadURLResponse], error) {
+) (*core.Response[*sdk.GetResourceDownloadURLResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -318,7 +318,7 @@ func (r *RawClient) GetResourceDownloadURL(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetResourceDownloadURLResponse
+	var response *sdk.GetResourceDownloadURLResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -330,13 +330,13 @@ func (r *RawClient) GetResourceDownloadURL(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetResourceDownloadURLResponse]{
+	return &core.Response[*sdk.GetResourceDownloadURLResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -345,9 +345,9 @@ func (r *RawClient) GetResourceDownloadURL(
 
 func (r *RawClient) ListPromptResources(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptResourcesRequest,
+	request *sdk.ListPromptResourcesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListPromptResourcesResponse], error) {
+) (*core.Response[*sdk.ListPromptResourcesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -362,7 +362,7 @@ func (r *RawClient) ListPromptResources(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ListPromptResourcesResponse
+	var response *sdk.ListPromptResourcesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -374,13 +374,13 @@ func (r *RawClient) ListPromptResources(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListPromptResourcesResponse]{
+	return &core.Response[*sdk.ListPromptResourcesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -389,9 +389,9 @@ func (r *RawClient) ListPromptResources(
 
 func (r *RawClient) AttachPromptResource(
 	ctx context.Context,
-	request *promptvmgosdk.AttachPromptResourceRequest,
+	request *sdk.AttachPromptResourceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.AttachPromptResourceResponse], error) {
+) (*core.Response[*sdk.AttachPromptResourceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -407,7 +407,7 @@ func (r *RawClient) AttachPromptResource(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.AttachPromptResourceResponse
+	var response *sdk.AttachPromptResourceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -420,13 +420,13 @@ func (r *RawClient) AttachPromptResource(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.AttachPromptResourceResponse]{
+	return &core.Response[*sdk.AttachPromptResourceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -435,7 +435,7 @@ func (r *RawClient) AttachPromptResource(
 
 func (r *RawClient) DetachPromptResource(
 	ctx context.Context,
-	request *promptvmgosdk.DetachPromptResourceRequest,
+	request *sdk.DetachPromptResourceRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -463,7 +463,7 @@ func (r *RawClient) DetachPromptResource(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {

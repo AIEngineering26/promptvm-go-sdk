@@ -4,10 +4,10 @@ package resources
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns all confirmed, non-deleted resources belonging to a workspace.
 func (c *Client) ListWorkspaceResources(
 	ctx context.Context,
-	request *promptvmgosdk.ListWorkspaceResourcesRequest,
+	request *sdk.ListWorkspaceResourcesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListWorkspaceResourcesResponse, error) {
+) (*sdk.ListWorkspaceResourcesResponse, error) {
 	response, err := c.WithRawResponse.ListWorkspaceResources(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListWorkspaceResources(
 // Creates a file record and returns a presigned S3 PUT URL. Upload your file bytes directly to the presigned URL within 15 minutes. Then call POST /resources/:resourceId/confirm to complete the process.
 func (c *Client) InitiateResourceUpload(
 	ctx context.Context,
-	request *promptvmgosdk.InitiateResourceUploadRequest,
+	request *sdk.InitiateResourceUploadRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.InitiateResourceUploadResponse, error) {
+) (*sdk.InitiateResourceUploadResponse, error) {
 	response, err := c.WithRawResponse.InitiateResourceUpload(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) InitiateResourceUpload(
 // Verifies the file was uploaded to S3 and marks the resource as available for use.
 func (c *Client) ConfirmResourceUpload(
 	ctx context.Context,
-	request *promptvmgosdk.ConfirmResourceUploadRequest,
+	request *sdk.ConfirmResourceUploadRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ConfirmResourceUploadResponse, error) {
+) (*sdk.ConfirmResourceUploadResponse, error) {
 	response, err := c.WithRawResponse.ConfirmResourceUpload(
 		ctx,
 		request,
@@ -85,9 +85,9 @@ func (c *Client) ConfirmResourceUpload(
 
 func (c *Client) GetResource(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceRequest,
+	request *sdk.GetResourceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetResourceResponse, error) {
+) (*sdk.GetResourceResponse, error) {
 	response, err := c.WithRawResponse.GetResource(
 		ctx,
 		request,
@@ -102,7 +102,7 @@ func (c *Client) GetResource(
 // Soft-deletes the resource and removes its S3 object. Also detaches it from all prompt versions.
 func (c *Client) DeleteResource(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteResourceRequest,
+	request *sdk.DeleteResourceRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DeleteResource(
@@ -119,9 +119,9 @@ func (c *Client) DeleteResource(
 // Update resource metadata (name, directory placement).
 func (c *Client) UpdateResource(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateResourceRequest,
+	request *sdk.UpdateResourceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateResourceResponse, error) {
+) (*sdk.UpdateResourceResponse, error) {
 	response, err := c.WithRawResponse.UpdateResource(
 		ctx,
 		request,
@@ -136,9 +136,9 @@ func (c *Client) UpdateResource(
 // Returns a time-limited presigned URL (1 hour) for downloading the resource from S3.
 func (c *Client) GetResourceDownloadURL(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceDownloadURLRequest,
+	request *sdk.GetResourceDownloadURLRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetResourceDownloadURLResponse, error) {
+) (*sdk.GetResourceDownloadURLResponse, error) {
 	response, err := c.WithRawResponse.GetResourceDownloadURL(
 		ctx,
 		request,
@@ -152,9 +152,9 @@ func (c *Client) GetResourceDownloadURL(
 
 func (c *Client) ListPromptResources(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptResourcesRequest,
+	request *sdk.ListPromptResourcesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListPromptResourcesResponse, error) {
+) (*sdk.ListPromptResourcesResponse, error) {
 	response, err := c.WithRawResponse.ListPromptResources(
 		ctx,
 		request,
@@ -169,9 +169,9 @@ func (c *Client) ListPromptResources(
 // The resource must be confirmed (upload completed) and belong to the same workspace.
 func (c *Client) AttachPromptResource(
 	ctx context.Context,
-	request *promptvmgosdk.AttachPromptResourceRequest,
+	request *sdk.AttachPromptResourceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.AttachPromptResourceResponse, error) {
+) (*sdk.AttachPromptResourceResponse, error) {
 	response, err := c.WithRawResponse.AttachPromptResource(
 		ctx,
 		request,
@@ -186,7 +186,7 @@ func (c *Client) AttachPromptResource(
 // Removes the association only — the resource file is not deleted.
 func (c *Client) DetachPromptResource(
 	ctx context.Context,
-	request *promptvmgosdk.DetachPromptResourceRequest,
+	request *sdk.DetachPromptResourceRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DetachPromptResource(

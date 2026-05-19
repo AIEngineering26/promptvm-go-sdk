@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "sdk"
+	client "sdk/client"
+	option "sdk/option"
 	testing "testing"
 )
 
@@ -73,9 +73,9 @@ func TestPromptExportExportPromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ExportPromptRequest{
+	request := &sdk.ExportPromptRequest{
 		PromptID: "promptId",
-		Format:   promptvmgosdk.ExportPromptRequestFormatMd,
+		Format:   sdk.ExportPromptRequestFormatMd,
 	}
 	_, invocationErr := client.PromptExport.ExportPrompt(
 		context.TODO(),

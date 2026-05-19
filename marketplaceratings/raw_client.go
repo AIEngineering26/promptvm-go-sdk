@@ -4,11 +4,11 @@ package marketplaceratings
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	http "net/http"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListRatingsForAListing(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest,
+	request *sdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse], error) {
+) (*core.Response[*sdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) ListRatingsForAListing(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse
+	var response *sdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,13 +68,13 @@ func (r *RawClient) ListRatingsForAListing(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse]{
+	return &core.Response[*sdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -83,9 +83,9 @@ func (r *RawClient) ListRatingsForAListing(
 
 func (r *RawClient) CreateARatingOnAPurchasedListing(
 	ctx context.Context,
-	request *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest,
+	request *sdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse], error) {
+) (*core.Response[*sdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -101,7 +101,7 @@ func (r *RawClient) CreateARatingOnAPurchasedListing(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse
+	var response *sdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,13 +114,13 @@ func (r *RawClient) CreateARatingOnAPurchasedListing(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse]{
+	return &core.Response[*sdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -129,9 +129,9 @@ func (r *RawClient) CreateARatingOnAPurchasedListing(
 
 func (r *RawClient) GetTheCallersRatingOnAListing(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest,
+	request *sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse], error) {
+) (*core.Response[*sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -146,7 +146,7 @@ func (r *RawClient) GetTheCallersRatingOnAListing(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse
+	var response *sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,13 +158,13 @@ func (r *RawClient) GetTheCallersRatingOnAListing(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse]{
+	return &core.Response[*sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -173,7 +173,7 @@ func (r *RawClient) GetTheCallersRatingOnAListing(
 
 func (r *RawClient) DeleteMyRating(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest,
+	request *sdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -200,7 +200,7 @@ func (r *RawClient) DeleteMyRating(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -215,9 +215,9 @@ func (r *RawClient) DeleteMyRating(
 
 func (r *RawClient) UpdateMyRating(
 	ctx context.Context,
-	request *promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDRequest,
+	request *sdk.PatchAPIV1MarketplaceRatingsRatingIDRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDResponse], error) {
+) (*core.Response[*sdk.PatchAPIV1MarketplaceRatingsRatingIDResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -233,7 +233,7 @@ func (r *RawClient) UpdateMyRating(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDResponse
+	var response *sdk.PatchAPIV1MarketplaceRatingsRatingIDResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -246,13 +246,13 @@ func (r *RawClient) UpdateMyRating(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDResponse]{
+	return &core.Response[*sdk.PatchAPIV1MarketplaceRatingsRatingIDResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -261,9 +261,9 @@ func (r *RawClient) UpdateMyRating(
 
 func (r *RawClient) VoteHelpfulUnhelpfulOnARating(
 	ctx context.Context,
-	request *promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest,
+	request *sdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse], error) {
+) (*core.Response[*sdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -279,7 +279,7 @@ func (r *RawClient) VoteHelpfulUnhelpfulOnARating(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse
+	var response *sdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -292,13 +292,13 @@ func (r *RawClient) VoteHelpfulUnhelpfulOnARating(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse]{
+	return &core.Response[*sdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -307,7 +307,7 @@ func (r *RawClient) VoteHelpfulUnhelpfulOnARating(
 
 func (r *RawClient) RemoveMyVoteFromARating(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest,
+	request *sdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -334,7 +334,7 @@ func (r *RawClient) RemoveMyVoteFromARating(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {

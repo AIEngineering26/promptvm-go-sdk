@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "sdk"
+	client "sdk/client"
+	option "sdk/option"
 	testing "testing"
 )
 
@@ -73,11 +73,11 @@ func TestCliAuthCliAuthorizeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CliAuthorizeRequest{
+	request := &sdk.CliAuthorizeRequest{
 		CodeChallenge:       "code_challenge",
-		CodeChallengeMethod: promptvmgosdk.CliAuthorizeRequestCodeChallengeMethodS256,
+		CodeChallengeMethod: sdk.CliAuthorizeRequestCodeChallengeMethodS256,
 		RedirectURI:         "redirect_uri",
-		ClientID:            promptvmgosdk.CliAuthorizeRequestClientIDPromptvmCli,
+		ClientID:            sdk.CliAuthorizeRequestClientIDPromptvmCli,
 	}
 	_, invocationErr := client.CliAuth.CliAuthorize(
 		context.TODO(),
@@ -102,9 +102,9 @@ func TestCliAuthCliDeviceAuthorizeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CliDeviceAuthorizeRequest{
+	request := &sdk.CliDeviceAuthorizeRequest{
 		UserCode: "user_code",
-		Action:   promptvmgosdk.CliDeviceAuthorizeRequestActionApprove,
+		Action:   sdk.CliDeviceAuthorizeRequestActionApprove,
 	}
 	_, invocationErr := client.CliAuth.CliDeviceAuthorize(
 		context.TODO(),
@@ -151,7 +151,7 @@ func TestCliAuthRevokeCliSessionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.RevokeCliSessionRequest{
+	request := &sdk.RevokeCliSessionRequest{
 		ID: "id",
 	}
 	invocationErr := client.CliAuth.RevokeCliSession(
@@ -177,12 +177,12 @@ func TestCliAuthCliTokenExchangeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CliTokenExchangeRequest{
-		AuthorizationCode: &promptvmgosdk.CliTokenExchangeRequestAuthorizationCode{
+	request := &sdk.CliTokenExchangeRequest{
+		AuthorizationCode: &sdk.CliTokenExchangeRequestAuthorizationCode{
 			Code:         "code",
 			CodeVerifier: "code_verifier",
 			RedirectURI:  "redirect_uri",
-			ClientID:     promptvmgosdk.CliTokenExchangeRequestAuthorizationCodeClientIDPromptvmCli,
+			ClientID:     sdk.CliTokenExchangeRequestAuthorizationCodeClientIDPromptvmCli,
 		},
 	}
 	invocationErr := client.CliAuth.CliTokenExchange(
@@ -208,8 +208,8 @@ func TestCliAuthCliDeviceCodeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CliDeviceCodeRequest{
-		ClientID: promptvmgosdk.CliDeviceCodeRequestClientIDPromptvmCli,
+	request := &sdk.CliDeviceCodeRequest{
+		ClientID: sdk.CliDeviceCodeRequestClientIDPromptvmCli,
 	}
 	_, invocationErr := client.CliAuth.CliDeviceCode(
 		context.TODO(),
@@ -234,10 +234,10 @@ func TestCliAuthCliDeviceTokenWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CliDeviceTokenRequest{
-		GrantType:  promptvmgosdk.CliDeviceTokenRequestGrantTypeUrnIetfParamsOauthGrantTypeDeviceCode,
+	request := &sdk.CliDeviceTokenRequest{
+		GrantType:  sdk.CliDeviceTokenRequestGrantTypeUrnIetfParamsOauthGrantTypeDeviceCode,
 		DeviceCode: "device_code",
-		ClientID:   promptvmgosdk.CliDeviceTokenRequestClientIDPromptvmCli,
+		ClientID:   sdk.CliDeviceTokenRequestClientIDPromptvmCli,
 	}
 	invocationErr := client.CliAuth.CliDeviceToken(
 		context.TODO(),

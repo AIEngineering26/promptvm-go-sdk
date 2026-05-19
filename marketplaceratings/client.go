@@ -4,10 +4,10 @@ package marketplaceratings
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	core "github.com/AIEngineering26/promptvm-go-sdk/core"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	sdk "sdk"
+	core "sdk/core"
+	internal "sdk/internal"
+	option "sdk/option"
 )
 
 type Client struct {
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListRatingsForAListing(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest,
+	request *sdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse, error) {
+) (*sdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse, error) {
 	response, err := c.WithRawResponse.ListRatingsForAListing(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) ListRatingsForAListing(
 
 func (c *Client) CreateARatingOnAPurchasedListing(
 	ctx context.Context,
-	request *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest,
+	request *sdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse, error) {
+) (*sdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse, error) {
 	response, err := c.WithRawResponse.CreateARatingOnAPurchasedListing(
 		ctx,
 		request,
@@ -66,9 +66,9 @@ func (c *Client) CreateARatingOnAPurchasedListing(
 
 func (c *Client) GetTheCallersRatingOnAListing(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest,
+	request *sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse, error) {
+) (*sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse, error) {
 	response, err := c.WithRawResponse.GetTheCallersRatingOnAListing(
 		ctx,
 		request,
@@ -82,7 +82,7 @@ func (c *Client) GetTheCallersRatingOnAListing(
 
 func (c *Client) DeleteMyRating(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest,
+	request *sdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DeleteMyRating(
@@ -98,9 +98,9 @@ func (c *Client) DeleteMyRating(
 
 func (c *Client) UpdateMyRating(
 	ctx context.Context,
-	request *promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDRequest,
+	request *sdk.PatchAPIV1MarketplaceRatingsRatingIDRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDResponse, error) {
+) (*sdk.PatchAPIV1MarketplaceRatingsRatingIDResponse, error) {
 	response, err := c.WithRawResponse.UpdateMyRating(
 		ctx,
 		request,
@@ -114,9 +114,9 @@ func (c *Client) UpdateMyRating(
 
 func (c *Client) VoteHelpfulUnhelpfulOnARating(
 	ctx context.Context,
-	request *promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest,
+	request *sdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse, error) {
+) (*sdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse, error) {
 	response, err := c.WithRawResponse.VoteHelpfulUnhelpfulOnARating(
 		ctx,
 		request,
@@ -130,7 +130,7 @@ func (c *Client) VoteHelpfulUnhelpfulOnARating(
 
 func (c *Client) RemoveMyVoteFromARating(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest,
+	request *sdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.RemoveMyVoteFromARating(
