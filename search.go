@@ -16,9 +16,10 @@ var (
 	searchOrganizationRequestFieldWorkspaceIDs   = big.NewInt(1 << 2)
 	searchOrganizationRequestFieldDirectoryIDs   = big.NewInt(1 << 3)
 	searchOrganizationRequestFieldKinds          = big.NewInt(1 << 4)
-	searchOrganizationRequestFieldLimit          = big.NewInt(1 << 5)
-	searchOrganizationRequestFieldCursor         = big.NewInt(1 << 6)
-	searchOrganizationRequestFieldRanking        = big.NewInt(1 << 7)
+	searchOrganizationRequestFieldContentKind    = big.NewInt(1 << 5)
+	searchOrganizationRequestFieldLimit          = big.NewInt(1 << 6)
+	searchOrganizationRequestFieldCursor         = big.NewInt(1 << 7)
+	searchOrganizationRequestFieldRanking        = big.NewInt(1 << 8)
 )
 
 type SearchOrganizationRequest struct {
@@ -31,7 +32,9 @@ type SearchOrganizationRequest struct {
 	DirectoryIDs []*string `json:"-" url:"directoryIds,omitempty"`
 	// Subset of [prompt, file]. Default both. Unknown kinds return 400 UNSUPPORTED_KIND.
 	Kinds []*SearchOrganizationRequestKindsItem `json:"-" url:"kinds,omitempty"`
-	Limit *int                                  `json:"-" url:"limit,omitempty"`
+	// Filter prompt results by content_kind. Omit for all content kinds.
+	ContentKind *SearchOrganizationRequestContentKind `json:"-" url:"content_kind,omitempty"`
+	Limit       *int                                  `json:"-" url:"limit,omitempty"`
 	// Opaque base64url cursor returned in a previous response.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// MVP only honours `keyword`. Other values return 400 UNSUPPORTED_RANKING. Reserved future values: `semantic`, `hybrid`.
@@ -83,6 +86,13 @@ func (s *SearchOrganizationRequest) SetKinds(kinds []*SearchOrganizationRequestK
 	s.require(searchOrganizationRequestFieldKinds)
 }
 
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchOrganizationRequest) SetContentKind(contentKind *SearchOrganizationRequestContentKind) {
+	s.ContentKind = contentKind
+	s.require(searchOrganizationRequestFieldContentKind)
+}
+
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (s *SearchOrganizationRequest) SetLimit(limit *int) {
@@ -102,6 +112,31 @@ func (s *SearchOrganizationRequest) SetCursor(cursor *string) {
 func (s *SearchOrganizationRequest) SetRanking(ranking *string) {
 	s.Ranking = ranking
 	s.require(searchOrganizationRequestFieldRanking)
+}
+
+type SearchOrganizationRequestContentKind string
+
+const (
+	SearchOrganizationRequestContentKindPrompt SearchOrganizationRequestContentKind = "prompt"
+	SearchOrganizationRequestContentKindSkill  SearchOrganizationRequestContentKind = "skill"
+	SearchOrganizationRequestContentKindHook   SearchOrganizationRequestContentKind = "hook"
+)
+
+func NewSearchOrganizationRequestContentKindFromString(s string) (SearchOrganizationRequestContentKind, error) {
+	switch s {
+	case "prompt":
+		return SearchOrganizationRequestContentKindPrompt, nil
+	case "skill":
+		return SearchOrganizationRequestContentKindSkill, nil
+	case "hook":
+		return SearchOrganizationRequestContentKindHook, nil
+	}
+	var t SearchOrganizationRequestContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SearchOrganizationRequestContentKind) Ptr() *SearchOrganizationRequestContentKind {
+	return &s
 }
 
 type SearchOrganizationRequestKindsItem string

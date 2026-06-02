@@ -11,12 +11,15 @@ import (
 )
 
 var (
-	createAPIKeyRequestFieldName      = big.NewInt(1 << 0)
-	createAPIKeyRequestFieldScopes    = big.NewInt(1 << 1)
-	createAPIKeyRequestFieldExpiresAt = big.NewInt(1 << 2)
+	createAPIKeyRequestFieldOrgID     = big.NewInt(1 << 0)
+	createAPIKeyRequestFieldName      = big.NewInt(1 << 1)
+	createAPIKeyRequestFieldScopes    = big.NewInt(1 << 2)
+	createAPIKeyRequestFieldExpiresAt = big.NewInt(1 << 3)
 )
 
 type CreateAPIKeyRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
 	// Human-readable name for the API key
 	Name string `json:"name" url:"-"`
 	// Permission scopes for the API key. Requires Pro or Enterprise tier.
@@ -33,6 +36,13 @@ func (c *CreateAPIKeyRequest) require(field *big.Int) {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateAPIKeyRequest) SetOrgID(orgID *string) {
+	c.OrgID = orgID
+	c.require(createAPIKeyRequestFieldOrgID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
@@ -80,10 +90,13 @@ func (c *CreateAPIKeyRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	getAPIKeyRequestFieldAPIKeyID = big.NewInt(1 << 0)
+	getAPIKeyRequestFieldOrgID    = big.NewInt(1 << 0)
+	getAPIKeyRequestFieldAPIKeyID = big.NewInt(1 << 1)
 )
 
 type GetAPIKeyRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
 	// UUID of the API key
 	APIKeyID string `json:"-" url:"-"`
 
@@ -98,6 +111,13 @@ func (g *GetAPIKeyRequest) require(field *big.Int) {
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIKeyRequest) SetOrgID(orgID *string) {
+	g.OrgID = orgID
+	g.require(getAPIKeyRequestFieldOrgID)
+}
+
 // SetAPIKeyID sets the APIKeyID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetAPIKeyRequest) SetAPIKeyID(apiKeyID string) {
@@ -106,11 +126,14 @@ func (g *GetAPIKeyRequest) SetAPIKeyID(apiKeyID string) {
 }
 
 var (
-	getAPIKeyUsageRequestFieldAPIKeyID = big.NewInt(1 << 0)
-	getAPIKeyUsageRequestFieldPeriod   = big.NewInt(1 << 1)
+	getAPIKeyUsageRequestFieldOrgID    = big.NewInt(1 << 0)
+	getAPIKeyUsageRequestFieldAPIKeyID = big.NewInt(1 << 1)
+	getAPIKeyUsageRequestFieldPeriod   = big.NewInt(1 << 2)
 )
 
 type GetAPIKeyUsageRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
 	// UUID of the API key
 	APIKeyID string `json:"-" url:"-"`
 	// Time period for statistics aggregation
@@ -125,6 +148,13 @@ func (g *GetAPIKeyUsageRequest) require(field *big.Int) {
 		g.explicitFields = big.NewInt(0)
 	}
 	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIKeyUsageRequest) SetOrgID(orgID *string) {
+	g.OrgID = orgID
+	g.require(getAPIKeyUsageRequestFieldOrgID)
 }
 
 // SetAPIKeyID sets the APIKeyID field and marks it as non-optional;
@@ -142,12 +172,15 @@ func (g *GetAPIKeyUsageRequest) SetPeriod(period *GetAPIKeyUsageRequestPeriod) {
 }
 
 var (
-	listAPIKeysRequestFieldCursor = big.NewInt(1 << 0)
-	listAPIKeysRequestFieldLimit  = big.NewInt(1 << 1)
-	listAPIKeysRequestFieldStatus = big.NewInt(1 << 2)
+	listAPIKeysRequestFieldOrgID  = big.NewInt(1 << 0)
+	listAPIKeysRequestFieldCursor = big.NewInt(1 << 1)
+	listAPIKeysRequestFieldLimit  = big.NewInt(1 << 2)
+	listAPIKeysRequestFieldStatus = big.NewInt(1 << 3)
 )
 
 type ListAPIKeysRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
 	// Cursor for pagination (base64-encoded)
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// Number of items per page
@@ -164,6 +197,13 @@ func (l *ListAPIKeysRequest) require(field *big.Int) {
 		l.explicitFields = big.NewInt(0)
 	}
 	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListAPIKeysRequest) SetOrgID(orgID *string) {
+	l.OrgID = orgID
+	l.require(listAPIKeysRequestFieldOrgID)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
@@ -188,11 +228,14 @@ func (l *ListAPIKeysRequest) SetStatus(status *ListAPIKeysRequestStatus) {
 }
 
 var (
-	revokeAPIKeyRequestFieldAPIKeyID = big.NewInt(1 << 0)
-	revokeAPIKeyRequestFieldReason   = big.NewInt(1 << 1)
+	revokeAPIKeyRequestFieldOrgID    = big.NewInt(1 << 0)
+	revokeAPIKeyRequestFieldAPIKeyID = big.NewInt(1 << 1)
+	revokeAPIKeyRequestFieldReason   = big.NewInt(1 << 2)
 )
 
 type RevokeAPIKeyRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
 	// UUID of the API key to revoke
 	APIKeyID string `json:"-" url:"-"`
 	// Optional reason for revocation
@@ -207,6 +250,13 @@ func (r *RevokeAPIKeyRequest) require(field *big.Int) {
 		r.explicitFields = big.NewInt(0)
 	}
 	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RevokeAPIKeyRequest) SetOrgID(orgID *string) {
+	r.OrgID = orgID
+	r.require(revokeAPIKeyRequestFieldOrgID)
 }
 
 // SetAPIKeyID sets the APIKeyID field and marks it as non-optional;
@@ -224,11 +274,14 @@ func (r *RevokeAPIKeyRequest) SetReason(reason *string) {
 }
 
 var (
-	rotateAPIKeyRequestFieldAPIKeyID         = big.NewInt(1 << 0)
-	rotateAPIKeyRequestFieldGracePeriodHours = big.NewInt(1 << 1)
+	rotateAPIKeyRequestFieldOrgID            = big.NewInt(1 << 0)
+	rotateAPIKeyRequestFieldAPIKeyID         = big.NewInt(1 << 1)
+	rotateAPIKeyRequestFieldGracePeriodHours = big.NewInt(1 << 2)
 )
 
 type RotateAPIKeyRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
 	// UUID of the API key to rotate
 	APIKeyID string `json:"-" url:"-"`
 	// Hours the old secret remains valid (0-168, default 24). Public key is unchanged.
@@ -243,6 +296,13 @@ func (r *RotateAPIKeyRequest) require(field *big.Int) {
 		r.explicitFields = big.NewInt(0)
 	}
 	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RotateAPIKeyRequest) SetOrgID(orgID *string) {
+	r.OrgID = orgID
+	r.require(rotateAPIKeyRequestFieldOrgID)
 }
 
 // SetAPIKeyID sets the APIKeyID field and marks it as non-optional;
@@ -2704,11 +2764,14 @@ func (u UpdateAPIKeyResponseDataStatus) Ptr() *UpdateAPIKeyResponseDataStatus {
 }
 
 var (
-	updateAPIKeyRequestFieldAPIKeyID = big.NewInt(1 << 0)
-	updateAPIKeyRequestFieldName     = big.NewInt(1 << 1)
+	updateAPIKeyRequestFieldOrgID    = big.NewInt(1 << 0)
+	updateAPIKeyRequestFieldAPIKeyID = big.NewInt(1 << 1)
+	updateAPIKeyRequestFieldName     = big.NewInt(1 << 2)
 )
 
 type UpdateAPIKeyRequest struct {
+	// Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+	OrgID *string `json:"-" url:"-"`
 	// UUID of the API key
 	APIKeyID string `json:"-" url:"-"`
 	// New name for the API key
@@ -2723,6 +2786,13 @@ func (u *UpdateAPIKeyRequest) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateAPIKeyRequest) SetOrgID(orgID *string) {
+	u.OrgID = orgID
+	u.require(updateAPIKeyRequestFieldOrgID)
 }
 
 // SetAPIKeyID sets the APIKeyID field and marks it as non-optional;

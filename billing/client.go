@@ -53,15 +53,15 @@ func (c *Client) GetPromoOffer(
 func (c *Client) ListBillingPlans(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) ([]*promptvmgosdk.ListBillingPlansResponseItem, error) {
-	response, err := c.WithRawResponse.ListBillingPlans(
+) error {
+	_, err := c.WithRawResponse.ListBillingPlans(
 		ctx,
 		opts...,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return response.Body, nil
+	return nil
 }
 
 // Returns a Stripe-hosted Checkout URL for the caller to complete payment. Owner/admin only. Rate-limited 5/min/org. The frontend redirects the browser to the returned URL; the actual subscription state lands in our DB via the `customer.subscription.created` webhook (US-01-4), not via the success URL. Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9) — clients should render an Upgrade-disabled state and route users to sales.
@@ -183,7 +183,7 @@ func (c *Client) ListBillingInvoices(
 	return response.Body, nil
 }
 
-// Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
+// Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9). Rate-limited 10/min/IP AND 5/min/authenticated user (FR-06-5). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) RedeemPromotionalOffer(
 	ctx context.Context,
 	request *promptvmgosdk.RedeemPromotionalOfferRequest,

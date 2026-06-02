@@ -645,7 +645,7 @@ client.Billing.GetPromoOffer(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.ListBillingPlans() -> []*promptvmgosdk.ListBillingPlansResponseItem</code></summary>
+<details><summary><code>client.Billing.ListBillingPlans() -> error</code></summary>
 <dl>
 <dd>
 
@@ -1203,7 +1203,7 @@ client.Billing.ListBillingInvoices(
 <dl>
 <dd>
 
-Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
+Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9). Rate-limited 10/min/IP AND 5/min/authenticated user (FR-06-5). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 </dd>
 </dl>
 </dd>
@@ -1573,6 +1573,76 @@ client.SkillsPublic.GetPublicSkillBySlug(
 </dl>
 </details>
 
+## HooksPublic
+<details><summary><code>client.HooksPublic.GetPublicHookBySlug(Slug) -> *promptvmgosdk.GetPublicHookBySlugResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated read. Returns the hook configuration as JSON.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetPublicHookBySlugRequest{
+        Slug: "slug",
+    }
+client.HooksPublic.GetPublicHookBySlug(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**slug:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Contexts
 <details><summary><code>client.Contexts.ListContextKinds() -> *promptvmgosdk.ListContextKindsResponse</code></summary>
 <dl>
@@ -1681,6 +1751,564 @@ client.MarketplaceSkillsFeed.GetMarketplaceSkillsFeed(
 <dd>
 
 **limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Browse
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceListings() -> *promptvmgosdk.ListMarketplaceListingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Paginated browse with optional search, category filter, and sort.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListMarketplaceListingsRequest{}
+client.MarketplaceBrowse.ListMarketplaceListings(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**q:** `*string` — Search query — matches title/description plus the underlying prompt description and SKILL.md when_to_use.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**categoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.ListMarketplaceListingsRequestKind` — Filter listings by their underlying content_kind.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag:** `*string` — Match a single listing tag (case-insensitive).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*promptvmgosdk.ListMarketplaceListingsRequestSort` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.GetMarketplaceListing(ListingID) -> *promptvmgosdk.GetMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetMarketplaceListingRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceBrowse.GetMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.ListFeaturedMarketplaceListings() -> *promptvmgosdk.ListFeaturedMarketplaceListingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceBrowse.ListFeaturedMarketplaceListings(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceCategories() -> *promptvmgosdk.ListMarketplaceCategoriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceBrowse.ListMarketplaceCategories(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Listings
+<details><summary><code>client.MarketplaceListings.CreateMarketplaceListing(request) -> *promptvmgosdk.CreateMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Publishes a prompt or collection to the marketplace. Requires a creator profile.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateMarketplaceListingRequest{
+        Title: "title",
+        Description: "description",
+    }
+client.MarketplaceListings.CreateMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**title:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**categoryIDs:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**priceCents:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accessType:** `*promptvmgosdk.CreateMarketplaceListingRequestAccessType` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.ArchiveMarketplaceListing(ListingID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ArchiveMarketplaceListingRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceListings.ArchiveMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.UpdateMarketplaceListing(ListingID, request) -> *promptvmgosdk.UpdateMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateMarketplaceListingRequest{
+        ListingID: "listingId",
+    }
+client.MarketplaceListings.UpdateMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**title:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**categoryIDs:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.UpdateMarketplaceListingRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**priceCents:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accessType:** `*promptvmgosdk.UpdateMarketplaceListingRequestAccessType` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.ClaimMarketplaceListing(ListingID, request) -> *promptvmgosdk.ClaimMarketplaceListingResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Claims a free listing and copies the prompt/collection into the user workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ClaimMarketplaceListingRequest{
+        ListingID: "listingId",
+        WorkspaceID: "workspaceId",
+    }
+client.MarketplaceListings.ClaimMarketplaceListing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
     
 </dd>
 </dl>
@@ -2060,7 +2688,11 @@ Retrieves a paginated list of API keys for the authenticated user. Results inclu
 <dd>
 
 ```go
-request := &promptvmgosdk.ListAPIKeysRequest{}
+request := &promptvmgosdk.ListAPIKeysRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
 client.APIKeys.ListAPIKeys(
         context.TODO(),
         request,
@@ -2100,6 +2732,14 @@ client.APIKeys.ListAPIKeys(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -2136,6 +2776,9 @@ Generates a new API key for the authenticated user. Requires Pro or Enterprise t
 
 ```go
 request := &promptvmgosdk.CreateAPIKeyRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
         Name: "Production API Key",
         Scopes: []promptvmgosdk.CreateAPIKeyRequestScopesItem{
             promptvmgosdk.CreateAPIKeyRequestScopesItemRead,
@@ -2157,6 +2800,14 @@ client.APIKeys.CreateAPIKey(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2218,6 +2869,9 @@ Retrieves detailed information about a specific API key. Does not include the se
 ```go
 request := &promptvmgosdk.GetAPIKeyRequest{
         APIKeyID: "apiKeyId",
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
     }
 client.APIKeys.GetAPIKey(
         context.TODO(),
@@ -2239,6 +2893,14 @@ client.APIKeys.GetAPIKey(
 <dd>
 
 **apiKeyID:** `string` — UUID of the API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
     
 </dd>
 </dl>
@@ -2279,6 +2941,9 @@ Permanently revokes an API key. Revoked keys cannot be used for API access but r
 ```go
 request := &promptvmgosdk.RevokeAPIKeyRequest{
         APIKeyID: "apiKeyId",
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
     }
 client.APIKeys.RevokeAPIKey(
         context.TODO(),
@@ -2300,6 +2965,14 @@ client.APIKeys.RevokeAPIKey(
 <dd>
 
 **apiKeyID:** `string` — UUID of the API key to revoke
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
     
 </dd>
 </dl>
@@ -2348,6 +3021,9 @@ Updates the metadata (name) of an existing API key. Cannot modify scopes after c
 ```go
 request := &promptvmgosdk.UpdateAPIKeyRequest{
         APIKeyID: "apiKeyId",
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
     }
 client.APIKeys.UpdateAPIKey(
         context.TODO(),
@@ -2369,6 +3045,14 @@ client.APIKeys.UpdateAPIKey(
 <dd>
 
 **apiKeyID:** `string` — UUID of the API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
     
 </dd>
 </dl>
@@ -2417,6 +3101,9 @@ Retrieves usage statistics for a specific API key including request counts, erro
 ```go
 request := &promptvmgosdk.GetAPIKeyUsageRequest{
         APIKeyID: "apiKeyId",
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
     }
 client.APIKeys.GetAPIKeyUsage(
         context.TODO(),
@@ -2446,6 +3133,14 @@ client.APIKeys.GetAPIKeyUsage(
 <dd>
 
 **period:** `*promptvmgosdk.GetAPIKeyUsageRequestPeriod` — Time period for statistics aggregation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
     
 </dd>
 </dl>
@@ -2486,6 +3181,9 @@ Generates a new secret for an existing API key. The public key remains unchanged
 ```go
 request := &promptvmgosdk.RotateAPIKeyRequest{
         APIKeyID: "apiKeyId",
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
     }
 client.APIKeys.RotateAPIKey(
         context.TODO(),
@@ -2507,6 +3205,14 @@ client.APIKeys.RotateAPIKey(
 <dd>
 
 **apiKeyID:** `string` — UUID of the API key to rotate
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
     
 </dd>
 </dl>
@@ -4158,564 +4864,6 @@ client.MarketplaceCreator.GetMarketplaceCreatorProfile(
 </dl>
 </details>
 
-## Marketplace - Browse
-<details><summary><code>client.MarketplaceBrowse.ListMarketplaceListings() -> *promptvmgosdk.ListMarketplaceListingsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Paginated browse with optional search, category filter, and sort.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.ListMarketplaceListingsRequest{}
-client.MarketplaceBrowse.ListMarketplaceListings(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**q:** `*string` — Search query — matches title/description plus the underlying prompt description and SKILL.md when_to_use.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**categoryID:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**kind:** `*promptvmgosdk.ListMarketplaceListingsRequestKind` — Filter listings by their underlying content_kind.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tag:** `*string` — Match a single listing tag (case-insensitive).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sort:** `*promptvmgosdk.ListMarketplaceListingsRequestSort` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `*string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceBrowse.GetMarketplaceListing(ListingID) -> *promptvmgosdk.GetMarketplaceListingResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.GetMarketplaceListingRequest{
-        ListingID: "listingId",
-    }
-client.MarketplaceBrowse.GetMarketplaceListing(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**listingID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceBrowse.ListFeaturedMarketplaceListings() -> *promptvmgosdk.ListFeaturedMarketplaceListingsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.MarketplaceBrowse.ListFeaturedMarketplaceListings(
-        context.TODO(),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceBrowse.ListMarketplaceCategories() -> *promptvmgosdk.ListMarketplaceCategoriesResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.MarketplaceBrowse.ListMarketplaceCategories(
-        context.TODO(),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Marketplace - Listings
-<details><summary><code>client.MarketplaceListings.CreateMarketplaceListing(request) -> *promptvmgosdk.CreateMarketplaceListingResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Publishes a prompt or collection to the marketplace. Requires a creator profile.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.CreateMarketplaceListingRequest{
-        Title: "title",
-        Description: "description",
-    }
-client.MarketplaceListings.CreateMarketplaceListing(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**promptID:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**collectionID:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**directoryID:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**title:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**categoryIDs:** `[]string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tags:** `[]string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**priceCents:** `*int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accessType:** `*promptvmgosdk.CreateMarketplaceListingRequestAccessType` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceListings.ArchiveMarketplaceListing(ListingID) -> error</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.ArchiveMarketplaceListingRequest{
-        ListingID: "listingId",
-    }
-client.MarketplaceListings.ArchiveMarketplaceListing(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**listingID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceListings.UpdateMarketplaceListing(ListingID, request) -> *promptvmgosdk.UpdateMarketplaceListingResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.UpdateMarketplaceListingRequest{
-        ListingID: "listingId",
-    }
-client.MarketplaceListings.UpdateMarketplaceListing(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**listingID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**title:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**categoryIDs:** `[]string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tags:** `[]string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `*promptvmgosdk.UpdateMarketplaceListingRequestStatus` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**priceCents:** `*int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accessType:** `*promptvmgosdk.UpdateMarketplaceListingRequestAccessType` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceListings.ClaimMarketplaceListing(ListingID, request) -> *promptvmgosdk.ClaimMarketplaceListingResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Claims a free listing and copies the prompt/collection into the user workspace.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.ClaimMarketplaceListingRequest{
-        ListingID: "listingId",
-        WorkspaceID: "workspaceId",
-    }
-client.MarketplaceListings.ClaimMarketplaceListing(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**listingID:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**workspaceID:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Marketplace - Creator Dashboard
 <details><summary><code>client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings() -> *promptvmgosdk.ListMarketplaceCreatorListingsResponse</code></summary>
 <dl>
@@ -5486,6 +5634,947 @@ client.MarketplaceComments.SoftDeleteMyComment(
 <dd>
 
 **commentID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Settings
+<details><summary><code>client.Settings.GetSettingsOverview() -> *promptvmgosdk.GetSettingsOverviewResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns workspace + API-key counts, derived admin-task status, and a top-5 recent-activity slice for the active organization. Recent activity is server-scoped by role: owners/admins see all org events, members/viewers see only their own.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetSettingsOverviewRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Settings.GetSettingsOverview(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.GetAdminTasks() -> *promptvmgosdk.GetAdminTasksResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the unified admin-task list (billing method on file, first API key created). Tasks are derived from observable state, not stored — there is no toggle endpoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAdminTasksRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Settings.GetAdminTasks(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.ListAuditLogs() -> *promptvmgosdk.ListAuditLogsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Server-scoped by role: owners/admins see all org events; members/viewers see only events where they are the actor.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListAuditLogsRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Settings.ListAuditLogs(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.ListOrgTags() -> *promptvmgosdk.ListOrgTagsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListOrgTagsRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Settings.ListOrgTags(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.CreateOrgTag(request) -> *promptvmgosdk.CreateOrgTagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateOrgTagRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+        Name: "name",
+        Category: promptvmgosdk.CreateOrgTagRequestCategoryEngineering,
+        Protected: true,
+    }
+client.Settings.CreateOrgTag(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**alias:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**category:** `*promptvmgosdk.CreateOrgTagRequestCategory` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**protected:** `bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.DeleteOrgTag(ID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteOrgTagRequest{
+        ID: "id",
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Settings.DeleteOrgTag(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.UpdateOrgTag(ID, request) -> *promptvmgosdk.UpdateOrgTagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateOrgTagRequest{
+        ID: "id",
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Settings.UpdateOrgTag(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**alias:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**category:** `*promptvmgosdk.UpdateOrgTagRequestCategory` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**protected:** `*bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.GetSecurityStatus() -> *promptvmgosdk.GetSecurityStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetSecurityStatusRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+    }
+client.Settings.GetSecurityStatus(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.SetupTotp() -> *promptvmgosdk.SetupTotpResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Settings.SetupTotp(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.VerifyTotp(request) -> *promptvmgosdk.VerifyTotpResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.VerifyTotpRequest{
+        Code: "code",
+    }
+client.Settings.VerifyTotp(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**code:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.DisableTotp(request) -> *promptvmgosdk.DisableTotpResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DisableTotpRequest{
+        Code: "code",
+    }
+client.Settings.DisableTotp(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**code:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.RegenerateRecoveryCodes(request) -> *promptvmgosdk.RegenerateRecoveryCodesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RegenerateRecoveryCodesRequest{
+        Code: "code",
+    }
+client.Settings.RegenerateRecoveryCodes(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**code:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.ChangePassword(request) -> *promptvmgosdk.ChangePasswordResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ChangePasswordRequest{
+        CurrentPassword: "currentPassword",
+        NewPassword: "newPassword",
+    }
+client.Settings.ChangePassword(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**currentPassword:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**newPassword:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.UpdateOrgMfaPolicy(request) -> *promptvmgosdk.UpdateOrgMfaPolicyResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateOrgMfaPolicyRequest{
+        OrgID: promptvmgosdk.String(
+            "018e4a3b-0000-0000-0000-000000000001",
+        ),
+        RequireMfa: true,
+    }
+client.Settings.UpdateOrgMfaPolicy(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `*string` — Active organization identifier. UUID is the primary form; slug is accepted as a deprecated legacy fallback (logs `billing.org_id.legacy_slug`). Frontend resolves slug → UUID locally via /auth/me and SHOULD send the UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requireMfa:** `bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.SendEmailOtp() -> *promptvmgosdk.SendEmailOtpResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Settings.SendEmailOtp(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.VerifyEmailOtp(request) -> *promptvmgosdk.VerifyEmailOtpResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.VerifyEmailOtpRequest{
+        Code: "code",
+    }
+client.Settings.VerifyEmailOtp(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**code:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Settings.DisableEmailOtp(request) -> *promptvmgosdk.DisableEmailOtpResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DisableEmailOtpRequest{
+        Code: "code",
+    }
+client.Settings.DisableEmailOtp(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**code:** `string` 
     
 </dd>
 </dl>
@@ -9056,6 +10145,646 @@ client.Skills.UpdateSkill(
 </dl>
 </details>
 
+## Hooks
+<details><summary><code>client.Hooks.ListHooks() -> *promptvmgosdk.ListHooksResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns paginated hooks. Supports filtering by event, handler type, tag, and text search.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListHooksRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.Hooks.ListHooks(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**handlerType:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tag:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*promptvmgosdk.ListHooksRequestIsPublic` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Hooks.CreateHook(request) -> *promptvmgosdk.CreateHookResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a hook artifact (content_kind=hook). The JSON configuration is validated against the Claude Code hooks schema.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateHookRequest{
+        HookJSON: "hook_json",
+        WorkspaceID: "workspaceId",
+    }
+client.Hooks.CreateHook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**hookJSON:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**files:** `[]*promptvmgosdk.CreateHookRequestFilesItem` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.CreateHookRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Hooks.GetHook(HookID) -> *promptvmgosdk.GetHookResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetHookRequest{
+        HookID: "hookId",
+    }
+client.Hooks.GetHook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**hookID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Hooks.DeleteHook(HookID) -> *promptvmgosdk.DeleteHookResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteHookRequest{
+        HookID: "hookId",
+    }
+client.Hooks.DeleteHook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**hookID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Hooks.UpdateHook(HookID, request) -> *promptvmgosdk.UpdateHookResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Replaces any subset of hook fields. Replacing hook_json re-runs ingest, regenerates the metadata cache, and creates a new version.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateHookRequest{
+        HookID: "hookId",
+    }
+client.Hooks.UpdateHook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**hookID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hookJSON:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**files:** `[]*promptvmgosdk.UpdateHookRequestFilesItem` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.UpdateHookRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Hooks.ExportHook(HookID) -> *promptvmgosdk.ExportHookResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the hook configuration as a Claude Code settings.json fragment ready to merge.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ExportHookRequest{
+        HookID: "hookId",
+    }
+client.Hooks.ExportHook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**hookID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Hooks.ValidateHook(request) -> *promptvmgosdk.ValidateHookResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Validates the hook JSON without saving. Returns errors and warnings.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ValidateHookRequest{
+        HookJSON: "hook_json",
+    }
+client.Hooks.ValidateHook(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**hookJSON:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Hooks.ImportHooks(request) -> *promptvmgosdk.ImportHooksResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Parses a Claude Code settings.json and creates hook artifacts from the hooks block.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ImportHooksRequest{
+        Source: promptvmgosdk.ImportHooksRequestSourceSettingsJSON,
+        Content: "content",
+        WorkspaceID: "workspaceId",
+    }
+client.Hooks.ImportHooks(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**source:** `*promptvmgosdk.ImportHooksRequestSource` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPublic:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Workspaces
 <details><summary><code>client.Workspaces.ListWorkspaces() -> *promptvmgosdk.ListWorkspacesResponse</code></summary>
 <dl>
@@ -9666,6 +11395,14 @@ client.Search.Organization(
 <dl>
 <dd>
 
+**contentKind:** `*promptvmgosdk.SearchOrganizationRequestContentKind` — Filter prompt results by content_kind. Omit for all content kinds.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `*int` 
     
 </dd>
@@ -9683,6 +11420,193 @@ client.Search.Organization(
 <dd>
 
 **ranking:** `*string` — MVP only honours `keyword`. Other values return 400 UNSUPPORTED_RANKING. Reserved future values: `semantic`, `hybrid`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Identity
+<details><summary><code>client.Identity.GetMyIdentity() -> *promptvmgosdk.GetMyIdentityResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the authenticated caller's identity context including user info, organization, and default workspace. Works with both JWT session auth and API key auth.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Identity.GetMyIdentity(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Identity.GetMyWorkspaces() -> *promptvmgosdk.GetMyWorkspacesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all workspaces the authenticated caller can access within their organization. Works with both JWT session auth and API key auth.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Identity.GetMyWorkspaces(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Ai
+<details><summary><code>client.Ai.EnhancePrompt(request) -> *promptvmgosdk.EnhancePromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Rewrites the submitted prompt to follow good prompting practices. Backed by the platform-internal AI middleware; the OpenRouter API key never leaves the backend. Accepts either JWT session or org-scoped pk:sk (write scope required for the pk:sk path).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.EnhancePromptRequest{
+        Prompt: "prompt",
+    }
+client.Ai.EnhancePrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*string` — Optional client-supplied key. A retry within 24h with the same key and body replays the cached response without re-calling OpenRouter. Different body with same key → 422.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prompt:** `string` — The user-authored prompt to be improved.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructions:** `*string` — Optional hint to the enhancer — e.g. "make it shorter", "target a junior engineer". Substituted into a server-controlled named slot in the system prompt; never concatenated raw.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetModel:** `*string` — Optional OpenRouter-style model id (e.g. `anthropic/claude-sonnet-4`) the enhanced prompt will be sent to. Lightly tunes the rewrite for that model family.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**preset:** `*promptvmgosdk.EnhancePromptRequestPreset` — Optional optimization preset. When provided, the handler routes to a specialized system prompt for that optimization type (e.g. `shorten` → task slug `prompt-optimization-shorten`). When absent, the default `prompt-enhancement` task is used. Mutually exclusive with `instructions` — if both are provided, `preset` takes precedence.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `*string` — Optional workspace id for cost attribution. Caller must be a member; otherwise 403.
     
 </dd>
 </dl>
@@ -9851,6 +11775,309 @@ client.Mcp.RevokeMcpSessionToken(
 
 **tokenID:** `string` 
     
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## OAuth
+<details><summary><code>client.OAuth.OAuth21AuthorizationServerMetadata() -> map[string]any</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.OAuth.OAuth21AuthorizationServerMetadata(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.OAuth.DynamicClientRegistrationRfc7591(request) -> map[string]any</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.PostAPIV1OauthRegisterRequest{
+        ClientName: "client_name",
+        RedirectURIs: []string{
+            "redirect_uris",
+        },
+    }
+client.OAuth.DynamicClientRegistrationRfc7591(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**clientName:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**redirectURIs:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**grantTypes:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**responseTypes:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tokenEndpointAuthMethod:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.OAuth.OAuth21AuthorizationEndpoint() -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetAPIV1OauthAuthorizeRequest{
+        ResponseType: "response_type",
+        ClientID: "client_id",
+        RedirectURI: "redirect_uri",
+        State: "state",
+        CodeChallenge: "code_challenge",
+        CodeChallengeMethod: "code_challenge_method",
+    }
+client.OAuth.OAuth21AuthorizationEndpoint(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**responseType:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clientID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**redirectURI:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**state:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**codeChallenge:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**codeChallengeMethod:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**resource:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.OAuth.OAuth21TokenEndpoint() -> map[string]any</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.OAuth.OAuth21TokenEndpoint(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.OAuth.OAuth21JSONWebKeySet() -> map[string]any</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.OAuth.OAuth21JSONWebKeySet(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.OAuth.OAuth21TokenRevocationRfc7009() -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.OAuth.OAuth21TokenRevocationRfc7009(
+        context.TODO(),
+    )
+}
+```
 </dd>
 </dl>
 </dd>

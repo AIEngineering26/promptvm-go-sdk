@@ -10,6 +10,149 @@ import (
 	time "time"
 )
 
+// Upstream LLM provider error
+var (
+	badGatewayErrorBodyFieldStatusCode = big.NewInt(1 << 0)
+	badGatewayErrorBodyFieldError      = big.NewInt(1 << 1)
+	badGatewayErrorBodyFieldCode       = big.NewInt(1 << 2)
+	badGatewayErrorBodyFieldMessage    = big.NewInt(1 << 3)
+	badGatewayErrorBodyFieldRequestID  = big.NewInt(1 << 4)
+)
+
+type BadGatewayErrorBody struct {
+	StatusCode int     `json:"statusCode" url:"statusCode"`
+	Error      string  `json:"error" url:"error"`
+	Code       *string `json:"code,omitempty" url:"code,omitempty"`
+	Message    string  `json:"message" url:"message"`
+	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BadGatewayErrorBody) GetStatusCode() int {
+	if b == nil {
+		return 0
+	}
+	return b.StatusCode
+}
+
+func (b *BadGatewayErrorBody) GetError() string {
+	if b == nil {
+		return ""
+	}
+	return b.Error
+}
+
+func (b *BadGatewayErrorBody) GetCode() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Code
+}
+
+func (b *BadGatewayErrorBody) GetMessage() string {
+	if b == nil {
+		return ""
+	}
+	return b.Message
+}
+
+func (b *BadGatewayErrorBody) GetRequestID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.RequestID
+}
+
+func (b *BadGatewayErrorBody) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BadGatewayErrorBody) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetStatusCode sets the StatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadGatewayErrorBody) SetStatusCode(statusCode int) {
+	b.StatusCode = statusCode
+	b.require(badGatewayErrorBodyFieldStatusCode)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadGatewayErrorBody) SetError(error_ string) {
+	b.Error = error_
+	b.require(badGatewayErrorBodyFieldError)
+}
+
+// SetCode sets the Code field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadGatewayErrorBody) SetCode(code *string) {
+	b.Code = code
+	b.require(badGatewayErrorBodyFieldCode)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadGatewayErrorBody) SetMessage(message string) {
+	b.Message = message
+	b.require(badGatewayErrorBodyFieldMessage)
+}
+
+// SetRequestID sets the RequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BadGatewayErrorBody) SetRequestID(requestID *string) {
+	b.RequestID = requestID
+	b.require(badGatewayErrorBodyFieldRequestID)
+}
+
+func (b *BadGatewayErrorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BadGatewayErrorBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BadGatewayErrorBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BadGatewayErrorBody) MarshalJSON() ([]byte, error) {
+	type embed BadGatewayErrorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BadGatewayErrorBody) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Invalid request
 var (
 	badRequestErrorBodyFieldError     = big.NewInt(1 << 0)
@@ -928,6 +1071,149 @@ func (f ForbiddenErrorBodyZeroRequiredTier) Ptr() *ForbiddenErrorBodyZeroRequire
 	return &f
 }
 
+// Upstream LLM provider timeout
+var (
+	gatewayTimeoutErrorBodyFieldStatusCode = big.NewInt(1 << 0)
+	gatewayTimeoutErrorBodyFieldError      = big.NewInt(1 << 1)
+	gatewayTimeoutErrorBodyFieldCode       = big.NewInt(1 << 2)
+	gatewayTimeoutErrorBodyFieldMessage    = big.NewInt(1 << 3)
+	gatewayTimeoutErrorBodyFieldRequestID  = big.NewInt(1 << 4)
+)
+
+type GatewayTimeoutErrorBody struct {
+	StatusCode int     `json:"statusCode" url:"statusCode"`
+	Error      string  `json:"error" url:"error"`
+	Code       *string `json:"code,omitempty" url:"code,omitempty"`
+	Message    string  `json:"message" url:"message"`
+	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GatewayTimeoutErrorBody) GetStatusCode() int {
+	if g == nil {
+		return 0
+	}
+	return g.StatusCode
+}
+
+func (g *GatewayTimeoutErrorBody) GetError() string {
+	if g == nil {
+		return ""
+	}
+	return g.Error
+}
+
+func (g *GatewayTimeoutErrorBody) GetCode() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Code
+}
+
+func (g *GatewayTimeoutErrorBody) GetMessage() string {
+	if g == nil {
+		return ""
+	}
+	return g.Message
+}
+
+func (g *GatewayTimeoutErrorBody) GetRequestID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.RequestID
+}
+
+func (g *GatewayTimeoutErrorBody) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GatewayTimeoutErrorBody) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetStatusCode sets the StatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GatewayTimeoutErrorBody) SetStatusCode(statusCode int) {
+	g.StatusCode = statusCode
+	g.require(gatewayTimeoutErrorBodyFieldStatusCode)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GatewayTimeoutErrorBody) SetError(error_ string) {
+	g.Error = error_
+	g.require(gatewayTimeoutErrorBodyFieldError)
+}
+
+// SetCode sets the Code field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GatewayTimeoutErrorBody) SetCode(code *string) {
+	g.Code = code
+	g.require(gatewayTimeoutErrorBodyFieldCode)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GatewayTimeoutErrorBody) SetMessage(message string) {
+	g.Message = message
+	g.require(gatewayTimeoutErrorBodyFieldMessage)
+}
+
+// SetRequestID sets the RequestID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GatewayTimeoutErrorBody) SetRequestID(requestID *string) {
+	g.RequestID = requestID
+	g.require(gatewayTimeoutErrorBodyFieldRequestID)
+}
+
+func (g *GatewayTimeoutErrorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler GatewayTimeoutErrorBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GatewayTimeoutErrorBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GatewayTimeoutErrorBody) MarshalJSON() ([]byte, error) {
+	type embed GatewayTimeoutErrorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GatewayTimeoutErrorBody) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 // Link expired or max uses reached
 var (
 	goneErrorBodyFieldStatusCode = big.NewInt(1 << 0)
@@ -1292,17 +1578,19 @@ func (g GoneErrorBodyStatus) Ptr() *GoneErrorBodyStatus {
 	return &g
 }
 
-// Server error
+// AI subsystem misconfigured
 var (
 	internalServerErrorBodyFieldStatusCode = big.NewInt(1 << 0)
 	internalServerErrorBodyFieldError      = big.NewInt(1 << 1)
-	internalServerErrorBodyFieldMessage    = big.NewInt(1 << 2)
-	internalServerErrorBodyFieldRequestID  = big.NewInt(1 << 3)
+	internalServerErrorBodyFieldCode       = big.NewInt(1 << 2)
+	internalServerErrorBodyFieldMessage    = big.NewInt(1 << 3)
+	internalServerErrorBodyFieldRequestID  = big.NewInt(1 << 4)
 )
 
 type InternalServerErrorBody struct {
 	StatusCode int     `json:"statusCode" url:"statusCode"`
 	Error      string  `json:"error" url:"error"`
+	Code       *string `json:"code,omitempty" url:"code,omitempty"`
 	Message    string  `json:"message" url:"message"`
 	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
 
@@ -1325,6 +1613,13 @@ func (i *InternalServerErrorBody) GetError() string {
 		return ""
 	}
 	return i.Error
+}
+
+func (i *InternalServerErrorBody) GetCode() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Code
 }
 
 func (i *InternalServerErrorBody) GetMessage() string {
@@ -1364,6 +1659,13 @@ func (i *InternalServerErrorBody) SetStatusCode(statusCode int) {
 func (i *InternalServerErrorBody) SetError(error_ string) {
 	i.Error = error_
 	i.require(internalServerErrorBodyFieldError)
+}
+
+// SetCode sets the Code field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *InternalServerErrorBody) SetCode(code *string) {
+	i.Code = code
+	i.require(internalServerErrorBodyFieldCode)
 }
 
 // SetMessage sets the Message field and marks it as non-optional;
@@ -1551,7 +1853,7 @@ type PaymentRequiredErrorBody struct {
 	Limit *int `json:"limit,omitempty" url:"limit,omitempty"`
 	// Current usage at the moment the gate fired, or null for boolean feature locks.
 	CurrentUsage *int `json:"currentUsage,omitempty" url:"currentUsage,omitempty"`
-	// Cheapest plan slug that satisfies the requested feature / limit.
+	// Plan slug that satisfies the requested feature / limit. The five tier slugs ('free', 'hobby', 'pro', 'teams', 'enterprise') signal a plan-tier upgrade. The two '_higher_quantity' sentinels signal a per-seat-quantity increase on the existing plan (emitted by `requireSeatAvailable` when the active org's per-seat subscription is at its seat cap; FR-03-6).
 	RequiredPlan PaymentRequiredErrorBodyRequiredPlan `json:"requiredPlan" url:"requiredPlan"`
 	// Deep link template (carries the {slug} placeholder) the frontend opens to upgrade.
 	UpgradeURL string  `json:"upgradeUrl" url:"upgradeUrl"`
@@ -1745,15 +2047,17 @@ func (p PaymentRequiredErrorBodyError) Ptr() *PaymentRequiredErrorBodyError {
 	return &p
 }
 
-// Cheapest plan slug that satisfies the requested feature / limit.
+// Plan slug that satisfies the requested feature / limit. The five tier slugs ('free', 'hobby', 'pro', 'teams', 'enterprise') signal a plan-tier upgrade. The two '_higher_quantity' sentinels signal a per-seat-quantity increase on the existing plan (emitted by `requireSeatAvailable` when the active org's per-seat subscription is at its seat cap; FR-03-6).
 type PaymentRequiredErrorBodyRequiredPlan string
 
 const (
-	PaymentRequiredErrorBodyRequiredPlanFree       PaymentRequiredErrorBodyRequiredPlan = "free"
-	PaymentRequiredErrorBodyRequiredPlanHobby      PaymentRequiredErrorBodyRequiredPlan = "hobby"
-	PaymentRequiredErrorBodyRequiredPlanPro        PaymentRequiredErrorBodyRequiredPlan = "pro"
-	PaymentRequiredErrorBodyRequiredPlanTeams      PaymentRequiredErrorBodyRequiredPlan = "teams"
-	PaymentRequiredErrorBodyRequiredPlanEnterprise PaymentRequiredErrorBodyRequiredPlan = "enterprise"
+	PaymentRequiredErrorBodyRequiredPlanFree                     PaymentRequiredErrorBodyRequiredPlan = "free"
+	PaymentRequiredErrorBodyRequiredPlanHobby                    PaymentRequiredErrorBodyRequiredPlan = "hobby"
+	PaymentRequiredErrorBodyRequiredPlanPro                      PaymentRequiredErrorBodyRequiredPlan = "pro"
+	PaymentRequiredErrorBodyRequiredPlanTeams                    PaymentRequiredErrorBodyRequiredPlan = "teams"
+	PaymentRequiredErrorBodyRequiredPlanEnterprise               PaymentRequiredErrorBodyRequiredPlan = "enterprise"
+	PaymentRequiredErrorBodyRequiredPlanTeamsHigherQuantity      PaymentRequiredErrorBodyRequiredPlan = "teams_higher_quantity"
+	PaymentRequiredErrorBodyRequiredPlanEnterpriseHigherQuantity PaymentRequiredErrorBodyRequiredPlan = "enterprise_higher_quantity"
 )
 
 func NewPaymentRequiredErrorBodyRequiredPlanFromString(s string) (PaymentRequiredErrorBodyRequiredPlan, error) {
@@ -1768,6 +2072,10 @@ func NewPaymentRequiredErrorBodyRequiredPlanFromString(s string) (PaymentRequire
 		return PaymentRequiredErrorBodyRequiredPlanTeams, nil
 	case "enterprise":
 		return PaymentRequiredErrorBodyRequiredPlanEnterprise, nil
+	case "teams_higher_quantity":
+		return PaymentRequiredErrorBodyRequiredPlanTeamsHigherQuantity, nil
+	case "enterprise_higher_quantity":
+		return PaymentRequiredErrorBodyRequiredPlanEnterpriseHigherQuantity, nil
 	}
 	var t PaymentRequiredErrorBodyRequiredPlan
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -2308,17 +2616,19 @@ func (u UnauthorizedErrorBodyCode) Ptr() *UnauthorizedErrorBodyCode {
 	return &u
 }
 
-// Resource not yet confirmed
+// Idempotency conflict
 var (
 	unprocessableEntityErrorBodyFieldStatusCode = big.NewInt(1 << 0)
 	unprocessableEntityErrorBodyFieldError      = big.NewInt(1 << 1)
-	unprocessableEntityErrorBodyFieldMessage    = big.NewInt(1 << 2)
-	unprocessableEntityErrorBodyFieldRequestID  = big.NewInt(1 << 3)
+	unprocessableEntityErrorBodyFieldCode       = big.NewInt(1 << 2)
+	unprocessableEntityErrorBodyFieldMessage    = big.NewInt(1 << 3)
+	unprocessableEntityErrorBodyFieldRequestID  = big.NewInt(1 << 4)
 )
 
 type UnprocessableEntityErrorBody struct {
 	StatusCode int     `json:"statusCode" url:"statusCode"`
 	Error      string  `json:"error" url:"error"`
+	Code       *string `json:"code,omitempty" url:"code,omitempty"`
 	Message    string  `json:"message" url:"message"`
 	RequestID  *string `json:"requestId,omitempty" url:"requestId,omitempty"`
 
@@ -2341,6 +2651,13 @@ func (u *UnprocessableEntityErrorBody) GetError() string {
 		return ""
 	}
 	return u.Error
+}
+
+func (u *UnprocessableEntityErrorBody) GetCode() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Code
 }
 
 func (u *UnprocessableEntityErrorBody) GetMessage() string {
@@ -2380,6 +2697,13 @@ func (u *UnprocessableEntityErrorBody) SetStatusCode(statusCode int) {
 func (u *UnprocessableEntityErrorBody) SetError(error_ string) {
 	u.Error = error_
 	u.require(unprocessableEntityErrorBodyFieldError)
+}
+
+// SetCode sets the Code field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UnprocessableEntityErrorBody) SetCode(code *string) {
+	u.Code = code
+	u.require(unprocessableEntityErrorBodyFieldCode)
 }
 
 // SetMessage sets the Message field and marks it as non-optional;

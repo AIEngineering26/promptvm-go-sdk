@@ -4,6 +4,7 @@ package client
 
 import (
 	agentapi "github.com/AIEngineering26/promptvm-go-sdk/agentapi"
+	ai "github.com/AIEngineering26/promptvm-go-sdk/ai"
 	apikeys "github.com/AIEngineering26/promptvm-go-sdk/apikeys"
 	authentication "github.com/AIEngineering26/promptvm-go-sdk/authentication"
 	billing "github.com/AIEngineering26/promptvm-go-sdk/billing"
@@ -12,6 +13,9 @@ import (
 	contexts "github.com/AIEngineering26/promptvm-go-sdk/contexts"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	directories "github.com/AIEngineering26/promptvm-go-sdk/directories"
+	hooks "github.com/AIEngineering26/promptvm-go-sdk/hooks"
+	hookspublic "github.com/AIEngineering26/promptvm-go-sdk/hookspublic"
+	identity "github.com/AIEngineering26/promptvm-go-sdk/identity"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	marketplacebrowse "github.com/AIEngineering26/promptvm-go-sdk/marketplacebrowse"
 	marketplacecomments "github.com/AIEngineering26/promptvm-go-sdk/marketplacecomments"
@@ -23,6 +27,7 @@ import (
 	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
 	marketplacesubscriptions "github.com/AIEngineering26/promptvm-go-sdk/marketplacesubscriptions"
 	mcp "github.com/AIEngineering26/promptvm-go-sdk/mcp"
+	oauth "github.com/AIEngineering26/promptvm-go-sdk/oauth"
 	onboarding "github.com/AIEngineering26/promptvm-go-sdk/onboarding"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	organizations "github.com/AIEngineering26/promptvm-go-sdk/organizations"
@@ -34,6 +39,7 @@ import (
 	promptversions "github.com/AIEngineering26/promptvm-go-sdk/promptversions"
 	resources "github.com/AIEngineering26/promptvm-go-sdk/resources"
 	search "github.com/AIEngineering26/promptvm-go-sdk/search"
+	settings "github.com/AIEngineering26/promptvm-go-sdk/settings"
 	sharing "github.com/AIEngineering26/promptvm-go-sdk/sharing"
 	skills "github.com/AIEngineering26/promptvm-go-sdk/skills"
 	skillspublic "github.com/AIEngineering26/promptvm-go-sdk/skillspublic"
@@ -47,20 +53,22 @@ type Client struct {
 	Billing                     *billing.Client
 	AgentAPI                    *agentapi.Client
 	SkillsPublic                *skillspublic.Client
+	HooksPublic                 *hookspublic.Client
 	Contexts                    *contexts.Client
 	MarketplaceSkillsFeed       *marketplaceskillsfeed.Client
+	MarketplaceBrowse           *marketplacebrowse.Client
+	MarketplaceListings         *marketplacelistings.Client
 	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
 	Onboarding                  *onboarding.Client
 	Organizations               *organizations.Client
 	MarketplaceSocial           *marketplacesocial.Client
 	MarketplaceCreator          *marketplacecreator.Client
-	MarketplaceBrowse           *marketplacebrowse.Client
-	MarketplaceListings         *marketplacelistings.Client
 	MarketplaceCreatorDashboard *marketplacecreatordashboard.Client
 	MarketplaceSubscriptions    *marketplacesubscriptions.Client
 	MarketplaceRatings          *marketplaceratings.Client
 	MarketplaceComments         *marketplacecomments.Client
+	Settings                    *settings.Client
 	Prompts                     *prompts.Client
 	PromptVersions              *promptversions.Client
 	PromptDeployments           *promptdeployments.Client
@@ -72,9 +80,13 @@ type Client struct {
 	Directories                 *directories.Client
 	Resources                   *resources.Client
 	Skills                      *skills.Client
+	Hooks                       *hooks.Client
 	Workspaces                  *workspaces.Client
 	Search                      *search.Client
+	Identity                    *identity.Client
+	Ai                          *ai.Client
 	Mcp                         *mcp.Client
+	OAuth                       *oauth.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -89,20 +101,22 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Billing:                     billing.NewClient(options),
 		AgentAPI:                    agentapi.NewClient(options),
 		SkillsPublic:                skillspublic.NewClient(options),
+		HooksPublic:                 hookspublic.NewClient(options),
 		Contexts:                    contexts.NewClient(options),
 		MarketplaceSkillsFeed:       marketplaceskillsfeed.NewClient(options),
+		MarketplaceBrowse:           marketplacebrowse.NewClient(options),
+		MarketplaceListings:         marketplacelistings.NewClient(options),
 		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
 		Onboarding:                  onboarding.NewClient(options),
 		Organizations:               organizations.NewClient(options),
 		MarketplaceSocial:           marketplacesocial.NewClient(options),
 		MarketplaceCreator:          marketplacecreator.NewClient(options),
-		MarketplaceBrowse:           marketplacebrowse.NewClient(options),
-		MarketplaceListings:         marketplacelistings.NewClient(options),
 		MarketplaceCreatorDashboard: marketplacecreatordashboard.NewClient(options),
 		MarketplaceSubscriptions:    marketplacesubscriptions.NewClient(options),
 		MarketplaceRatings:          marketplaceratings.NewClient(options),
 		MarketplaceComments:         marketplacecomments.NewClient(options),
+		Settings:                    settings.NewClient(options),
 		Prompts:                     prompts.NewClient(options),
 		PromptVersions:              promptversions.NewClient(options),
 		PromptDeployments:           promptdeployments.NewClient(options),
@@ -114,9 +128,13 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Directories:                 directories.NewClient(options),
 		Resources:                   resources.NewClient(options),
 		Skills:                      skills.NewClient(options),
+		Hooks:                       hooks.NewClient(options),
 		Workspaces:                  workspaces.NewClient(options),
 		Search:                      search.NewClient(options),
+		Identity:                    identity.NewClient(options),
+		Ai:                          ai.NewClient(options),
 		Mcp:                         mcp.NewClient(options),
+		OAuth:                       oauth.NewClient(options),
 		options:                     options,
 		baseURL:                     options.BaseURL,
 		caller: internal.NewCaller(

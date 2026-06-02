@@ -43,13 +43,13 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	402: func(apiError *core.APIError) error {
-		return &PaymentRequiredError{
+	409: func(apiError *core.APIError) error {
+		return &ConflictError{
 			APIError: apiError,
 		}
 	},
-	409: func(apiError *core.APIError) error {
-		return &ConflictError{
+	402: func(apiError *core.APIError) error {
+		return &PaymentRequiredError{
 			APIError: apiError,
 		}
 	},
@@ -60,6 +60,16 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 	},
 	422: func(apiError *core.APIError) error {
 		return &UnprocessableEntityError{
+			APIError: apiError,
+		}
+	},
+	502: func(apiError *core.APIError) error {
+		return &BadGatewayError{
+			APIError: apiError,
+		}
+	},
+	504: func(apiError *core.APIError) error {
+		return &GatewayTimeoutError{
 			APIError: apiError,
 		}
 	},

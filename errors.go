@@ -7,6 +7,30 @@ import (
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 )
 
+// Upstream LLM provider error
+type BadGatewayError struct {
+	*core.APIError
+	Body *BadGatewayErrorBody
+}
+
+func (b *BadGatewayError) UnmarshalJSON(data []byte) error {
+	var body *BadGatewayErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	b.StatusCode = 502
+	b.Body = body
+	return nil
+}
+
+func (b *BadGatewayError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(b.Body)
+}
+
+func (b *BadGatewayError) Unwrap() error {
+	return b.APIError
+}
+
 // Invalid request parameters
 type BadRequestError struct {
 	*core.APIError
@@ -31,7 +55,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
-// Already following
+// Duplicate listing
 type ConflictError struct {
 	*core.APIError
 	Body interface{}
@@ -55,7 +79,7 @@ func (c *ConflictError) Unwrap() error {
 	return c.APIError
 }
 
-// Forbidden - insufficient subscription tier
+// Forbidden
 type ForbiddenError struct {
 	*core.APIError
 	Body interface{}
@@ -77,6 +101,30 @@ func (f *ForbiddenError) MarshalJSON() ([]byte, error) {
 
 func (f *ForbiddenError) Unwrap() error {
 	return f.APIError
+}
+
+// Upstream LLM provider timeout
+type GatewayTimeoutError struct {
+	*core.APIError
+	Body *GatewayTimeoutErrorBody
+}
+
+func (g *GatewayTimeoutError) UnmarshalJSON(data []byte) error {
+	var body *GatewayTimeoutErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	g.StatusCode = 504
+	g.Body = body
+	return nil
+}
+
+func (g *GatewayTimeoutError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(g.Body)
+}
+
+func (g *GatewayTimeoutError) Unwrap() error {
+	return g.APIError
 }
 
 // Public promotional-offer metadata. Returned for both available and non-available tokens so the frontend can branch on `status` without leaking token existence.

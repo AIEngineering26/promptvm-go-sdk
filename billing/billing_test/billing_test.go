@@ -99,7 +99,7 @@ func TestBillingListBillingPlansWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	_, invocationErr := client.Billing.ListBillingPlans(
+	invocationErr := client.Billing.ListBillingPlans(
 		context.TODO(),
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestBillingListBillingPlansWithWireMock"}},

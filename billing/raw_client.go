@@ -77,7 +77,7 @@ func (r *RawClient) GetPromoOffer(
 func (r *RawClient) ListBillingPlans(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[[]*promptvmgosdk.ListBillingPlansResponseItem], error) {
+) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -89,7 +89,6 @@ func (r *RawClient) ListBillingPlans(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*promptvmgosdk.ListBillingPlansResponseItem
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -100,16 +99,15 @@ func (r *RawClient) ListBillingPlans(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			Response:        &response,
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*promptvmgosdk.ListBillingPlansResponseItem]{
+	return &core.Response[any]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
-		Body:       response,
+		Body:       nil,
 	}, nil
 }
 
