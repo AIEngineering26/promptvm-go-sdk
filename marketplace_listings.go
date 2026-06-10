@@ -249,12 +249,14 @@ var (
 	claimMarketplaceListingResponseDataFieldPurchaseID           = big.NewInt(1 << 0)
 	claimMarketplaceListingResponseDataFieldImportedPromptID     = big.NewInt(1 << 1)
 	claimMarketplaceListingResponseDataFieldImportedCollectionID = big.NewInt(1 << 2)
+	claimMarketplaceListingResponseDataFieldClaimedVersionID     = big.NewInt(1 << 3)
 )
 
 type ClaimMarketplaceListingResponseData struct {
 	PurchaseID           string  `json:"purchaseId" url:"purchaseId"`
 	ImportedPromptID     *string `json:"importedPromptId,omitempty" url:"importedPromptId,omitempty"`
 	ImportedCollectionID *string `json:"importedCollectionId,omitempty" url:"importedCollectionId,omitempty"`
+	ClaimedVersionID     *string `json:"claimedVersionId,omitempty" url:"claimedVersionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -282,6 +284,13 @@ func (c *ClaimMarketplaceListingResponseData) GetImportedCollectionID() *string 
 		return nil
 	}
 	return c.ImportedCollectionID
+}
+
+func (c *ClaimMarketplaceListingResponseData) GetClaimedVersionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClaimedVersionID
 }
 
 func (c *ClaimMarketplaceListingResponseData) GetExtraProperties() map[string]interface{} {
@@ -314,6 +323,13 @@ func (c *ClaimMarketplaceListingResponseData) SetImportedPromptID(importedPrompt
 func (c *ClaimMarketplaceListingResponseData) SetImportedCollectionID(importedCollectionID *string) {
 	c.ImportedCollectionID = importedCollectionID
 	c.require(claimMarketplaceListingResponseDataFieldImportedCollectionID)
+}
+
+// SetClaimedVersionID sets the ClaimedVersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseData) SetClaimedVersionID(claimedVersionID *string) {
+	c.ClaimedVersionID = claimedVersionID
+	c.require(claimMarketplaceListingResponseDataFieldClaimedVersionID)
 }
 
 func (c *ClaimMarketplaceListingResponseData) UnmarshalJSON(data []byte) error {
@@ -1135,6 +1151,7 @@ type CreateMarketplaceListingResponseDataContentKind string
 const (
 	CreateMarketplaceListingResponseDataContentKindPrompt CreateMarketplaceListingResponseDataContentKind = "prompt"
 	CreateMarketplaceListingResponseDataContentKindSkill  CreateMarketplaceListingResponseDataContentKind = "skill"
+	CreateMarketplaceListingResponseDataContentKindHook   CreateMarketplaceListingResponseDataContentKind = "hook"
 	CreateMarketplaceListingResponseDataContentKindFolder CreateMarketplaceListingResponseDataContentKind = "folder"
 )
 
@@ -1144,6 +1161,8 @@ func NewCreateMarketplaceListingResponseDataContentKindFromString(s string) (Cre
 		return CreateMarketplaceListingResponseDataContentKindPrompt, nil
 	case "skill":
 		return CreateMarketplaceListingResponseDataContentKindSkill, nil
+	case "hook":
+		return CreateMarketplaceListingResponseDataContentKindHook, nil
 	case "folder":
 		return CreateMarketplaceListingResponseDataContentKindFolder, nil
 	}
@@ -2227,6 +2246,7 @@ type UpdateMarketplaceListingResponseDataContentKind string
 const (
 	UpdateMarketplaceListingResponseDataContentKindPrompt UpdateMarketplaceListingResponseDataContentKind = "prompt"
 	UpdateMarketplaceListingResponseDataContentKindSkill  UpdateMarketplaceListingResponseDataContentKind = "skill"
+	UpdateMarketplaceListingResponseDataContentKindHook   UpdateMarketplaceListingResponseDataContentKind = "hook"
 	UpdateMarketplaceListingResponseDataContentKindFolder UpdateMarketplaceListingResponseDataContentKind = "folder"
 )
 
@@ -2236,6 +2256,8 @@ func NewUpdateMarketplaceListingResponseDataContentKindFromString(s string) (Upd
 		return UpdateMarketplaceListingResponseDataContentKindPrompt, nil
 	case "skill":
 		return UpdateMarketplaceListingResponseDataContentKindSkill, nil
+	case "hook":
+		return UpdateMarketplaceListingResponseDataContentKindHook, nil
 	case "folder":
 		return UpdateMarketplaceListingResponseDataContentKindFolder, nil
 	}

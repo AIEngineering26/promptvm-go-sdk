@@ -370,47 +370,49 @@ func (c *CreatePromptResponse) String() string {
 }
 
 var (
-	createPromptResponseDataFieldID                 = big.NewInt(1 << 0)
-	createPromptResponseDataFieldName               = big.NewInt(1 << 1)
-	createPromptResponseDataFieldSlug               = big.NewInt(1 << 2)
-	createPromptResponseDataFieldDescription        = big.NewInt(1 << 3)
-	createPromptResponseDataFieldStatus             = big.NewInt(1 << 4)
-	createPromptResponseDataFieldKind               = big.NewInt(1 << 5)
-	createPromptResponseDataFieldContentKind        = big.NewInt(1 << 6)
-	createPromptResponseDataFieldMetadata           = big.NewInt(1 << 7)
-	createPromptResponseDataFieldTags               = big.NewInt(1 << 8)
-	createPromptResponseDataFieldIsPublic           = big.NewInt(1 << 9)
-	createPromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
-	createPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
-	createPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
-	createPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
-	createPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
-	createPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
-	createPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
-	createPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
-	createPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
+	createPromptResponseDataFieldID                    = big.NewInt(1 << 0)
+	createPromptResponseDataFieldName                  = big.NewInt(1 << 1)
+	createPromptResponseDataFieldSlug                  = big.NewInt(1 << 2)
+	createPromptResponseDataFieldDescription           = big.NewInt(1 << 3)
+	createPromptResponseDataFieldStatus                = big.NewInt(1 << 4)
+	createPromptResponseDataFieldKind                  = big.NewInt(1 << 5)
+	createPromptResponseDataFieldContentKind           = big.NewInt(1 << 6)
+	createPromptResponseDataFieldMetadata              = big.NewInt(1 << 7)
+	createPromptResponseDataFieldTags                  = big.NewInt(1 << 8)
+	createPromptResponseDataFieldIsPublic              = big.NewInt(1 << 9)
+	createPromptResponseDataFieldWorkspaceID           = big.NewInt(1 << 10)
+	createPromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
+	createPromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
+	createPromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
+	createPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
+	createPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
+	createPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
+	createPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
+	createPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
+	createPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
 )
 
 type CreatePromptResponseData struct {
-	ID                 string                                  `json:"id" url:"id"`
-	Name               string                                  `json:"name" url:"name"`
-	Slug               string                                  `json:"slug" url:"slug"`
-	Description        *string                                 `json:"description,omitempty" url:"description,omitempty"`
-	Status             CreatePromptResponseDataStatus          `json:"status" url:"status"`
-	Kind               CreatePromptResponseDataKind            `json:"kind" url:"kind"`
-	ContentKind        *CreatePromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
-	Metadata           map[string]interface{}                  `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Tags               []string                                `json:"tags" url:"tags"`
-	IsPublic           bool                                    `json:"isPublic" url:"isPublic"`
-	WorkspaceID        string                                  `json:"workspaceId" url:"workspaceId"`
-	DirectoryID        *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	ForkedFromPromptID *string                                 `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
-	CreatedByID        string                                  `json:"createdById" url:"createdById"`
-	CreatedByName      *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt          time.Time                               `json:"createdAt" url:"createdAt"`
-	UpdatedAt          time.Time                               `json:"updatedAt" url:"updatedAt"`
-	CurrentVersion     *CreatePromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
-	ReleaseStatus      *CreatePromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
+	ID                    string                                  `json:"id" url:"id"`
+	Name                  string                                  `json:"name" url:"name"`
+	Slug                  string                                  `json:"slug" url:"slug"`
+	Description           *string                                 `json:"description,omitempty" url:"description,omitempty"`
+	Status                CreatePromptResponseDataStatus          `json:"status" url:"status"`
+	Kind                  CreatePromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind           *CreatePromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata              map[string]interface{}                  `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Tags                  []string                                `json:"tags" url:"tags"`
+	IsPublic              bool                                    `json:"isPublic" url:"isPublic"`
+	WorkspaceID           string                                  `json:"workspaceId" url:"workspaceId"`
+	DirectoryID           *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	ForkedFromPromptID    *string                                 `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
+	ImportedFromListingID *string                                 `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CreatedByID           string                                  `json:"createdById" url:"createdById"`
+	CreatedByName         *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt             time.Time                               `json:"createdAt" url:"createdAt"`
+	UpdatedAt             time.Time                               `json:"updatedAt" url:"updatedAt"`
+	CurrentVersion        *CreatePromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus         *CreatePromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -508,6 +510,13 @@ func (c *CreatePromptResponseData) GetForkedFromPromptID() *string {
 		return nil
 	}
 	return c.ForkedFromPromptID
+}
+
+func (c *CreatePromptResponseData) GetImportedFromListingID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ImportedFromListingID
 }
 
 func (c *CreatePromptResponseData) GetCreatedByID() string {
@@ -652,6 +661,13 @@ func (c *CreatePromptResponseData) SetDirectoryID(directoryID *string) {
 func (c *CreatePromptResponseData) SetForkedFromPromptID(forkedFromPromptID *string) {
 	c.ForkedFromPromptID = forkedFromPromptID
 	c.require(createPromptResponseDataFieldForkedFromPromptID)
+}
+
+// SetImportedFromListingID sets the ImportedFromListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
+	c.ImportedFromListingID = importedFromListingID
+	c.require(createPromptResponseDataFieldImportedFromListingID)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;
@@ -1858,47 +1874,49 @@ func (g *GetPromptResponse) String() string {
 }
 
 var (
-	getPromptResponseDataFieldID                 = big.NewInt(1 << 0)
-	getPromptResponseDataFieldName               = big.NewInt(1 << 1)
-	getPromptResponseDataFieldSlug               = big.NewInt(1 << 2)
-	getPromptResponseDataFieldDescription        = big.NewInt(1 << 3)
-	getPromptResponseDataFieldStatus             = big.NewInt(1 << 4)
-	getPromptResponseDataFieldKind               = big.NewInt(1 << 5)
-	getPromptResponseDataFieldContentKind        = big.NewInt(1 << 6)
-	getPromptResponseDataFieldMetadata           = big.NewInt(1 << 7)
-	getPromptResponseDataFieldTags               = big.NewInt(1 << 8)
-	getPromptResponseDataFieldIsPublic           = big.NewInt(1 << 9)
-	getPromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
-	getPromptResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
-	getPromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
-	getPromptResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
-	getPromptResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
-	getPromptResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
-	getPromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
-	getPromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
-	getPromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
+	getPromptResponseDataFieldID                    = big.NewInt(1 << 0)
+	getPromptResponseDataFieldName                  = big.NewInt(1 << 1)
+	getPromptResponseDataFieldSlug                  = big.NewInt(1 << 2)
+	getPromptResponseDataFieldDescription           = big.NewInt(1 << 3)
+	getPromptResponseDataFieldStatus                = big.NewInt(1 << 4)
+	getPromptResponseDataFieldKind                  = big.NewInt(1 << 5)
+	getPromptResponseDataFieldContentKind           = big.NewInt(1 << 6)
+	getPromptResponseDataFieldMetadata              = big.NewInt(1 << 7)
+	getPromptResponseDataFieldTags                  = big.NewInt(1 << 8)
+	getPromptResponseDataFieldIsPublic              = big.NewInt(1 << 9)
+	getPromptResponseDataFieldWorkspaceID           = big.NewInt(1 << 10)
+	getPromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
+	getPromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
+	getPromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
+	getPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
+	getPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
+	getPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
+	getPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
+	getPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
+	getPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
 )
 
 type GetPromptResponseData struct {
-	ID                 string                               `json:"id" url:"id"`
-	Name               string                               `json:"name" url:"name"`
-	Slug               string                               `json:"slug" url:"slug"`
-	Description        *string                              `json:"description,omitempty" url:"description,omitempty"`
-	Status             GetPromptResponseDataStatus          `json:"status" url:"status"`
-	Kind               GetPromptResponseDataKind            `json:"kind" url:"kind"`
-	ContentKind        *GetPromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
-	Metadata           map[string]interface{}               `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Tags               []string                             `json:"tags" url:"tags"`
-	IsPublic           bool                                 `json:"isPublic" url:"isPublic"`
-	WorkspaceID        string                               `json:"workspaceId" url:"workspaceId"`
-	DirectoryID        *string                              `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	ForkedFromPromptID *string                              `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
-	CreatedByID        string                               `json:"createdById" url:"createdById"`
-	CreatedByName      *string                              `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt          time.Time                            `json:"createdAt" url:"createdAt"`
-	UpdatedAt          time.Time                            `json:"updatedAt" url:"updatedAt"`
-	CurrentVersion     *GetPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
-	ReleaseStatus      *GetPromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
+	ID                    string                               `json:"id" url:"id"`
+	Name                  string                               `json:"name" url:"name"`
+	Slug                  string                               `json:"slug" url:"slug"`
+	Description           *string                              `json:"description,omitempty" url:"description,omitempty"`
+	Status                GetPromptResponseDataStatus          `json:"status" url:"status"`
+	Kind                  GetPromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind           *GetPromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata              map[string]interface{}               `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Tags                  []string                             `json:"tags" url:"tags"`
+	IsPublic              bool                                 `json:"isPublic" url:"isPublic"`
+	WorkspaceID           string                               `json:"workspaceId" url:"workspaceId"`
+	DirectoryID           *string                              `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	ForkedFromPromptID    *string                              `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
+	ImportedFromListingID *string                              `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CreatedByID           string                               `json:"createdById" url:"createdById"`
+	CreatedByName         *string                              `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt             time.Time                            `json:"createdAt" url:"createdAt"`
+	UpdatedAt             time.Time                            `json:"updatedAt" url:"updatedAt"`
+	CurrentVersion        *GetPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus         *GetPromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1996,6 +2014,13 @@ func (g *GetPromptResponseData) GetForkedFromPromptID() *string {
 		return nil
 	}
 	return g.ForkedFromPromptID
+}
+
+func (g *GetPromptResponseData) GetImportedFromListingID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ImportedFromListingID
 }
 
 func (g *GetPromptResponseData) GetCreatedByID() string {
@@ -2140,6 +2165,13 @@ func (g *GetPromptResponseData) SetDirectoryID(directoryID *string) {
 func (g *GetPromptResponseData) SetForkedFromPromptID(forkedFromPromptID *string) {
 	g.ForkedFromPromptID = forkedFromPromptID
 	g.require(getPromptResponseDataFieldForkedFromPromptID)
+}
+
+// SetImportedFromListingID sets the ImportedFromListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
+	g.ImportedFromListingID = importedFromListingID
+	g.require(getPromptResponseDataFieldImportedFromListingID)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;
@@ -3333,39 +3365,43 @@ func (l *ListPromptsResponse) String() string {
 }
 
 var (
-	listPromptsResponseDataItemFieldID            = big.NewInt(1 << 0)
-	listPromptsResponseDataItemFieldName          = big.NewInt(1 << 1)
-	listPromptsResponseDataItemFieldSlug          = big.NewInt(1 << 2)
-	listPromptsResponseDataItemFieldDescription   = big.NewInt(1 << 3)
-	listPromptsResponseDataItemFieldStatus        = big.NewInt(1 << 4)
-	listPromptsResponseDataItemFieldKind          = big.NewInt(1 << 5)
-	listPromptsResponseDataItemFieldContentKind   = big.NewInt(1 << 6)
-	listPromptsResponseDataItemFieldTags          = big.NewInt(1 << 7)
-	listPromptsResponseDataItemFieldIsPublic      = big.NewInt(1 << 8)
-	listPromptsResponseDataItemFieldWorkspaceID   = big.NewInt(1 << 9)
-	listPromptsResponseDataItemFieldDirectoryID   = big.NewInt(1 << 10)
-	listPromptsResponseDataItemFieldCreatedByID   = big.NewInt(1 << 11)
-	listPromptsResponseDataItemFieldCreatedByName = big.NewInt(1 << 12)
-	listPromptsResponseDataItemFieldCreatedAt     = big.NewInt(1 << 13)
-	listPromptsResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 14)
+	listPromptsResponseDataItemFieldID                    = big.NewInt(1 << 0)
+	listPromptsResponseDataItemFieldName                  = big.NewInt(1 << 1)
+	listPromptsResponseDataItemFieldSlug                  = big.NewInt(1 << 2)
+	listPromptsResponseDataItemFieldDescription           = big.NewInt(1 << 3)
+	listPromptsResponseDataItemFieldStatus                = big.NewInt(1 << 4)
+	listPromptsResponseDataItemFieldKind                  = big.NewInt(1 << 5)
+	listPromptsResponseDataItemFieldContentKind           = big.NewInt(1 << 6)
+	listPromptsResponseDataItemFieldTags                  = big.NewInt(1 << 7)
+	listPromptsResponseDataItemFieldIsPublic              = big.NewInt(1 << 8)
+	listPromptsResponseDataItemFieldWorkspaceID           = big.NewInt(1 << 9)
+	listPromptsResponseDataItemFieldDirectoryID           = big.NewInt(1 << 10)
+	listPromptsResponseDataItemFieldForkedFromPromptID    = big.NewInt(1 << 11)
+	listPromptsResponseDataItemFieldImportedFromListingID = big.NewInt(1 << 12)
+	listPromptsResponseDataItemFieldCreatedByID           = big.NewInt(1 << 13)
+	listPromptsResponseDataItemFieldCreatedByName         = big.NewInt(1 << 14)
+	listPromptsResponseDataItemFieldCreatedAt             = big.NewInt(1 << 15)
+	listPromptsResponseDataItemFieldUpdatedAt             = big.NewInt(1 << 16)
 )
 
 type ListPromptsResponseDataItem struct {
-	ID            string                                  `json:"id" url:"id"`
-	Name          string                                  `json:"name" url:"name"`
-	Slug          string                                  `json:"slug" url:"slug"`
-	Description   *string                                 `json:"description,omitempty" url:"description,omitempty"`
-	Status        ListPromptsResponseDataItemStatus       `json:"status" url:"status"`
-	Kind          ListPromptsResponseDataItemKind         `json:"kind" url:"kind"`
-	ContentKind   *ListPromptsResponseDataItemContentKind `json:"content_kind,omitempty" url:"content_kind,omitempty"`
-	Tags          []string                                `json:"tags" url:"tags"`
-	IsPublic      bool                                    `json:"isPublic" url:"isPublic"`
-	WorkspaceID   string                                  `json:"workspaceId" url:"workspaceId"`
-	DirectoryID   *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	CreatedByID   *string                                 `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedByName *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt     time.Time                               `json:"createdAt" url:"createdAt"`
-	UpdatedAt     time.Time                               `json:"updatedAt" url:"updatedAt"`
+	ID                    string                                  `json:"id" url:"id"`
+	Name                  string                                  `json:"name" url:"name"`
+	Slug                  string                                  `json:"slug" url:"slug"`
+	Description           *string                                 `json:"description,omitempty" url:"description,omitempty"`
+	Status                ListPromptsResponseDataItemStatus       `json:"status" url:"status"`
+	Kind                  ListPromptsResponseDataItemKind         `json:"kind" url:"kind"`
+	ContentKind           *ListPromptsResponseDataItemContentKind `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Tags                  []string                                `json:"tags" url:"tags"`
+	IsPublic              bool                                    `json:"isPublic" url:"isPublic"`
+	WorkspaceID           string                                  `json:"workspaceId" url:"workspaceId"`
+	DirectoryID           *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	ForkedFromPromptID    *string                                 `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
+	ImportedFromListingID *string                                 `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CreatedByID           *string                                 `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName         *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt             time.Time                               `json:"createdAt" url:"createdAt"`
+	UpdatedAt             time.Time                               `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3449,6 +3485,20 @@ func (l *ListPromptsResponseDataItem) GetDirectoryID() *string {
 		return nil
 	}
 	return l.DirectoryID
+}
+
+func (l *ListPromptsResponseDataItem) GetForkedFromPromptID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ForkedFromPromptID
+}
+
+func (l *ListPromptsResponseDataItem) GetImportedFromListingID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ImportedFromListingID
 }
 
 func (l *ListPromptsResponseDataItem) GetCreatedByID() *string {
@@ -3565,6 +3615,20 @@ func (l *ListPromptsResponseDataItem) SetWorkspaceID(workspaceID string) {
 func (l *ListPromptsResponseDataItem) SetDirectoryID(directoryID *string) {
 	l.DirectoryID = directoryID
 	l.require(listPromptsResponseDataItemFieldDirectoryID)
+}
+
+// SetForkedFromPromptID sets the ForkedFromPromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptsResponseDataItem) SetForkedFromPromptID(forkedFromPromptID *string) {
+	l.ForkedFromPromptID = forkedFromPromptID
+	l.require(listPromptsResponseDataItemFieldForkedFromPromptID)
+}
+
+// SetImportedFromListingID sets the ImportedFromListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptsResponseDataItem) SetImportedFromListingID(importedFromListingID *string) {
+	l.ImportedFromListingID = importedFromListingID
+	l.require(listPromptsResponseDataItemFieldImportedFromListingID)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;
@@ -3920,47 +3984,49 @@ func (u *UpdatePromptResponse) String() string {
 }
 
 var (
-	updatePromptResponseDataFieldID                 = big.NewInt(1 << 0)
-	updatePromptResponseDataFieldName               = big.NewInt(1 << 1)
-	updatePromptResponseDataFieldSlug               = big.NewInt(1 << 2)
-	updatePromptResponseDataFieldDescription        = big.NewInt(1 << 3)
-	updatePromptResponseDataFieldStatus             = big.NewInt(1 << 4)
-	updatePromptResponseDataFieldKind               = big.NewInt(1 << 5)
-	updatePromptResponseDataFieldContentKind        = big.NewInt(1 << 6)
-	updatePromptResponseDataFieldMetadata           = big.NewInt(1 << 7)
-	updatePromptResponseDataFieldTags               = big.NewInt(1 << 8)
-	updatePromptResponseDataFieldIsPublic           = big.NewInt(1 << 9)
-	updatePromptResponseDataFieldWorkspaceID        = big.NewInt(1 << 10)
-	updatePromptResponseDataFieldDirectoryID        = big.NewInt(1 << 11)
-	updatePromptResponseDataFieldForkedFromPromptID = big.NewInt(1 << 12)
-	updatePromptResponseDataFieldCreatedByID        = big.NewInt(1 << 13)
-	updatePromptResponseDataFieldCreatedByName      = big.NewInt(1 << 14)
-	updatePromptResponseDataFieldCreatedAt          = big.NewInt(1 << 15)
-	updatePromptResponseDataFieldUpdatedAt          = big.NewInt(1 << 16)
-	updatePromptResponseDataFieldCurrentVersion     = big.NewInt(1 << 17)
-	updatePromptResponseDataFieldReleaseStatus      = big.NewInt(1 << 18)
+	updatePromptResponseDataFieldID                    = big.NewInt(1 << 0)
+	updatePromptResponseDataFieldName                  = big.NewInt(1 << 1)
+	updatePromptResponseDataFieldSlug                  = big.NewInt(1 << 2)
+	updatePromptResponseDataFieldDescription           = big.NewInt(1 << 3)
+	updatePromptResponseDataFieldStatus                = big.NewInt(1 << 4)
+	updatePromptResponseDataFieldKind                  = big.NewInt(1 << 5)
+	updatePromptResponseDataFieldContentKind           = big.NewInt(1 << 6)
+	updatePromptResponseDataFieldMetadata              = big.NewInt(1 << 7)
+	updatePromptResponseDataFieldTags                  = big.NewInt(1 << 8)
+	updatePromptResponseDataFieldIsPublic              = big.NewInt(1 << 9)
+	updatePromptResponseDataFieldWorkspaceID           = big.NewInt(1 << 10)
+	updatePromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
+	updatePromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
+	updatePromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
+	updatePromptResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
+	updatePromptResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
+	updatePromptResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
+	updatePromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
+	updatePromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
+	updatePromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
 )
 
 type UpdatePromptResponseData struct {
-	ID                 string                                  `json:"id" url:"id"`
-	Name               string                                  `json:"name" url:"name"`
-	Slug               string                                  `json:"slug" url:"slug"`
-	Description        *string                                 `json:"description,omitempty" url:"description,omitempty"`
-	Status             UpdatePromptResponseDataStatus          `json:"status" url:"status"`
-	Kind               UpdatePromptResponseDataKind            `json:"kind" url:"kind"`
-	ContentKind        *UpdatePromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
-	Metadata           map[string]interface{}                  `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Tags               []string                                `json:"tags" url:"tags"`
-	IsPublic           bool                                    `json:"isPublic" url:"isPublic"`
-	WorkspaceID        string                                  `json:"workspaceId" url:"workspaceId"`
-	DirectoryID        *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	ForkedFromPromptID *string                                 `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
-	CreatedByID        string                                  `json:"createdById" url:"createdById"`
-	CreatedByName      *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt          time.Time                               `json:"createdAt" url:"createdAt"`
-	UpdatedAt          time.Time                               `json:"updatedAt" url:"updatedAt"`
-	CurrentVersion     *UpdatePromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
-	ReleaseStatus      *UpdatePromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
+	ID                    string                                  `json:"id" url:"id"`
+	Name                  string                                  `json:"name" url:"name"`
+	Slug                  string                                  `json:"slug" url:"slug"`
+	Description           *string                                 `json:"description,omitempty" url:"description,omitempty"`
+	Status                UpdatePromptResponseDataStatus          `json:"status" url:"status"`
+	Kind                  UpdatePromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind           *UpdatePromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata              map[string]interface{}                  `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Tags                  []string                                `json:"tags" url:"tags"`
+	IsPublic              bool                                    `json:"isPublic" url:"isPublic"`
+	WorkspaceID           string                                  `json:"workspaceId" url:"workspaceId"`
+	DirectoryID           *string                                 `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	ForkedFromPromptID    *string                                 `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
+	ImportedFromListingID *string                                 `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CreatedByID           string                                  `json:"createdById" url:"createdById"`
+	CreatedByName         *string                                 `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt             time.Time                               `json:"createdAt" url:"createdAt"`
+	UpdatedAt             time.Time                               `json:"updatedAt" url:"updatedAt"`
+	CurrentVersion        *UpdatePromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus         *UpdatePromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4058,6 +4124,13 @@ func (u *UpdatePromptResponseData) GetForkedFromPromptID() *string {
 		return nil
 	}
 	return u.ForkedFromPromptID
+}
+
+func (u *UpdatePromptResponseData) GetImportedFromListingID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ImportedFromListingID
 }
 
 func (u *UpdatePromptResponseData) GetCreatedByID() string {
@@ -4202,6 +4275,13 @@ func (u *UpdatePromptResponseData) SetDirectoryID(directoryID *string) {
 func (u *UpdatePromptResponseData) SetForkedFromPromptID(forkedFromPromptID *string) {
 	u.ForkedFromPromptID = forkedFromPromptID
 	u.require(updatePromptResponseDataFieldForkedFromPromptID)
+}
+
+// SetImportedFromListingID sets the ImportedFromListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
+	u.ImportedFromListingID = importedFromListingID
+	u.require(updatePromptResponseDataFieldImportedFromListingID)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;

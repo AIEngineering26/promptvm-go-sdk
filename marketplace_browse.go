@@ -1017,6 +1017,7 @@ type GetMarketplaceListingResponseDataContentKind string
 const (
 	GetMarketplaceListingResponseDataContentKindPrompt GetMarketplaceListingResponseDataContentKind = "prompt"
 	GetMarketplaceListingResponseDataContentKindSkill  GetMarketplaceListingResponseDataContentKind = "skill"
+	GetMarketplaceListingResponseDataContentKindHook   GetMarketplaceListingResponseDataContentKind = "hook"
 	GetMarketplaceListingResponseDataContentKindFolder GetMarketplaceListingResponseDataContentKind = "folder"
 )
 
@@ -1026,6 +1027,8 @@ func NewGetMarketplaceListingResponseDataContentKindFromString(s string) (GetMar
 		return GetMarketplaceListingResponseDataContentKindPrompt, nil
 	case "skill":
 		return GetMarketplaceListingResponseDataContentKindSkill, nil
+	case "hook":
+		return GetMarketplaceListingResponseDataContentKindHook, nil
 	case "folder":
 		return GetMarketplaceListingResponseDataContentKindFolder, nil
 	}
@@ -2376,6 +2379,7 @@ type ListFeaturedMarketplaceListingsResponseDataItemContentKind string
 const (
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindPrompt ListFeaturedMarketplaceListingsResponseDataItemContentKind = "prompt"
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindSkill  ListFeaturedMarketplaceListingsResponseDataItemContentKind = "skill"
+	ListFeaturedMarketplaceListingsResponseDataItemContentKindHook   ListFeaturedMarketplaceListingsResponseDataItemContentKind = "hook"
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindFolder ListFeaturedMarketplaceListingsResponseDataItemContentKind = "folder"
 )
 
@@ -2385,6 +2389,8 @@ func NewListFeaturedMarketplaceListingsResponseDataItemContentKindFromString(s s
 		return ListFeaturedMarketplaceListingsResponseDataItemContentKindPrompt, nil
 	case "skill":
 		return ListFeaturedMarketplaceListingsResponseDataItemContentKindSkill, nil
+	case "hook":
+		return ListFeaturedMarketplaceListingsResponseDataItemContentKindHook, nil
 	case "folder":
 		return ListFeaturedMarketplaceListingsResponseDataItemContentKindFolder, nil
 	}
@@ -2905,6 +2911,8 @@ type ListMarketplaceListingsRequestKind string
 const (
 	ListMarketplaceListingsRequestKindPrompt ListMarketplaceListingsRequestKind = "prompt"
 	ListMarketplaceListingsRequestKindSkill  ListMarketplaceListingsRequestKind = "skill"
+	ListMarketplaceListingsRequestKindHook   ListMarketplaceListingsRequestKind = "hook"
+	ListMarketplaceListingsRequestKindFolder ListMarketplaceListingsRequestKind = "folder"
 )
 
 func NewListMarketplaceListingsRequestKindFromString(s string) (ListMarketplaceListingsRequestKind, error) {
@@ -2913,6 +2921,10 @@ func NewListMarketplaceListingsRequestKindFromString(s string) (ListMarketplaceL
 		return ListMarketplaceListingsRequestKindPrompt, nil
 	case "skill":
 		return ListMarketplaceListingsRequestKindSkill, nil
+	case "hook":
+		return ListMarketplaceListingsRequestKindHook, nil
+	case "folder":
+		return ListMarketplaceListingsRequestKindFolder, nil
 	}
 	var t ListMarketplaceListingsRequestKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -3721,6 +3733,7 @@ type ListMarketplaceListingsResponseDataItemContentKind string
 const (
 	ListMarketplaceListingsResponseDataItemContentKindPrompt ListMarketplaceListingsResponseDataItemContentKind = "prompt"
 	ListMarketplaceListingsResponseDataItemContentKindSkill  ListMarketplaceListingsResponseDataItemContentKind = "skill"
+	ListMarketplaceListingsResponseDataItemContentKindHook   ListMarketplaceListingsResponseDataItemContentKind = "hook"
 	ListMarketplaceListingsResponseDataItemContentKindFolder ListMarketplaceListingsResponseDataItemContentKind = "folder"
 )
 
@@ -3730,6 +3743,8 @@ func NewListMarketplaceListingsResponseDataItemContentKindFromString(s string) (
 		return ListMarketplaceListingsResponseDataItemContentKindPrompt, nil
 	case "skill":
 		return ListMarketplaceListingsResponseDataItemContentKindSkill, nil
+	case "hook":
+		return ListMarketplaceListingsResponseDataItemContentKindHook, nil
 	case "folder":
 		return ListMarketplaceListingsResponseDataItemContentKindFolder, nil
 	}

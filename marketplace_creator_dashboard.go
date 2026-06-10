@@ -892,6 +892,7 @@ type ListMarketplaceCreatorListingsResponseDataItemContentKind string
 const (
 	ListMarketplaceCreatorListingsResponseDataItemContentKindPrompt ListMarketplaceCreatorListingsResponseDataItemContentKind = "prompt"
 	ListMarketplaceCreatorListingsResponseDataItemContentKindSkill  ListMarketplaceCreatorListingsResponseDataItemContentKind = "skill"
+	ListMarketplaceCreatorListingsResponseDataItemContentKindHook   ListMarketplaceCreatorListingsResponseDataItemContentKind = "hook"
 	ListMarketplaceCreatorListingsResponseDataItemContentKindFolder ListMarketplaceCreatorListingsResponseDataItemContentKind = "folder"
 )
 
@@ -901,6 +902,8 @@ func NewListMarketplaceCreatorListingsResponseDataItemContentKindFromString(s st
 		return ListMarketplaceCreatorListingsResponseDataItemContentKindPrompt, nil
 	case "skill":
 		return ListMarketplaceCreatorListingsResponseDataItemContentKindSkill, nil
+	case "hook":
+		return ListMarketplaceCreatorListingsResponseDataItemContentKindHook, nil
 	case "folder":
 		return ListMarketplaceCreatorListingsResponseDataItemContentKindFolder, nil
 	}

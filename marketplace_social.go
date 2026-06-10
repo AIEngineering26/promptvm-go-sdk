@@ -1275,6 +1275,7 @@ type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind string
 const (
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindPrompt GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "prompt"
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill  GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "skill"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindHook   GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "hook"
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFolder GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "folder"
 )
 
@@ -1284,6 +1285,8 @@ func NewGetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFromString(s 
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindPrompt, nil
 	case "skill":
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill, nil
+	case "hook":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindHook, nil
 	case "folder":
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFolder, nil
 	}
