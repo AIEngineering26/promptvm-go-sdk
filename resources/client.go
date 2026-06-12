@@ -32,7 +32,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Returns all confirmed, non-deleted resources belonging to a workspace.
+// Returns all confirmed, non-deleted resources belonging to a workspace. By default, resources bundled into the current version of a skill are excluded — they are internal to the skill and surface through its files manifest. Resources attached to ordinary prompts remain included. Pass includeBundled=true to return everything, including skill-bundled resources.
 func (c *Client) ListWorkspaceResources(
 	ctx context.Context,
 	request *promptvmgosdk.ListWorkspaceResourcesRequest,

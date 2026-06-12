@@ -9075,7 +9075,7 @@ client.Directories.UpdateDirectory(
 <dl>
 <dd>
 
-Returns all confirmed, non-deleted resources belonging to a workspace.
+Returns all confirmed, non-deleted resources belonging to a workspace. By default, resources bundled into the current version of a skill are excluded — they are internal to the skill and surface through its files manifest. Resources attached to ordinary prompts remain included. Pass includeBundled=true to return everything, including skill-bundled resources.
 </dd>
 </dl>
 </dd>
@@ -9113,6 +9113,14 @@ client.Resources.ListWorkspaceResources(
 <dd>
 
 **workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeBundled:** `*bool` — Include resources bundled into the current version of a skill. Default false.
     
 </dd>
 </dl>

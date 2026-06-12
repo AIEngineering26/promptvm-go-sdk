@@ -299,11 +299,14 @@ func (l *ListPromptResourcesRequest) SetPromptID(promptID string) {
 }
 
 var (
-	listWorkspaceResourcesRequestFieldWorkspaceID = big.NewInt(1 << 0)
+	listWorkspaceResourcesRequestFieldWorkspaceID    = big.NewInt(1 << 0)
+	listWorkspaceResourcesRequestFieldIncludeBundled = big.NewInt(1 << 1)
 )
 
 type ListWorkspaceResourcesRequest struct {
 	WorkspaceID string `json:"-" url:"workspaceId"`
+	// Include resources bundled into the current version of a skill. Default false.
+	IncludeBundled *bool `json:"-" url:"includeBundled,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -321,6 +324,13 @@ func (l *ListWorkspaceResourcesRequest) require(field *big.Int) {
 func (l *ListWorkspaceResourcesRequest) SetWorkspaceID(workspaceID string) {
 	l.WorkspaceID = workspaceID
 	l.require(listWorkspaceResourcesRequestFieldWorkspaceID)
+}
+
+// SetIncludeBundled sets the IncludeBundled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspaceResourcesRequest) SetIncludeBundled(includeBundled *bool) {
+	l.IncludeBundled = includeBundled
+	l.require(listWorkspaceResourcesRequestFieldIncludeBundled)
 }
 
 // How the resource is used by the LLM at execution time
