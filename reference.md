@@ -3232,161 +3232,6 @@ client.APIKeys.RotateAPIKey(
 </dl>
 </details>
 
-## Onboarding
-<details><summary><code>client.Onboarding.GetOnboardingStatus() -> *promptvmgosdk.GetOnboardingStatusResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Return the dashboard onboarding checklist status for the current user.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Onboarding.GetOnboardingStatus(
-        context.TODO(),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Onboarding.UpdateOnboardingStep(request) -> *promptvmgosdk.UpdateOnboardingStepResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Resolve or unresolve an onboarding checklist step.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.UpdateOnboardingStepRequest{
-        Step: promptvmgosdk.UpdateOnboardingStepRequestStepFirstPrompt,
-        Completed: true,
-    }
-client.Onboarding.UpdateOnboardingStep(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**step:** `*promptvmgosdk.UpdateOnboardingStepRequestStep` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**completed:** `bool` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Onboarding.DismissOnboarding() -> *promptvmgosdk.DismissOnboardingResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Dismiss the dashboard onboarding checklist.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Onboarding.DismissOnboarding(
-        context.TODO(),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## MarketplaceSocial
 <details><summary><code>client.MarketplaceSocial.FollowACreator(CreatorUserID) -> *promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse</code></summary>
 <dl>
@@ -4622,6 +4467,161 @@ client.MarketplaceComments.SoftDeleteMyComment(
 
 **commentID:** `string` 
     
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Onboarding
+<details><summary><code>client.Onboarding.GetOnboardingStatus() -> *promptvmgosdk.GetOnboardingStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return the dashboard onboarding checklist status for the current user.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Onboarding.GetOnboardingStatus(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Onboarding.UpdateOnboardingStep(request) -> *promptvmgosdk.UpdateOnboardingStepResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Resolve or unresolve an onboarding checklist step.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateOnboardingStepRequest{
+        Step: promptvmgosdk.UpdateOnboardingStepRequestStepFirstPrompt,
+        Completed: true,
+    }
+client.Onboarding.UpdateOnboardingStep(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**step:** `*promptvmgosdk.UpdateOnboardingStepRequestStep` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**completed:** `bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Onboarding.DismissOnboarding() -> *promptvmgosdk.DismissOnboardingResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Dismiss the dashboard onboarding checklist.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Onboarding.DismissOnboarding(
+        context.TODO(),
+    )
+}
+```
 </dd>
 </dl>
 </dd>
