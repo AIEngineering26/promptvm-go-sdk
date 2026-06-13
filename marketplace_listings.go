@@ -268,13 +268,15 @@ var (
 	claimMarketplaceListingResponseDataFieldImportedPromptID     = big.NewInt(1 << 1)
 	claimMarketplaceListingResponseDataFieldImportedCollectionID = big.NewInt(1 << 2)
 	claimMarketplaceListingResponseDataFieldClaimedVersionID     = big.NewInt(1 << 3)
+	claimMarketplaceListingResponseDataFieldCreatedItems         = big.NewInt(1 << 4)
 )
 
 type ClaimMarketplaceListingResponseData struct {
-	PurchaseID           string  `json:"purchaseId" url:"purchaseId"`
-	ImportedPromptID     *string `json:"importedPromptId,omitempty" url:"importedPromptId,omitempty"`
-	ImportedCollectionID *string `json:"importedCollectionId,omitempty" url:"importedCollectionId,omitempty"`
-	ClaimedVersionID     *string `json:"claimedVersionId,omitempty" url:"claimedVersionId,omitempty"`
+	PurchaseID           string                                           `json:"purchaseId" url:"purchaseId"`
+	ImportedPromptID     *string                                          `json:"importedPromptId,omitempty" url:"importedPromptId,omitempty"`
+	ImportedCollectionID *string                                          `json:"importedCollectionId,omitempty" url:"importedCollectionId,omitempty"`
+	ClaimedVersionID     *string                                          `json:"claimedVersionId,omitempty" url:"claimedVersionId,omitempty"`
+	CreatedItems         *ClaimMarketplaceListingResponseDataCreatedItems `json:"createdItems,omitempty" url:"createdItems,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -309,6 +311,13 @@ func (c *ClaimMarketplaceListingResponseData) GetClaimedVersionID() *string {
 		return nil
 	}
 	return c.ClaimedVersionID
+}
+
+func (c *ClaimMarketplaceListingResponseData) GetCreatedItems() *ClaimMarketplaceListingResponseDataCreatedItems {
+	if c == nil {
+		return nil
+	}
+	return c.CreatedItems
 }
 
 func (c *ClaimMarketplaceListingResponseData) GetExtraProperties() map[string]interface{} {
@@ -350,6 +359,13 @@ func (c *ClaimMarketplaceListingResponseData) SetClaimedVersionID(claimedVersion
 	c.require(claimMarketplaceListingResponseDataFieldClaimedVersionID)
 }
 
+// SetCreatedItems sets the CreatedItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseData) SetCreatedItems(createdItems *ClaimMarketplaceListingResponseDataCreatedItems) {
+	c.CreatedItems = createdItems
+	c.require(claimMarketplaceListingResponseDataFieldCreatedItems)
+}
+
 func (c *ClaimMarketplaceListingResponseData) UnmarshalJSON(data []byte) error {
 	type unmarshaler ClaimMarketplaceListingResponseData
 	var value unmarshaler
@@ -378,6 +394,524 @@ func (c *ClaimMarketplaceListingResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClaimMarketplaceListingResponseData) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	claimMarketplaceListingResponseDataCreatedItemsFieldPrompts      = big.NewInt(1 << 0)
+	claimMarketplaceListingResponseDataCreatedItemsFieldSkills       = big.NewInt(1 << 1)
+	claimMarketplaceListingResponseDataCreatedItemsFieldHooks        = big.NewInt(1 << 2)
+	claimMarketplaceListingResponseDataCreatedItemsFieldResources    = big.NewInt(1 << 3)
+	claimMarketplaceListingResponseDataCreatedItemsFieldCollectionID = big.NewInt(1 << 4)
+)
+
+type ClaimMarketplaceListingResponseDataCreatedItems struct {
+	Prompts      []*ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem   `json:"prompts" url:"prompts"`
+	Skills       []*ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem    `json:"skills" url:"skills"`
+	Hooks        []*ClaimMarketplaceListingResponseDataCreatedItemsHooksItem     `json:"hooks" url:"hooks"`
+	Resources    []*ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem `json:"resources" url:"resources"`
+	CollectionID *string                                                         `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) GetPrompts() []*ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem {
+	if c == nil {
+		return nil
+	}
+	return c.Prompts
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) GetSkills() []*ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem {
+	if c == nil {
+		return nil
+	}
+	return c.Skills
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) GetHooks() []*ClaimMarketplaceListingResponseDataCreatedItemsHooksItem {
+	if c == nil {
+		return nil
+	}
+	return c.Hooks
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) GetResources() []*ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem {
+	if c == nil {
+		return nil
+	}
+	return c.Resources
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) GetCollectionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CollectionID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetPrompts sets the Prompts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) SetPrompts(prompts []*ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) {
+	c.Prompts = prompts
+	c.require(claimMarketplaceListingResponseDataCreatedItemsFieldPrompts)
+}
+
+// SetSkills sets the Skills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) SetSkills(skills []*ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) {
+	c.Skills = skills
+	c.require(claimMarketplaceListingResponseDataCreatedItemsFieldSkills)
+}
+
+// SetHooks sets the Hooks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) SetHooks(hooks []*ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) {
+	c.Hooks = hooks
+	c.require(claimMarketplaceListingResponseDataCreatedItemsFieldHooks)
+}
+
+// SetResources sets the Resources field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) SetResources(resources []*ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) {
+	c.Resources = resources
+	c.require(claimMarketplaceListingResponseDataCreatedItemsFieldResources)
+}
+
+// SetCollectionID sets the CollectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) SetCollectionID(collectionID *string) {
+	c.CollectionID = collectionID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsFieldCollectionID)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClaimMarketplaceListingResponseDataCreatedItems
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClaimMarketplaceListingResponseDataCreatedItems(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) MarshalJSON() ([]byte, error) {
+	type embed ClaimMarketplaceListingResponseDataCreatedItems
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItems) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	claimMarketplaceListingResponseDataCreatedItemsHooksItemFieldNewFileID       = big.NewInt(1 << 0)
+	claimMarketplaceListingResponseDataCreatedItemsHooksItemFieldSourceVersionID = big.NewInt(1 << 1)
+)
+
+type ClaimMarketplaceListingResponseDataCreatedItemsHooksItem struct {
+	NewFileID       string  `json:"newFileId" url:"newFileId"`
+	SourceVersionID *string `json:"sourceVersionId,omitempty" url:"sourceVersionId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) GetNewFileID() string {
+	if c == nil {
+		return ""
+	}
+	return c.NewFileID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) GetSourceVersionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SourceVersionID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetNewFileID sets the NewFileID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) SetNewFileID(newFileID string) {
+	c.NewFileID = newFileID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsHooksItemFieldNewFileID)
+}
+
+// SetSourceVersionID sets the SourceVersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) SetSourceVersionID(sourceVersionID *string) {
+	c.SourceVersionID = sourceVersionID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsHooksItemFieldSourceVersionID)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClaimMarketplaceListingResponseDataCreatedItemsHooksItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClaimMarketplaceListingResponseDataCreatedItemsHooksItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) MarshalJSON() ([]byte, error) {
+	type embed ClaimMarketplaceListingResponseDataCreatedItemsHooksItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsHooksItem) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	claimMarketplaceListingResponseDataCreatedItemsPromptsItemFieldNewFileID       = big.NewInt(1 << 0)
+	claimMarketplaceListingResponseDataCreatedItemsPromptsItemFieldSourceVersionID = big.NewInt(1 << 1)
+)
+
+type ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem struct {
+	NewFileID       string  `json:"newFileId" url:"newFileId"`
+	SourceVersionID *string `json:"sourceVersionId,omitempty" url:"sourceVersionId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) GetNewFileID() string {
+	if c == nil {
+		return ""
+	}
+	return c.NewFileID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) GetSourceVersionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SourceVersionID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetNewFileID sets the NewFileID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) SetNewFileID(newFileID string) {
+	c.NewFileID = newFileID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsPromptsItemFieldNewFileID)
+}
+
+// SetSourceVersionID sets the SourceVersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) SetSourceVersionID(sourceVersionID *string) {
+	c.SourceVersionID = sourceVersionID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsPromptsItemFieldSourceVersionID)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) MarshalJSON() ([]byte, error) {
+	type embed ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsPromptsItem) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	claimMarketplaceListingResponseDataCreatedItemsResourcesItemFieldNewResourceID   = big.NewInt(1 << 0)
+	claimMarketplaceListingResponseDataCreatedItemsResourcesItemFieldSourceVersionID = big.NewInt(1 << 1)
+)
+
+type ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem struct {
+	NewResourceID   string  `json:"newResourceId" url:"newResourceId"`
+	SourceVersionID *string `json:"sourceVersionId,omitempty" url:"sourceVersionId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) GetNewResourceID() string {
+	if c == nil {
+		return ""
+	}
+	return c.NewResourceID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) GetSourceVersionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SourceVersionID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetNewResourceID sets the NewResourceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) SetNewResourceID(newResourceID string) {
+	c.NewResourceID = newResourceID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsResourcesItemFieldNewResourceID)
+}
+
+// SetSourceVersionID sets the SourceVersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) SetSourceVersionID(sourceVersionID *string) {
+	c.SourceVersionID = sourceVersionID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsResourcesItemFieldSourceVersionID)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) MarshalJSON() ([]byte, error) {
+	type embed ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsResourcesItem) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	claimMarketplaceListingResponseDataCreatedItemsSkillsItemFieldNewFileID       = big.NewInt(1 << 0)
+	claimMarketplaceListingResponseDataCreatedItemsSkillsItemFieldSourceVersionID = big.NewInt(1 << 1)
+)
+
+type ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem struct {
+	NewFileID       string  `json:"newFileId" url:"newFileId"`
+	SourceVersionID *string `json:"sourceVersionId,omitempty" url:"sourceVersionId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) GetNewFileID() string {
+	if c == nil {
+		return ""
+	}
+	return c.NewFileID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) GetSourceVersionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SourceVersionID
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetNewFileID sets the NewFileID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) SetNewFileID(newFileID string) {
+	c.NewFileID = newFileID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsSkillsItemFieldNewFileID)
+}
+
+// SetSourceVersionID sets the SourceVersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) SetSourceVersionID(sourceVersionID *string) {
+	c.SourceVersionID = sourceVersionID
+	c.require(claimMarketplaceListingResponseDataCreatedItemsSkillsItemFieldSourceVersionID)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) MarshalJSON() ([]byte, error) {
+	type embed ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClaimMarketplaceListingResponseDataCreatedItemsSkillsItem) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
