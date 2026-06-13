@@ -1986,7 +1986,7 @@ client.MarketplaceBrowse.ListMarketplaceCategories(
 <dl>
 <dd>
 
-Publishes a prompt or collection to the marketplace. Requires a creator profile.
+Publishes a prompt, skill, hook, collection, or directory to the marketplace. Skills/hooks are sourced via promptId (or the skillId/hookId aliases). Listings are free-only — priceCents must be 0. Requires a creator profile.
 </dd>
 </dl>
 </dd>
@@ -2025,6 +2025,22 @@ client.MarketplaceListings.CreateMarketplaceListing(
 <dd>
 
 **promptID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**skillID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hookID:** `*string` 
     
 </dd>
 </dl>

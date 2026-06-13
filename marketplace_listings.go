@@ -71,18 +71,22 @@ func (c *ClaimMarketplaceListingRequest) SetWorkspaceID(workspaceID string) {
 
 var (
 	createMarketplaceListingRequestFieldPromptID     = big.NewInt(1 << 0)
-	createMarketplaceListingRequestFieldCollectionID = big.NewInt(1 << 1)
-	createMarketplaceListingRequestFieldDirectoryID  = big.NewInt(1 << 2)
-	createMarketplaceListingRequestFieldTitle        = big.NewInt(1 << 3)
-	createMarketplaceListingRequestFieldDescription  = big.NewInt(1 << 4)
-	createMarketplaceListingRequestFieldCategoryIDs  = big.NewInt(1 << 5)
-	createMarketplaceListingRequestFieldTags         = big.NewInt(1 << 6)
-	createMarketplaceListingRequestFieldPriceCents   = big.NewInt(1 << 7)
-	createMarketplaceListingRequestFieldAccessType   = big.NewInt(1 << 8)
+	createMarketplaceListingRequestFieldSkillID      = big.NewInt(1 << 1)
+	createMarketplaceListingRequestFieldHookID       = big.NewInt(1 << 2)
+	createMarketplaceListingRequestFieldCollectionID = big.NewInt(1 << 3)
+	createMarketplaceListingRequestFieldDirectoryID  = big.NewInt(1 << 4)
+	createMarketplaceListingRequestFieldTitle        = big.NewInt(1 << 5)
+	createMarketplaceListingRequestFieldDescription  = big.NewInt(1 << 6)
+	createMarketplaceListingRequestFieldCategoryIDs  = big.NewInt(1 << 7)
+	createMarketplaceListingRequestFieldTags         = big.NewInt(1 << 8)
+	createMarketplaceListingRequestFieldPriceCents   = big.NewInt(1 << 9)
+	createMarketplaceListingRequestFieldAccessType   = big.NewInt(1 << 10)
 )
 
 type CreateMarketplaceListingRequest struct {
 	PromptID     *string                                    `json:"promptId,omitempty" url:"-"`
+	SkillID      *string                                    `json:"skillId,omitempty" url:"-"`
+	HookID       *string                                    `json:"hookId,omitempty" url:"-"`
 	CollectionID *string                                    `json:"collectionId,omitempty" url:"-"`
 	DirectoryID  *string                                    `json:"directoryId,omitempty" url:"-"`
 	Title        string                                     `json:"title" url:"-"`
@@ -108,6 +112,20 @@ func (c *CreateMarketplaceListingRequest) require(field *big.Int) {
 func (c *CreateMarketplaceListingRequest) SetPromptID(promptID *string) {
 	c.PromptID = promptID
 	c.require(createMarketplaceListingRequestFieldPromptID)
+}
+
+// SetSkillID sets the SkillID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingRequest) SetSkillID(skillID *string) {
+	c.SkillID = skillID
+	c.require(createMarketplaceListingRequestFieldSkillID)
+}
+
+// SetHookID sets the HookID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingRequest) SetHookID(hookID *string) {
+	c.HookID = hookID
+	c.require(createMarketplaceListingRequestFieldHookID)
 }
 
 // SetCollectionID sets the CollectionID field and marks it as non-optional;
