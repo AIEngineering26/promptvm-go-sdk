@@ -143,3 +143,20 @@ func (c *Client) RemoveCollectionItem(
 	}
 	return response.Body, nil
 }
+
+// Rewrites each member's position to its index in orderedItemIds. The id set must match the collection's current members exactly.
+func (c *Client) ReorderCollectionItems(
+	ctx context.Context,
+	request *promptvmgosdk.ReorderCollectionItemsRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ReorderCollectionItemsResponse, error) {
+	response, err := c.WithRawResponse.ReorderCollectionItems(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

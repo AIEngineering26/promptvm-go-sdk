@@ -205,6 +205,40 @@ func (r *RemoveCollectionItemRequest) SetItemID(itemID string) {
 	r.require(removeCollectionItemRequestFieldItemID)
 }
 
+var (
+	reorderCollectionItemsRequestFieldCollectionID   = big.NewInt(1 << 0)
+	reorderCollectionItemsRequestFieldOrderedItemIDs = big.NewInt(1 << 1)
+)
+
+type ReorderCollectionItemsRequest struct {
+	CollectionID   string   `json:"-" url:"-"`
+	OrderedItemIDs []string `json:"orderedItemIds" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *ReorderCollectionItemsRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetCollectionID sets the CollectionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsRequest) SetCollectionID(collectionID string) {
+	r.CollectionID = collectionID
+	r.require(reorderCollectionItemsRequestFieldCollectionID)
+}
+
+// SetOrderedItemIDs sets the OrderedItemIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsRequest) SetOrderedItemIDs(orderedItemIDs []string) {
+	r.OrderedItemIDs = orderedItemIDs
+	r.require(reorderCollectionItemsRequestFieldOrderedItemIDs)
+}
+
 // Item added
 var (
 	addCollectionItemResponseFieldData = big.NewInt(1 << 0)
@@ -287,17 +321,19 @@ func (a *AddCollectionItemResponse) String() string {
 var (
 	addCollectionItemResponseDataFieldID        = big.NewInt(1 << 0)
 	addCollectionItemResponseDataFieldFileID    = big.NewInt(1 << 1)
-	addCollectionItemResponseDataFieldNote      = big.NewInt(1 << 2)
-	addCollectionItemResponseDataFieldCreatedAt = big.NewInt(1 << 3)
-	addCollectionItemResponseDataFieldFile      = big.NewInt(1 << 4)
+	addCollectionItemResponseDataFieldItemType  = big.NewInt(1 << 2)
+	addCollectionItemResponseDataFieldPosition  = big.NewInt(1 << 3)
+	addCollectionItemResponseDataFieldNote      = big.NewInt(1 << 4)
+	addCollectionItemResponseDataFieldCreatedAt = big.NewInt(1 << 5)
 )
 
 type AddCollectionItemResponseData struct {
-	ID        string                             `json:"id" url:"id"`
-	FileID    string                             `json:"fileId" url:"fileId"`
-	Note      *string                            `json:"note,omitempty" url:"note,omitempty"`
-	CreatedAt time.Time                          `json:"createdAt" url:"createdAt"`
-	File      *AddCollectionItemResponseDataFile `json:"file,omitempty" url:"file,omitempty"`
+	ID        string                                `json:"id" url:"id"`
+	FileID    string                                `json:"fileId" url:"fileId"`
+	ItemType  AddCollectionItemResponseDataItemType `json:"itemType" url:"itemType"`
+	Position  int                                   `json:"position" url:"position"`
+	Note      *string                               `json:"note,omitempty" url:"note,omitempty"`
+	CreatedAt time.Time                             `json:"createdAt" url:"createdAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -320,6 +356,20 @@ func (a *AddCollectionItemResponseData) GetFileID() string {
 	return a.FileID
 }
 
+func (a *AddCollectionItemResponseData) GetItemType() AddCollectionItemResponseDataItemType {
+	if a == nil {
+		return ""
+	}
+	return a.ItemType
+}
+
+func (a *AddCollectionItemResponseData) GetPosition() int {
+	if a == nil {
+		return 0
+	}
+	return a.Position
+}
+
 func (a *AddCollectionItemResponseData) GetNote() *string {
 	if a == nil {
 		return nil
@@ -332,13 +382,6 @@ func (a *AddCollectionItemResponseData) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.CreatedAt
-}
-
-func (a *AddCollectionItemResponseData) GetFile() *AddCollectionItemResponseDataFile {
-	if a == nil {
-		return nil
-	}
-	return a.File
 }
 
 func (a *AddCollectionItemResponseData) GetExtraProperties() map[string]interface{} {
@@ -366,6 +409,20 @@ func (a *AddCollectionItemResponseData) SetFileID(fileID string) {
 	a.require(addCollectionItemResponseDataFieldFileID)
 }
 
+// SetItemType sets the ItemType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddCollectionItemResponseData) SetItemType(itemType AddCollectionItemResponseDataItemType) {
+	a.ItemType = itemType
+	a.require(addCollectionItemResponseDataFieldItemType)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddCollectionItemResponseData) SetPosition(position int) {
+	a.Position = position
+	a.require(addCollectionItemResponseDataFieldPosition)
+}
+
 // SetNote sets the Note field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *AddCollectionItemResponseData) SetNote(note *string) {
@@ -378,13 +435,6 @@ func (a *AddCollectionItemResponseData) SetNote(note *string) {
 func (a *AddCollectionItemResponseData) SetCreatedAt(createdAt time.Time) {
 	a.CreatedAt = createdAt
 	a.require(addCollectionItemResponseDataFieldCreatedAt)
-}
-
-// SetFile sets the File field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddCollectionItemResponseData) SetFile(file *AddCollectionItemResponseDataFile) {
-	a.File = file
-	a.require(addCollectionItemResponseDataFieldFile)
 }
 
 func (a *AddCollectionItemResponseData) UnmarshalJSON(data []byte) error {
@@ -434,114 +484,32 @@ func (a *AddCollectionItemResponseData) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-var (
-	addCollectionItemResponseDataFileFieldName = big.NewInt(1 << 0)
-	addCollectionItemResponseDataFileFieldSlug = big.NewInt(1 << 1)
-	addCollectionItemResponseDataFileFieldType = big.NewInt(1 << 2)
+type AddCollectionItemResponseDataItemType string
+
+const (
+	AddCollectionItemResponseDataItemTypePrompt   AddCollectionItemResponseDataItemType = "prompt"
+	AddCollectionItemResponseDataItemTypeSkill    AddCollectionItemResponseDataItemType = "skill"
+	AddCollectionItemResponseDataItemTypeHook     AddCollectionItemResponseDataItemType = "hook"
+	AddCollectionItemResponseDataItemTypeResource AddCollectionItemResponseDataItemType = "resource"
 )
 
-type AddCollectionItemResponseDataFile struct {
-	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	Slug *string `json:"slug,omitempty" url:"slug,omitempty"`
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AddCollectionItemResponseDataFile) GetName() *string {
-	if a == nil {
-		return nil
+func NewAddCollectionItemResponseDataItemTypeFromString(s string) (AddCollectionItemResponseDataItemType, error) {
+	switch s {
+	case "prompt":
+		return AddCollectionItemResponseDataItemTypePrompt, nil
+	case "skill":
+		return AddCollectionItemResponseDataItemTypeSkill, nil
+	case "hook":
+		return AddCollectionItemResponseDataItemTypeHook, nil
+	case "resource":
+		return AddCollectionItemResponseDataItemTypeResource, nil
 	}
-	return a.Name
+	var t AddCollectionItemResponseDataItemType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (a *AddCollectionItemResponseDataFile) GetSlug() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Slug
-}
-
-func (a *AddCollectionItemResponseDataFile) GetType() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Type
-}
-
-func (a *AddCollectionItemResponseDataFile) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *AddCollectionItemResponseDataFile) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddCollectionItemResponseDataFile) SetName(name *string) {
-	a.Name = name
-	a.require(addCollectionItemResponseDataFileFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddCollectionItemResponseDataFile) SetSlug(slug *string) {
-	a.Slug = slug
-	a.require(addCollectionItemResponseDataFileFieldSlug)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddCollectionItemResponseDataFile) SetType(type_ *string) {
-	a.Type = type_
-	a.require(addCollectionItemResponseDataFileFieldType)
-}
-
-func (a *AddCollectionItemResponseDataFile) UnmarshalJSON(data []byte) error {
-	type unmarshaler AddCollectionItemResponseDataFile
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AddCollectionItemResponseDataFile(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AddCollectionItemResponseDataFile) MarshalJSON() ([]byte, error) {
-	type embed AddCollectionItemResponseDataFile
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AddCollectionItemResponseDataFile) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
+func (a AddCollectionItemResponseDataItemType) Ptr() *AddCollectionItemResponseDataItemType {
+	return &a
 }
 
 // Collection created
@@ -959,6 +927,7 @@ var (
 	getCollectionResponseDataFieldCreatedAt   = big.NewInt(1 << 4)
 	getCollectionResponseDataFieldUpdatedAt   = big.NewInt(1 << 5)
 	getCollectionResponseDataFieldItems       = big.NewInt(1 << 6)
+	getCollectionResponseDataFieldCounts      = big.NewInt(1 << 7)
 )
 
 type GetCollectionResponseData struct {
@@ -969,6 +938,7 @@ type GetCollectionResponseData struct {
 	CreatedAt   *time.Time                            `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt   *time.Time                            `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
 	Items       []*GetCollectionResponseDataItemsItem `json:"items,omitempty" url:"items,omitempty"`
+	Counts      *GetCollectionResponseDataCounts      `json:"counts,omitempty" url:"counts,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1024,6 +994,13 @@ func (g *GetCollectionResponseData) GetItems() []*GetCollectionResponseDataItems
 		return nil
 	}
 	return g.Items
+}
+
+func (g *GetCollectionResponseData) GetCounts() *GetCollectionResponseDataCounts {
+	if g == nil {
+		return nil
+	}
+	return g.Counts
 }
 
 func (g *GetCollectionResponseData) GetExtraProperties() map[string]interface{} {
@@ -1086,6 +1063,13 @@ func (g *GetCollectionResponseData) SetItems(items []*GetCollectionResponseDataI
 	g.require(getCollectionResponseDataFieldItems)
 }
 
+// SetCounts sets the Counts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseData) SetCounts(counts *GetCollectionResponseDataCounts) {
+	g.Counts = counts
+	g.require(getCollectionResponseDataFieldCounts)
+}
+
 func (g *GetCollectionResponseData) UnmarshalJSON(data []byte) error {
 	type embed GetCollectionResponseData
 	var unmarshaler = struct {
@@ -1138,19 +1122,153 @@ func (g *GetCollectionResponseData) String() string {
 }
 
 var (
+	getCollectionResponseDataCountsFieldPrompts   = big.NewInt(1 << 0)
+	getCollectionResponseDataCountsFieldSkills    = big.NewInt(1 << 1)
+	getCollectionResponseDataCountsFieldHooks     = big.NewInt(1 << 2)
+	getCollectionResponseDataCountsFieldResources = big.NewInt(1 << 3)
+)
+
+type GetCollectionResponseDataCounts struct {
+	Prompts   int `json:"prompts" url:"prompts"`
+	Skills    int `json:"skills" url:"skills"`
+	Hooks     int `json:"hooks" url:"hooks"`
+	Resources int `json:"resources" url:"resources"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetCollectionResponseDataCounts) GetPrompts() int {
+	if g == nil {
+		return 0
+	}
+	return g.Prompts
+}
+
+func (g *GetCollectionResponseDataCounts) GetSkills() int {
+	if g == nil {
+		return 0
+	}
+	return g.Skills
+}
+
+func (g *GetCollectionResponseDataCounts) GetHooks() int {
+	if g == nil {
+		return 0
+	}
+	return g.Hooks
+}
+
+func (g *GetCollectionResponseDataCounts) GetResources() int {
+	if g == nil {
+		return 0
+	}
+	return g.Resources
+}
+
+func (g *GetCollectionResponseDataCounts) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetCollectionResponseDataCounts) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetPrompts sets the Prompts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataCounts) SetPrompts(prompts int) {
+	g.Prompts = prompts
+	g.require(getCollectionResponseDataCountsFieldPrompts)
+}
+
+// SetSkills sets the Skills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataCounts) SetSkills(skills int) {
+	g.Skills = skills
+	g.require(getCollectionResponseDataCountsFieldSkills)
+}
+
+// SetHooks sets the Hooks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataCounts) SetHooks(hooks int) {
+	g.Hooks = hooks
+	g.require(getCollectionResponseDataCountsFieldHooks)
+}
+
+// SetResources sets the Resources field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataCounts) SetResources(resources int) {
+	g.Resources = resources
+	g.require(getCollectionResponseDataCountsFieldResources)
+}
+
+func (g *GetCollectionResponseDataCounts) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetCollectionResponseDataCounts
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetCollectionResponseDataCounts(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetCollectionResponseDataCounts) MarshalJSON() ([]byte, error) {
+	type embed GetCollectionResponseDataCounts
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetCollectionResponseDataCounts) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
 	getCollectionResponseDataItemsItemFieldID        = big.NewInt(1 << 0)
 	getCollectionResponseDataItemsItemFieldFileID    = big.NewInt(1 << 1)
-	getCollectionResponseDataItemsItemFieldNote      = big.NewInt(1 << 2)
-	getCollectionResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 3)
-	getCollectionResponseDataItemsItemFieldFile      = big.NewInt(1 << 4)
+	getCollectionResponseDataItemsItemFieldItemType  = big.NewInt(1 << 2)
+	getCollectionResponseDataItemsItemFieldName      = big.NewInt(1 << 3)
+	getCollectionResponseDataItemsItemFieldSlug      = big.NewInt(1 << 4)
+	getCollectionResponseDataItemsItemFieldNote      = big.NewInt(1 << 5)
+	getCollectionResponseDataItemsItemFieldPosition  = big.NewInt(1 << 6)
+	getCollectionResponseDataItemsItemFieldFileCount = big.NewInt(1 << 7)
+	getCollectionResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 8)
 )
 
 type GetCollectionResponseDataItemsItem struct {
-	ID        string                                  `json:"id" url:"id"`
-	FileID    string                                  `json:"fileId" url:"fileId"`
-	Note      *string                                 `json:"note,omitempty" url:"note,omitempty"`
-	CreatedAt time.Time                               `json:"createdAt" url:"createdAt"`
-	File      *GetCollectionResponseDataItemsItemFile `json:"file,omitempty" url:"file,omitempty"`
+	ID        string                                     `json:"id" url:"id"`
+	FileID    string                                     `json:"fileId" url:"fileId"`
+	ItemType  GetCollectionResponseDataItemsItemItemType `json:"itemType" url:"itemType"`
+	Name      *string                                    `json:"name,omitempty" url:"name,omitempty"`
+	Slug      *string                                    `json:"slug,omitempty" url:"slug,omitempty"`
+	Note      *string                                    `json:"note,omitempty" url:"note,omitempty"`
+	Position  int                                        `json:"position" url:"position"`
+	FileCount *int                                       `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	CreatedAt time.Time                                  `json:"createdAt" url:"createdAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1173,6 +1291,27 @@ func (g *GetCollectionResponseDataItemsItem) GetFileID() string {
 	return g.FileID
 }
 
+func (g *GetCollectionResponseDataItemsItem) GetItemType() GetCollectionResponseDataItemsItemItemType {
+	if g == nil {
+		return ""
+	}
+	return g.ItemType
+}
+
+func (g *GetCollectionResponseDataItemsItem) GetName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Name
+}
+
+func (g *GetCollectionResponseDataItemsItem) GetSlug() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Slug
+}
+
 func (g *GetCollectionResponseDataItemsItem) GetNote() *string {
 	if g == nil {
 		return nil
@@ -1180,18 +1319,25 @@ func (g *GetCollectionResponseDataItemsItem) GetNote() *string {
 	return g.Note
 }
 
+func (g *GetCollectionResponseDataItemsItem) GetPosition() int {
+	if g == nil {
+		return 0
+	}
+	return g.Position
+}
+
+func (g *GetCollectionResponseDataItemsItem) GetFileCount() *int {
+	if g == nil {
+		return nil
+	}
+	return g.FileCount
+}
+
 func (g *GetCollectionResponseDataItemsItem) GetCreatedAt() time.Time {
 	if g == nil {
 		return time.Time{}
 	}
 	return g.CreatedAt
-}
-
-func (g *GetCollectionResponseDataItemsItem) GetFile() *GetCollectionResponseDataItemsItemFile {
-	if g == nil {
-		return nil
-	}
-	return g.File
 }
 
 func (g *GetCollectionResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
@@ -1219,6 +1365,27 @@ func (g *GetCollectionResponseDataItemsItem) SetFileID(fileID string) {
 	g.require(getCollectionResponseDataItemsItemFieldFileID)
 }
 
+// SetItemType sets the ItemType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataItemsItem) SetItemType(itemType GetCollectionResponseDataItemsItemItemType) {
+	g.ItemType = itemType
+	g.require(getCollectionResponseDataItemsItemFieldItemType)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataItemsItem) SetName(name *string) {
+	g.Name = name
+	g.require(getCollectionResponseDataItemsItemFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataItemsItem) SetSlug(slug *string) {
+	g.Slug = slug
+	g.require(getCollectionResponseDataItemsItemFieldSlug)
+}
+
 // SetNote sets the Note field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetCollectionResponseDataItemsItem) SetNote(note *string) {
@@ -1226,18 +1393,25 @@ func (g *GetCollectionResponseDataItemsItem) SetNote(note *string) {
 	g.require(getCollectionResponseDataItemsItemFieldNote)
 }
 
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataItemsItem) SetPosition(position int) {
+	g.Position = position
+	g.require(getCollectionResponseDataItemsItemFieldPosition)
+}
+
+// SetFileCount sets the FileCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataItemsItem) SetFileCount(fileCount *int) {
+	g.FileCount = fileCount
+	g.require(getCollectionResponseDataItemsItemFieldFileCount)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetCollectionResponseDataItemsItem) SetCreatedAt(createdAt time.Time) {
 	g.CreatedAt = createdAt
 	g.require(getCollectionResponseDataItemsItemFieldCreatedAt)
-}
-
-// SetFile sets the File field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetCollectionResponseDataItemsItem) SetFile(file *GetCollectionResponseDataItemsItemFile) {
-	g.File = file
-	g.require(getCollectionResponseDataItemsItemFieldFile)
 }
 
 func (g *GetCollectionResponseDataItemsItem) UnmarshalJSON(data []byte) error {
@@ -1287,114 +1461,32 @@ func (g *GetCollectionResponseDataItemsItem) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
-var (
-	getCollectionResponseDataItemsItemFileFieldName = big.NewInt(1 << 0)
-	getCollectionResponseDataItemsItemFileFieldSlug = big.NewInt(1 << 1)
-	getCollectionResponseDataItemsItemFileFieldType = big.NewInt(1 << 2)
+type GetCollectionResponseDataItemsItemItemType string
+
+const (
+	GetCollectionResponseDataItemsItemItemTypePrompt   GetCollectionResponseDataItemsItemItemType = "prompt"
+	GetCollectionResponseDataItemsItemItemTypeSkill    GetCollectionResponseDataItemsItemItemType = "skill"
+	GetCollectionResponseDataItemsItemItemTypeHook     GetCollectionResponseDataItemsItemItemType = "hook"
+	GetCollectionResponseDataItemsItemItemTypeResource GetCollectionResponseDataItemsItemItemType = "resource"
 )
 
-type GetCollectionResponseDataItemsItemFile struct {
-	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	Slug *string `json:"slug,omitempty" url:"slug,omitempty"`
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetCollectionResponseDataItemsItemFile) GetName() *string {
-	if g == nil {
-		return nil
+func NewGetCollectionResponseDataItemsItemItemTypeFromString(s string) (GetCollectionResponseDataItemsItemItemType, error) {
+	switch s {
+	case "prompt":
+		return GetCollectionResponseDataItemsItemItemTypePrompt, nil
+	case "skill":
+		return GetCollectionResponseDataItemsItemItemTypeSkill, nil
+	case "hook":
+		return GetCollectionResponseDataItemsItemItemTypeHook, nil
+	case "resource":
+		return GetCollectionResponseDataItemsItemItemTypeResource, nil
 	}
-	return g.Name
+	var t GetCollectionResponseDataItemsItemItemType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (g *GetCollectionResponseDataItemsItemFile) GetSlug() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Slug
-}
-
-func (g *GetCollectionResponseDataItemsItemFile) GetType() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Type
-}
-
-func (g *GetCollectionResponseDataItemsItemFile) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GetCollectionResponseDataItemsItemFile) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetCollectionResponseDataItemsItemFile) SetName(name *string) {
-	g.Name = name
-	g.require(getCollectionResponseDataItemsItemFileFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetCollectionResponseDataItemsItemFile) SetSlug(slug *string) {
-	g.Slug = slug
-	g.require(getCollectionResponseDataItemsItemFileFieldSlug)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetCollectionResponseDataItemsItemFile) SetType(type_ *string) {
-	g.Type = type_
-	g.require(getCollectionResponseDataItemsItemFileFieldType)
-}
-
-func (g *GetCollectionResponseDataItemsItemFile) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetCollectionResponseDataItemsItemFile
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetCollectionResponseDataItemsItemFile(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetCollectionResponseDataItemsItemFile) MarshalJSON() ([]byte, error) {
-	type embed GetCollectionResponseDataItemsItemFile
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetCollectionResponseDataItemsItemFile) String() string {
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
+func (g GetCollectionResponseDataItemsItemItemType) Ptr() *GetCollectionResponseDataItemsItemItemType {
+	return &g
 }
 
 // Collections list
@@ -1833,6 +1925,655 @@ func (r *RemoveCollectionItemResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
+}
+
+// Items reordered
+var (
+	reorderCollectionItemsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type ReorderCollectionItemsResponse struct {
+	Data *ReorderCollectionItemsResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReorderCollectionItemsResponse) GetData() *ReorderCollectionItemsResponseData {
+	if r == nil {
+		return nil
+	}
+	return r.Data
+}
+
+func (r *ReorderCollectionItemsResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ReorderCollectionItemsResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponse) SetData(data *ReorderCollectionItemsResponseData) {
+	r.Data = data
+	r.require(reorderCollectionItemsResponseFieldData)
+}
+
+func (r *ReorderCollectionItemsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReorderCollectionItemsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReorderCollectionItemsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReorderCollectionItemsResponse) MarshalJSON() ([]byte, error) {
+	type embed ReorderCollectionItemsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReorderCollectionItemsResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	reorderCollectionItemsResponseDataFieldID          = big.NewInt(1 << 0)
+	reorderCollectionItemsResponseDataFieldName        = big.NewInt(1 << 1)
+	reorderCollectionItemsResponseDataFieldDescription = big.NewInt(1 << 2)
+	reorderCollectionItemsResponseDataFieldIsSystem    = big.NewInt(1 << 3)
+	reorderCollectionItemsResponseDataFieldCreatedAt   = big.NewInt(1 << 4)
+	reorderCollectionItemsResponseDataFieldUpdatedAt   = big.NewInt(1 << 5)
+	reorderCollectionItemsResponseDataFieldItems       = big.NewInt(1 << 6)
+	reorderCollectionItemsResponseDataFieldCounts      = big.NewInt(1 << 7)
+)
+
+type ReorderCollectionItemsResponseData struct {
+	ID          *string                                        `json:"id,omitempty" url:"id,omitempty"`
+	Name        *string                                        `json:"name,omitempty" url:"name,omitempty"`
+	Description *string                                        `json:"description,omitempty" url:"description,omitempty"`
+	IsSystem    *bool                                          `json:"isSystem,omitempty" url:"isSystem,omitempty"`
+	CreatedAt   *time.Time                                     `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	UpdatedAt   *time.Time                                     `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	Items       []*ReorderCollectionItemsResponseDataItemsItem `json:"items,omitempty" url:"items,omitempty"`
+	Counts      *ReorderCollectionItemsResponseDataCounts      `json:"counts,omitempty" url:"counts,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReorderCollectionItemsResponseData) GetID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ID
+}
+
+func (r *ReorderCollectionItemsResponseData) GetName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Name
+}
+
+func (r *ReorderCollectionItemsResponseData) GetDescription() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Description
+}
+
+func (r *ReorderCollectionItemsResponseData) GetIsSystem() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.IsSystem
+}
+
+func (r *ReorderCollectionItemsResponseData) GetCreatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.CreatedAt
+}
+
+func (r *ReorderCollectionItemsResponseData) GetUpdatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.UpdatedAt
+}
+
+func (r *ReorderCollectionItemsResponseData) GetItems() []*ReorderCollectionItemsResponseDataItemsItem {
+	if r == nil {
+		return nil
+	}
+	return r.Items
+}
+
+func (r *ReorderCollectionItemsResponseData) GetCounts() *ReorderCollectionItemsResponseDataCounts {
+	if r == nil {
+		return nil
+	}
+	return r.Counts
+}
+
+func (r *ReorderCollectionItemsResponseData) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ReorderCollectionItemsResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetID(id *string) {
+	r.ID = id
+	r.require(reorderCollectionItemsResponseDataFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetName(name *string) {
+	r.Name = name
+	r.require(reorderCollectionItemsResponseDataFieldName)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetDescription(description *string) {
+	r.Description = description
+	r.require(reorderCollectionItemsResponseDataFieldDescription)
+}
+
+// SetIsSystem sets the IsSystem field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetIsSystem(isSystem *bool) {
+	r.IsSystem = isSystem
+	r.require(reorderCollectionItemsResponseDataFieldIsSystem)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetCreatedAt(createdAt *time.Time) {
+	r.CreatedAt = createdAt
+	r.require(reorderCollectionItemsResponseDataFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetUpdatedAt(updatedAt *time.Time) {
+	r.UpdatedAt = updatedAt
+	r.require(reorderCollectionItemsResponseDataFieldUpdatedAt)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetItems(items []*ReorderCollectionItemsResponseDataItemsItem) {
+	r.Items = items
+	r.require(reorderCollectionItemsResponseDataFieldItems)
+}
+
+// SetCounts sets the Counts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseData) SetCounts(counts *ReorderCollectionItemsResponseDataCounts) {
+	r.Counts = counts
+	r.require(reorderCollectionItemsResponseDataFieldCounts)
+}
+
+func (r *ReorderCollectionItemsResponseData) UnmarshalJSON(data []byte) error {
+	type embed ReorderCollectionItemsResponseData
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*r = ReorderCollectionItemsResponseData(unmarshaler.embed)
+	r.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	r.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReorderCollectionItemsResponseData) MarshalJSON() ([]byte, error) {
+	type embed ReorderCollectionItemsResponseData
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed:     embed(*r),
+		CreatedAt: internal.NewOptionalDateTime(r.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(r.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReorderCollectionItemsResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	reorderCollectionItemsResponseDataCountsFieldPrompts   = big.NewInt(1 << 0)
+	reorderCollectionItemsResponseDataCountsFieldSkills    = big.NewInt(1 << 1)
+	reorderCollectionItemsResponseDataCountsFieldHooks     = big.NewInt(1 << 2)
+	reorderCollectionItemsResponseDataCountsFieldResources = big.NewInt(1 << 3)
+)
+
+type ReorderCollectionItemsResponseDataCounts struct {
+	Prompts   int `json:"prompts" url:"prompts"`
+	Skills    int `json:"skills" url:"skills"`
+	Hooks     int `json:"hooks" url:"hooks"`
+	Resources int `json:"resources" url:"resources"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) GetPrompts() int {
+	if r == nil {
+		return 0
+	}
+	return r.Prompts
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) GetSkills() int {
+	if r == nil {
+		return 0
+	}
+	return r.Skills
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) GetHooks() int {
+	if r == nil {
+		return 0
+	}
+	return r.Hooks
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) GetResources() int {
+	if r == nil {
+		return 0
+	}
+	return r.Resources
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetPrompts sets the Prompts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataCounts) SetPrompts(prompts int) {
+	r.Prompts = prompts
+	r.require(reorderCollectionItemsResponseDataCountsFieldPrompts)
+}
+
+// SetSkills sets the Skills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataCounts) SetSkills(skills int) {
+	r.Skills = skills
+	r.require(reorderCollectionItemsResponseDataCountsFieldSkills)
+}
+
+// SetHooks sets the Hooks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataCounts) SetHooks(hooks int) {
+	r.Hooks = hooks
+	r.require(reorderCollectionItemsResponseDataCountsFieldHooks)
+}
+
+// SetResources sets the Resources field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataCounts) SetResources(resources int) {
+	r.Resources = resources
+	r.require(reorderCollectionItemsResponseDataCountsFieldResources)
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReorderCollectionItemsResponseDataCounts
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReorderCollectionItemsResponseDataCounts(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) MarshalJSON() ([]byte, error) {
+	type embed ReorderCollectionItemsResponseDataCounts
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReorderCollectionItemsResponseDataCounts) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	reorderCollectionItemsResponseDataItemsItemFieldID        = big.NewInt(1 << 0)
+	reorderCollectionItemsResponseDataItemsItemFieldFileID    = big.NewInt(1 << 1)
+	reorderCollectionItemsResponseDataItemsItemFieldItemType  = big.NewInt(1 << 2)
+	reorderCollectionItemsResponseDataItemsItemFieldName      = big.NewInt(1 << 3)
+	reorderCollectionItemsResponseDataItemsItemFieldSlug      = big.NewInt(1 << 4)
+	reorderCollectionItemsResponseDataItemsItemFieldNote      = big.NewInt(1 << 5)
+	reorderCollectionItemsResponseDataItemsItemFieldPosition  = big.NewInt(1 << 6)
+	reorderCollectionItemsResponseDataItemsItemFieldFileCount = big.NewInt(1 << 7)
+	reorderCollectionItemsResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 8)
+)
+
+type ReorderCollectionItemsResponseDataItemsItem struct {
+	ID        string                                              `json:"id" url:"id"`
+	FileID    string                                              `json:"fileId" url:"fileId"`
+	ItemType  ReorderCollectionItemsResponseDataItemsItemItemType `json:"itemType" url:"itemType"`
+	Name      *string                                             `json:"name,omitempty" url:"name,omitempty"`
+	Slug      *string                                             `json:"slug,omitempty" url:"slug,omitempty"`
+	Note      *string                                             `json:"note,omitempty" url:"note,omitempty"`
+	Position  int                                                 `json:"position" url:"position"`
+	FileCount *int                                                `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	CreatedAt time.Time                                           `json:"createdAt" url:"createdAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ID
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetFileID() string {
+	if r == nil {
+		return ""
+	}
+	return r.FileID
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetItemType() ReorderCollectionItemsResponseDataItemsItemItemType {
+	if r == nil {
+		return ""
+	}
+	return r.ItemType
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Name
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetSlug() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Slug
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetNote() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Note
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetPosition() int {
+	if r == nil {
+		return 0
+	}
+	return r.Position
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetFileCount() *int {
+	if r == nil {
+		return nil
+	}
+	return r.FileCount
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetCreatedAt() time.Time {
+	if r == nil {
+		return time.Time{}
+	}
+	return r.CreatedAt
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetID(id string) {
+	r.ID = id
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldID)
+}
+
+// SetFileID sets the FileID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetFileID(fileID string) {
+	r.FileID = fileID
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldFileID)
+}
+
+// SetItemType sets the ItemType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetItemType(itemType ReorderCollectionItemsResponseDataItemsItemItemType) {
+	r.ItemType = itemType
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldItemType)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetName(name *string) {
+	r.Name = name
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetSlug(slug *string) {
+	r.Slug = slug
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldSlug)
+}
+
+// SetNote sets the Note field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetNote(note *string) {
+	r.Note = note
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldNote)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetPosition(position int) {
+	r.Position = position
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldPosition)
+}
+
+// SetFileCount sets the FileCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetFileCount(fileCount *int) {
+	r.FileCount = fileCount
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldFileCount)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetCreatedAt(createdAt time.Time) {
+	r.CreatedAt = createdAt
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldCreatedAt)
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) UnmarshalJSON(data []byte) error {
+	type embed ReorderCollectionItemsResponseDataItemsItem
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*r = ReorderCollectionItemsResponseDataItemsItem(unmarshaler.embed)
+	r.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) MarshalJSON() ([]byte, error) {
+	type embed ReorderCollectionItemsResponseDataItemsItem
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*r),
+		CreatedAt: internal.NewDateTime(r.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type ReorderCollectionItemsResponseDataItemsItemItemType string
+
+const (
+	ReorderCollectionItemsResponseDataItemsItemItemTypePrompt   ReorderCollectionItemsResponseDataItemsItemItemType = "prompt"
+	ReorderCollectionItemsResponseDataItemsItemItemTypeSkill    ReorderCollectionItemsResponseDataItemsItemItemType = "skill"
+	ReorderCollectionItemsResponseDataItemsItemItemTypeHook     ReorderCollectionItemsResponseDataItemsItemItemType = "hook"
+	ReorderCollectionItemsResponseDataItemsItemItemTypeResource ReorderCollectionItemsResponseDataItemsItemItemType = "resource"
+)
+
+func NewReorderCollectionItemsResponseDataItemsItemItemTypeFromString(s string) (ReorderCollectionItemsResponseDataItemsItemItemType, error) {
+	switch s {
+	case "prompt":
+		return ReorderCollectionItemsResponseDataItemsItemItemTypePrompt, nil
+	case "skill":
+		return ReorderCollectionItemsResponseDataItemsItemItemTypeSkill, nil
+	case "hook":
+		return ReorderCollectionItemsResponseDataItemsItemItemTypeHook, nil
+	case "resource":
+		return ReorderCollectionItemsResponseDataItemsItemItemTypeResource, nil
+	}
+	var t ReorderCollectionItemsResponseDataItemsItemItemType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r ReorderCollectionItemsResponseDataItemsItemItemType) Ptr() *ReorderCollectionItemsResponseDataItemsItemItemType {
+	return &r
 }
 
 // Collection updated

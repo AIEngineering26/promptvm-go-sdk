@@ -243,3 +243,32 @@ func TestCollectionsRemoveCollectionItemWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestCollectionsRemoveCollectionItemWithWireMock", "DELETE", "/api/v1/collections/collectionId/items/itemId", nil, 1)
 }
+
+func TestCollectionsReorderCollectionItemsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ReorderCollectionItemsRequest{
+		CollectionID: "collectionId",
+		OrderedItemIDs: []string{
+			"orderedItemIds",
+		},
+	}
+	_, invocationErr := client.Collections.ReorderCollectionItems(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestCollectionsReorderCollectionItemsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestCollectionsReorderCollectionItemsWithWireMock", "PATCH", "/api/v1/collections/collectionId/items/order", nil, 1)
+}

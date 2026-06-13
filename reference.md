@@ -8229,6 +8229,78 @@ client.Collections.RemoveCollectionItem(
 </dl>
 </details>
 
+<details><summary><code>client.Collections.ReorderCollectionItems(CollectionID, request) -> *promptvmgosdk.ReorderCollectionItemsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Rewrites each member's position to its index in orderedItemIds. The id set must match the collection's current members exactly.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ReorderCollectionItemsRequest{
+        CollectionID: "collectionId",
+        OrderedItemIDs: []string{
+            "orderedItemIds",
+        },
+    }
+client.Collections.ReorderCollectionItems(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**collectionID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderedItemIDs:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Templates
 <details><summary><code>client.Templates.ConvertPromptToTemplate(PromptID) -> *promptvmgosdk.ConvertPromptToTemplateResponse</code></summary>
 <dl>
