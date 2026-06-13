@@ -214,61 +214,63 @@ func (l *ListMarketplaceCreatorListingsResponse) String() string {
 }
 
 var (
-	listMarketplaceCreatorListingsResponseDataItemFieldID            = big.NewInt(1 << 0)
-	listMarketplaceCreatorListingsResponseDataItemFieldPromptID      = big.NewInt(1 << 1)
-	listMarketplaceCreatorListingsResponseDataItemFieldCollectionID  = big.NewInt(1 << 2)
-	listMarketplaceCreatorListingsResponseDataItemFieldDirectoryID   = big.NewInt(1 << 3)
-	listMarketplaceCreatorListingsResponseDataItemFieldSellerID      = big.NewInt(1 << 4)
-	listMarketplaceCreatorListingsResponseDataItemFieldTitle         = big.NewInt(1 << 5)
-	listMarketplaceCreatorListingsResponseDataItemFieldDescription   = big.NewInt(1 << 6)
-	listMarketplaceCreatorListingsResponseDataItemFieldStatus        = big.NewInt(1 << 7)
-	listMarketplaceCreatorListingsResponseDataItemFieldPriceCents    = big.NewInt(1 << 8)
-	listMarketplaceCreatorListingsResponseDataItemFieldCurrency      = big.NewInt(1 << 9)
-	listMarketplaceCreatorListingsResponseDataItemFieldAccessType    = big.NewInt(1 << 10)
-	listMarketplaceCreatorListingsResponseDataItemFieldAvgRating     = big.NewInt(1 << 11)
-	listMarketplaceCreatorListingsResponseDataItemFieldRatingCount   = big.NewInt(1 << 12)
-	listMarketplaceCreatorListingsResponseDataItemFieldViewCount     = big.NewInt(1 << 13)
-	listMarketplaceCreatorListingsResponseDataItemFieldPurchaseCount = big.NewInt(1 << 14)
-	listMarketplaceCreatorListingsResponseDataItemFieldImportCount   = big.NewInt(1 << 15)
-	listMarketplaceCreatorListingsResponseDataItemFieldTags          = big.NewInt(1 << 16)
-	listMarketplaceCreatorListingsResponseDataItemFieldIsFeatured    = big.NewInt(1 << 17)
-	listMarketplaceCreatorListingsResponseDataItemFieldCategories    = big.NewInt(1 << 18)
-	listMarketplaceCreatorListingsResponseDataItemFieldSeller        = big.NewInt(1 << 19)
-	listMarketplaceCreatorListingsResponseDataItemFieldContentKind   = big.NewInt(1 << 20)
-	listMarketplaceCreatorListingsResponseDataItemFieldPromptSlug    = big.NewInt(1 << 21)
-	listMarketplaceCreatorListingsResponseDataItemFieldSkill         = big.NewInt(1 << 22)
-	listMarketplaceCreatorListingsResponseDataItemFieldPublishedAt   = big.NewInt(1 << 23)
-	listMarketplaceCreatorListingsResponseDataItemFieldCreatedAt     = big.NewInt(1 << 24)
-	listMarketplaceCreatorListingsResponseDataItemFieldUpdatedAt     = big.NewInt(1 << 25)
+	listMarketplaceCreatorListingsResponseDataItemFieldID                  = big.NewInt(1 << 0)
+	listMarketplaceCreatorListingsResponseDataItemFieldPromptID            = big.NewInt(1 << 1)
+	listMarketplaceCreatorListingsResponseDataItemFieldCollectionID        = big.NewInt(1 << 2)
+	listMarketplaceCreatorListingsResponseDataItemFieldDirectoryID         = big.NewInt(1 << 3)
+	listMarketplaceCreatorListingsResponseDataItemFieldSellerID            = big.NewInt(1 << 4)
+	listMarketplaceCreatorListingsResponseDataItemFieldTitle               = big.NewInt(1 << 5)
+	listMarketplaceCreatorListingsResponseDataItemFieldDescription         = big.NewInt(1 << 6)
+	listMarketplaceCreatorListingsResponseDataItemFieldStatus              = big.NewInt(1 << 7)
+	listMarketplaceCreatorListingsResponseDataItemFieldPriceCents          = big.NewInt(1 << 8)
+	listMarketplaceCreatorListingsResponseDataItemFieldCurrency            = big.NewInt(1 << 9)
+	listMarketplaceCreatorListingsResponseDataItemFieldAccessType          = big.NewInt(1 << 10)
+	listMarketplaceCreatorListingsResponseDataItemFieldAvgRating           = big.NewInt(1 << 11)
+	listMarketplaceCreatorListingsResponseDataItemFieldRatingCount         = big.NewInt(1 << 12)
+	listMarketplaceCreatorListingsResponseDataItemFieldViewCount           = big.NewInt(1 << 13)
+	listMarketplaceCreatorListingsResponseDataItemFieldPurchaseCount       = big.NewInt(1 << 14)
+	listMarketplaceCreatorListingsResponseDataItemFieldImportCount         = big.NewInt(1 << 15)
+	listMarketplaceCreatorListingsResponseDataItemFieldTags                = big.NewInt(1 << 16)
+	listMarketplaceCreatorListingsResponseDataItemFieldIsFeatured          = big.NewInt(1 << 17)
+	listMarketplaceCreatorListingsResponseDataItemFieldCategories          = big.NewInt(1 << 18)
+	listMarketplaceCreatorListingsResponseDataItemFieldSeller              = big.NewInt(1 << 19)
+	listMarketplaceCreatorListingsResponseDataItemFieldContentKind         = big.NewInt(1 << 20)
+	listMarketplaceCreatorListingsResponseDataItemFieldPromptSlug          = big.NewInt(1 << 21)
+	listMarketplaceCreatorListingsResponseDataItemFieldCollectionItemCount = big.NewInt(1 << 22)
+	listMarketplaceCreatorListingsResponseDataItemFieldSkill               = big.NewInt(1 << 23)
+	listMarketplaceCreatorListingsResponseDataItemFieldPublishedAt         = big.NewInt(1 << 24)
+	listMarketplaceCreatorListingsResponseDataItemFieldCreatedAt           = big.NewInt(1 << 25)
+	listMarketplaceCreatorListingsResponseDataItemFieldUpdatedAt           = big.NewInt(1 << 26)
 )
 
 type ListMarketplaceCreatorListingsResponseDataItem struct {
-	ID            string                                                          `json:"id" url:"id"`
-	PromptID      *string                                                         `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID  *string                                                         `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID   *string                                                         `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID      string                                                          `json:"sellerId" url:"sellerId"`
-	Title         string                                                          `json:"title" url:"title"`
-	Description   *string                                                         `json:"description,omitempty" url:"description,omitempty"`
-	Status        ListMarketplaceCreatorListingsResponseDataItemStatus            `json:"status" url:"status"`
-	PriceCents    int                                                             `json:"priceCents" url:"priceCents"`
-	Currency      string                                                          `json:"currency" url:"currency"`
-	AccessType    *ListMarketplaceCreatorListingsResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating     *string                                                         `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount   *int                                                            `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount     *int                                                            `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount *int                                                            `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount   *int                                                            `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags          []string                                                        `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured    *bool                                                           `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories    []*ListMarketplaceCreatorListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller        *ListMarketplaceCreatorListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind   *ListMarketplaceCreatorListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	PromptSlug    *string                                                         `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	Skill         *ListMarketplaceCreatorListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt   *time.Time                                                      `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt     time.Time                                                       `json:"createdAt" url:"createdAt"`
-	UpdatedAt     time.Time                                                       `json:"updatedAt" url:"updatedAt"`
+	ID                  string                                                          `json:"id" url:"id"`
+	PromptID            *string                                                         `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID        *string                                                         `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID         *string                                                         `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID            string                                                          `json:"sellerId" url:"sellerId"`
+	Title               string                                                          `json:"title" url:"title"`
+	Description         *string                                                         `json:"description,omitempty" url:"description,omitempty"`
+	Status              ListMarketplaceCreatorListingsResponseDataItemStatus            `json:"status" url:"status"`
+	PriceCents          int                                                             `json:"priceCents" url:"priceCents"`
+	Currency            string                                                          `json:"currency" url:"currency"`
+	AccessType          *ListMarketplaceCreatorListingsResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating           *string                                                         `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount         *int                                                            `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount           *int                                                            `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount       *int                                                            `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount         *int                                                            `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                []string                                                        `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured          *bool                                                           `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories          []*ListMarketplaceCreatorListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
+	Seller              *ListMarketplaceCreatorListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind         *ListMarketplaceCreatorListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	PromptSlug          *string                                                         `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	CollectionItemCount *int                                                            `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill               *ListMarketplaceCreatorListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt         *time.Time                                                      `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt           time.Time                                                       `json:"createdAt" url:"createdAt"`
+	UpdatedAt           time.Time                                                       `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -429,6 +431,13 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) GetPromptSlug() *string
 		return nil
 	}
 	return l.PromptSlug
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItem) GetCollectionItemCount() *int {
+	if l == nil {
+		return nil
+	}
+	return l.CollectionItemCount
 }
 
 func (l *ListMarketplaceCreatorListingsResponseDataItem) GetSkill() *ListMarketplaceCreatorListingsResponseDataItemSkill {
@@ -622,6 +631,13 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) SetContentKind(contentK
 func (l *ListMarketplaceCreatorListingsResponseDataItem) SetPromptSlug(promptSlug *string) {
 	l.PromptSlug = promptSlug
 	l.require(listMarketplaceCreatorListingsResponseDataItemFieldPromptSlug)
+}
+
+// SetCollectionItemCount sets the CollectionItemCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItem) SetCollectionItemCount(collectionItemCount *int) {
+	l.CollectionItemCount = collectionItemCount
+	l.require(listMarketplaceCreatorListingsResponseDataItemFieldCollectionItemCount)
 }
 
 // SetSkill sets the Skill field and marks it as non-optional;
@@ -890,10 +906,11 @@ func (l *ListMarketplaceCreatorListingsResponseDataItemCategoriesItem) String() 
 type ListMarketplaceCreatorListingsResponseDataItemContentKind string
 
 const (
-	ListMarketplaceCreatorListingsResponseDataItemContentKindPrompt ListMarketplaceCreatorListingsResponseDataItemContentKind = "prompt"
-	ListMarketplaceCreatorListingsResponseDataItemContentKindSkill  ListMarketplaceCreatorListingsResponseDataItemContentKind = "skill"
-	ListMarketplaceCreatorListingsResponseDataItemContentKindHook   ListMarketplaceCreatorListingsResponseDataItemContentKind = "hook"
-	ListMarketplaceCreatorListingsResponseDataItemContentKindFolder ListMarketplaceCreatorListingsResponseDataItemContentKind = "folder"
+	ListMarketplaceCreatorListingsResponseDataItemContentKindPrompt     ListMarketplaceCreatorListingsResponseDataItemContentKind = "prompt"
+	ListMarketplaceCreatorListingsResponseDataItemContentKindSkill      ListMarketplaceCreatorListingsResponseDataItemContentKind = "skill"
+	ListMarketplaceCreatorListingsResponseDataItemContentKindHook       ListMarketplaceCreatorListingsResponseDataItemContentKind = "hook"
+	ListMarketplaceCreatorListingsResponseDataItemContentKindFolder     ListMarketplaceCreatorListingsResponseDataItemContentKind = "folder"
+	ListMarketplaceCreatorListingsResponseDataItemContentKindCollection ListMarketplaceCreatorListingsResponseDataItemContentKind = "collection"
 )
 
 func NewListMarketplaceCreatorListingsResponseDataItemContentKindFromString(s string) (ListMarketplaceCreatorListingsResponseDataItemContentKind, error) {
@@ -906,6 +923,8 @@ func NewListMarketplaceCreatorListingsResponseDataItemContentKindFromString(s st
 		return ListMarketplaceCreatorListingsResponseDataItemContentKindHook, nil
 	case "folder":
 		return ListMarketplaceCreatorListingsResponseDataItemContentKindFolder, nil
+	case "collection":
+		return ListMarketplaceCreatorListingsResponseDataItemContentKindCollection, nil
 	}
 	var t ListMarketplaceCreatorListingsResponseDataItemContentKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

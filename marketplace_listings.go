@@ -1025,61 +1025,63 @@ func (c *CreateMarketplaceListingResponse) String() string {
 }
 
 var (
-	createMarketplaceListingResponseDataFieldID            = big.NewInt(1 << 0)
-	createMarketplaceListingResponseDataFieldPromptID      = big.NewInt(1 << 1)
-	createMarketplaceListingResponseDataFieldCollectionID  = big.NewInt(1 << 2)
-	createMarketplaceListingResponseDataFieldDirectoryID   = big.NewInt(1 << 3)
-	createMarketplaceListingResponseDataFieldSellerID      = big.NewInt(1 << 4)
-	createMarketplaceListingResponseDataFieldTitle         = big.NewInt(1 << 5)
-	createMarketplaceListingResponseDataFieldDescription   = big.NewInt(1 << 6)
-	createMarketplaceListingResponseDataFieldStatus        = big.NewInt(1 << 7)
-	createMarketplaceListingResponseDataFieldPriceCents    = big.NewInt(1 << 8)
-	createMarketplaceListingResponseDataFieldCurrency      = big.NewInt(1 << 9)
-	createMarketplaceListingResponseDataFieldAccessType    = big.NewInt(1 << 10)
-	createMarketplaceListingResponseDataFieldAvgRating     = big.NewInt(1 << 11)
-	createMarketplaceListingResponseDataFieldRatingCount   = big.NewInt(1 << 12)
-	createMarketplaceListingResponseDataFieldViewCount     = big.NewInt(1 << 13)
-	createMarketplaceListingResponseDataFieldPurchaseCount = big.NewInt(1 << 14)
-	createMarketplaceListingResponseDataFieldImportCount   = big.NewInt(1 << 15)
-	createMarketplaceListingResponseDataFieldTags          = big.NewInt(1 << 16)
-	createMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 17)
-	createMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 18)
-	createMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 19)
-	createMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 20)
-	createMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 21)
-	createMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 22)
-	createMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 23)
-	createMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 24)
-	createMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 25)
+	createMarketplaceListingResponseDataFieldID                  = big.NewInt(1 << 0)
+	createMarketplaceListingResponseDataFieldPromptID            = big.NewInt(1 << 1)
+	createMarketplaceListingResponseDataFieldCollectionID        = big.NewInt(1 << 2)
+	createMarketplaceListingResponseDataFieldDirectoryID         = big.NewInt(1 << 3)
+	createMarketplaceListingResponseDataFieldSellerID            = big.NewInt(1 << 4)
+	createMarketplaceListingResponseDataFieldTitle               = big.NewInt(1 << 5)
+	createMarketplaceListingResponseDataFieldDescription         = big.NewInt(1 << 6)
+	createMarketplaceListingResponseDataFieldStatus              = big.NewInt(1 << 7)
+	createMarketplaceListingResponseDataFieldPriceCents          = big.NewInt(1 << 8)
+	createMarketplaceListingResponseDataFieldCurrency            = big.NewInt(1 << 9)
+	createMarketplaceListingResponseDataFieldAccessType          = big.NewInt(1 << 10)
+	createMarketplaceListingResponseDataFieldAvgRating           = big.NewInt(1 << 11)
+	createMarketplaceListingResponseDataFieldRatingCount         = big.NewInt(1 << 12)
+	createMarketplaceListingResponseDataFieldViewCount           = big.NewInt(1 << 13)
+	createMarketplaceListingResponseDataFieldPurchaseCount       = big.NewInt(1 << 14)
+	createMarketplaceListingResponseDataFieldImportCount         = big.NewInt(1 << 15)
+	createMarketplaceListingResponseDataFieldTags                = big.NewInt(1 << 16)
+	createMarketplaceListingResponseDataFieldIsFeatured          = big.NewInt(1 << 17)
+	createMarketplaceListingResponseDataFieldCategories          = big.NewInt(1 << 18)
+	createMarketplaceListingResponseDataFieldSeller              = big.NewInt(1 << 19)
+	createMarketplaceListingResponseDataFieldContentKind         = big.NewInt(1 << 20)
+	createMarketplaceListingResponseDataFieldPromptSlug          = big.NewInt(1 << 21)
+	createMarketplaceListingResponseDataFieldCollectionItemCount = big.NewInt(1 << 22)
+	createMarketplaceListingResponseDataFieldSkill               = big.NewInt(1 << 23)
+	createMarketplaceListingResponseDataFieldPublishedAt         = big.NewInt(1 << 24)
+	createMarketplaceListingResponseDataFieldCreatedAt           = big.NewInt(1 << 25)
+	createMarketplaceListingResponseDataFieldUpdatedAt           = big.NewInt(1 << 26)
 )
 
 type CreateMarketplaceListingResponseData struct {
-	ID            string                                                `json:"id" url:"id"`
-	PromptID      *string                                               `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID  *string                                               `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID   *string                                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID      string                                                `json:"sellerId" url:"sellerId"`
-	Title         string                                                `json:"title" url:"title"`
-	Description   *string                                               `json:"description,omitempty" url:"description,omitempty"`
-	Status        CreateMarketplaceListingResponseDataStatus            `json:"status" url:"status"`
-	PriceCents    int                                                   `json:"priceCents" url:"priceCents"`
-	Currency      string                                                `json:"currency" url:"currency"`
-	AccessType    *CreateMarketplaceListingResponseDataAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating     *string                                               `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount   *int                                                  `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount     *int                                                  `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount *int                                                  `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount   *int                                                  `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags          []string                                              `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured    *bool                                                 `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories    []*CreateMarketplaceListingResponseDataCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller        *CreateMarketplaceListingResponseDataSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind   *CreateMarketplaceListingResponseDataContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	PromptSlug    *string                                               `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	Skill         *CreateMarketplaceListingResponseDataSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt   *time.Time                                            `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt     time.Time                                             `json:"createdAt" url:"createdAt"`
-	UpdatedAt     time.Time                                             `json:"updatedAt" url:"updatedAt"`
+	ID                  string                                                `json:"id" url:"id"`
+	PromptID            *string                                               `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID        *string                                               `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID         *string                                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID            string                                                `json:"sellerId" url:"sellerId"`
+	Title               string                                                `json:"title" url:"title"`
+	Description         *string                                               `json:"description,omitempty" url:"description,omitempty"`
+	Status              CreateMarketplaceListingResponseDataStatus            `json:"status" url:"status"`
+	PriceCents          int                                                   `json:"priceCents" url:"priceCents"`
+	Currency            string                                                `json:"currency" url:"currency"`
+	AccessType          *CreateMarketplaceListingResponseDataAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating           *string                                               `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount         *int                                                  `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount           *int                                                  `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount       *int                                                  `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount         *int                                                  `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                []string                                              `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured          *bool                                                 `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories          []*CreateMarketplaceListingResponseDataCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
+	Seller              *CreateMarketplaceListingResponseDataSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind         *CreateMarketplaceListingResponseDataContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	PromptSlug          *string                                               `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	CollectionItemCount *int                                                  `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill               *CreateMarketplaceListingResponseDataSkill            `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt         *time.Time                                            `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt           time.Time                                             `json:"createdAt" url:"createdAt"`
+	UpdatedAt           time.Time                                             `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1240,6 +1242,13 @@ func (c *CreateMarketplaceListingResponseData) GetPromptSlug() *string {
 		return nil
 	}
 	return c.PromptSlug
+}
+
+func (c *CreateMarketplaceListingResponseData) GetCollectionItemCount() *int {
+	if c == nil {
+		return nil
+	}
+	return c.CollectionItemCount
 }
 
 func (c *CreateMarketplaceListingResponseData) GetSkill() *CreateMarketplaceListingResponseDataSkill {
@@ -1433,6 +1442,13 @@ func (c *CreateMarketplaceListingResponseData) SetContentKind(contentKind *Creat
 func (c *CreateMarketplaceListingResponseData) SetPromptSlug(promptSlug *string) {
 	c.PromptSlug = promptSlug
 	c.require(createMarketplaceListingResponseDataFieldPromptSlug)
+}
+
+// SetCollectionItemCount sets the CollectionItemCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseData) SetCollectionItemCount(collectionItemCount *int) {
+	c.CollectionItemCount = collectionItemCount
+	c.require(createMarketplaceListingResponseDataFieldCollectionItemCount)
 }
 
 // SetSkill sets the Skill field and marks it as non-optional;
@@ -1701,10 +1717,11 @@ func (c *CreateMarketplaceListingResponseDataCategoriesItem) String() string {
 type CreateMarketplaceListingResponseDataContentKind string
 
 const (
-	CreateMarketplaceListingResponseDataContentKindPrompt CreateMarketplaceListingResponseDataContentKind = "prompt"
-	CreateMarketplaceListingResponseDataContentKindSkill  CreateMarketplaceListingResponseDataContentKind = "skill"
-	CreateMarketplaceListingResponseDataContentKindHook   CreateMarketplaceListingResponseDataContentKind = "hook"
-	CreateMarketplaceListingResponseDataContentKindFolder CreateMarketplaceListingResponseDataContentKind = "folder"
+	CreateMarketplaceListingResponseDataContentKindPrompt     CreateMarketplaceListingResponseDataContentKind = "prompt"
+	CreateMarketplaceListingResponseDataContentKindSkill      CreateMarketplaceListingResponseDataContentKind = "skill"
+	CreateMarketplaceListingResponseDataContentKindHook       CreateMarketplaceListingResponseDataContentKind = "hook"
+	CreateMarketplaceListingResponseDataContentKindFolder     CreateMarketplaceListingResponseDataContentKind = "folder"
+	CreateMarketplaceListingResponseDataContentKindCollection CreateMarketplaceListingResponseDataContentKind = "collection"
 )
 
 func NewCreateMarketplaceListingResponseDataContentKindFromString(s string) (CreateMarketplaceListingResponseDataContentKind, error) {
@@ -1717,6 +1734,8 @@ func NewCreateMarketplaceListingResponseDataContentKindFromString(s string) (Cre
 		return CreateMarketplaceListingResponseDataContentKindHook, nil
 	case "folder":
 		return CreateMarketplaceListingResponseDataContentKindFolder, nil
+	case "collection":
+		return CreateMarketplaceListingResponseDataContentKindCollection, nil
 	}
 	var t CreateMarketplaceListingResponseDataContentKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -2120,61 +2139,63 @@ func (u *UpdateMarketplaceListingResponse) String() string {
 }
 
 var (
-	updateMarketplaceListingResponseDataFieldID            = big.NewInt(1 << 0)
-	updateMarketplaceListingResponseDataFieldPromptID      = big.NewInt(1 << 1)
-	updateMarketplaceListingResponseDataFieldCollectionID  = big.NewInt(1 << 2)
-	updateMarketplaceListingResponseDataFieldDirectoryID   = big.NewInt(1 << 3)
-	updateMarketplaceListingResponseDataFieldSellerID      = big.NewInt(1 << 4)
-	updateMarketplaceListingResponseDataFieldTitle         = big.NewInt(1 << 5)
-	updateMarketplaceListingResponseDataFieldDescription   = big.NewInt(1 << 6)
-	updateMarketplaceListingResponseDataFieldStatus        = big.NewInt(1 << 7)
-	updateMarketplaceListingResponseDataFieldPriceCents    = big.NewInt(1 << 8)
-	updateMarketplaceListingResponseDataFieldCurrency      = big.NewInt(1 << 9)
-	updateMarketplaceListingResponseDataFieldAccessType    = big.NewInt(1 << 10)
-	updateMarketplaceListingResponseDataFieldAvgRating     = big.NewInt(1 << 11)
-	updateMarketplaceListingResponseDataFieldRatingCount   = big.NewInt(1 << 12)
-	updateMarketplaceListingResponseDataFieldViewCount     = big.NewInt(1 << 13)
-	updateMarketplaceListingResponseDataFieldPurchaseCount = big.NewInt(1 << 14)
-	updateMarketplaceListingResponseDataFieldImportCount   = big.NewInt(1 << 15)
-	updateMarketplaceListingResponseDataFieldTags          = big.NewInt(1 << 16)
-	updateMarketplaceListingResponseDataFieldIsFeatured    = big.NewInt(1 << 17)
-	updateMarketplaceListingResponseDataFieldCategories    = big.NewInt(1 << 18)
-	updateMarketplaceListingResponseDataFieldSeller        = big.NewInt(1 << 19)
-	updateMarketplaceListingResponseDataFieldContentKind   = big.NewInt(1 << 20)
-	updateMarketplaceListingResponseDataFieldPromptSlug    = big.NewInt(1 << 21)
-	updateMarketplaceListingResponseDataFieldSkill         = big.NewInt(1 << 22)
-	updateMarketplaceListingResponseDataFieldPublishedAt   = big.NewInt(1 << 23)
-	updateMarketplaceListingResponseDataFieldCreatedAt     = big.NewInt(1 << 24)
-	updateMarketplaceListingResponseDataFieldUpdatedAt     = big.NewInt(1 << 25)
+	updateMarketplaceListingResponseDataFieldID                  = big.NewInt(1 << 0)
+	updateMarketplaceListingResponseDataFieldPromptID            = big.NewInt(1 << 1)
+	updateMarketplaceListingResponseDataFieldCollectionID        = big.NewInt(1 << 2)
+	updateMarketplaceListingResponseDataFieldDirectoryID         = big.NewInt(1 << 3)
+	updateMarketplaceListingResponseDataFieldSellerID            = big.NewInt(1 << 4)
+	updateMarketplaceListingResponseDataFieldTitle               = big.NewInt(1 << 5)
+	updateMarketplaceListingResponseDataFieldDescription         = big.NewInt(1 << 6)
+	updateMarketplaceListingResponseDataFieldStatus              = big.NewInt(1 << 7)
+	updateMarketplaceListingResponseDataFieldPriceCents          = big.NewInt(1 << 8)
+	updateMarketplaceListingResponseDataFieldCurrency            = big.NewInt(1 << 9)
+	updateMarketplaceListingResponseDataFieldAccessType          = big.NewInt(1 << 10)
+	updateMarketplaceListingResponseDataFieldAvgRating           = big.NewInt(1 << 11)
+	updateMarketplaceListingResponseDataFieldRatingCount         = big.NewInt(1 << 12)
+	updateMarketplaceListingResponseDataFieldViewCount           = big.NewInt(1 << 13)
+	updateMarketplaceListingResponseDataFieldPurchaseCount       = big.NewInt(1 << 14)
+	updateMarketplaceListingResponseDataFieldImportCount         = big.NewInt(1 << 15)
+	updateMarketplaceListingResponseDataFieldTags                = big.NewInt(1 << 16)
+	updateMarketplaceListingResponseDataFieldIsFeatured          = big.NewInt(1 << 17)
+	updateMarketplaceListingResponseDataFieldCategories          = big.NewInt(1 << 18)
+	updateMarketplaceListingResponseDataFieldSeller              = big.NewInt(1 << 19)
+	updateMarketplaceListingResponseDataFieldContentKind         = big.NewInt(1 << 20)
+	updateMarketplaceListingResponseDataFieldPromptSlug          = big.NewInt(1 << 21)
+	updateMarketplaceListingResponseDataFieldCollectionItemCount = big.NewInt(1 << 22)
+	updateMarketplaceListingResponseDataFieldSkill               = big.NewInt(1 << 23)
+	updateMarketplaceListingResponseDataFieldPublishedAt         = big.NewInt(1 << 24)
+	updateMarketplaceListingResponseDataFieldCreatedAt           = big.NewInt(1 << 25)
+	updateMarketplaceListingResponseDataFieldUpdatedAt           = big.NewInt(1 << 26)
 )
 
 type UpdateMarketplaceListingResponseData struct {
-	ID            string                                                `json:"id" url:"id"`
-	PromptID      *string                                               `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID  *string                                               `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID   *string                                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID      string                                                `json:"sellerId" url:"sellerId"`
-	Title         string                                                `json:"title" url:"title"`
-	Description   *string                                               `json:"description,omitempty" url:"description,omitempty"`
-	Status        UpdateMarketplaceListingResponseDataStatus            `json:"status" url:"status"`
-	PriceCents    int                                                   `json:"priceCents" url:"priceCents"`
-	Currency      string                                                `json:"currency" url:"currency"`
-	AccessType    *UpdateMarketplaceListingResponseDataAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating     *string                                               `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount   *int                                                  `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount     *int                                                  `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount *int                                                  `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount   *int                                                  `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags          []string                                              `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured    *bool                                                 `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories    []*UpdateMarketplaceListingResponseDataCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller        *UpdateMarketplaceListingResponseDataSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind   *UpdateMarketplaceListingResponseDataContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	PromptSlug    *string                                               `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	Skill         *UpdateMarketplaceListingResponseDataSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt   *time.Time                                            `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt     time.Time                                             `json:"createdAt" url:"createdAt"`
-	UpdatedAt     time.Time                                             `json:"updatedAt" url:"updatedAt"`
+	ID                  string                                                `json:"id" url:"id"`
+	PromptID            *string                                               `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID        *string                                               `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID         *string                                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID            string                                                `json:"sellerId" url:"sellerId"`
+	Title               string                                                `json:"title" url:"title"`
+	Description         *string                                               `json:"description,omitempty" url:"description,omitempty"`
+	Status              UpdateMarketplaceListingResponseDataStatus            `json:"status" url:"status"`
+	PriceCents          int                                                   `json:"priceCents" url:"priceCents"`
+	Currency            string                                                `json:"currency" url:"currency"`
+	AccessType          *UpdateMarketplaceListingResponseDataAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating           *string                                               `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount         *int                                                  `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount           *int                                                  `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount       *int                                                  `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount         *int                                                  `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                []string                                              `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured          *bool                                                 `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories          []*UpdateMarketplaceListingResponseDataCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
+	Seller              *UpdateMarketplaceListingResponseDataSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind         *UpdateMarketplaceListingResponseDataContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	PromptSlug          *string                                               `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	CollectionItemCount *int                                                  `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill               *UpdateMarketplaceListingResponseDataSkill            `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt         *time.Time                                            `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt           time.Time                                             `json:"createdAt" url:"createdAt"`
+	UpdatedAt           time.Time                                             `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2335,6 +2356,13 @@ func (u *UpdateMarketplaceListingResponseData) GetPromptSlug() *string {
 		return nil
 	}
 	return u.PromptSlug
+}
+
+func (u *UpdateMarketplaceListingResponseData) GetCollectionItemCount() *int {
+	if u == nil {
+		return nil
+	}
+	return u.CollectionItemCount
 }
 
 func (u *UpdateMarketplaceListingResponseData) GetSkill() *UpdateMarketplaceListingResponseDataSkill {
@@ -2528,6 +2556,13 @@ func (u *UpdateMarketplaceListingResponseData) SetContentKind(contentKind *Updat
 func (u *UpdateMarketplaceListingResponseData) SetPromptSlug(promptSlug *string) {
 	u.PromptSlug = promptSlug
 	u.require(updateMarketplaceListingResponseDataFieldPromptSlug)
+}
+
+// SetCollectionItemCount sets the CollectionItemCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseData) SetCollectionItemCount(collectionItemCount *int) {
+	u.CollectionItemCount = collectionItemCount
+	u.require(updateMarketplaceListingResponseDataFieldCollectionItemCount)
 }
 
 // SetSkill sets the Skill field and marks it as non-optional;
@@ -2796,10 +2831,11 @@ func (u *UpdateMarketplaceListingResponseDataCategoriesItem) String() string {
 type UpdateMarketplaceListingResponseDataContentKind string
 
 const (
-	UpdateMarketplaceListingResponseDataContentKindPrompt UpdateMarketplaceListingResponseDataContentKind = "prompt"
-	UpdateMarketplaceListingResponseDataContentKindSkill  UpdateMarketplaceListingResponseDataContentKind = "skill"
-	UpdateMarketplaceListingResponseDataContentKindHook   UpdateMarketplaceListingResponseDataContentKind = "hook"
-	UpdateMarketplaceListingResponseDataContentKindFolder UpdateMarketplaceListingResponseDataContentKind = "folder"
+	UpdateMarketplaceListingResponseDataContentKindPrompt     UpdateMarketplaceListingResponseDataContentKind = "prompt"
+	UpdateMarketplaceListingResponseDataContentKindSkill      UpdateMarketplaceListingResponseDataContentKind = "skill"
+	UpdateMarketplaceListingResponseDataContentKindHook       UpdateMarketplaceListingResponseDataContentKind = "hook"
+	UpdateMarketplaceListingResponseDataContentKindFolder     UpdateMarketplaceListingResponseDataContentKind = "folder"
+	UpdateMarketplaceListingResponseDataContentKindCollection UpdateMarketplaceListingResponseDataContentKind = "collection"
 )
 
 func NewUpdateMarketplaceListingResponseDataContentKindFromString(s string) (UpdateMarketplaceListingResponseDataContentKind, error) {
@@ -2812,6 +2848,8 @@ func NewUpdateMarketplaceListingResponseDataContentKindFromString(s string) (Upd
 		return UpdateMarketplaceListingResponseDataContentKindHook, nil
 	case "folder":
 		return UpdateMarketplaceListingResponseDataContentKindFolder, nil
+	case "collection":
+		return UpdateMarketplaceListingResponseDataContentKindCollection, nil
 	}
 	var t UpdateMarketplaceListingResponseDataContentKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
