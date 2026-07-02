@@ -4384,21 +4384,23 @@ func (u UpdateSkillResponseDataShell) Ptr() *UpdateSkillResponseDataShell {
 }
 
 var (
-	updateSkillRequestFieldSkillID  = big.NewInt(1 << 0)
-	updateSkillRequestFieldSkillMd  = big.NewInt(1 << 1)
-	updateSkillRequestFieldFiles    = big.NewInt(1 << 2)
-	updateSkillRequestFieldIsPublic = big.NewInt(1 << 3)
-	updateSkillRequestFieldStatus   = big.NewInt(1 << 4)
-	updateSkillRequestFieldTags     = big.NewInt(1 << 5)
+	updateSkillRequestFieldSkillID     = big.NewInt(1 << 0)
+	updateSkillRequestFieldSkillMd     = big.NewInt(1 << 1)
+	updateSkillRequestFieldFiles       = big.NewInt(1 << 2)
+	updateSkillRequestFieldIsPublic    = big.NewInt(1 << 3)
+	updateSkillRequestFieldStatus      = big.NewInt(1 << 4)
+	updateSkillRequestFieldTags        = big.NewInt(1 << 5)
+	updateSkillRequestFieldDirectoryID = big.NewInt(1 << 6)
 )
 
 type UpdateSkillRequest struct {
-	SkillID  string                         `json:"-" url:"-"`
-	SkillMd  *string                        `json:"skill_md,omitempty" url:"-"`
-	Files    []*UpdateSkillRequestFilesItem `json:"files,omitempty" url:"-"`
-	IsPublic *bool                          `json:"isPublic,omitempty" url:"-"`
-	Status   *UpdateSkillRequestStatus      `json:"status,omitempty" url:"-"`
-	Tags     []string                       `json:"tags,omitempty" url:"-"`
+	SkillID     string                         `json:"-" url:"-"`
+	SkillMd     *string                        `json:"skill_md,omitempty" url:"-"`
+	Files       []*UpdateSkillRequestFilesItem `json:"files,omitempty" url:"-"`
+	IsPublic    *bool                          `json:"isPublic,omitempty" url:"-"`
+	Status      *UpdateSkillRequestStatus      `json:"status,omitempty" url:"-"`
+	Tags        []string                       `json:"tags,omitempty" url:"-"`
+	DirectoryID *string                        `json:"directoryId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4451,4 +4453,11 @@ func (u *UpdateSkillRequest) SetStatus(status *UpdateSkillRequestStatus) {
 func (u *UpdateSkillRequest) SetTags(tags []string) {
 	u.Tags = tags
 	u.require(updateSkillRequestFieldTags)
+}
+
+// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSkillRequest) SetDirectoryID(directoryID *string) {
+	u.DirectoryID = directoryID
+	u.require(updateSkillRequestFieldDirectoryID)
 }

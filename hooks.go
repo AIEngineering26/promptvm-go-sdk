@@ -3774,21 +3774,23 @@ func (v *ValidateHookResponse) String() string {
 }
 
 var (
-	updateHookRequestFieldHookID   = big.NewInt(1 << 0)
-	updateHookRequestFieldHookJSON = big.NewInt(1 << 1)
-	updateHookRequestFieldFiles    = big.NewInt(1 << 2)
-	updateHookRequestFieldIsPublic = big.NewInt(1 << 3)
-	updateHookRequestFieldStatus   = big.NewInt(1 << 4)
-	updateHookRequestFieldTags     = big.NewInt(1 << 5)
+	updateHookRequestFieldHookID      = big.NewInt(1 << 0)
+	updateHookRequestFieldHookJSON    = big.NewInt(1 << 1)
+	updateHookRequestFieldFiles       = big.NewInt(1 << 2)
+	updateHookRequestFieldIsPublic    = big.NewInt(1 << 3)
+	updateHookRequestFieldStatus      = big.NewInt(1 << 4)
+	updateHookRequestFieldTags        = big.NewInt(1 << 5)
+	updateHookRequestFieldDirectoryID = big.NewInt(1 << 6)
 )
 
 type UpdateHookRequest struct {
-	HookID   string                        `json:"-" url:"-"`
-	HookJSON *string                       `json:"hook_json,omitempty" url:"-"`
-	Files    []*UpdateHookRequestFilesItem `json:"files,omitempty" url:"-"`
-	IsPublic *bool                         `json:"isPublic,omitempty" url:"-"`
-	Status   *UpdateHookRequestStatus      `json:"status,omitempty" url:"-"`
-	Tags     []string                      `json:"tags,omitempty" url:"-"`
+	HookID      string                        `json:"-" url:"-"`
+	HookJSON    *string                       `json:"hook_json,omitempty" url:"-"`
+	Files       []*UpdateHookRequestFilesItem `json:"files,omitempty" url:"-"`
+	IsPublic    *bool                         `json:"isPublic,omitempty" url:"-"`
+	Status      *UpdateHookRequestStatus      `json:"status,omitempty" url:"-"`
+	Tags        []string                      `json:"tags,omitempty" url:"-"`
+	DirectoryID *string                       `json:"directoryId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3841,6 +3843,13 @@ func (u *UpdateHookRequest) SetStatus(status *UpdateHookRequestStatus) {
 func (u *UpdateHookRequest) SetTags(tags []string) {
 	u.Tags = tags
 	u.require(updateHookRequestFieldTags)
+}
+
+// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateHookRequest) SetDirectoryID(directoryID *string) {
+	u.DirectoryID = directoryID
+	u.require(updateHookRequestFieldDirectoryID)
 }
 
 var (

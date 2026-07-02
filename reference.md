@@ -11040,6 +11040,14 @@ client.Skills.UpdateSkill(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -11460,6 +11468,14 @@ client.Hooks.UpdateHook(
 <dd>
 
 **tags:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
     
 </dd>
 </dl>
