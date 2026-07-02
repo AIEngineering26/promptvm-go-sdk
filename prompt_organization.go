@@ -240,12 +240,14 @@ var (
 	forkPromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
 	forkPromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
 	forkPromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
-	forkPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
-	forkPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
-	forkPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
-	forkPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
-	forkPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
-	forkPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
+	forkPromptResponseDataFieldCapturedFromSessionID = big.NewInt(1 << 14)
+	forkPromptResponseDataFieldCaptureRepoSlug       = big.NewInt(1 << 15)
+	forkPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 16)
+	forkPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 17)
+	forkPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 18)
+	forkPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 19)
+	forkPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 20)
+	forkPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 21)
 )
 
 type ForkPromptResponseData struct {
@@ -263,6 +265,8 @@ type ForkPromptResponseData struct {
 	DirectoryID           *string                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID    *string                               `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	ImportedFromListingID *string                               `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CapturedFromSessionID *string                               `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
+	CaptureRepoSlug       *string                               `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
 	CreatedByID           string                                `json:"createdById" url:"createdById"`
 	CreatedByName         *string                               `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt             time.Time                             `json:"createdAt" url:"createdAt"`
@@ -373,6 +377,20 @@ func (f *ForkPromptResponseData) GetImportedFromListingID() *string {
 		return nil
 	}
 	return f.ImportedFromListingID
+}
+
+func (f *ForkPromptResponseData) GetCapturedFromSessionID() *string {
+	if f == nil {
+		return nil
+	}
+	return f.CapturedFromSessionID
+}
+
+func (f *ForkPromptResponseData) GetCaptureRepoSlug() *string {
+	if f == nil {
+		return nil
+	}
+	return f.CaptureRepoSlug
 }
 
 func (f *ForkPromptResponseData) GetCreatedByID() string {
@@ -524,6 +542,20 @@ func (f *ForkPromptResponseData) SetForkedFromPromptID(forkedFromPromptID *strin
 func (f *ForkPromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
 	f.ImportedFromListingID = importedFromListingID
 	f.require(forkPromptResponseDataFieldImportedFromListingID)
+}
+
+// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseData) SetCapturedFromSessionID(capturedFromSessionID *string) {
+	f.CapturedFromSessionID = capturedFromSessionID
+	f.require(forkPromptResponseDataFieldCapturedFromSessionID)
+}
+
+// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *ForkPromptResponseData) SetCaptureRepoSlug(captureRepoSlug *string) {
+	f.CaptureRepoSlug = captureRepoSlug
+	f.require(forkPromptResponseDataFieldCaptureRepoSlug)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;
@@ -2170,12 +2202,14 @@ var (
 	movePromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
 	movePromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
 	movePromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
-	movePromptResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
-	movePromptResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
-	movePromptResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
-	movePromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
-	movePromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
-	movePromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
+	movePromptResponseDataFieldCapturedFromSessionID = big.NewInt(1 << 14)
+	movePromptResponseDataFieldCaptureRepoSlug       = big.NewInt(1 << 15)
+	movePromptResponseDataFieldCreatedByID           = big.NewInt(1 << 16)
+	movePromptResponseDataFieldCreatedByName         = big.NewInt(1 << 17)
+	movePromptResponseDataFieldCreatedAt             = big.NewInt(1 << 18)
+	movePromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 19)
+	movePromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 20)
+	movePromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 21)
 )
 
 type MovePromptResponseData struct {
@@ -2193,6 +2227,8 @@ type MovePromptResponseData struct {
 	DirectoryID           *string                               `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID    *string                               `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	ImportedFromListingID *string                               `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CapturedFromSessionID *string                               `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
+	CaptureRepoSlug       *string                               `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
 	CreatedByID           string                                `json:"createdById" url:"createdById"`
 	CreatedByName         *string                               `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt             time.Time                             `json:"createdAt" url:"createdAt"`
@@ -2303,6 +2339,20 @@ func (m *MovePromptResponseData) GetImportedFromListingID() *string {
 		return nil
 	}
 	return m.ImportedFromListingID
+}
+
+func (m *MovePromptResponseData) GetCapturedFromSessionID() *string {
+	if m == nil {
+		return nil
+	}
+	return m.CapturedFromSessionID
+}
+
+func (m *MovePromptResponseData) GetCaptureRepoSlug() *string {
+	if m == nil {
+		return nil
+	}
+	return m.CaptureRepoSlug
 }
 
 func (m *MovePromptResponseData) GetCreatedByID() string {
@@ -2454,6 +2504,20 @@ func (m *MovePromptResponseData) SetForkedFromPromptID(forkedFromPromptID *strin
 func (m *MovePromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
 	m.ImportedFromListingID = importedFromListingID
 	m.require(movePromptResponseDataFieldImportedFromListingID)
+}
+
+// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseData) SetCapturedFromSessionID(capturedFromSessionID *string) {
+	m.CapturedFromSessionID = capturedFromSessionID
+	m.require(movePromptResponseDataFieldCapturedFromSessionID)
+}
+
+// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MovePromptResponseData) SetCaptureRepoSlug(captureRepoSlug *string) {
+	m.CaptureRepoSlug = captureRepoSlug
+	m.require(movePromptResponseDataFieldCaptureRepoSlug)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;

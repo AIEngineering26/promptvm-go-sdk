@@ -11,15 +11,71 @@ import (
 )
 
 var (
+	browseMarketplaceCreatorsRequestFieldQ     = big.NewInt(1 << 0)
+	browseMarketplaceCreatorsRequestFieldSort  = big.NewInt(1 << 1)
+	browseMarketplaceCreatorsRequestFieldPage  = big.NewInt(1 << 2)
+	browseMarketplaceCreatorsRequestFieldLimit = big.NewInt(1 << 3)
+)
+
+type BrowseMarketplaceCreatorsRequest struct {
+	Q     *string                               `json:"-" url:"q,omitempty"`
+	Sort  *BrowseMarketplaceCreatorsRequestSort `json:"-" url:"sort,omitempty"`
+	Page  *string                               `json:"-" url:"page,omitempty"`
+	Limit *string                               `json:"-" url:"limit,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (b *BrowseMarketplaceCreatorsRequest) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetQ sets the Q field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsRequest) SetQ(q *string) {
+	b.Q = q
+	b.require(browseMarketplaceCreatorsRequestFieldQ)
+}
+
+// SetSort sets the Sort field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsRequest) SetSort(sort *BrowseMarketplaceCreatorsRequestSort) {
+	b.Sort = sort
+	b.require(browseMarketplaceCreatorsRequestFieldSort)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsRequest) SetPage(page *string) {
+	b.Page = page
+	b.require(browseMarketplaceCreatorsRequestFieldPage)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsRequest) SetLimit(limit *string) {
+	b.Limit = limit
+	b.require(browseMarketplaceCreatorsRequestFieldLimit)
+}
+
+var (
 	createMarketplaceCreatorProfileRequestFieldBio         = big.NewInt(1 << 0)
 	createMarketplaceCreatorProfileRequestFieldWebsite     = big.NewInt(1 << 1)
 	createMarketplaceCreatorProfileRequestFieldSocialLinks = big.NewInt(1 << 2)
+	createMarketplaceCreatorProfileRequestFieldAvatarURL   = big.NewInt(1 << 3)
+	createMarketplaceCreatorProfileRequestFieldDisplayName = big.NewInt(1 << 4)
 )
 
 type CreateMarketplaceCreatorProfileRequest struct {
 	Bio         string                 `json:"bio" url:"-"`
 	Website     *string                `json:"website,omitempty" url:"-"`
 	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"-"`
+	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"-"`
+	DisplayName *string                `json:"displayName,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -53,6 +109,20 @@ func (c *CreateMarketplaceCreatorProfileRequest) SetSocialLinks(socialLinks map[
 	c.require(createMarketplaceCreatorProfileRequestFieldSocialLinks)
 }
 
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileRequest) SetAvatarURL(avatarURL *string) {
+	c.AvatarURL = avatarURL
+	c.require(createMarketplaceCreatorProfileRequestFieldAvatarURL)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileRequest) SetDisplayName(displayName *string) {
+	c.DisplayName = displayName
+	c.require(createMarketplaceCreatorProfileRequestFieldDisplayName)
+}
+
 var (
 	getMarketplaceCreatorProfileRequestFieldUserID = big.NewInt(1 << 0)
 )
@@ -76,6 +146,464 @@ func (g *GetMarketplaceCreatorProfileRequest) require(field *big.Int) {
 func (g *GetMarketplaceCreatorProfileRequest) SetUserID(userID string) {
 	g.UserID = userID
 	g.require(getMarketplaceCreatorProfileRequestFieldUserID)
+}
+
+type BrowseMarketplaceCreatorsRequestSort string
+
+const (
+	BrowseMarketplaceCreatorsRequestSortTop       BrowseMarketplaceCreatorsRequestSort = "top"
+	BrowseMarketplaceCreatorsRequestSortInstalls  BrowseMarketplaceCreatorsRequestSort = "installs"
+	BrowseMarketplaceCreatorsRequestSortListings  BrowseMarketplaceCreatorsRequestSort = "listings"
+	BrowseMarketplaceCreatorsRequestSortFollowers BrowseMarketplaceCreatorsRequestSort = "followers"
+	BrowseMarketplaceCreatorsRequestSortNewest    BrowseMarketplaceCreatorsRequestSort = "newest"
+)
+
+func NewBrowseMarketplaceCreatorsRequestSortFromString(s string) (BrowseMarketplaceCreatorsRequestSort, error) {
+	switch s {
+	case "top":
+		return BrowseMarketplaceCreatorsRequestSortTop, nil
+	case "installs":
+		return BrowseMarketplaceCreatorsRequestSortInstalls, nil
+	case "listings":
+		return BrowseMarketplaceCreatorsRequestSortListings, nil
+	case "followers":
+		return BrowseMarketplaceCreatorsRequestSortFollowers, nil
+	case "newest":
+		return BrowseMarketplaceCreatorsRequestSortNewest, nil
+	}
+	var t BrowseMarketplaceCreatorsRequestSort
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BrowseMarketplaceCreatorsRequestSort) Ptr() *BrowseMarketplaceCreatorsRequestSort {
+	return &b
+}
+
+// Creators
+var (
+	browseMarketplaceCreatorsResponseFieldData = big.NewInt(1 << 0)
+	browseMarketplaceCreatorsResponseFieldMeta = big.NewInt(1 << 1)
+)
+
+type BrowseMarketplaceCreatorsResponse struct {
+	Data []*BrowseMarketplaceCreatorsResponseDataItem `json:"data" url:"data"`
+	Meta *BrowseMarketplaceCreatorsResponseMeta       `json:"meta" url:"meta"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BrowseMarketplaceCreatorsResponse) GetData() []*BrowseMarketplaceCreatorsResponseDataItem {
+	if b == nil {
+		return nil
+	}
+	return b.Data
+}
+
+func (b *BrowseMarketplaceCreatorsResponse) GetMeta() *BrowseMarketplaceCreatorsResponseMeta {
+	if b == nil {
+		return nil
+	}
+	return b.Meta
+}
+
+func (b *BrowseMarketplaceCreatorsResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BrowseMarketplaceCreatorsResponse) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponse) SetData(data []*BrowseMarketplaceCreatorsResponseDataItem) {
+	b.Data = data
+	b.require(browseMarketplaceCreatorsResponseFieldData)
+}
+
+// SetMeta sets the Meta field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponse) SetMeta(meta *BrowseMarketplaceCreatorsResponseMeta) {
+	b.Meta = meta
+	b.require(browseMarketplaceCreatorsResponseFieldMeta)
+}
+
+func (b *BrowseMarketplaceCreatorsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BrowseMarketplaceCreatorsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BrowseMarketplaceCreatorsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BrowseMarketplaceCreatorsResponse) MarshalJSON() ([]byte, error) {
+	type embed BrowseMarketplaceCreatorsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BrowseMarketplaceCreatorsResponse) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	browseMarketplaceCreatorsResponseDataItemFieldUserID        = big.NewInt(1 << 0)
+	browseMarketplaceCreatorsResponseDataItemFieldDisplayName   = big.NewInt(1 << 1)
+	browseMarketplaceCreatorsResponseDataItemFieldUsername      = big.NewInt(1 << 2)
+	browseMarketplaceCreatorsResponseDataItemFieldAvatarURL     = big.NewInt(1 << 3)
+	browseMarketplaceCreatorsResponseDataItemFieldIsVerified    = big.NewInt(1 << 4)
+	browseMarketplaceCreatorsResponseDataItemFieldBio           = big.NewInt(1 << 5)
+	browseMarketplaceCreatorsResponseDataItemFieldListingsCount = big.NewInt(1 << 6)
+	browseMarketplaceCreatorsResponseDataItemFieldInstalls      = big.NewInt(1 << 7)
+	browseMarketplaceCreatorsResponseDataItemFieldFollowers     = big.NewInt(1 << 8)
+	browseMarketplaceCreatorsResponseDataItemFieldIsFollowing   = big.NewInt(1 << 9)
+)
+
+type BrowseMarketplaceCreatorsResponseDataItem struct {
+	UserID        *string `json:"userId,omitempty" url:"userId,omitempty"`
+	DisplayName   *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username      *string `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL     *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	IsVerified    *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	Bio           *string `json:"bio,omitempty" url:"bio,omitempty"`
+	ListingsCount *int    `json:"listingsCount,omitempty" url:"listingsCount,omitempty"`
+	Installs      *int    `json:"installs,omitempty" url:"installs,omitempty"`
+	Followers     *int    `json:"followers,omitempty" url:"followers,omitempty"`
+	IsFollowing   *bool   `json:"isFollowing,omitempty" url:"isFollowing,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetUserID() *string {
+	if b == nil {
+		return nil
+	}
+	return b.UserID
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetDisplayName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.DisplayName
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetUsername() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Username
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetAvatarURL() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AvatarURL
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetIsVerified() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsVerified
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetBio() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Bio
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetListingsCount() *int {
+	if b == nil {
+		return nil
+	}
+	return b.ListingsCount
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetInstalls() *int {
+	if b == nil {
+		return nil
+	}
+	return b.Installs
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetFollowers() *int {
+	if b == nil {
+		return nil
+	}
+	return b.Followers
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetIsFollowing() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsFollowing
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetUserID(userID *string) {
+	b.UserID = userID
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldUserID)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetDisplayName(displayName *string) {
+	b.DisplayName = displayName
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldDisplayName)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetUsername(username *string) {
+	b.Username = username
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldUsername)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetAvatarURL(avatarURL *string) {
+	b.AvatarURL = avatarURL
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldAvatarURL)
+}
+
+// SetIsVerified sets the IsVerified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetIsVerified(isVerified *bool) {
+	b.IsVerified = isVerified
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldIsVerified)
+}
+
+// SetBio sets the Bio field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetBio(bio *string) {
+	b.Bio = bio
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldBio)
+}
+
+// SetListingsCount sets the ListingsCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetListingsCount(listingsCount *int) {
+	b.ListingsCount = listingsCount
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldListingsCount)
+}
+
+// SetInstalls sets the Installs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetInstalls(installs *int) {
+	b.Installs = installs
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldInstalls)
+}
+
+// SetFollowers sets the Followers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetFollowers(followers *int) {
+	b.Followers = followers
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldFollowers)
+}
+
+// SetIsFollowing sets the IsFollowing field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetIsFollowing(isFollowing *bool) {
+	b.IsFollowing = isFollowing
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldIsFollowing)
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler BrowseMarketplaceCreatorsResponseDataItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BrowseMarketplaceCreatorsResponseDataItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed BrowseMarketplaceCreatorsResponseDataItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	browseMarketplaceCreatorsResponseMetaFieldPage  = big.NewInt(1 << 0)
+	browseMarketplaceCreatorsResponseMetaFieldLimit = big.NewInt(1 << 1)
+	browseMarketplaceCreatorsResponseMetaFieldTotal = big.NewInt(1 << 2)
+)
+
+type BrowseMarketplaceCreatorsResponseMeta struct {
+	Page  int `json:"page" url:"page"`
+	Limit int `json:"limit" url:"limit"`
+	Total int `json:"total" url:"total"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) GetPage() int {
+	if b == nil {
+		return 0
+	}
+	return b.Page
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) GetLimit() int {
+	if b == nil {
+		return 0
+	}
+	return b.Limit
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) GetTotal() int {
+	if b == nil {
+		return 0
+	}
+	return b.Total
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseMeta) SetPage(page int) {
+	b.Page = page
+	b.require(browseMarketplaceCreatorsResponseMetaFieldPage)
+}
+
+// SetLimit sets the Limit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseMeta) SetLimit(limit int) {
+	b.Limit = limit
+	b.require(browseMarketplaceCreatorsResponseMetaFieldLimit)
+}
+
+// SetTotal sets the Total field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseMeta) SetTotal(total int) {
+	b.Total = total
+	b.require(browseMarketplaceCreatorsResponseMetaFieldTotal)
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler BrowseMarketplaceCreatorsResponseMeta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BrowseMarketplaceCreatorsResponseMeta(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) MarshalJSON() ([]byte, error) {
+	type embed BrowseMarketplaceCreatorsResponseMeta
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BrowseMarketplaceCreatorsResponseMeta) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
 }
 
 // Profile created
@@ -165,8 +693,11 @@ var (
 	createMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
 	createMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
 	createMarketplaceCreatorProfileResponseDataFieldVerifiedAt  = big.NewInt(1 << 6)
-	createMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 7)
-	createMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 8)
+	createMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 7)
+	createMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 8)
+	createMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 9)
+	createMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 10)
+	createMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 11)
 )
 
 type CreateMarketplaceCreatorProfileResponseData struct {
@@ -177,6 +708,9 @@ type CreateMarketplaceCreatorProfileResponseData struct {
 	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
 	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
 	VerifiedAt  *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
+	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 	CreatedAt   time.Time              `json:"createdAt" url:"createdAt"`
 	UpdatedAt   time.Time              `json:"updatedAt" url:"updatedAt"`
 
@@ -234,6 +768,27 @@ func (c *CreateMarketplaceCreatorProfileResponseData) GetVerifiedAt() *time.Time
 		return nil
 	}
 	return c.VerifiedAt
+}
+
+func (c *CreateMarketplaceCreatorProfileResponseData) GetDisplayName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.DisplayName
+}
+
+func (c *CreateMarketplaceCreatorProfileResponseData) GetUsername() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Username
+}
+
+func (c *CreateMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AvatarURL
 }
 
 func (c *CreateMarketplaceCreatorProfileResponseData) GetCreatedAt() time.Time {
@@ -308,6 +863,27 @@ func (c *CreateMarketplaceCreatorProfileResponseData) SetIsVerified(isVerified b
 func (c *CreateMarketplaceCreatorProfileResponseData) SetVerifiedAt(verifiedAt *time.Time) {
 	c.VerifiedAt = verifiedAt
 	c.require(createMarketplaceCreatorProfileResponseDataFieldVerifiedAt)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileResponseData) SetDisplayName(displayName *string) {
+	c.DisplayName = displayName
+	c.require(createMarketplaceCreatorProfileResponseDataFieldDisplayName)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileResponseData) SetUsername(username *string) {
+	c.Username = username
+	c.require(createMarketplaceCreatorProfileResponseDataFieldUsername)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *string) {
+	c.AvatarURL = avatarURL
+	c.require(createMarketplaceCreatorProfileResponseDataFieldAvatarURL)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -465,6 +1041,9 @@ var (
 	getMarketplaceCreatorProfileResponseDataFieldWebsite     = big.NewInt(1 << 3)
 	getMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
 	getMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
+	getMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 6)
+	getMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 7)
+	getMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 8)
 )
 
 type GetMarketplaceCreatorProfileResponseData struct {
@@ -474,6 +1053,9 @@ type GetMarketplaceCreatorProfileResponseData struct {
 	Website     *string                `json:"website,omitempty" url:"website,omitempty"`
 	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
 	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
+	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -522,6 +1104,27 @@ func (g *GetMarketplaceCreatorProfileResponseData) GetIsVerified() bool {
 		return false
 	}
 	return g.IsVerified
+}
+
+func (g *GetMarketplaceCreatorProfileResponseData) GetDisplayName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DisplayName
+}
+
+func (g *GetMarketplaceCreatorProfileResponseData) GetUsername() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Username
+}
+
+func (g *GetMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AvatarURL
 }
 
 func (g *GetMarketplaceCreatorProfileResponseData) GetExtraProperties() map[string]interface{} {
@@ -575,6 +1178,27 @@ func (g *GetMarketplaceCreatorProfileResponseData) SetSocialLinks(socialLinks ma
 func (g *GetMarketplaceCreatorProfileResponseData) SetIsVerified(isVerified bool) {
 	g.IsVerified = isVerified
 	g.require(getMarketplaceCreatorProfileResponseDataFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileResponseData) SetDisplayName(displayName *string) {
+	g.DisplayName = displayName
+	g.require(getMarketplaceCreatorProfileResponseDataFieldDisplayName)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileResponseData) SetUsername(username *string) {
+	g.Username = username
+	g.require(getMarketplaceCreatorProfileResponseDataFieldUsername)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *string) {
+	g.AvatarURL = avatarURL
+	g.require(getMarketplaceCreatorProfileResponseDataFieldAvatarURL)
 }
 
 func (g *GetMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte) error {
@@ -703,8 +1327,11 @@ var (
 	getMyMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
 	getMyMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
 	getMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt  = big.NewInt(1 << 6)
-	getMyMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 7)
-	getMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 8)
+	getMyMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 7)
+	getMyMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 8)
+	getMyMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 9)
+	getMyMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 10)
+	getMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 11)
 )
 
 type GetMyMarketplaceCreatorProfileResponseData struct {
@@ -715,6 +1342,9 @@ type GetMyMarketplaceCreatorProfileResponseData struct {
 	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
 	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
 	VerifiedAt  *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
+	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 	CreatedAt   time.Time              `json:"createdAt" url:"createdAt"`
 	UpdatedAt   time.Time              `json:"updatedAt" url:"updatedAt"`
 
@@ -772,6 +1402,27 @@ func (g *GetMyMarketplaceCreatorProfileResponseData) GetVerifiedAt() *time.Time 
 		return nil
 	}
 	return g.VerifiedAt
+}
+
+func (g *GetMyMarketplaceCreatorProfileResponseData) GetDisplayName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DisplayName
+}
+
+func (g *GetMyMarketplaceCreatorProfileResponseData) GetUsername() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Username
+}
+
+func (g *GetMyMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AvatarURL
 }
 
 func (g *GetMyMarketplaceCreatorProfileResponseData) GetCreatedAt() time.Time {
@@ -846,6 +1497,27 @@ func (g *GetMyMarketplaceCreatorProfileResponseData) SetIsVerified(isVerified bo
 func (g *GetMyMarketplaceCreatorProfileResponseData) SetVerifiedAt(verifiedAt *time.Time) {
 	g.VerifiedAt = verifiedAt
 	g.require(getMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMyMarketplaceCreatorProfileResponseData) SetDisplayName(displayName *string) {
+	g.DisplayName = displayName
+	g.require(getMyMarketplaceCreatorProfileResponseDataFieldDisplayName)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMyMarketplaceCreatorProfileResponseData) SetUsername(username *string) {
+	g.Username = username
+	g.require(getMyMarketplaceCreatorProfileResponseDataFieldUsername)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMyMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *string) {
+	g.AvatarURL = avatarURL
+	g.require(getMyMarketplaceCreatorProfileResponseDataFieldAvatarURL)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -1004,8 +1676,11 @@ var (
 	updateMyMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
 	updateMyMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
 	updateMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt  = big.NewInt(1 << 6)
-	updateMyMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 7)
-	updateMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 8)
+	updateMyMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 7)
+	updateMyMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 8)
+	updateMyMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 9)
+	updateMyMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 10)
+	updateMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 11)
 )
 
 type UpdateMyMarketplaceCreatorProfileResponseData struct {
@@ -1016,6 +1691,9 @@ type UpdateMyMarketplaceCreatorProfileResponseData struct {
 	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
 	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
 	VerifiedAt  *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
+	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 	CreatedAt   time.Time              `json:"createdAt" url:"createdAt"`
 	UpdatedAt   time.Time              `json:"updatedAt" url:"updatedAt"`
 
@@ -1073,6 +1751,27 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetVerifiedAt() *time.Ti
 		return nil
 	}
 	return u.VerifiedAt
+}
+
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
+}
+
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetUsername() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Username
+}
+
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AvatarURL
 }
 
 func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetCreatedAt() time.Time {
@@ -1149,6 +1848,27 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetVerifiedAt(verifiedAt
 	u.require(updateMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt)
 }
 
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetDisplayName(displayName *string) {
+	u.DisplayName = displayName
+	u.require(updateMyMarketplaceCreatorProfileResponseDataFieldDisplayName)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetUsername(username *string) {
+	u.Username = username
+	u.require(updateMyMarketplaceCreatorProfileResponseDataFieldUsername)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *string) {
+	u.AvatarURL = avatarURL
+	u.require(updateMyMarketplaceCreatorProfileResponseDataFieldAvatarURL)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetCreatedAt(createdAt time.Time) {
@@ -1222,12 +1942,16 @@ var (
 	updateMyMarketplaceCreatorProfileRequestFieldBio         = big.NewInt(1 << 0)
 	updateMyMarketplaceCreatorProfileRequestFieldWebsite     = big.NewInt(1 << 1)
 	updateMyMarketplaceCreatorProfileRequestFieldSocialLinks = big.NewInt(1 << 2)
+	updateMyMarketplaceCreatorProfileRequestFieldAvatarURL   = big.NewInt(1 << 3)
+	updateMyMarketplaceCreatorProfileRequestFieldDisplayName = big.NewInt(1 << 4)
 )
 
 type UpdateMyMarketplaceCreatorProfileRequest struct {
 	Bio         *string                `json:"bio,omitempty" url:"-"`
 	Website     *string                `json:"website,omitempty" url:"-"`
 	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"-"`
+	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"-"`
+	DisplayName *string                `json:"displayName,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1259,4 +1983,18 @@ func (u *UpdateMyMarketplaceCreatorProfileRequest) SetWebsite(website *string) {
 func (u *UpdateMyMarketplaceCreatorProfileRequest) SetSocialLinks(socialLinks map[string]interface{}) {
 	u.SocialLinks = socialLinks
 	u.require(updateMyMarketplaceCreatorProfileRequestFieldSocialLinks)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileRequest) SetAvatarURL(avatarURL *string) {
+	u.AvatarURL = avatarURL
+	u.require(updateMyMarketplaceCreatorProfileRequestFieldAvatarURL)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileRequest) SetDisplayName(displayName *string) {
+	u.DisplayName = displayName
+	u.require(updateMyMarketplaceCreatorProfileRequestFieldDisplayName)
 }

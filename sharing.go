@@ -329,12 +329,14 @@ var (
 	accessSharedPromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
 	accessSharedPromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
 	accessSharedPromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
-	accessSharedPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
-	accessSharedPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
-	accessSharedPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
-	accessSharedPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
-	accessSharedPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
-	accessSharedPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
+	accessSharedPromptResponseDataFieldCapturedFromSessionID = big.NewInt(1 << 14)
+	accessSharedPromptResponseDataFieldCaptureRepoSlug       = big.NewInt(1 << 15)
+	accessSharedPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 16)
+	accessSharedPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 17)
+	accessSharedPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 18)
+	accessSharedPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 19)
+	accessSharedPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 20)
+	accessSharedPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 21)
 )
 
 type AccessSharedPromptResponseData struct {
@@ -352,6 +354,8 @@ type AccessSharedPromptResponseData struct {
 	DirectoryID           *string                                       `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID    *string                                       `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	ImportedFromListingID *string                                       `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CapturedFromSessionID *string                                       `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
+	CaptureRepoSlug       *string                                       `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
 	CreatedByID           string                                        `json:"createdById" url:"createdById"`
 	CreatedByName         *string                                       `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt             time.Time                                     `json:"createdAt" url:"createdAt"`
@@ -462,6 +466,20 @@ func (a *AccessSharedPromptResponseData) GetImportedFromListingID() *string {
 		return nil
 	}
 	return a.ImportedFromListingID
+}
+
+func (a *AccessSharedPromptResponseData) GetCapturedFromSessionID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.CapturedFromSessionID
+}
+
+func (a *AccessSharedPromptResponseData) GetCaptureRepoSlug() *string {
+	if a == nil {
+		return nil
+	}
+	return a.CaptureRepoSlug
 }
 
 func (a *AccessSharedPromptResponseData) GetCreatedByID() string {
@@ -613,6 +631,20 @@ func (a *AccessSharedPromptResponseData) SetForkedFromPromptID(forkedFromPromptI
 func (a *AccessSharedPromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
 	a.ImportedFromListingID = importedFromListingID
 	a.require(accessSharedPromptResponseDataFieldImportedFromListingID)
+}
+
+// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseData) SetCapturedFromSessionID(capturedFromSessionID *string) {
+	a.CapturedFromSessionID = capturedFromSessionID
+	a.require(accessSharedPromptResponseDataFieldCapturedFromSessionID)
+}
+
+// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseData) SetCaptureRepoSlug(captureRepoSlug *string) {
+	a.CaptureRepoSlug = captureRepoSlug
+	a.require(accessSharedPromptResponseDataFieldCaptureRepoSlug)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;

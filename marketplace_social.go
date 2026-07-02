@@ -1318,15 +1318,19 @@ func (g GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind) Ptr() *GetA
 }
 
 var (
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldUserID     = big.NewInt(1 << 0)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldBio        = big.NewInt(1 << 1)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldIsVerified = big.NewInt(1 << 2)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldUserID      = big.NewInt(1 << 0)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldBio         = big.NewInt(1 << 1)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldIsVerified  = big.NewInt(1 << 2)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldDisplayName = big.NewInt(1 << 3)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldAvatarURL   = big.NewInt(1 << 4)
 )
 
 type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller struct {
-	UserID     *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio        *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1354,6 +1358,20 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetIsVerified()
 		return nil
 	}
 	return g.IsVerified
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetDisplayName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DisplayName
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetAvatarURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AvatarURL
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetExtraProperties() map[string]interface{} {
@@ -1386,6 +1404,20 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetBio(bio *str
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetIsVerified(isVerified *bool) {
 	g.IsVerified = isVerified
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetDisplayName(displayName *string) {
+	g.DisplayName = displayName
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldDisplayName)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetAvatarURL(avatarURL *string) {
+	g.AvatarURL = avatarURL
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldAvatarURL)
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) UnmarshalJSON(data []byte) error {

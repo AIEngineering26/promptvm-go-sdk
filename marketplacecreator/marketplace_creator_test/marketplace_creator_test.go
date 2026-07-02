@@ -62,6 +62,56 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+func TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetMarketplaceCreatorProfileRequest{
+		UserID: "userId",
+	}
+	_, invocationErr := client.MarketplaceCreator.GetMarketplaceCreatorProfile(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock", "GET", "/api/v1/marketplace/creator/userId", nil, 1)
+}
+
+func TestMarketplaceCreatorBrowseMarketplaceCreatorsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.BrowseMarketplaceCreatorsRequest{}
+	_, invocationErr := client.MarketplaceCreator.BrowseMarketplaceCreators(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceCreatorBrowseMarketplaceCreatorsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceCreatorBrowseMarketplaceCreatorsWithWireMock", "GET", "/api/v1/marketplace/creators", nil, 1)
+}
+
 func TestMarketplaceCreatorGetMyMarketplaceCreatorProfileWithWireMock(
 	t *testing.T,
 ) {
@@ -132,30 +182,4 @@ func TestMarketplaceCreatorCreateMarketplaceCreatorProfileWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMarketplaceCreatorCreateMarketplaceCreatorProfileWithWireMock", "POST", "/api/v1/marketplace/creator", nil, 1)
-}
-
-func TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock(
-	t *testing.T,
-) {
-	wiremockPort := os.Getenv("WIREMOCK_PORT")
-	if wiremockPort == "" {
-		wiremockPort = "8080"
-	}
-	WireMockBaseURL := "http://localhost:" + wiremockPort
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &promptvmgosdk.GetMarketplaceCreatorProfileRequest{
-		UserID: "userId",
-	}
-	_, invocationErr := client.MarketplaceCreator.GetMarketplaceCreatorProfile(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock", "GET", "/api/v1/marketplace/creator/userId", nil, 1)
 }

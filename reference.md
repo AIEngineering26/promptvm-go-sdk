@@ -1496,6 +1496,67 @@ client.AgentAPI.AgentResolvePrompt(
 </details>
 
 ## SkillsPublic
+<details><summary><code>client.SkillsPublic.RecordPublicSkillInstall(Slug) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated. Atomically increments the tied marketplace listing's downloadCount (never importCount). No-op (still 204) when the public skill has no listing. 404 for a missing/non-public skill.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RecordPublicSkillInstallRequest{
+        Slug: "slug",
+    }
+client.SkillsPublic.RecordPublicSkillInstall(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**slug:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.SkillsPublic.GetPublicSkillBySlug(Slug) -> *promptvmgosdk.GetPublicSkillBySlugResponse</code></summary>
 <dl>
 <dd>
@@ -1632,6 +1693,600 @@ client.HooksPublic.GetPublicHookBySlug(
 <dd>
 
 **version:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## ContextSync
+<details><summary><code>client.ContextSync.GetContextSyncManifest() -> *promptvmgosdk.GetContextSyncManifestResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The canonical hook + manifest spec the CLI `promptvm sync init` and the MCP setup prompt render from. Public, CORS-enabled, cached 300s.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.ContextSync.GetContextSyncManifest(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.ListCapturedSessions() -> *promptvmgosdk.ListCapturedSessionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListCapturedSessionsRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.ContextSync.ListCapturedSessions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*promptvmgosdk.ListCapturedSessionsRequestStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**project:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**repoSlug:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**repo:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**branch:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**authorID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*promptvmgosdk.ListCapturedSessionsRequestSort` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `*promptvmgosdk.ListCapturedSessionsRequestOrder` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.IngestCapturedSession(request) -> *promptvmgosdk.IngestCapturedSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.IngestCapturedSessionRequest{
+        WorkspaceID: "workspaceId",
+        ClaudeSessionID: "claudeSessionId",
+        Source: "source",
+        CaptureMode: promptvmgosdk.IngestCapturedSessionRequestCaptureModeSummary,
+    }
+client.ContextSync.IngestCapturedSession(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**claudeSessionID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**captureMode:** `*promptvmgosdk.IngestCapturedSessionRequestCaptureMode` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**summary:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `*promptvmgosdk.IngestCapturedSessionRequestMetadata` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contentHash:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**occurredAt:** `*time.Time` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**redactionApplied:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lowSignal:** `*bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.GetContextSyncHealth() -> *promptvmgosdk.GetContextSyncHealthResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetContextSyncHealthRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.ContextSync.GetContextSyncHealth(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.ListCaptureRepos() -> *promptvmgosdk.ListCaptureReposResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListCaptureReposRequest{
+        WorkspaceID: "workspaceId",
+    }
+client.ContextSync.ListCaptureRepos(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workspaceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.BulkPromoteCapturedSessions(request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.BulkPromoteCapturedSessionsRequest{
+        IDs: []string{
+            "ids",
+        },
+    }
+client.ContextSync.BulkPromoteCapturedSessions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.BulkDiscardCapturedSessions(request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.BulkDiscardCapturedSessionsRequest{
+        IDs: []string{
+            "ids",
+        },
+    }
+client.ContextSync.BulkDiscardCapturedSessions(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.PromoteCapturedSession(ID) -> *promptvmgosdk.PromoteCapturedSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.PromoteCapturedSessionRequest{
+        ID: "id",
+    }
+client.ContextSync.PromoteCapturedSession(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ContextSync.DiscardCapturedSession(ID) -> *promptvmgosdk.DiscardCapturedSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DiscardCapturedSessionRequest{
+        ID: "id",
+    }
+client.ContextSync.DiscardCapturedSession(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
     
 </dd>
 </dl>
@@ -2326,6 +2981,350 @@ client.MarketplaceListings.ClaimMarketplaceListing(
 
 **workspaceID:** `string` 
     
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Marketplace - Creator
+<details><summary><code>client.MarketplaceCreator.GetMarketplaceCreatorProfile(UserID) -> *promptvmgosdk.GetMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetMarketplaceCreatorProfileRequest{
+        UserID: "userId",
+    }
+client.MarketplaceCreator.GetMarketplaceCreatorProfile(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreator.BrowseMarketplaceCreators() -> *promptvmgosdk.BrowseMarketplaceCreatorsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.BrowseMarketplaceCreatorsRequest{}
+client.MarketplaceCreator.BrowseMarketplaceCreators(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**q:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `*promptvmgosdk.BrowseMarketplaceCreatorsRequestSort` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreator.GetMyMarketplaceCreatorProfile() -> *promptvmgosdk.GetMyMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceCreator.GetMyMarketplaceCreatorProfile(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(request) -> *promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest{}
+client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**bio:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**socialLinks:** `map[string]any` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**avatarURL:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**displayName:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceCreator.CreateMarketplaceCreatorProfile(request) -> *promptvmgosdk.CreateMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.CreateMarketplaceCreatorProfileRequest{
+        Bio: "bio",
+    }
+client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**bio:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**socialLinks:** `map[string]any` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**avatarURL:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**displayName:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## MarketplaceStats
+<details><summary><code>client.MarketplaceStats.GetMarketplaceStats() -> *promptvmgosdk.GetMarketplaceStatsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated. Returns { totalListings, totalInstalls, totalCreators } over active listings. totalInstalls is the live SUM(downloadCount).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceStats.GetMarketplaceStats(
+        context.TODO(),
+    )
+}
+```
 </dd>
 </dl>
 </dd>
@@ -3501,206 +4500,6 @@ client.MarketplaceSocial.ListACreatorsFollowers(
 <dd>
 
 **limit:** `*int` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Marketplace - Creator
-<details><summary><code>client.MarketplaceCreator.GetMyMarketplaceCreatorProfile() -> *promptvmgosdk.GetMyMarketplaceCreatorProfileResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.MarketplaceCreator.GetMyMarketplaceCreatorProfile(
-        context.TODO(),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(request) -> *promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest{}
-client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bio:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**website:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**socialLinks:** `map[string]any` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceCreator.CreateMarketplaceCreatorProfile(request) -> *promptvmgosdk.CreateMarketplaceCreatorProfileResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.CreateMarketplaceCreatorProfileRequest{
-        Bio: "bio",
-    }
-client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bio:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**website:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**socialLinks:** `map[string]any` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MarketplaceCreator.GetMarketplaceCreatorProfile(UserID) -> *promptvmgosdk.GetMarketplaceCreatorProfileResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &promptvmgosdk.GetMarketplaceCreatorProfileRequest{
-        UserID: "userId",
-    }
-client.MarketplaceCreator.GetMarketplaceCreatorProfile(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**userID:** `string` 
     
 </dd>
 </dl>

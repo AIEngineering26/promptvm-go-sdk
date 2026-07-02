@@ -1746,15 +1746,19 @@ func (c CreateMarketplaceListingResponseDataContentKind) Ptr() *CreateMarketplac
 }
 
 var (
-	createMarketplaceListingResponseDataSellerFieldUserID     = big.NewInt(1 << 0)
-	createMarketplaceListingResponseDataSellerFieldBio        = big.NewInt(1 << 1)
-	createMarketplaceListingResponseDataSellerFieldIsVerified = big.NewInt(1 << 2)
+	createMarketplaceListingResponseDataSellerFieldUserID      = big.NewInt(1 << 0)
+	createMarketplaceListingResponseDataSellerFieldBio         = big.NewInt(1 << 1)
+	createMarketplaceListingResponseDataSellerFieldIsVerified  = big.NewInt(1 << 2)
+	createMarketplaceListingResponseDataSellerFieldDisplayName = big.NewInt(1 << 3)
+	createMarketplaceListingResponseDataSellerFieldAvatarURL   = big.NewInt(1 << 4)
 )
 
 type CreateMarketplaceListingResponseDataSeller struct {
-	UserID     *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio        *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1782,6 +1786,20 @@ func (c *CreateMarketplaceListingResponseDataSeller) GetIsVerified() *bool {
 		return nil
 	}
 	return c.IsVerified
+}
+
+func (c *CreateMarketplaceListingResponseDataSeller) GetDisplayName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.DisplayName
+}
+
+func (c *CreateMarketplaceListingResponseDataSeller) GetAvatarURL() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AvatarURL
 }
 
 func (c *CreateMarketplaceListingResponseDataSeller) GetExtraProperties() map[string]interface{} {
@@ -1814,6 +1832,20 @@ func (c *CreateMarketplaceListingResponseDataSeller) SetBio(bio *string) {
 func (c *CreateMarketplaceListingResponseDataSeller) SetIsVerified(isVerified *bool) {
 	c.IsVerified = isVerified
 	c.require(createMarketplaceListingResponseDataSellerFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseDataSeller) SetDisplayName(displayName *string) {
+	c.DisplayName = displayName
+	c.require(createMarketplaceListingResponseDataSellerFieldDisplayName)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceListingResponseDataSeller) SetAvatarURL(avatarURL *string) {
+	c.AvatarURL = avatarURL
+	c.require(createMarketplaceListingResponseDataSellerFieldAvatarURL)
 }
 
 func (c *CreateMarketplaceListingResponseDataSeller) UnmarshalJSON(data []byte) error {
@@ -2860,15 +2892,19 @@ func (u UpdateMarketplaceListingResponseDataContentKind) Ptr() *UpdateMarketplac
 }
 
 var (
-	updateMarketplaceListingResponseDataSellerFieldUserID     = big.NewInt(1 << 0)
-	updateMarketplaceListingResponseDataSellerFieldBio        = big.NewInt(1 << 1)
-	updateMarketplaceListingResponseDataSellerFieldIsVerified = big.NewInt(1 << 2)
+	updateMarketplaceListingResponseDataSellerFieldUserID      = big.NewInt(1 << 0)
+	updateMarketplaceListingResponseDataSellerFieldBio         = big.NewInt(1 << 1)
+	updateMarketplaceListingResponseDataSellerFieldIsVerified  = big.NewInt(1 << 2)
+	updateMarketplaceListingResponseDataSellerFieldDisplayName = big.NewInt(1 << 3)
+	updateMarketplaceListingResponseDataSellerFieldAvatarURL   = big.NewInt(1 << 4)
 )
 
 type UpdateMarketplaceListingResponseDataSeller struct {
-	UserID     *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio        *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2896,6 +2932,20 @@ func (u *UpdateMarketplaceListingResponseDataSeller) GetIsVerified() *bool {
 		return nil
 	}
 	return u.IsVerified
+}
+
+func (u *UpdateMarketplaceListingResponseDataSeller) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
+}
+
+func (u *UpdateMarketplaceListingResponseDataSeller) GetAvatarURL() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AvatarURL
 }
 
 func (u *UpdateMarketplaceListingResponseDataSeller) GetExtraProperties() map[string]interface{} {
@@ -2928,6 +2978,20 @@ func (u *UpdateMarketplaceListingResponseDataSeller) SetBio(bio *string) {
 func (u *UpdateMarketplaceListingResponseDataSeller) SetIsVerified(isVerified *bool) {
 	u.IsVerified = isVerified
 	u.require(updateMarketplaceListingResponseDataSellerFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseDataSeller) SetDisplayName(displayName *string) {
+	u.DisplayName = displayName
+	u.require(updateMarketplaceListingResponseDataSellerFieldDisplayName)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMarketplaceListingResponseDataSeller) SetAvatarURL(avatarURL *string) {
+	u.AvatarURL = avatarURL
+	u.require(updateMarketplaceListingResponseDataSellerFieldAvatarURL)
 }
 
 func (u *UpdateMarketplaceListingResponseDataSeller) UnmarshalJSON(data []byte) error {

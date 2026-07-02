@@ -265,9 +265,10 @@ func (l *ListContextKindsResponseKindsItem) String() string {
 type ListContextKindsResponseKindsItemName string
 
 const (
-	ListContextKindsResponseKindsItemNamePrompt ListContextKindsResponseKindsItemName = "prompt"
-	ListContextKindsResponseKindsItemNameSkill  ListContextKindsResponseKindsItemName = "skill"
-	ListContextKindsResponseKindsItemNameHook   ListContextKindsResponseKindsItemName = "hook"
+	ListContextKindsResponseKindsItemNamePrompt  ListContextKindsResponseKindsItemName = "prompt"
+	ListContextKindsResponseKindsItemNameSkill   ListContextKindsResponseKindsItemName = "skill"
+	ListContextKindsResponseKindsItemNameHook    ListContextKindsResponseKindsItemName = "hook"
+	ListContextKindsResponseKindsItemNameCapture ListContextKindsResponseKindsItemName = "capture"
 )
 
 func NewListContextKindsResponseKindsItemNameFromString(s string) (ListContextKindsResponseKindsItemName, error) {
@@ -278,6 +279,8 @@ func NewListContextKindsResponseKindsItemNameFromString(s string) (ListContextKi
 		return ListContextKindsResponseKindsItemNameSkill, nil
 	case "hook":
 		return ListContextKindsResponseKindsItemNameHook, nil
+	case "capture":
+		return ListContextKindsResponseKindsItemNameCapture, nil
 	}
 	var t ListContextKindsResponseKindsItemName
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

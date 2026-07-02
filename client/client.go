@@ -11,6 +11,7 @@ import (
 	cliauth "github.com/AIEngineering26/promptvm-go-sdk/cliauth"
 	collections "github.com/AIEngineering26/promptvm-go-sdk/collections"
 	contexts "github.com/AIEngineering26/promptvm-go-sdk/contexts"
+	contextsync "github.com/AIEngineering26/promptvm-go-sdk/contextsync"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	directories "github.com/AIEngineering26/promptvm-go-sdk/directories"
 	hooks "github.com/AIEngineering26/promptvm-go-sdk/hooks"
@@ -25,6 +26,7 @@ import (
 	marketplaceratings "github.com/AIEngineering26/promptvm-go-sdk/marketplaceratings"
 	marketplaceskillsfeed "github.com/AIEngineering26/promptvm-go-sdk/marketplaceskillsfeed"
 	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
+	marketplacestats "github.com/AIEngineering26/promptvm-go-sdk/marketplacestats"
 	marketplacesubscriptions "github.com/AIEngineering26/promptvm-go-sdk/marketplacesubscriptions"
 	mcp "github.com/AIEngineering26/promptvm-go-sdk/mcp"
 	oauth "github.com/AIEngineering26/promptvm-go-sdk/oauth"
@@ -54,14 +56,16 @@ type Client struct {
 	AgentAPI                    *agentapi.Client
 	SkillsPublic                *skillspublic.Client
 	HooksPublic                 *hookspublic.Client
+	ContextSync                 *contextsync.Client
 	Contexts                    *contexts.Client
 	MarketplaceSkillsFeed       *marketplaceskillsfeed.Client
 	MarketplaceBrowse           *marketplacebrowse.Client
 	MarketplaceListings         *marketplacelistings.Client
+	MarketplaceCreator          *marketplacecreator.Client
+	MarketplaceStats            *marketplacestats.Client
 	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
 	MarketplaceSocial           *marketplacesocial.Client
-	MarketplaceCreator          *marketplacecreator.Client
 	MarketplaceCreatorDashboard *marketplacecreatordashboard.Client
 	MarketplaceSubscriptions    *marketplacesubscriptions.Client
 	MarketplaceRatings          *marketplaceratings.Client
@@ -102,14 +106,16 @@ func NewClient(opts ...option.RequestOption) *Client {
 		AgentAPI:                    agentapi.NewClient(options),
 		SkillsPublic:                skillspublic.NewClient(options),
 		HooksPublic:                 hookspublic.NewClient(options),
+		ContextSync:                 contextsync.NewClient(options),
 		Contexts:                    contexts.NewClient(options),
 		MarketplaceSkillsFeed:       marketplaceskillsfeed.NewClient(options),
 		MarketplaceBrowse:           marketplacebrowse.NewClient(options),
 		MarketplaceListings:         marketplacelistings.NewClient(options),
+		MarketplaceCreator:          marketplacecreator.NewClient(options),
+		MarketplaceStats:            marketplacestats.NewClient(options),
 		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
 		MarketplaceSocial:           marketplacesocial.NewClient(options),
-		MarketplaceCreator:          marketplacecreator.NewClient(options),
 		MarketplaceCreatorDashboard: marketplacecreatordashboard.NewClient(options),
 		MarketplaceSubscriptions:    marketplacesubscriptions.NewClient(options),
 		MarketplaceRatings:          marketplaceratings.NewClient(options),

@@ -53,6 +53,31 @@ func (g *GetPublicSkillBySlugRequest) SetFormat(format *GetPublicSkillBySlugRequ
 	g.require(getPublicSkillBySlugRequestFieldFormat)
 }
 
+var (
+	recordPublicSkillInstallRequestFieldSlug = big.NewInt(1 << 0)
+)
+
+type RecordPublicSkillInstallRequest struct {
+	Slug string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RecordPublicSkillInstallRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RecordPublicSkillInstallRequest) SetSlug(slug string) {
+	r.Slug = slug
+	r.require(recordPublicSkillInstallRequestFieldSlug)
+}
+
 type GetPublicSkillBySlugRequestFormat string
 
 const (

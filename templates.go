@@ -233,12 +233,14 @@ var (
 	convertPromptToTemplateResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
 	convertPromptToTemplateResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
 	convertPromptToTemplateResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
-	convertPromptToTemplateResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
-	convertPromptToTemplateResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
-	convertPromptToTemplateResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
-	convertPromptToTemplateResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
-	convertPromptToTemplateResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
-	convertPromptToTemplateResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
+	convertPromptToTemplateResponseDataFieldCapturedFromSessionID = big.NewInt(1 << 14)
+	convertPromptToTemplateResponseDataFieldCaptureRepoSlug       = big.NewInt(1 << 15)
+	convertPromptToTemplateResponseDataFieldCreatedByID           = big.NewInt(1 << 16)
+	convertPromptToTemplateResponseDataFieldCreatedByName         = big.NewInt(1 << 17)
+	convertPromptToTemplateResponseDataFieldCreatedAt             = big.NewInt(1 << 18)
+	convertPromptToTemplateResponseDataFieldUpdatedAt             = big.NewInt(1 << 19)
+	convertPromptToTemplateResponseDataFieldCurrentVersion        = big.NewInt(1 << 20)
+	convertPromptToTemplateResponseDataFieldReleaseStatus         = big.NewInt(1 << 21)
 )
 
 type ConvertPromptToTemplateResponseData struct {
@@ -256,6 +258,8 @@ type ConvertPromptToTemplateResponseData struct {
 	DirectoryID           *string                                            `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID    *string                                            `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	ImportedFromListingID *string                                            `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CapturedFromSessionID *string                                            `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
+	CaptureRepoSlug       *string                                            `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
 	CreatedByID           string                                             `json:"createdById" url:"createdById"`
 	CreatedByName         *string                                            `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt             time.Time                                          `json:"createdAt" url:"createdAt"`
@@ -366,6 +370,20 @@ func (c *ConvertPromptToTemplateResponseData) GetImportedFromListingID() *string
 		return nil
 	}
 	return c.ImportedFromListingID
+}
+
+func (c *ConvertPromptToTemplateResponseData) GetCapturedFromSessionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CapturedFromSessionID
+}
+
+func (c *ConvertPromptToTemplateResponseData) GetCaptureRepoSlug() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaptureRepoSlug
 }
 
 func (c *ConvertPromptToTemplateResponseData) GetCreatedByID() string {
@@ -517,6 +535,20 @@ func (c *ConvertPromptToTemplateResponseData) SetForkedFromPromptID(forkedFromPr
 func (c *ConvertPromptToTemplateResponseData) SetImportedFromListingID(importedFromListingID *string) {
 	c.ImportedFromListingID = importedFromListingID
 	c.require(convertPromptToTemplateResponseDataFieldImportedFromListingID)
+}
+
+// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseData) SetCapturedFromSessionID(capturedFromSessionID *string) {
+	c.CapturedFromSessionID = capturedFromSessionID
+	c.require(convertPromptToTemplateResponseDataFieldCapturedFromSessionID)
+}
+
+// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConvertPromptToTemplateResponseData) SetCaptureRepoSlug(captureRepoSlug *string) {
+	c.CaptureRepoSlug = captureRepoSlug
+	c.require(convertPromptToTemplateResponseDataFieldCaptureRepoSlug)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;
@@ -1658,12 +1690,14 @@ var (
 	createPromptFromTemplateResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
 	createPromptFromTemplateResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
 	createPromptFromTemplateResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
-	createPromptFromTemplateResponseDataFieldCreatedByID           = big.NewInt(1 << 14)
-	createPromptFromTemplateResponseDataFieldCreatedByName         = big.NewInt(1 << 15)
-	createPromptFromTemplateResponseDataFieldCreatedAt             = big.NewInt(1 << 16)
-	createPromptFromTemplateResponseDataFieldUpdatedAt             = big.NewInt(1 << 17)
-	createPromptFromTemplateResponseDataFieldCurrentVersion        = big.NewInt(1 << 18)
-	createPromptFromTemplateResponseDataFieldReleaseStatus         = big.NewInt(1 << 19)
+	createPromptFromTemplateResponseDataFieldCapturedFromSessionID = big.NewInt(1 << 14)
+	createPromptFromTemplateResponseDataFieldCaptureRepoSlug       = big.NewInt(1 << 15)
+	createPromptFromTemplateResponseDataFieldCreatedByID           = big.NewInt(1 << 16)
+	createPromptFromTemplateResponseDataFieldCreatedByName         = big.NewInt(1 << 17)
+	createPromptFromTemplateResponseDataFieldCreatedAt             = big.NewInt(1 << 18)
+	createPromptFromTemplateResponseDataFieldUpdatedAt             = big.NewInt(1 << 19)
+	createPromptFromTemplateResponseDataFieldCurrentVersion        = big.NewInt(1 << 20)
+	createPromptFromTemplateResponseDataFieldReleaseStatus         = big.NewInt(1 << 21)
 )
 
 type CreatePromptFromTemplateResponseData struct {
@@ -1681,6 +1715,8 @@ type CreatePromptFromTemplateResponseData struct {
 	DirectoryID           *string                                             `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID    *string                                             `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	ImportedFromListingID *string                                             `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CapturedFromSessionID *string                                             `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
+	CaptureRepoSlug       *string                                             `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
 	CreatedByID           string                                              `json:"createdById" url:"createdById"`
 	CreatedByName         *string                                             `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt             time.Time                                           `json:"createdAt" url:"createdAt"`
@@ -1791,6 +1827,20 @@ func (c *CreatePromptFromTemplateResponseData) GetImportedFromListingID() *strin
 		return nil
 	}
 	return c.ImportedFromListingID
+}
+
+func (c *CreatePromptFromTemplateResponseData) GetCapturedFromSessionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CapturedFromSessionID
+}
+
+func (c *CreatePromptFromTemplateResponseData) GetCaptureRepoSlug() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaptureRepoSlug
 }
 
 func (c *CreatePromptFromTemplateResponseData) GetCreatedByID() string {
@@ -1942,6 +1992,20 @@ func (c *CreatePromptFromTemplateResponseData) SetForkedFromPromptID(forkedFromP
 func (c *CreatePromptFromTemplateResponseData) SetImportedFromListingID(importedFromListingID *string) {
 	c.ImportedFromListingID = importedFromListingID
 	c.require(createPromptFromTemplateResponseDataFieldImportedFromListingID)
+}
+
+// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseData) SetCapturedFromSessionID(capturedFromSessionID *string) {
+	c.CapturedFromSessionID = capturedFromSessionID
+	c.require(createPromptFromTemplateResponseDataFieldCapturedFromSessionID)
+}
+
+// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptFromTemplateResponseData) SetCaptureRepoSlug(captureRepoSlug *string) {
+	c.CaptureRepoSlug = captureRepoSlug
+	c.require(createPromptFromTemplateResponseDataFieldCaptureRepoSlug)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;
@@ -3098,10 +3162,12 @@ var (
 	listTemplatesResponseDataItemFieldDirectoryID           = big.NewInt(1 << 10)
 	listTemplatesResponseDataItemFieldForkedFromPromptID    = big.NewInt(1 << 11)
 	listTemplatesResponseDataItemFieldImportedFromListingID = big.NewInt(1 << 12)
-	listTemplatesResponseDataItemFieldCreatedByID           = big.NewInt(1 << 13)
-	listTemplatesResponseDataItemFieldCreatedByName         = big.NewInt(1 << 14)
-	listTemplatesResponseDataItemFieldCreatedAt             = big.NewInt(1 << 15)
-	listTemplatesResponseDataItemFieldUpdatedAt             = big.NewInt(1 << 16)
+	listTemplatesResponseDataItemFieldCapturedFromSessionID = big.NewInt(1 << 13)
+	listTemplatesResponseDataItemFieldCaptureRepoSlug       = big.NewInt(1 << 14)
+	listTemplatesResponseDataItemFieldCreatedByID           = big.NewInt(1 << 15)
+	listTemplatesResponseDataItemFieldCreatedByName         = big.NewInt(1 << 16)
+	listTemplatesResponseDataItemFieldCreatedAt             = big.NewInt(1 << 17)
+	listTemplatesResponseDataItemFieldUpdatedAt             = big.NewInt(1 << 18)
 )
 
 type ListTemplatesResponseDataItem struct {
@@ -3118,6 +3184,8 @@ type ListTemplatesResponseDataItem struct {
 	DirectoryID           *string                                   `json:"directoryId,omitempty" url:"directoryId,omitempty"`
 	ForkedFromPromptID    *string                                   `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
 	ImportedFromListingID *string                                   `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CapturedFromSessionID *string                                   `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
+	CaptureRepoSlug       *string                                   `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
 	CreatedByID           *string                                   `json:"createdById,omitempty" url:"createdById,omitempty"`
 	CreatedByName         *string                                   `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt             time.Time                                 `json:"createdAt" url:"createdAt"`
@@ -3219,6 +3287,20 @@ func (l *ListTemplatesResponseDataItem) GetImportedFromListingID() *string {
 		return nil
 	}
 	return l.ImportedFromListingID
+}
+
+func (l *ListTemplatesResponseDataItem) GetCapturedFromSessionID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.CapturedFromSessionID
+}
+
+func (l *ListTemplatesResponseDataItem) GetCaptureRepoSlug() *string {
+	if l == nil {
+		return nil
+	}
+	return l.CaptureRepoSlug
 }
 
 func (l *ListTemplatesResponseDataItem) GetCreatedByID() *string {
@@ -3349,6 +3431,20 @@ func (l *ListTemplatesResponseDataItem) SetForkedFromPromptID(forkedFromPromptID
 func (l *ListTemplatesResponseDataItem) SetImportedFromListingID(importedFromListingID *string) {
 	l.ImportedFromListingID = importedFromListingID
 	l.require(listTemplatesResponseDataItemFieldImportedFromListingID)
+}
+
+// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTemplatesResponseDataItem) SetCapturedFromSessionID(capturedFromSessionID *string) {
+	l.CapturedFromSessionID = capturedFromSessionID
+	l.require(listTemplatesResponseDataItemFieldCapturedFromSessionID)
+}
+
+// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTemplatesResponseDataItem) SetCaptureRepoSlug(captureRepoSlug *string) {
+	l.CaptureRepoSlug = captureRepoSlug
+	l.require(listTemplatesResponseDataItemFieldCaptureRepoSlug)
 }
 
 // SetCreatedByID sets the CreatedByID field and marks it as non-optional;

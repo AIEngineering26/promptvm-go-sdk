@@ -32,6 +32,38 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+func (c *Client) GetMarketplaceCreatorProfile(
+	ctx context.Context,
+	request *promptvmgosdk.GetMarketplaceCreatorProfileRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetMarketplaceCreatorProfileResponse, error) {
+	response, err := c.WithRawResponse.GetMarketplaceCreatorProfile(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+func (c *Client) BrowseMarketplaceCreators(
+	ctx context.Context,
+	request *promptvmgosdk.BrowseMarketplaceCreatorsRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.BrowseMarketplaceCreatorsResponse, error) {
+	response, err := c.WithRawResponse.BrowseMarketplaceCreators(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 func (c *Client) GetMyMarketplaceCreatorProfile(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -68,22 +100,6 @@ func (c *Client) CreateMarketplaceCreatorProfile(
 	opts ...option.RequestOption,
 ) (*promptvmgosdk.CreateMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.CreateMarketplaceCreatorProfile(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-func (c *Client) GetMarketplaceCreatorProfile(
-	ctx context.Context,
-	request *promptvmgosdk.GetMarketplaceCreatorProfileRequest,
-	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMarketplaceCreatorProfileResponse, error) {
-	response, err := c.WithRawResponse.GetMarketplaceCreatorProfile(
 		ctx,
 		request,
 		opts...,

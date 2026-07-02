@@ -1710,15 +1710,19 @@ func (g *GetMarketplaceListingResponseDataDirectoryContentsPreviewsItem) String(
 }
 
 var (
-	getMarketplaceListingResponseDataSellerFieldUserID     = big.NewInt(1 << 0)
-	getMarketplaceListingResponseDataSellerFieldBio        = big.NewInt(1 << 1)
-	getMarketplaceListingResponseDataSellerFieldIsVerified = big.NewInt(1 << 2)
+	getMarketplaceListingResponseDataSellerFieldUserID      = big.NewInt(1 << 0)
+	getMarketplaceListingResponseDataSellerFieldBio         = big.NewInt(1 << 1)
+	getMarketplaceListingResponseDataSellerFieldIsVerified  = big.NewInt(1 << 2)
+	getMarketplaceListingResponseDataSellerFieldDisplayName = big.NewInt(1 << 3)
+	getMarketplaceListingResponseDataSellerFieldAvatarURL   = big.NewInt(1 << 4)
 )
 
 type GetMarketplaceListingResponseDataSeller struct {
-	UserID     *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio        *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1746,6 +1750,20 @@ func (g *GetMarketplaceListingResponseDataSeller) GetIsVerified() *bool {
 		return nil
 	}
 	return g.IsVerified
+}
+
+func (g *GetMarketplaceListingResponseDataSeller) GetDisplayName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DisplayName
+}
+
+func (g *GetMarketplaceListingResponseDataSeller) GetAvatarURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AvatarURL
 }
 
 func (g *GetMarketplaceListingResponseDataSeller) GetExtraProperties() map[string]interface{} {
@@ -1778,6 +1796,20 @@ func (g *GetMarketplaceListingResponseDataSeller) SetBio(bio *string) {
 func (g *GetMarketplaceListingResponseDataSeller) SetIsVerified(isVerified *bool) {
 	g.IsVerified = isVerified
 	g.require(getMarketplaceListingResponseDataSellerFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseDataSeller) SetDisplayName(displayName *string) {
+	g.DisplayName = displayName
+	g.require(getMarketplaceListingResponseDataSellerFieldDisplayName)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseDataSeller) SetAvatarURL(avatarURL *string) {
+	g.AvatarURL = avatarURL
+	g.require(getMarketplaceListingResponseDataSellerFieldAvatarURL)
 }
 
 func (g *GetMarketplaceListingResponseDataSeller) UnmarshalJSON(data []byte) error {
@@ -2903,15 +2935,19 @@ func (l ListFeaturedMarketplaceListingsResponseDataItemContentKind) Ptr() *ListF
 }
 
 var (
-	listFeaturedMarketplaceListingsResponseDataItemSellerFieldUserID     = big.NewInt(1 << 0)
-	listFeaturedMarketplaceListingsResponseDataItemSellerFieldBio        = big.NewInt(1 << 1)
-	listFeaturedMarketplaceListingsResponseDataItemSellerFieldIsVerified = big.NewInt(1 << 2)
+	listFeaturedMarketplaceListingsResponseDataItemSellerFieldUserID      = big.NewInt(1 << 0)
+	listFeaturedMarketplaceListingsResponseDataItemSellerFieldBio         = big.NewInt(1 << 1)
+	listFeaturedMarketplaceListingsResponseDataItemSellerFieldIsVerified  = big.NewInt(1 << 2)
+	listFeaturedMarketplaceListingsResponseDataItemSellerFieldDisplayName = big.NewInt(1 << 3)
+	listFeaturedMarketplaceListingsResponseDataItemSellerFieldAvatarURL   = big.NewInt(1 << 4)
 )
 
 type ListFeaturedMarketplaceListingsResponseDataItemSeller struct {
-	UserID     *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio        *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2939,6 +2975,20 @@ func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) GetIsVerified() 
 		return nil
 	}
 	return l.IsVerified
+}
+
+func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) GetDisplayName() *string {
+	if l == nil {
+		return nil
+	}
+	return l.DisplayName
+}
+
+func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) GetAvatarURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.AvatarURL
 }
 
 func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) GetExtraProperties() map[string]interface{} {
@@ -2971,6 +3021,20 @@ func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) SetBio(bio *stri
 func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) SetIsVerified(isVerified *bool) {
 	l.IsVerified = isVerified
 	l.require(listFeaturedMarketplaceListingsResponseDataItemSellerFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) SetDisplayName(displayName *string) {
+	l.DisplayName = displayName
+	l.require(listFeaturedMarketplaceListingsResponseDataItemSellerFieldDisplayName)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) SetAvatarURL(avatarURL *string) {
+	l.AvatarURL = avatarURL
+	l.require(listFeaturedMarketplaceListingsResponseDataItemSellerFieldAvatarURL)
 }
 
 func (l *ListFeaturedMarketplaceListingsResponseDataItemSeller) UnmarshalJSON(data []byte) error {
@@ -4279,15 +4343,19 @@ func (l ListMarketplaceListingsResponseDataItemContentKind) Ptr() *ListMarketpla
 }
 
 var (
-	listMarketplaceListingsResponseDataItemSellerFieldUserID     = big.NewInt(1 << 0)
-	listMarketplaceListingsResponseDataItemSellerFieldBio        = big.NewInt(1 << 1)
-	listMarketplaceListingsResponseDataItemSellerFieldIsVerified = big.NewInt(1 << 2)
+	listMarketplaceListingsResponseDataItemSellerFieldUserID      = big.NewInt(1 << 0)
+	listMarketplaceListingsResponseDataItemSellerFieldBio         = big.NewInt(1 << 1)
+	listMarketplaceListingsResponseDataItemSellerFieldIsVerified  = big.NewInt(1 << 2)
+	listMarketplaceListingsResponseDataItemSellerFieldDisplayName = big.NewInt(1 << 3)
+	listMarketplaceListingsResponseDataItemSellerFieldAvatarURL   = big.NewInt(1 << 4)
 )
 
 type ListMarketplaceListingsResponseDataItemSeller struct {
-	UserID     *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio        *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4315,6 +4383,20 @@ func (l *ListMarketplaceListingsResponseDataItemSeller) GetIsVerified() *bool {
 		return nil
 	}
 	return l.IsVerified
+}
+
+func (l *ListMarketplaceListingsResponseDataItemSeller) GetDisplayName() *string {
+	if l == nil {
+		return nil
+	}
+	return l.DisplayName
+}
+
+func (l *ListMarketplaceListingsResponseDataItemSeller) GetAvatarURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.AvatarURL
 }
 
 func (l *ListMarketplaceListingsResponseDataItemSeller) GetExtraProperties() map[string]interface{} {
@@ -4347,6 +4429,20 @@ func (l *ListMarketplaceListingsResponseDataItemSeller) SetBio(bio *string) {
 func (l *ListMarketplaceListingsResponseDataItemSeller) SetIsVerified(isVerified *bool) {
 	l.IsVerified = isVerified
 	l.require(listMarketplaceListingsResponseDataItemSellerFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsResponseDataItemSeller) SetDisplayName(displayName *string) {
+	l.DisplayName = displayName
+	l.require(listMarketplaceListingsResponseDataItemSellerFieldDisplayName)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsResponseDataItemSeller) SetAvatarURL(avatarURL *string) {
+	l.AvatarURL = avatarURL
+	l.require(listMarketplaceListingsResponseDataItemSellerFieldAvatarURL)
 }
 
 func (l *ListMarketplaceListingsResponseDataItemSeller) UnmarshalJSON(data []byte) error {
