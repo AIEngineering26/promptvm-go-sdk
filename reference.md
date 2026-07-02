@@ -3847,6 +3847,14 @@ client.APIKeys.CreateAPIKey(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `*string` — Workspace binding (UUID) for capture-scoped keys. REQUIRED when scopes is ["capture"]; not accepted for other scopes. The minted key may only ingest Context Sync captures for this workspace.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 

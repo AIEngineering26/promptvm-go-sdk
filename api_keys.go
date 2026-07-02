@@ -11,10 +11,11 @@ import (
 )
 
 var (
-	createAPIKeyRequestFieldOrgID     = big.NewInt(1 << 0)
-	createAPIKeyRequestFieldName      = big.NewInt(1 << 1)
-	createAPIKeyRequestFieldScopes    = big.NewInt(1 << 2)
-	createAPIKeyRequestFieldExpiresAt = big.NewInt(1 << 3)
+	createAPIKeyRequestFieldOrgID       = big.NewInt(1 << 0)
+	createAPIKeyRequestFieldName        = big.NewInt(1 << 1)
+	createAPIKeyRequestFieldScopes      = big.NewInt(1 << 2)
+	createAPIKeyRequestFieldExpiresAt   = big.NewInt(1 << 3)
+	createAPIKeyRequestFieldWorkspaceID = big.NewInt(1 << 4)
 )
 
 type CreateAPIKeyRequest struct {
@@ -26,6 +27,8 @@ type CreateAPIKeyRequest struct {
 	Scopes []CreateAPIKeyRequestScopesItem `json:"scopes" url:"-"`
 	// Optional expiration date. If set, the key becomes invalid after this time.
 	ExpiresAt *time.Time `json:"expiresAt,omitempty" url:"-"`
+	// Workspace binding (UUID) for capture-scoped keys. REQUIRED when scopes is ["capture"]; not accepted for other scopes. The minted key may only ingest Context Sync captures for this workspace.
+	WorkspaceID *string `json:"workspaceId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -64,6 +67,13 @@ func (c *CreateAPIKeyRequest) SetScopes(scopes []CreateAPIKeyRequestScopesItem) 
 func (c *CreateAPIKeyRequest) SetExpiresAt(expiresAt *time.Time) {
 	c.ExpiresAt = expiresAt
 	c.require(createAPIKeyRequestFieldExpiresAt)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateAPIKeyRequest) SetWorkspaceID(workspaceID *string) {
+	c.WorkspaceID = workspaceID
+	c.require(createAPIKeyRequestFieldWorkspaceID)
 }
 
 func (c *CreateAPIKeyRequest) UnmarshalJSON(data []byte) error {
@@ -319,14 +329,15 @@ func (r *RotateAPIKeyRequest) SetGracePeriodHours(gracePeriodHours *int) {
 	r.require(rotateAPIKeyRequestFieldGracePeriodHours)
 }
 
-// Permission scope for the API key
+// Permission scope for the API key. `capture` is a special single-purpose scope for Context Sync session-capture credentials: it must be the ONLY scope on the key, requires `workspaceId`, and only authorizes the capture-session routes (POST /api/v1/contexts/sessions + its health/reconcile GET routes) for the bound workspace.
 type CreateAPIKeyRequestScopesItem string
 
 const (
-	CreateAPIKeyRequestScopesItemRead   CreateAPIKeyRequestScopesItem = "read"
-	CreateAPIKeyRequestScopesItemWrite  CreateAPIKeyRequestScopesItem = "write"
-	CreateAPIKeyRequestScopesItemDelete CreateAPIKeyRequestScopesItem = "delete"
-	CreateAPIKeyRequestScopesItemAdmin  CreateAPIKeyRequestScopesItem = "admin"
+	CreateAPIKeyRequestScopesItemRead    CreateAPIKeyRequestScopesItem = "read"
+	CreateAPIKeyRequestScopesItemWrite   CreateAPIKeyRequestScopesItem = "write"
+	CreateAPIKeyRequestScopesItemDelete  CreateAPIKeyRequestScopesItem = "delete"
+	CreateAPIKeyRequestScopesItemAdmin   CreateAPIKeyRequestScopesItem = "admin"
+	CreateAPIKeyRequestScopesItemCapture CreateAPIKeyRequestScopesItem = "capture"
 )
 
 func NewCreateAPIKeyRequestScopesItemFromString(s string) (CreateAPIKeyRequestScopesItem, error) {
@@ -339,6 +350,8 @@ func NewCreateAPIKeyRequestScopesItemFromString(s string) (CreateAPIKeyRequestSc
 		return CreateAPIKeyRequestScopesItemDelete, nil
 	case "admin":
 		return CreateAPIKeyRequestScopesItemAdmin, nil
+	case "capture":
+		return CreateAPIKeyRequestScopesItemCapture, nil
 	}
 	var t CreateAPIKeyRequestScopesItem
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -350,13 +363,14 @@ func (c CreateAPIKeyRequestScopesItem) Ptr() *CreateAPIKeyRequestScopesItem {
 
 // API key created successfully
 var (
-	createAPIKeyResponseFieldID        = big.NewInt(1 << 0)
-	createAPIKeyResponseFieldPublicKey = big.NewInt(1 << 1)
-	createAPIKeyResponseFieldSecretKey = big.NewInt(1 << 2)
-	createAPIKeyResponseFieldKeyName   = big.NewInt(1 << 3)
-	createAPIKeyResponseFieldScopes    = big.NewInt(1 << 4)
-	createAPIKeyResponseFieldCreatedAt = big.NewInt(1 << 5)
-	createAPIKeyResponseFieldWarning   = big.NewInt(1 << 6)
+	createAPIKeyResponseFieldID          = big.NewInt(1 << 0)
+	createAPIKeyResponseFieldPublicKey   = big.NewInt(1 << 1)
+	createAPIKeyResponseFieldSecretKey   = big.NewInt(1 << 2)
+	createAPIKeyResponseFieldKeyName     = big.NewInt(1 << 3)
+	createAPIKeyResponseFieldScopes      = big.NewInt(1 << 4)
+	createAPIKeyResponseFieldWorkspaceID = big.NewInt(1 << 5)
+	createAPIKeyResponseFieldCreatedAt   = big.NewInt(1 << 6)
+	createAPIKeyResponseFieldWarning     = big.NewInt(1 << 7)
 )
 
 type CreateAPIKeyResponse struct {
@@ -370,6 +384,8 @@ type CreateAPIKeyResponse struct {
 	KeyName string `json:"keyName" url:"keyName"`
 	// Permission scopes assigned to this API key
 	Scopes []CreateAPIKeyResponseScopesItem `json:"scopes" url:"scopes"`
+	// Workspace this key is bound to (capture-scoped keys only; null otherwise)
+	WorkspaceID *string `json:"workspaceId,omitempty" url:"workspaceId,omitempty"`
 	// When the API key was created
 	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
 	// Warning message about storing the secret key
@@ -415,6 +431,13 @@ func (c *CreateAPIKeyResponse) GetScopes() []CreateAPIKeyResponseScopesItem {
 		return nil
 	}
 	return c.Scopes
+}
+
+func (c *CreateAPIKeyResponse) GetWorkspaceID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.WorkspaceID
 }
 
 func (c *CreateAPIKeyResponse) GetCreatedAt() time.Time {
@@ -475,6 +498,13 @@ func (c *CreateAPIKeyResponse) SetKeyName(keyName string) {
 func (c *CreateAPIKeyResponse) SetScopes(scopes []CreateAPIKeyResponseScopesItem) {
 	c.Scopes = scopes
 	c.require(createAPIKeyResponseFieldScopes)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateAPIKeyResponse) SetWorkspaceID(workspaceID *string) {
+	c.WorkspaceID = workspaceID
+	c.require(createAPIKeyResponseFieldWorkspaceID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -538,14 +568,15 @@ func (c *CreateAPIKeyResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Permission scope for the API key
+// Permission scope for the API key. `capture` is a special single-purpose scope for Context Sync session-capture credentials: it must be the ONLY scope on the key, requires `workspaceId`, and only authorizes the capture-session routes (POST /api/v1/contexts/sessions + its health/reconcile GET routes) for the bound workspace.
 type CreateAPIKeyResponseScopesItem string
 
 const (
-	CreateAPIKeyResponseScopesItemRead   CreateAPIKeyResponseScopesItem = "read"
-	CreateAPIKeyResponseScopesItemWrite  CreateAPIKeyResponseScopesItem = "write"
-	CreateAPIKeyResponseScopesItemDelete CreateAPIKeyResponseScopesItem = "delete"
-	CreateAPIKeyResponseScopesItemAdmin  CreateAPIKeyResponseScopesItem = "admin"
+	CreateAPIKeyResponseScopesItemRead    CreateAPIKeyResponseScopesItem = "read"
+	CreateAPIKeyResponseScopesItemWrite   CreateAPIKeyResponseScopesItem = "write"
+	CreateAPIKeyResponseScopesItemDelete  CreateAPIKeyResponseScopesItem = "delete"
+	CreateAPIKeyResponseScopesItemAdmin   CreateAPIKeyResponseScopesItem = "admin"
+	CreateAPIKeyResponseScopesItemCapture CreateAPIKeyResponseScopesItem = "capture"
 )
 
 func NewCreateAPIKeyResponseScopesItemFromString(s string) (CreateAPIKeyResponseScopesItem, error) {
@@ -558,6 +589,8 @@ func NewCreateAPIKeyResponseScopesItemFromString(s string) (CreateAPIKeyResponse
 		return CreateAPIKeyResponseScopesItemDelete, nil
 	case "admin":
 		return CreateAPIKeyResponseScopesItemAdmin, nil
+	case "capture":
+		return CreateAPIKeyResponseScopesItemCapture, nil
 	}
 	var t CreateAPIKeyResponseScopesItem
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -652,12 +685,13 @@ var (
 	getAPIKeyResponseDataFieldKeyName       = big.NewInt(1 << 2)
 	getAPIKeyResponseDataFieldScopes        = big.NewInt(1 << 3)
 	getAPIKeyResponseDataFieldStatus        = big.NewInt(1 << 4)
-	getAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 5)
-	getAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 6)
-	getAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 7)
-	getAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 8)
-	getAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 9)
-	getAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 10)
+	getAPIKeyResponseDataFieldWorkspaceID   = big.NewInt(1 << 5)
+	getAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 6)
+	getAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 7)
+	getAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 8)
+	getAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 9)
+	getAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 10)
+	getAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 11)
 )
 
 type GetAPIKeyResponseData struct {
@@ -671,6 +705,8 @@ type GetAPIKeyResponseData struct {
 	Scopes []GetAPIKeyResponseDataScopesItem `json:"scopes" url:"scopes"`
 	// Current status of the API key
 	Status GetAPIKeyResponseDataStatus `json:"status" url:"status"`
+	// Workspace this key is bound to (capture-scoped keys only; null otherwise)
+	WorkspaceID *string `json:"workspaceId,omitempty" url:"workspaceId,omitempty"`
 	// ID of the user who owns this API key
 	UserID string `json:"userId" url:"userId"`
 	// When the API key was created
@@ -724,6 +760,13 @@ func (g *GetAPIKeyResponseData) GetStatus() GetAPIKeyResponseDataStatus {
 		return ""
 	}
 	return g.Status
+}
+
+func (g *GetAPIKeyResponseData) GetWorkspaceID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.WorkspaceID
 }
 
 func (g *GetAPIKeyResponseData) GetUserID() string {
@@ -812,6 +855,13 @@ func (g *GetAPIKeyResponseData) SetScopes(scopes []GetAPIKeyResponseDataScopesIt
 func (g *GetAPIKeyResponseData) SetStatus(status GetAPIKeyResponseDataStatus) {
 	g.Status = status
 	g.require(getAPIKeyResponseDataFieldStatus)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIKeyResponseData) SetWorkspaceID(workspaceID *string) {
+	g.WorkspaceID = workspaceID
+	g.require(getAPIKeyResponseDataFieldWorkspaceID)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
@@ -911,14 +961,15 @@ func (g *GetAPIKeyResponseData) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
-// Permission scope for the API key
+// Permission scope for the API key. `capture` is a special single-purpose scope for Context Sync session-capture credentials: it must be the ONLY scope on the key, requires `workspaceId`, and only authorizes the capture-session routes (POST /api/v1/contexts/sessions + its health/reconcile GET routes) for the bound workspace.
 type GetAPIKeyResponseDataScopesItem string
 
 const (
-	GetAPIKeyResponseDataScopesItemRead   GetAPIKeyResponseDataScopesItem = "read"
-	GetAPIKeyResponseDataScopesItemWrite  GetAPIKeyResponseDataScopesItem = "write"
-	GetAPIKeyResponseDataScopesItemDelete GetAPIKeyResponseDataScopesItem = "delete"
-	GetAPIKeyResponseDataScopesItemAdmin  GetAPIKeyResponseDataScopesItem = "admin"
+	GetAPIKeyResponseDataScopesItemRead    GetAPIKeyResponseDataScopesItem = "read"
+	GetAPIKeyResponseDataScopesItemWrite   GetAPIKeyResponseDataScopesItem = "write"
+	GetAPIKeyResponseDataScopesItemDelete  GetAPIKeyResponseDataScopesItem = "delete"
+	GetAPIKeyResponseDataScopesItemAdmin   GetAPIKeyResponseDataScopesItem = "admin"
+	GetAPIKeyResponseDataScopesItemCapture GetAPIKeyResponseDataScopesItem = "capture"
 )
 
 func NewGetAPIKeyResponseDataScopesItemFromString(s string) (GetAPIKeyResponseDataScopesItem, error) {
@@ -931,6 +982,8 @@ func NewGetAPIKeyResponseDataScopesItemFromString(s string) (GetAPIKeyResponseDa
 		return GetAPIKeyResponseDataScopesItemDelete, nil
 	case "admin":
 		return GetAPIKeyResponseDataScopesItemAdmin, nil
+	case "capture":
+		return GetAPIKeyResponseDataScopesItemCapture, nil
 	}
 	var t GetAPIKeyResponseDataScopesItem
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -1583,10 +1636,11 @@ var (
 	listAPIKeysResponseDataItemFieldPublicKey          = big.NewInt(1 << 2)
 	listAPIKeysResponseDataItemFieldScopes             = big.NewInt(1 << 3)
 	listAPIKeysResponseDataItemFieldStatus             = big.NewInt(1 << 4)
-	listAPIKeysResponseDataItemFieldCreatedAt          = big.NewInt(1 << 5)
-	listAPIKeysResponseDataItemFieldLastUsedAt         = big.NewInt(1 << 6)
-	listAPIKeysResponseDataItemFieldRevokedAt          = big.NewInt(1 << 7)
-	listAPIKeysResponseDataItemFieldCurrentPeriodUsage = big.NewInt(1 << 8)
+	listAPIKeysResponseDataItemFieldWorkspaceID        = big.NewInt(1 << 5)
+	listAPIKeysResponseDataItemFieldCreatedAt          = big.NewInt(1 << 6)
+	listAPIKeysResponseDataItemFieldLastUsedAt         = big.NewInt(1 << 7)
+	listAPIKeysResponseDataItemFieldRevokedAt          = big.NewInt(1 << 8)
+	listAPIKeysResponseDataItemFieldCurrentPeriodUsage = big.NewInt(1 << 9)
 )
 
 type ListAPIKeysResponseDataItem struct {
@@ -1596,7 +1650,9 @@ type ListAPIKeysResponseDataItem struct {
 	PublicKey string                                  `json:"publicKey" url:"publicKey"`
 	Scopes    []ListAPIKeysResponseDataItemScopesItem `json:"scopes" url:"scopes"`
 	// Current status of the API key
-	Status             ListAPIKeysResponseDataItemStatus              `json:"status" url:"status"`
+	Status ListAPIKeysResponseDataItemStatus `json:"status" url:"status"`
+	// Workspace this key is bound to (capture-scoped keys only; null otherwise)
+	WorkspaceID        *string                                        `json:"workspaceId,omitempty" url:"workspaceId,omitempty"`
 	CreatedAt          time.Time                                      `json:"createdAt" url:"createdAt"`
 	LastUsedAt         *time.Time                                     `json:"lastUsedAt,omitempty" url:"lastUsedAt,omitempty"`
 	RevokedAt          *time.Time                                     `json:"revokedAt,omitempty" url:"revokedAt,omitempty"`
@@ -1642,6 +1698,13 @@ func (l *ListAPIKeysResponseDataItem) GetStatus() ListAPIKeysResponseDataItemSta
 		return ""
 	}
 	return l.Status
+}
+
+func (l *ListAPIKeysResponseDataItem) GetWorkspaceID() *string {
+	if l == nil {
+		return nil
+	}
+	return l.WorkspaceID
 }
 
 func (l *ListAPIKeysResponseDataItem) GetCreatedAt() time.Time {
@@ -1716,6 +1779,13 @@ func (l *ListAPIKeysResponseDataItem) SetScopes(scopes []ListAPIKeysResponseData
 func (l *ListAPIKeysResponseDataItem) SetStatus(status ListAPIKeysResponseDataItemStatus) {
 	l.Status = status
 	l.require(listAPIKeysResponseDataItemFieldStatus)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListAPIKeysResponseDataItem) SetWorkspaceID(workspaceID *string) {
+	l.WorkspaceID = workspaceID
+	l.require(listAPIKeysResponseDataItemFieldWorkspaceID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -1903,14 +1973,15 @@ func (l *ListAPIKeysResponseDataItemCurrentPeriodUsage) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
-// Permission scope for the API key
+// Permission scope for the API key. `capture` is a special single-purpose scope for Context Sync session-capture credentials: it must be the ONLY scope on the key, requires `workspaceId`, and only authorizes the capture-session routes (POST /api/v1/contexts/sessions + its health/reconcile GET routes) for the bound workspace.
 type ListAPIKeysResponseDataItemScopesItem string
 
 const (
-	ListAPIKeysResponseDataItemScopesItemRead   ListAPIKeysResponseDataItemScopesItem = "read"
-	ListAPIKeysResponseDataItemScopesItemWrite  ListAPIKeysResponseDataItemScopesItem = "write"
-	ListAPIKeysResponseDataItemScopesItemDelete ListAPIKeysResponseDataItemScopesItem = "delete"
-	ListAPIKeysResponseDataItemScopesItemAdmin  ListAPIKeysResponseDataItemScopesItem = "admin"
+	ListAPIKeysResponseDataItemScopesItemRead    ListAPIKeysResponseDataItemScopesItem = "read"
+	ListAPIKeysResponseDataItemScopesItemWrite   ListAPIKeysResponseDataItemScopesItem = "write"
+	ListAPIKeysResponseDataItemScopesItemDelete  ListAPIKeysResponseDataItemScopesItem = "delete"
+	ListAPIKeysResponseDataItemScopesItemAdmin   ListAPIKeysResponseDataItemScopesItem = "admin"
+	ListAPIKeysResponseDataItemScopesItemCapture ListAPIKeysResponseDataItemScopesItem = "capture"
 )
 
 func NewListAPIKeysResponseDataItemScopesItemFromString(s string) (ListAPIKeysResponseDataItemScopesItem, error) {
@@ -1923,6 +1994,8 @@ func NewListAPIKeysResponseDataItemScopesItemFromString(s string) (ListAPIKeysRe
 		return ListAPIKeysResponseDataItemScopesItemDelete, nil
 	case "admin":
 		return ListAPIKeysResponseDataItemScopesItemAdmin, nil
+	case "capture":
+		return ListAPIKeysResponseDataItemScopesItemCapture, nil
 	}
 	var t ListAPIKeysResponseDataItemScopesItem
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -2449,12 +2522,13 @@ var (
 	updateAPIKeyResponseDataFieldKeyName       = big.NewInt(1 << 2)
 	updateAPIKeyResponseDataFieldScopes        = big.NewInt(1 << 3)
 	updateAPIKeyResponseDataFieldStatus        = big.NewInt(1 << 4)
-	updateAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 5)
-	updateAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 6)
-	updateAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 7)
-	updateAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 8)
-	updateAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 9)
-	updateAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 10)
+	updateAPIKeyResponseDataFieldWorkspaceID   = big.NewInt(1 << 5)
+	updateAPIKeyResponseDataFieldUserID        = big.NewInt(1 << 6)
+	updateAPIKeyResponseDataFieldCreatedAt     = big.NewInt(1 << 7)
+	updateAPIKeyResponseDataFieldLastUsedAt    = big.NewInt(1 << 8)
+	updateAPIKeyResponseDataFieldRevokedAt     = big.NewInt(1 << 9)
+	updateAPIKeyResponseDataFieldRevokedBy     = big.NewInt(1 << 10)
+	updateAPIKeyResponseDataFieldRevokedReason = big.NewInt(1 << 11)
 )
 
 type UpdateAPIKeyResponseData struct {
@@ -2468,6 +2542,8 @@ type UpdateAPIKeyResponseData struct {
 	Scopes []UpdateAPIKeyResponseDataScopesItem `json:"scopes" url:"scopes"`
 	// Current status of the API key
 	Status UpdateAPIKeyResponseDataStatus `json:"status" url:"status"`
+	// Workspace this key is bound to (capture-scoped keys only; null otherwise)
+	WorkspaceID *string `json:"workspaceId,omitempty" url:"workspaceId,omitempty"`
 	// ID of the user who owns this API key
 	UserID string `json:"userId" url:"userId"`
 	// When the API key was created
@@ -2521,6 +2597,13 @@ func (u *UpdateAPIKeyResponseData) GetStatus() UpdateAPIKeyResponseDataStatus {
 		return ""
 	}
 	return u.Status
+}
+
+func (u *UpdateAPIKeyResponseData) GetWorkspaceID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.WorkspaceID
 }
 
 func (u *UpdateAPIKeyResponseData) GetUserID() string {
@@ -2609,6 +2692,13 @@ func (u *UpdateAPIKeyResponseData) SetScopes(scopes []UpdateAPIKeyResponseDataSc
 func (u *UpdateAPIKeyResponseData) SetStatus(status UpdateAPIKeyResponseDataStatus) {
 	u.Status = status
 	u.require(updateAPIKeyResponseDataFieldStatus)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateAPIKeyResponseData) SetWorkspaceID(workspaceID *string) {
+	u.WorkspaceID = workspaceID
+	u.require(updateAPIKeyResponseDataFieldWorkspaceID)
 }
 
 // SetUserID sets the UserID field and marks it as non-optional;
@@ -2708,14 +2798,15 @@ func (u *UpdateAPIKeyResponseData) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
-// Permission scope for the API key
+// Permission scope for the API key. `capture` is a special single-purpose scope for Context Sync session-capture credentials: it must be the ONLY scope on the key, requires `workspaceId`, and only authorizes the capture-session routes (POST /api/v1/contexts/sessions + its health/reconcile GET routes) for the bound workspace.
 type UpdateAPIKeyResponseDataScopesItem string
 
 const (
-	UpdateAPIKeyResponseDataScopesItemRead   UpdateAPIKeyResponseDataScopesItem = "read"
-	UpdateAPIKeyResponseDataScopesItemWrite  UpdateAPIKeyResponseDataScopesItem = "write"
-	UpdateAPIKeyResponseDataScopesItemDelete UpdateAPIKeyResponseDataScopesItem = "delete"
-	UpdateAPIKeyResponseDataScopesItemAdmin  UpdateAPIKeyResponseDataScopesItem = "admin"
+	UpdateAPIKeyResponseDataScopesItemRead    UpdateAPIKeyResponseDataScopesItem = "read"
+	UpdateAPIKeyResponseDataScopesItemWrite   UpdateAPIKeyResponseDataScopesItem = "write"
+	UpdateAPIKeyResponseDataScopesItemDelete  UpdateAPIKeyResponseDataScopesItem = "delete"
+	UpdateAPIKeyResponseDataScopesItemAdmin   UpdateAPIKeyResponseDataScopesItem = "admin"
+	UpdateAPIKeyResponseDataScopesItemCapture UpdateAPIKeyResponseDataScopesItem = "capture"
 )
 
 func NewUpdateAPIKeyResponseDataScopesItemFromString(s string) (UpdateAPIKeyResponseDataScopesItem, error) {
@@ -2728,6 +2819,8 @@ func NewUpdateAPIKeyResponseDataScopesItemFromString(s string) (UpdateAPIKeyResp
 		return UpdateAPIKeyResponseDataScopesItemDelete, nil
 	case "admin":
 		return UpdateAPIKeyResponseDataScopesItemAdmin, nil
+	case "capture":
+		return UpdateAPIKeyResponseDataScopesItemCapture, nil
 	}
 	var t UpdateAPIKeyResponseDataScopesItem
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
