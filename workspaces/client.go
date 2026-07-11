@@ -66,7 +66,7 @@ func (c *Client) CreateWorkspace(
 	return response.Body, nil
 }
 
-// Returns full workspace metadata including owner, members, and content counts.
+// Returns full workspace metadata including owner, members, and content counts. PRIVATE workspaces are readable only by org owners/admins, the workspace owner, or workspace members; other org members receive 404.
 func (c *Client) GetWorkspace(
 	ctx context.Context,
 	request *promptvmgosdk.GetWorkspaceRequest,

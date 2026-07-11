@@ -763,25 +763,27 @@ func (a AccessSharedPromptResponseDataContentKind) Ptr() *AccessSharedPromptResp
 }
 
 var (
-	accessSharedPromptResponseDataCurrentVersionFieldID            = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataCurrentVersionFieldVersionNumber = big.NewInt(1 << 1)
-	accessSharedPromptResponseDataCurrentVersionFieldVersionLabel  = big.NewInt(1 << 2)
-	accessSharedPromptResponseDataCurrentVersionFieldContent       = big.NewInt(1 << 3)
-	accessSharedPromptResponseDataCurrentVersionFieldSystemPrompt  = big.NewInt(1 << 4)
-	accessSharedPromptResponseDataCurrentVersionFieldChangeNote    = big.NewInt(1 << 5)
-	accessSharedPromptResponseDataCurrentVersionFieldIsPublished   = big.NewInt(1 << 6)
-	accessSharedPromptResponseDataCurrentVersionFieldCreatedAt     = big.NewInt(1 << 7)
+	accessSharedPromptResponseDataCurrentVersionFieldID              = big.NewInt(1 << 0)
+	accessSharedPromptResponseDataCurrentVersionFieldVersionNumber   = big.NewInt(1 << 1)
+	accessSharedPromptResponseDataCurrentVersionFieldVersionLabel    = big.NewInt(1 << 2)
+	accessSharedPromptResponseDataCurrentVersionFieldContent         = big.NewInt(1 << 3)
+	accessSharedPromptResponseDataCurrentVersionFieldSystemPrompt    = big.NewInt(1 << 4)
+	accessSharedPromptResponseDataCurrentVersionFieldChangeNote      = big.NewInt(1 << 5)
+	accessSharedPromptResponseDataCurrentVersionFieldIsPublished     = big.NewInt(1 << 6)
+	accessSharedPromptResponseDataCurrentVersionFieldVariablesSchema = big.NewInt(1 << 7)
+	accessSharedPromptResponseDataCurrentVersionFieldCreatedAt       = big.NewInt(1 << 8)
 )
 
 type AccessSharedPromptResponseDataCurrentVersion struct {
-	ID            *string    `json:"id,omitempty" url:"id,omitempty"`
-	VersionNumber *int       `json:"versionNumber,omitempty" url:"versionNumber,omitempty"`
-	VersionLabel  *string    `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content       *string    `json:"content,omitempty" url:"content,omitempty"`
-	SystemPrompt  *string    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote    *string    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsPublished   *bool      `json:"isPublished,omitempty" url:"isPublished,omitempty"`
-	CreatedAt     *time.Time `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	ID              *string                                                                      `json:"id,omitempty" url:"id,omitempty"`
+	VersionNumber   *int                                                                         `json:"versionNumber,omitempty" url:"versionNumber,omitempty"`
+	VersionLabel    *string                                                                      `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content         *string                                                                      `json:"content,omitempty" url:"content,omitempty"`
+	SystemPrompt    *string                                                                      `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote      *string                                                                      `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished     *bool                                                                        `json:"isPublished,omitempty" url:"isPublished,omitempty"`
+	VariablesSchema map[string]*AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedAt       *time.Time                                                                   `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -837,6 +839,13 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) GetIsPublished() *bool {
 		return nil
 	}
 	return a.IsPublished
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersion) GetVariablesSchema() map[string]*AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue {
+	if a == nil {
+		return nil
+	}
+	return a.VariablesSchema
 }
 
 func (a *AccessSharedPromptResponseDataCurrentVersion) GetCreatedAt() *time.Time {
@@ -906,6 +915,13 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) SetIsPublished(isPublishe
 	a.require(accessSharedPromptResponseDataCurrentVersionFieldIsPublished)
 }
 
+// SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseDataCurrentVersion) SetVariablesSchema(variablesSchema map[string]*AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) {
+	a.VariablesSchema = variablesSchema
+	a.require(accessSharedPromptResponseDataCurrentVersionFieldVariablesSchema)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *AccessSharedPromptResponseDataCurrentVersion) SetCreatedAt(createdAt *time.Time) {
@@ -949,6 +965,84 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) MarshalJSON() ([]byte, er
 }
 
 func (a *AccessSharedPromptResponseDataCurrentVersion) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	accessSharedPromptResponseDataCurrentVersionVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) GetDefault() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Default
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) SetDefault(default_ *string) {
+	a.Default = default_
+	a.require(accessSharedPromptResponseDataCurrentVersionVariablesSchemaValueFieldDefault)
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value

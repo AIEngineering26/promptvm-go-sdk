@@ -7646,6 +7646,14 @@ client.Prompts.CreatePrompt(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**variablesSchema:** `map[string]*promptvmgosdk.CreatePromptRequestVariablesSchemaValue` 
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -8041,7 +8049,7 @@ client.PromptVersions.CreatePromptVersion(
 <dl>
 <dd>
 
-**variablesSchema:** `map[string]any` 
+**variablesSchema:** `map[string]*promptvmgosdk.CreatePromptVersionRequestVariablesSchemaValue` 
     
 </dd>
 </dl>
@@ -8264,6 +8272,14 @@ client.PromptVersions.UpdatePromptVersion(
 <dd>
 
 **systemPrompt:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**variablesSchema:** `map[string]*promptvmgosdk.UpdatePromptVersionRequestVariablesSchemaValue` 
     
 </dd>
 </dl>
@@ -11872,7 +11888,7 @@ client.Workspaces.CreateWorkspace(
 <dl>
 <dd>
 
-Returns full workspace metadata including owner, members, and content counts.
+Returns full workspace metadata including owner, members, and content counts. PRIVATE workspaces are readable only by org owners/admins, the workspace owner, or workspace members; other org members receive 404.
 </dd>
 </dl>
 </dd>

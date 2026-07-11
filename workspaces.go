@@ -416,7 +416,7 @@ var (
 )
 
 type GetWorkspaceResponse struct {
-	Data map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	Data *GetWorkspaceResponseData `json:"data,omitempty" url:"data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -425,7 +425,7 @@ type GetWorkspaceResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetWorkspaceResponse) GetData() map[string]interface{} {
+func (g *GetWorkspaceResponse) GetData() *GetWorkspaceResponseData {
 	if g == nil {
 		return nil
 	}
@@ -445,7 +445,7 @@ func (g *GetWorkspaceResponse) require(field *big.Int) {
 
 // SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWorkspaceResponse) SetData(data map[string]interface{}) {
+func (g *GetWorkspaceResponse) SetData(data *GetWorkspaceResponseData) {
 	g.Data = data
 	g.require(getWorkspaceResponseFieldData)
 }
@@ -487,6 +487,731 @@ func (g *GetWorkspaceResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getWorkspaceResponseDataFieldID             = big.NewInt(1 << 0)
+	getWorkspaceResponseDataFieldName           = big.NewInt(1 << 1)
+	getWorkspaceResponseDataFieldSlug           = big.NewInt(1 << 2)
+	getWorkspaceResponseDataFieldDescription    = big.NewInt(1 << 3)
+	getWorkspaceResponseDataFieldVisibility     = big.NewInt(1 << 4)
+	getWorkspaceResponseDataFieldIcon           = big.NewInt(1 << 5)
+	getWorkspaceResponseDataFieldIsDefault      = big.NewInt(1 << 6)
+	getWorkspaceResponseDataFieldOwnerID        = big.NewInt(1 << 7)
+	getWorkspaceResponseDataFieldOrganizationID = big.NewInt(1 << 8)
+	getWorkspaceResponseDataFieldCreatedAt      = big.NewInt(1 << 9)
+	getWorkspaceResponseDataFieldUpdatedAt      = big.NewInt(1 << 10)
+	getWorkspaceResponseDataFieldOwner          = big.NewInt(1 << 11)
+	getWorkspaceResponseDataFieldMembers        = big.NewInt(1 << 12)
+	getWorkspaceResponseDataFieldPromptCount    = big.NewInt(1 << 13)
+	getWorkspaceResponseDataFieldDirectoryCount = big.NewInt(1 << 14)
+)
+
+type GetWorkspaceResponseData struct {
+	ID             *string                                `json:"id,omitempty" url:"id,omitempty"`
+	Name           *string                                `json:"name,omitempty" url:"name,omitempty"`
+	Slug           *string                                `json:"slug,omitempty" url:"slug,omitempty"`
+	Description    *string                                `json:"description,omitempty" url:"description,omitempty"`
+	Visibility     *GetWorkspaceResponseDataVisibility    `json:"visibility,omitempty" url:"visibility,omitempty"`
+	Icon           *string                                `json:"icon,omitempty" url:"icon,omitempty"`
+	IsDefault      *bool                                  `json:"isDefault,omitempty" url:"isDefault,omitempty"`
+	OwnerID        *string                                `json:"ownerId,omitempty" url:"ownerId,omitempty"`
+	OrganizationID *string                                `json:"organizationId,omitempty" url:"organizationId,omitempty"`
+	CreatedAt      *time.Time                             `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	UpdatedAt      *time.Time                             `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	Owner          *GetWorkspaceResponseDataOwner         `json:"owner,omitempty" url:"owner,omitempty"`
+	Members        []*GetWorkspaceResponseDataMembersItem `json:"members,omitempty" url:"members,omitempty"`
+	PromptCount    *int                                   `json:"promptCount,omitempty" url:"promptCount,omitempty"`
+	DirectoryCount *int                                   `json:"directoryCount,omitempty" url:"directoryCount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetWorkspaceResponseData) GetID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ID
+}
+
+func (g *GetWorkspaceResponseData) GetName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Name
+}
+
+func (g *GetWorkspaceResponseData) GetSlug() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Slug
+}
+
+func (g *GetWorkspaceResponseData) GetDescription() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Description
+}
+
+func (g *GetWorkspaceResponseData) GetVisibility() *GetWorkspaceResponseDataVisibility {
+	if g == nil {
+		return nil
+	}
+	return g.Visibility
+}
+
+func (g *GetWorkspaceResponseData) GetIcon() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Icon
+}
+
+func (g *GetWorkspaceResponseData) GetIsDefault() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsDefault
+}
+
+func (g *GetWorkspaceResponseData) GetOwnerID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.OwnerID
+}
+
+func (g *GetWorkspaceResponseData) GetOrganizationID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.OrganizationID
+}
+
+func (g *GetWorkspaceResponseData) GetCreatedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.CreatedAt
+}
+
+func (g *GetWorkspaceResponseData) GetUpdatedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.UpdatedAt
+}
+
+func (g *GetWorkspaceResponseData) GetOwner() *GetWorkspaceResponseDataOwner {
+	if g == nil {
+		return nil
+	}
+	return g.Owner
+}
+
+func (g *GetWorkspaceResponseData) GetMembers() []*GetWorkspaceResponseDataMembersItem {
+	if g == nil {
+		return nil
+	}
+	return g.Members
+}
+
+func (g *GetWorkspaceResponseData) GetPromptCount() *int {
+	if g == nil {
+		return nil
+	}
+	return g.PromptCount
+}
+
+func (g *GetWorkspaceResponseData) GetDirectoryCount() *int {
+	if g == nil {
+		return nil
+	}
+	return g.DirectoryCount
+}
+
+func (g *GetWorkspaceResponseData) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetWorkspaceResponseData) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetID(id *string) {
+	g.ID = id
+	g.require(getWorkspaceResponseDataFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetName(name *string) {
+	g.Name = name
+	g.require(getWorkspaceResponseDataFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetSlug(slug *string) {
+	g.Slug = slug
+	g.require(getWorkspaceResponseDataFieldSlug)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetDescription(description *string) {
+	g.Description = description
+	g.require(getWorkspaceResponseDataFieldDescription)
+}
+
+// SetVisibility sets the Visibility field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetVisibility(visibility *GetWorkspaceResponseDataVisibility) {
+	g.Visibility = visibility
+	g.require(getWorkspaceResponseDataFieldVisibility)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetIcon(icon *string) {
+	g.Icon = icon
+	g.require(getWorkspaceResponseDataFieldIcon)
+}
+
+// SetIsDefault sets the IsDefault field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetIsDefault(isDefault *bool) {
+	g.IsDefault = isDefault
+	g.require(getWorkspaceResponseDataFieldIsDefault)
+}
+
+// SetOwnerID sets the OwnerID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetOwnerID(ownerID *string) {
+	g.OwnerID = ownerID
+	g.require(getWorkspaceResponseDataFieldOwnerID)
+}
+
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetOrganizationID(organizationID *string) {
+	g.OrganizationID = organizationID
+	g.require(getWorkspaceResponseDataFieldOrganizationID)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetCreatedAt(createdAt *time.Time) {
+	g.CreatedAt = createdAt
+	g.require(getWorkspaceResponseDataFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetUpdatedAt(updatedAt *time.Time) {
+	g.UpdatedAt = updatedAt
+	g.require(getWorkspaceResponseDataFieldUpdatedAt)
+}
+
+// SetOwner sets the Owner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetOwner(owner *GetWorkspaceResponseDataOwner) {
+	g.Owner = owner
+	g.require(getWorkspaceResponseDataFieldOwner)
+}
+
+// SetMembers sets the Members field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetMembers(members []*GetWorkspaceResponseDataMembersItem) {
+	g.Members = members
+	g.require(getWorkspaceResponseDataFieldMembers)
+}
+
+// SetPromptCount sets the PromptCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetPromptCount(promptCount *int) {
+	g.PromptCount = promptCount
+	g.require(getWorkspaceResponseDataFieldPromptCount)
+}
+
+// SetDirectoryCount sets the DirectoryCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseData) SetDirectoryCount(directoryCount *int) {
+	g.DirectoryCount = directoryCount
+	g.require(getWorkspaceResponseDataFieldDirectoryCount)
+}
+
+func (g *GetWorkspaceResponseData) UnmarshalJSON(data []byte) error {
+	type embed GetWorkspaceResponseData
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetWorkspaceResponseData(unmarshaler.embed)
+	g.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	g.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetWorkspaceResponseData) MarshalJSON() ([]byte, error) {
+	type embed GetWorkspaceResponseData
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed:     embed(*g),
+		CreatedAt: internal.NewOptionalDateTime(g.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(g.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetWorkspaceResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getWorkspaceResponseDataMembersItemFieldID       = big.NewInt(1 << 0)
+	getWorkspaceResponseDataMembersItemFieldUserID   = big.NewInt(1 << 1)
+	getWorkspaceResponseDataMembersItemFieldRole     = big.NewInt(1 << 2)
+	getWorkspaceResponseDataMembersItemFieldIsPinned = big.NewInt(1 << 3)
+	getWorkspaceResponseDataMembersItemFieldJoinedAt = big.NewInt(1 << 4)
+	getWorkspaceResponseDataMembersItemFieldUser     = big.NewInt(1 << 5)
+)
+
+type GetWorkspaceResponseDataMembersItem struct {
+	ID       *string                                  `json:"id,omitempty" url:"id,omitempty"`
+	UserID   *string                                  `json:"userId,omitempty" url:"userId,omitempty"`
+	Role     *string                                  `json:"role,omitempty" url:"role,omitempty"`
+	IsPinned *bool                                    `json:"isPinned,omitempty" url:"isPinned,omitempty"`
+	JoinedAt *time.Time                               `json:"joinedAt,omitempty" url:"joinedAt,omitempty"`
+	User     *GetWorkspaceResponseDataMembersItemUser `json:"user,omitempty" url:"user,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) GetID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ID
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) GetUserID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.UserID
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) GetRole() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Role
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) GetIsPinned() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsPinned
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) GetJoinedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.JoinedAt
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) GetUser() *GetWorkspaceResponseDataMembersItemUser {
+	if g == nil {
+		return nil
+	}
+	return g.User
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItem) SetID(id *string) {
+	g.ID = id
+	g.require(getWorkspaceResponseDataMembersItemFieldID)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItem) SetUserID(userID *string) {
+	g.UserID = userID
+	g.require(getWorkspaceResponseDataMembersItemFieldUserID)
+}
+
+// SetRole sets the Role field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItem) SetRole(role *string) {
+	g.Role = role
+	g.require(getWorkspaceResponseDataMembersItemFieldRole)
+}
+
+// SetIsPinned sets the IsPinned field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItem) SetIsPinned(isPinned *bool) {
+	g.IsPinned = isPinned
+	g.require(getWorkspaceResponseDataMembersItemFieldIsPinned)
+}
+
+// SetJoinedAt sets the JoinedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItem) SetJoinedAt(joinedAt *time.Time) {
+	g.JoinedAt = joinedAt
+	g.require(getWorkspaceResponseDataMembersItemFieldJoinedAt)
+}
+
+// SetUser sets the User field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItem) SetUser(user *GetWorkspaceResponseDataMembersItemUser) {
+	g.User = user
+	g.require(getWorkspaceResponseDataMembersItemFieldUser)
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) UnmarshalJSON(data []byte) error {
+	type embed GetWorkspaceResponseDataMembersItem
+	var unmarshaler = struct {
+		embed
+		JoinedAt *internal.DateTime `json:"joinedAt,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetWorkspaceResponseDataMembersItem(unmarshaler.embed)
+	g.JoinedAt = unmarshaler.JoinedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) MarshalJSON() ([]byte, error) {
+	type embed GetWorkspaceResponseDataMembersItem
+	var marshaler = struct {
+		embed
+		JoinedAt *internal.DateTime `json:"joinedAt,omitempty"`
+	}{
+		embed:    embed(*g),
+		JoinedAt: internal.NewOptionalDateTime(g.JoinedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetWorkspaceResponseDataMembersItem) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getWorkspaceResponseDataMembersItemUserFieldFullName  = big.NewInt(1 << 0)
+	getWorkspaceResponseDataMembersItemUserFieldEmail     = big.NewInt(1 << 1)
+	getWorkspaceResponseDataMembersItemUserFieldAvatarURL = big.NewInt(1 << 2)
+)
+
+type GetWorkspaceResponseDataMembersItemUser struct {
+	FullName  *string `json:"fullName,omitempty" url:"fullName,omitempty"`
+	Email     *string `json:"email,omitempty" url:"email,omitempty"`
+	AvatarURL *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) GetFullName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FullName
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) GetEmail() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Email
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) GetAvatarURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AvatarURL
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetFullName sets the FullName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItemUser) SetFullName(fullName *string) {
+	g.FullName = fullName
+	g.require(getWorkspaceResponseDataMembersItemUserFieldFullName)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItemUser) SetEmail(email *string) {
+	g.Email = email
+	g.require(getWorkspaceResponseDataMembersItemUserFieldEmail)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataMembersItemUser) SetAvatarURL(avatarURL *string) {
+	g.AvatarURL = avatarURL
+	g.require(getWorkspaceResponseDataMembersItemUserFieldAvatarURL)
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetWorkspaceResponseDataMembersItemUser
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetWorkspaceResponseDataMembersItemUser(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) MarshalJSON() ([]byte, error) {
+	type embed GetWorkspaceResponseDataMembersItemUser
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetWorkspaceResponseDataMembersItemUser) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getWorkspaceResponseDataOwnerFieldID       = big.NewInt(1 << 0)
+	getWorkspaceResponseDataOwnerFieldFullName = big.NewInt(1 << 1)
+	getWorkspaceResponseDataOwnerFieldEmail    = big.NewInt(1 << 2)
+)
+
+type GetWorkspaceResponseDataOwner struct {
+	ID       *string `json:"id,omitempty" url:"id,omitempty"`
+	FullName *string `json:"fullName,omitempty" url:"fullName,omitempty"`
+	Email    *string `json:"email,omitempty" url:"email,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetWorkspaceResponseDataOwner) GetID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ID
+}
+
+func (g *GetWorkspaceResponseDataOwner) GetFullName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FullName
+}
+
+func (g *GetWorkspaceResponseDataOwner) GetEmail() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Email
+}
+
+func (g *GetWorkspaceResponseDataOwner) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetWorkspaceResponseDataOwner) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataOwner) SetID(id *string) {
+	g.ID = id
+	g.require(getWorkspaceResponseDataOwnerFieldID)
+}
+
+// SetFullName sets the FullName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataOwner) SetFullName(fullName *string) {
+	g.FullName = fullName
+	g.require(getWorkspaceResponseDataOwnerFieldFullName)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetWorkspaceResponseDataOwner) SetEmail(email *string) {
+	g.Email = email
+	g.require(getWorkspaceResponseDataOwnerFieldEmail)
+}
+
+func (g *GetWorkspaceResponseDataOwner) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetWorkspaceResponseDataOwner
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetWorkspaceResponseDataOwner(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetWorkspaceResponseDataOwner) MarshalJSON() ([]byte, error) {
+	type embed GetWorkspaceResponseDataOwner
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetWorkspaceResponseDataOwner) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetWorkspaceResponseDataVisibility string
+
+const (
+	GetWorkspaceResponseDataVisibilityPrivate  GetWorkspaceResponseDataVisibility = "private"
+	GetWorkspaceResponseDataVisibilityPublic   GetWorkspaceResponseDataVisibility = "public"
+	GetWorkspaceResponseDataVisibilityInternal GetWorkspaceResponseDataVisibility = "internal"
+)
+
+func NewGetWorkspaceResponseDataVisibilityFromString(s string) (GetWorkspaceResponseDataVisibility, error) {
+	switch s {
+	case "private":
+		return GetWorkspaceResponseDataVisibilityPrivate, nil
+	case "public":
+		return GetWorkspaceResponseDataVisibilityPublic, nil
+	case "internal":
+		return GetWorkspaceResponseDataVisibilityInternal, nil
+	}
+	var t GetWorkspaceResponseDataVisibility
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetWorkspaceResponseDataVisibility) Ptr() *GetWorkspaceResponseDataVisibility {
+	return &g
 }
 
 // Workspaces list

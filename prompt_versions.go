@@ -22,13 +22,13 @@ var (
 
 type CreatePromptVersionRequest struct {
 	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
-	IdempotencyKey  *string                `json:"-" url:"-"`
-	PromptID        string                 `json:"-" url:"-"`
-	Content         string                 `json:"content" url:"-"`
-	SystemPrompt    *string                `json:"systemPrompt,omitempty" url:"-"`
-	ChangeNote      *string                `json:"changeNote,omitempty" url:"-"`
-	VersionLabel    *string                `json:"versionLabel,omitempty" url:"-"`
-	VariablesSchema map[string]interface{} `json:"variablesSchema,omitempty" url:"-"`
+	IdempotencyKey  *string                                                    `json:"-" url:"-"`
+	PromptID        string                                                     `json:"-" url:"-"`
+	Content         string                                                     `json:"content" url:"-"`
+	SystemPrompt    *string                                                    `json:"systemPrompt,omitempty" url:"-"`
+	ChangeNote      *string                                                    `json:"changeNote,omitempty" url:"-"`
+	VersionLabel    *string                                                    `json:"versionLabel,omitempty" url:"-"`
+	VariablesSchema map[string]*CreatePromptVersionRequestVariablesSchemaValue `json:"variablesSchema,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -85,7 +85,7 @@ func (c *CreatePromptVersionRequest) SetVersionLabel(versionLabel *string) {
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreatePromptVersionRequest) SetVariablesSchema(variablesSchema map[string]interface{}) {
+func (c *CreatePromptVersionRequest) SetVariablesSchema(variablesSchema map[string]*CreatePromptVersionRequestVariablesSchemaValue) {
 	c.VariablesSchema = variablesSchema
 	c.require(createPromptVersionRequestFieldVariablesSchema)
 }
@@ -254,6 +254,84 @@ func (r *RollbackPromptRequest) SetTargetVersion(targetVersion int) {
 	r.require(rollbackPromptRequestFieldTargetVersion)
 }
 
+var (
+	createPromptVersionRequestVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type CreatePromptVersionRequestVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptVersionRequestVariablesSchemaValue) GetDefault() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Default
+}
+
+func (c *CreatePromptVersionRequestVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptVersionRequestVariablesSchemaValue) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionRequestVariablesSchemaValue) SetDefault(default_ *string) {
+	c.Default = default_
+	c.require(createPromptVersionRequestVariablesSchemaValueFieldDefault)
+}
+
+func (c *CreatePromptVersionRequestVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePromptVersionRequestVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreatePromptVersionRequestVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptVersionRequestVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptVersionRequestVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptVersionRequestVariablesSchemaValue) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // Version created
 var (
 	createPromptVersionResponseFieldData = big.NewInt(1 << 0)
@@ -352,21 +430,21 @@ var (
 )
 
 type CreatePromptVersionResponseData struct {
-	ID                      string                 `json:"id" url:"id"`
-	PromptID                string                 `json:"promptId" url:"promptId"`
-	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content                 string                 `json:"content" url:"content"`
-	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
-	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
-	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
-	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	ID                      string                                                          `json:"id" url:"id"`
+	PromptID                string                                                          `json:"promptId" url:"promptId"`
+	VersionNumber           int                                                             `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                                                         `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                                                          `json:"content" url:"content"`
+	SystemPrompt            *string                                                         `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                                                         `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                                                            `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                                                            `json:"isPublished" url:"isPublished"`
+	VariablesSchema         map[string]*CreatePromptVersionResponseDataVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                                                         `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                                                         `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt               time.Time                                                       `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                                                           `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                                                           `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -438,7 +516,7 @@ func (c *CreatePromptVersionResponseData) GetIsPublished() bool {
 	return c.IsPublished
 }
 
-func (c *CreatePromptVersionResponseData) GetVariablesSchema() map[string]interface{} {
+func (c *CreatePromptVersionResponseData) GetVariablesSchema() map[string]*CreatePromptVersionResponseDataVariablesSchemaValue {
 	if c == nil {
 		return nil
 	}
@@ -556,7 +634,7 @@ func (c *CreatePromptVersionResponseData) SetIsPublished(isPublished bool) {
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreatePromptVersionResponseData) SetVariablesSchema(variablesSchema map[string]interface{}) {
+func (c *CreatePromptVersionResponseData) SetVariablesSchema(variablesSchema map[string]*CreatePromptVersionResponseDataVariablesSchemaValue) {
 	c.VariablesSchema = variablesSchema
 	c.require(createPromptVersionResponseDataFieldVariablesSchema)
 }
@@ -632,6 +710,84 @@ func (c *CreatePromptVersionResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatePromptVersionResponseData) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createPromptVersionResponseDataVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type CreatePromptVersionResponseDataVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptVersionResponseDataVariablesSchemaValue) GetDefault() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Default
+}
+
+func (c *CreatePromptVersionResponseDataVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptVersionResponseDataVariablesSchemaValue) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataVariablesSchemaValue) SetDefault(default_ *string) {
+	c.Default = default_
+	c.require(createPromptVersionResponseDataVariablesSchemaValueFieldDefault)
+}
+
+func (c *CreatePromptVersionResponseDataVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePromptVersionResponseDataVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreatePromptVersionResponseDataVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptVersionResponseDataVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptVersionResponseDataVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptVersionResponseDataVariablesSchemaValue) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1056,21 +1212,21 @@ var (
 )
 
 type GetPromptVersionResponseData struct {
-	ID                      string                 `json:"id" url:"id"`
-	PromptID                string                 `json:"promptId" url:"promptId"`
-	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content                 string                 `json:"content" url:"content"`
-	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
-	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
-	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
-	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	ID                      string                                                       `json:"id" url:"id"`
+	PromptID                string                                                       `json:"promptId" url:"promptId"`
+	VersionNumber           int                                                          `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                                                      `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                                                       `json:"content" url:"content"`
+	SystemPrompt            *string                                                      `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                                                      `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                                                         `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                                                         `json:"isPublished" url:"isPublished"`
+	VariablesSchema         map[string]*GetPromptVersionResponseDataVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                                                      `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                                                      `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt               time.Time                                                    `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                                                        `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                                                        `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1142,7 +1298,7 @@ func (g *GetPromptVersionResponseData) GetIsPublished() bool {
 	return g.IsPublished
 }
 
-func (g *GetPromptVersionResponseData) GetVariablesSchema() map[string]interface{} {
+func (g *GetPromptVersionResponseData) GetVariablesSchema() map[string]*GetPromptVersionResponseDataVariablesSchemaValue {
 	if g == nil {
 		return nil
 	}
@@ -1260,7 +1416,7 @@ func (g *GetPromptVersionResponseData) SetIsPublished(isPublished bool) {
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPromptVersionResponseData) SetVariablesSchema(variablesSchema map[string]interface{}) {
+func (g *GetPromptVersionResponseData) SetVariablesSchema(variablesSchema map[string]*GetPromptVersionResponseDataVariablesSchemaValue) {
 	g.VariablesSchema = variablesSchema
 	g.require(getPromptVersionResponseDataFieldVariablesSchema)
 }
@@ -1336,6 +1492,84 @@ func (g *GetPromptVersionResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetPromptVersionResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getPromptVersionResponseDataVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type GetPromptVersionResponseDataVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetPromptVersionResponseDataVariablesSchemaValue) GetDefault() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Default
+}
+
+func (g *GetPromptVersionResponseDataVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetPromptVersionResponseDataVariablesSchemaValue) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataVariablesSchemaValue) SetDefault(default_ *string) {
+	g.Default = default_
+	g.require(getPromptVersionResponseDataVariablesSchemaValueFieldDefault)
+}
+
+func (g *GetPromptVersionResponseDataVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetPromptVersionResponseDataVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetPromptVersionResponseDataVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetPromptVersionResponseDataVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed GetPromptVersionResponseDataVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetPromptVersionResponseDataVariablesSchemaValue) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1461,21 +1695,21 @@ var (
 )
 
 type ListPromptVersionsResponseDataItem struct {
-	ID                      string                 `json:"id" url:"id"`
-	PromptID                string                 `json:"promptId" url:"promptId"`
-	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content                 string                 `json:"content" url:"content"`
-	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
-	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
-	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
-	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	ID                      string                                                             `json:"id" url:"id"`
+	PromptID                string                                                             `json:"promptId" url:"promptId"`
+	VersionNumber           int                                                                `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                                                            `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                                                             `json:"content" url:"content"`
+	SystemPrompt            *string                                                            `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                                                            `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                                                               `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                                                               `json:"isPublished" url:"isPublished"`
+	VariablesSchema         map[string]*ListPromptVersionsResponseDataItemVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                                                            `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                                                            `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt               time.Time                                                          `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                                                              `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                                                              `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1547,7 +1781,7 @@ func (l *ListPromptVersionsResponseDataItem) GetIsPublished() bool {
 	return l.IsPublished
 }
 
-func (l *ListPromptVersionsResponseDataItem) GetVariablesSchema() map[string]interface{} {
+func (l *ListPromptVersionsResponseDataItem) GetVariablesSchema() map[string]*ListPromptVersionsResponseDataItemVariablesSchemaValue {
 	if l == nil {
 		return nil
 	}
@@ -1665,7 +1899,7 @@ func (l *ListPromptVersionsResponseDataItem) SetIsPublished(isPublished bool) {
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListPromptVersionsResponseDataItem) SetVariablesSchema(variablesSchema map[string]interface{}) {
+func (l *ListPromptVersionsResponseDataItem) SetVariablesSchema(variablesSchema map[string]*ListPromptVersionsResponseDataItemVariablesSchemaValue) {
 	l.VariablesSchema = variablesSchema
 	l.require(listPromptVersionsResponseDataItemFieldVariablesSchema)
 }
@@ -1741,6 +1975,84 @@ func (l *ListPromptVersionsResponseDataItem) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListPromptVersionsResponseDataItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listPromptVersionsResponseDataItemVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type ListPromptVersionsResponseDataItemVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPromptVersionsResponseDataItemVariablesSchemaValue) GetDefault() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Default
+}
+
+func (l *ListPromptVersionsResponseDataItemVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListPromptVersionsResponseDataItemVariablesSchemaValue) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemVariablesSchemaValue) SetDefault(default_ *string) {
+	l.Default = default_
+	l.require(listPromptVersionsResponseDataItemVariablesSchemaValueFieldDefault)
+}
+
+func (l *ListPromptVersionsResponseDataItemVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPromptVersionsResponseDataItemVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPromptVersionsResponseDataItemVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPromptVersionsResponseDataItemVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed ListPromptVersionsResponseDataItemVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPromptVersionsResponseDataItemVariablesSchemaValue) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -1944,21 +2256,21 @@ var (
 )
 
 type RollbackPromptResponseData struct {
-	ID                      string                 `json:"id" url:"id"`
-	PromptID                string                 `json:"promptId" url:"promptId"`
-	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content                 string                 `json:"content" url:"content"`
-	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
-	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
-	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
-	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	ID                      string                                                     `json:"id" url:"id"`
+	PromptID                string                                                     `json:"promptId" url:"promptId"`
+	VersionNumber           int                                                        `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                                                    `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                                                     `json:"content" url:"content"`
+	SystemPrompt            *string                                                    `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                                                    `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                                                       `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                                                       `json:"isPublished" url:"isPublished"`
+	VariablesSchema         map[string]*RollbackPromptResponseDataVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                                                    `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                                                    `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt               time.Time                                                  `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                                                      `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                                                      `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2030,7 +2342,7 @@ func (r *RollbackPromptResponseData) GetIsPublished() bool {
 	return r.IsPublished
 }
 
-func (r *RollbackPromptResponseData) GetVariablesSchema() map[string]interface{} {
+func (r *RollbackPromptResponseData) GetVariablesSchema() map[string]*RollbackPromptResponseDataVariablesSchemaValue {
 	if r == nil {
 		return nil
 	}
@@ -2148,7 +2460,7 @@ func (r *RollbackPromptResponseData) SetIsPublished(isPublished bool) {
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RollbackPromptResponseData) SetVariablesSchema(variablesSchema map[string]interface{}) {
+func (r *RollbackPromptResponseData) SetVariablesSchema(variablesSchema map[string]*RollbackPromptResponseDataVariablesSchemaValue) {
 	r.VariablesSchema = variablesSchema
 	r.require(rollbackPromptResponseDataFieldVariablesSchema)
 }
@@ -2233,6 +2545,162 @@ func (r *RollbackPromptResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	rollbackPromptResponseDataVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type RollbackPromptResponseDataVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RollbackPromptResponseDataVariablesSchemaValue) GetDefault() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Default
+}
+
+func (r *RollbackPromptResponseDataVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RollbackPromptResponseDataVariablesSchemaValue) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataVariablesSchemaValue) SetDefault(default_ *string) {
+	r.Default = default_
+	r.require(rollbackPromptResponseDataVariablesSchemaValueFieldDefault)
+}
+
+func (r *RollbackPromptResponseDataVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler RollbackPromptResponseDataVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RollbackPromptResponseDataVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RollbackPromptResponseDataVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed RollbackPromptResponseDataVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RollbackPromptResponseDataVariablesSchemaValue) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	updatePromptVersionRequestVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type UpdatePromptVersionRequestVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdatePromptVersionRequestVariablesSchemaValue) GetDefault() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Default
+}
+
+func (u *UpdatePromptVersionRequestVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdatePromptVersionRequestVariablesSchemaValue) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionRequestVariablesSchemaValue) SetDefault(default_ *string) {
+	u.Default = default_
+	u.require(updatePromptVersionRequestVariablesSchemaValueFieldDefault)
+}
+
+func (u *UpdatePromptVersionRequestVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdatePromptVersionRequestVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdatePromptVersionRequestVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdatePromptVersionRequestVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed UpdatePromptVersionRequestVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdatePromptVersionRequestVariablesSchemaValue) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
 }
 
 // Version updated
@@ -2333,21 +2801,21 @@ var (
 )
 
 type UpdatePromptVersionResponseData struct {
-	ID                      string                 `json:"id" url:"id"`
-	PromptID                string                 `json:"promptId" url:"promptId"`
-	VersionNumber           int                    `json:"versionNumber" url:"versionNumber"`
-	VersionLabel            *string                `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content                 string                 `json:"content" url:"content"`
-	SystemPrompt            *string                `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote              *string                `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsCurrentVersion        bool                   `json:"isCurrentVersion" url:"isCurrentVersion"`
-	IsPublished             bool                   `json:"isPublished" url:"isPublished"`
-	VariablesSchema         map[string]interface{} `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
-	CreatedByID             *string                `json:"createdById,omitempty" url:"createdById,omitempty"`
-	CreatedByName           *string                `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt               time.Time              `json:"createdAt" url:"createdAt"`
-	IsDeployedToDevelopment *bool                  `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
-	IsDeployedToProduction  *bool                  `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	ID                      string                                                          `json:"id" url:"id"`
+	PromptID                string                                                          `json:"promptId" url:"promptId"`
+	VersionNumber           int                                                             `json:"versionNumber" url:"versionNumber"`
+	VersionLabel            *string                                                         `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content                 string                                                          `json:"content" url:"content"`
+	SystemPrompt            *string                                                         `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote              *string                                                         `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsCurrentVersion        bool                                                            `json:"isCurrentVersion" url:"isCurrentVersion"`
+	IsPublished             bool                                                            `json:"isPublished" url:"isPublished"`
+	VariablesSchema         map[string]*UpdatePromptVersionResponseDataVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedByID             *string                                                         `json:"createdById,omitempty" url:"createdById,omitempty"`
+	CreatedByName           *string                                                         `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt               time.Time                                                       `json:"createdAt" url:"createdAt"`
+	IsDeployedToDevelopment *bool                                                           `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
+	IsDeployedToProduction  *bool                                                           `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2419,7 +2887,7 @@ func (u *UpdatePromptVersionResponseData) GetIsPublished() bool {
 	return u.IsPublished
 }
 
-func (u *UpdatePromptVersionResponseData) GetVariablesSchema() map[string]interface{} {
+func (u *UpdatePromptVersionResponseData) GetVariablesSchema() map[string]*UpdatePromptVersionResponseDataVariablesSchemaValue {
 	if u == nil {
 		return nil
 	}
@@ -2537,7 +3005,7 @@ func (u *UpdatePromptVersionResponseData) SetIsPublished(isPublished bool) {
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdatePromptVersionResponseData) SetVariablesSchema(variablesSchema map[string]interface{}) {
+func (u *UpdatePromptVersionResponseData) SetVariablesSchema(variablesSchema map[string]*UpdatePromptVersionResponseDataVariablesSchemaValue) {
 	u.VariablesSchema = variablesSchema
 	u.require(updatePromptVersionResponseDataFieldVariablesSchema)
 }
@@ -2625,21 +3093,101 @@ func (u *UpdatePromptVersionResponseData) String() string {
 }
 
 var (
-	updatePromptVersionRequestFieldPromptID     = big.NewInt(1 << 0)
-	updatePromptVersionRequestFieldVersionID    = big.NewInt(1 << 1)
-	updatePromptVersionRequestFieldVersionLabel = big.NewInt(1 << 2)
-	updatePromptVersionRequestFieldChangeNote   = big.NewInt(1 << 3)
-	updatePromptVersionRequestFieldContent      = big.NewInt(1 << 4)
-	updatePromptVersionRequestFieldSystemPrompt = big.NewInt(1 << 5)
+	updatePromptVersionResponseDataVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type UpdatePromptVersionResponseDataVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdatePromptVersionResponseDataVariablesSchemaValue) GetDefault() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Default
+}
+
+func (u *UpdatePromptVersionResponseDataVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdatePromptVersionResponseDataVariablesSchemaValue) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataVariablesSchemaValue) SetDefault(default_ *string) {
+	u.Default = default_
+	u.require(updatePromptVersionResponseDataVariablesSchemaValueFieldDefault)
+}
+
+func (u *UpdatePromptVersionResponseDataVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdatePromptVersionResponseDataVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdatePromptVersionResponseDataVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdatePromptVersionResponseDataVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed UpdatePromptVersionResponseDataVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdatePromptVersionResponseDataVariablesSchemaValue) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updatePromptVersionRequestFieldPromptID        = big.NewInt(1 << 0)
+	updatePromptVersionRequestFieldVersionID       = big.NewInt(1 << 1)
+	updatePromptVersionRequestFieldVersionLabel    = big.NewInt(1 << 2)
+	updatePromptVersionRequestFieldChangeNote      = big.NewInt(1 << 3)
+	updatePromptVersionRequestFieldContent         = big.NewInt(1 << 4)
+	updatePromptVersionRequestFieldSystemPrompt    = big.NewInt(1 << 5)
+	updatePromptVersionRequestFieldVariablesSchema = big.NewInt(1 << 6)
 )
 
 type UpdatePromptVersionRequest struct {
-	PromptID     string  `json:"-" url:"-"`
-	VersionID    string  `json:"-" url:"-"`
-	VersionLabel *string `json:"versionLabel,omitempty" url:"-"`
-	ChangeNote   *string `json:"changeNote,omitempty" url:"-"`
-	Content      *string `json:"content,omitempty" url:"-"`
-	SystemPrompt *string `json:"systemPrompt,omitempty" url:"-"`
+	PromptID        string                                                     `json:"-" url:"-"`
+	VersionID       string                                                     `json:"-" url:"-"`
+	VersionLabel    *string                                                    `json:"versionLabel,omitempty" url:"-"`
+	ChangeNote      *string                                                    `json:"changeNote,omitempty" url:"-"`
+	Content         *string                                                    `json:"content,omitempty" url:"-"`
+	SystemPrompt    *string                                                    `json:"systemPrompt,omitempty" url:"-"`
+	VariablesSchema map[string]*UpdatePromptVersionRequestVariablesSchemaValue `json:"variablesSchema,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2692,4 +3240,11 @@ func (u *UpdatePromptVersionRequest) SetContent(content *string) {
 func (u *UpdatePromptVersionRequest) SetSystemPrompt(systemPrompt *string) {
 	u.SystemPrompt = systemPrompt
 	u.require(updatePromptVersionRequestFieldSystemPrompt)
+}
+
+// SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionRequest) SetVariablesSchema(variablesSchema map[string]*UpdatePromptVersionRequestVariablesSchemaValue) {
+	u.VariablesSchema = variablesSchema
+	u.require(updatePromptVersionRequestFieldVariablesSchema)
 }
