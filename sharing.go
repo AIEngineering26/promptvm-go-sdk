@@ -13,11 +13,14 @@ import (
 var (
 	accessSharedPromptRequestFieldToken    = big.NewInt(1 << 0)
 	accessSharedPromptRequestFieldPassword = big.NewInt(1 << 1)
+	accessSharedPromptRequestFieldMeta     = big.NewInt(1 << 2)
 )
 
 type AccessSharedPromptRequest struct {
 	Token    string  `json:"-" url:"-"`
 	Password *string `json:"-" url:"password,omitempty"`
+	// When "1" or "true", performs a metadata-only read that does not increment useCount.
+	Meta *AccessSharedPromptRequestMeta `json:"-" url:"meta,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -44,25 +47,42 @@ func (a *AccessSharedPromptRequest) SetPassword(password *string) {
 	a.require(accessSharedPromptRequestFieldPassword)
 }
 
+// SetMeta sets the Meta field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccessSharedPromptRequest) SetMeta(meta *AccessSharedPromptRequestMeta) {
+	a.Meta = meta
+	a.require(accessSharedPromptRequestFieldMeta)
+}
+
 var (
-	createPromptShareLinkRequestFieldIdempotencyKey = big.NewInt(1 << 0)
-	createPromptShareLinkRequestFieldPromptID       = big.NewInt(1 << 1)
-	createPromptShareLinkRequestFieldPermission     = big.NewInt(1 << 2)
-	createPromptShareLinkRequestFieldPassword       = big.NewInt(1 << 3)
-	createPromptShareLinkRequestFieldExpiresInHours = big.NewInt(1 << 4)
-	createPromptShareLinkRequestFieldMaxUses        = big.NewInt(1 << 5)
-	createPromptShareLinkRequestFieldVersionNumber  = big.NewInt(1 << 6)
+	createPromptShareLinkRequestFieldIdempotencyKey   = big.NewInt(1 << 0)
+	createPromptShareLinkRequestFieldPromptID         = big.NewInt(1 << 1)
+	createPromptShareLinkRequestFieldPermission       = big.NewInt(1 << 2)
+	createPromptShareLinkRequestFieldPassword         = big.NewInt(1 << 3)
+	createPromptShareLinkRequestFieldExpiresInHours   = big.NewInt(1 << 4)
+	createPromptShareLinkRequestFieldMaxUses          = big.NewInt(1 << 5)
+	createPromptShareLinkRequestFieldVersionNumber    = big.NewInt(1 << 6)
+	createPromptShareLinkRequestFieldLabel            = big.NewInt(1 << 7)
+	createPromptShareLinkRequestFieldKind             = big.NewInt(1 << 8)
+	createPromptShareLinkRequestFieldVersion          = big.NewInt(1 << 9)
+	createPromptShareLinkRequestFieldValues           = big.NewInt(1 << 10)
+	createPromptShareLinkRequestFieldResolveVariables = big.NewInt(1 << 11)
 )
 
 type CreatePromptShareLinkRequest struct {
 	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
-	IdempotencyKey *string                                 `json:"-" url:"-"`
-	PromptID       string                                  `json:"-" url:"-"`
-	Permission     *CreatePromptShareLinkRequestPermission `json:"permission,omitempty" url:"-"`
-	Password       *string                                 `json:"password,omitempty" url:"-"`
-	ExpiresInHours *int                                    `json:"expiresInHours,omitempty" url:"-"`
-	MaxUses        *int                                    `json:"maxUses,omitempty" url:"-"`
-	VersionNumber  *int                                    `json:"versionNumber,omitempty" url:"-"`
+	IdempotencyKey   *string                                 `json:"-" url:"-"`
+	PromptID         string                                  `json:"-" url:"-"`
+	Permission       *CreatePromptShareLinkRequestPermission `json:"permission,omitempty" url:"-"`
+	Password         *string                                 `json:"password,omitempty" url:"-"`
+	ExpiresInHours   *int                                    `json:"expiresInHours,omitempty" url:"-"`
+	MaxUses          *int                                    `json:"maxUses,omitempty" url:"-"`
+	VersionNumber    *int                                    `json:"versionNumber,omitempty" url:"-"`
+	Label            *string                                 `json:"label,omitempty" url:"-"`
+	Kind             *CreatePromptShareLinkRequestKind       `json:"kind,omitempty" url:"-"`
+	Version          *CreatePromptShareLinkRequestVersion    `json:"version,omitempty" url:"-"`
+	Values           map[string]string                       `json:"values,omitempty" url:"-"`
+	ResolveVariables *bool                                   `json:"resolveVariables,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -124,6 +144,94 @@ func (c *CreatePromptShareLinkRequest) SetVersionNumber(versionNumber *int) {
 	c.require(createPromptShareLinkRequestFieldVersionNumber)
 }
 
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkRequest) SetLabel(label *string) {
+	c.Label = label
+	c.require(createPromptShareLinkRequestFieldLabel)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkRequest) SetKind(kind *CreatePromptShareLinkRequestKind) {
+	c.Kind = kind
+	c.require(createPromptShareLinkRequestFieldKind)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkRequest) SetVersion(version *CreatePromptShareLinkRequestVersion) {
+	c.Version = version
+	c.require(createPromptShareLinkRequestFieldVersion)
+}
+
+// SetValues sets the Values field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkRequest) SetValues(values map[string]string) {
+	c.Values = values
+	c.require(createPromptShareLinkRequestFieldValues)
+}
+
+// SetResolveVariables sets the ResolveVariables field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkRequest) SetResolveVariables(resolveVariables *bool) {
+	c.ResolveVariables = resolveVariables
+	c.require(createPromptShareLinkRequestFieldResolveVariables)
+}
+
+var (
+	importSharedPromptRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	importSharedPromptRequestFieldToken          = big.NewInt(1 << 1)
+	importSharedPromptRequestFieldWorkspaceID    = big.NewInt(1 << 2)
+	importSharedPromptRequestFieldPassword       = big.NewInt(1 << 3)
+)
+
+type ImportSharedPromptRequest struct {
+	// Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+	IdempotencyKey *string `json:"-" url:"-"`
+	Token          string  `json:"-" url:"-"`
+	WorkspaceID    *string `json:"workspaceId,omitempty" url:"-"`
+	Password       *string `json:"password,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (i *ImportSharedPromptRequest) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptRequest) SetIdempotencyKey(idempotencyKey *string) {
+	i.IdempotencyKey = idempotencyKey
+	i.require(importSharedPromptRequestFieldIdempotencyKey)
+}
+
+// SetToken sets the Token field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptRequest) SetToken(token string) {
+	i.Token = token
+	i.require(importSharedPromptRequestFieldToken)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptRequest) SetWorkspaceID(workspaceID *string) {
+	i.WorkspaceID = workspaceID
+	i.require(importSharedPromptRequestFieldWorkspaceID)
+}
+
+// SetPassword sets the Password field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptRequest) SetPassword(password *string) {
+	i.Password = password
+	i.require(importSharedPromptRequestFieldPassword)
+}
+
 var (
 	listPromptCollaboratorsRequestFieldPromptID = big.NewInt(1 << 0)
 )
@@ -147,6 +255,31 @@ func (l *ListPromptCollaboratorsRequest) require(field *big.Int) {
 func (l *ListPromptCollaboratorsRequest) SetPromptID(promptID string) {
 	l.PromptID = promptID
 	l.require(listPromptCollaboratorsRequestFieldPromptID)
+}
+
+var (
+	listPromptShareLinksRequestFieldPromptID = big.NewInt(1 << 0)
+)
+
+type ListPromptShareLinksRequest struct {
+	PromptID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListPromptShareLinksRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetPromptID sets the PromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksRequest) SetPromptID(promptID string) {
+	l.PromptID = promptID
+	l.require(listPromptShareLinksRequestFieldPromptID)
 }
 
 var (
@@ -181,6 +314,40 @@ func (r *RevokePromptCollaboratorRequest) SetPromptID(promptID string) {
 func (r *RevokePromptCollaboratorRequest) SetCollaboratorID(collaboratorID string) {
 	r.CollaboratorID = collaboratorID
 	r.require(revokePromptCollaboratorRequestFieldCollaboratorID)
+}
+
+var (
+	revokePromptShareLinkRequestFieldPromptID = big.NewInt(1 << 0)
+	revokePromptShareLinkRequestFieldLinkID   = big.NewInt(1 << 1)
+)
+
+type RevokePromptShareLinkRequest struct {
+	PromptID string `json:"-" url:"-"`
+	LinkID   string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RevokePromptShareLinkRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetPromptID sets the PromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RevokePromptShareLinkRequest) SetPromptID(promptID string) {
+	r.PromptID = promptID
+	r.require(revokePromptShareLinkRequestFieldPromptID)
+}
+
+// SetLinkID sets the LinkID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RevokePromptShareLinkRequest) SetLinkID(linkID string) {
+	r.LinkID = linkID
+	r.require(revokePromptShareLinkRequestFieldLinkID)
 }
 
 var (
@@ -233,6 +400,34 @@ func (s *SharePromptRequest) SetGroupID(groupID *string) {
 func (s *SharePromptRequest) SetPermission(permission SharePromptRequestPermission) {
 	s.Permission = permission
 	s.require(sharePromptRequestFieldPermission)
+}
+
+type AccessSharedPromptRequestMeta string
+
+const (
+	AccessSharedPromptRequestMetaOne   AccessSharedPromptRequestMeta = "1"
+	AccessSharedPromptRequestMetaTrue  AccessSharedPromptRequestMeta = "true"
+	AccessSharedPromptRequestMetaZero  AccessSharedPromptRequestMeta = "0"
+	AccessSharedPromptRequestMetaFalse AccessSharedPromptRequestMeta = "false"
+)
+
+func NewAccessSharedPromptRequestMetaFromString(s string) (AccessSharedPromptRequestMeta, error) {
+	switch s {
+	case "1":
+		return AccessSharedPromptRequestMetaOne, nil
+	case "true":
+		return AccessSharedPromptRequestMetaTrue, nil
+	case "0":
+		return AccessSharedPromptRequestMetaZero, nil
+	case "false":
+		return AccessSharedPromptRequestMetaFalse, nil
+	}
+	var t AccessSharedPromptRequestMeta
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AccessSharedPromptRequestMeta) Ptr() *AccessSharedPromptRequestMeta {
+	return &a
 }
 
 // Shared prompt
@@ -315,66 +510,47 @@ func (a *AccessSharedPromptResponse) String() string {
 }
 
 var (
-	accessSharedPromptResponseDataFieldID                    = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataFieldName                  = big.NewInt(1 << 1)
-	accessSharedPromptResponseDataFieldSlug                  = big.NewInt(1 << 2)
-	accessSharedPromptResponseDataFieldDescription           = big.NewInt(1 << 3)
-	accessSharedPromptResponseDataFieldStatus                = big.NewInt(1 << 4)
-	accessSharedPromptResponseDataFieldKind                  = big.NewInt(1 << 5)
-	accessSharedPromptResponseDataFieldContentKind           = big.NewInt(1 << 6)
-	accessSharedPromptResponseDataFieldMetadata              = big.NewInt(1 << 7)
-	accessSharedPromptResponseDataFieldTags                  = big.NewInt(1 << 8)
-	accessSharedPromptResponseDataFieldIsPublic              = big.NewInt(1 << 9)
-	accessSharedPromptResponseDataFieldWorkspaceID           = big.NewInt(1 << 10)
-	accessSharedPromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
-	accessSharedPromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
-	accessSharedPromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
-	accessSharedPromptResponseDataFieldCapturedFromSessionID = big.NewInt(1 << 14)
-	accessSharedPromptResponseDataFieldCaptureRepoSlug       = big.NewInt(1 << 15)
-	accessSharedPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 16)
-	accessSharedPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 17)
-	accessSharedPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 18)
-	accessSharedPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 19)
-	accessSharedPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 20)
-	accessSharedPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 21)
+	accessSharedPromptResponseDataFieldName                = big.NewInt(1 << 0)
+	accessSharedPromptResponseDataFieldDescription         = big.NewInt(1 << 1)
+	accessSharedPromptResponseDataFieldKind                = big.NewInt(1 << 2)
+	accessSharedPromptResponseDataFieldContentKind         = big.NewInt(1 << 3)
+	accessSharedPromptResponseDataFieldTags                = big.NewInt(1 << 4)
+	accessSharedPromptResponseDataFieldAuthorName          = big.NewInt(1 << 5)
+	accessSharedPromptResponseDataFieldSharedBy            = big.NewInt(1 << 6)
+	accessSharedPromptResponseDataFieldSharedVersionNumber = big.NewInt(1 << 7)
+	accessSharedPromptResponseDataFieldLabel               = big.NewInt(1 << 8)
+	accessSharedPromptResponseDataFieldLinkKind            = big.NewInt(1 << 9)
+	accessSharedPromptResponseDataFieldPinned              = big.NewInt(1 << 10)
+	accessSharedPromptResponseDataFieldSharedValues        = big.NewInt(1 << 11)
+	accessSharedPromptResponseDataFieldResolveVariables    = big.NewInt(1 << 12)
+	accessSharedPromptResponseDataFieldCurrentVersion      = big.NewInt(1 << 13)
+	accessSharedPromptResponseDataFieldCreatedAt           = big.NewInt(1 << 14)
+	accessSharedPromptResponseDataFieldUpdatedAt           = big.NewInt(1 << 15)
 )
 
 type AccessSharedPromptResponseData struct {
-	ID                    string                                        `json:"id" url:"id"`
-	Name                  string                                        `json:"name" url:"name"`
-	Slug                  string                                        `json:"slug" url:"slug"`
-	Description           *string                                       `json:"description,omitempty" url:"description,omitempty"`
-	Status                AccessSharedPromptResponseDataStatus          `json:"status" url:"status"`
-	Kind                  AccessSharedPromptResponseDataKind            `json:"kind" url:"kind"`
-	ContentKind           *AccessSharedPromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
-	Metadata              map[string]interface{}                        `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Tags                  []string                                      `json:"tags" url:"tags"`
-	IsPublic              bool                                          `json:"isPublic" url:"isPublic"`
-	WorkspaceID           string                                        `json:"workspaceId" url:"workspaceId"`
-	DirectoryID           *string                                       `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	ForkedFromPromptID    *string                                       `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
-	ImportedFromListingID *string                                       `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
-	CapturedFromSessionID *string                                       `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
-	CaptureRepoSlug       *string                                       `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
-	CreatedByID           string                                        `json:"createdById" url:"createdById"`
-	CreatedByName         *string                                       `json:"createdByName,omitempty" url:"createdByName,omitempty"`
-	CreatedAt             time.Time                                     `json:"createdAt" url:"createdAt"`
-	UpdatedAt             time.Time                                     `json:"updatedAt" url:"updatedAt"`
-	CurrentVersion        *AccessSharedPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
-	ReleaseStatus         *AccessSharedPromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
+	Name                string                                        `json:"name" url:"name"`
+	Description         *string                                       `json:"description,omitempty" url:"description,omitempty"`
+	Kind                AccessSharedPromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind         AccessSharedPromptResponseDataContentKind     `json:"contentKind" url:"contentKind"`
+	Tags                []string                                      `json:"tags" url:"tags"`
+	AuthorName          *string                                       `json:"authorName,omitempty" url:"authorName,omitempty"`
+	SharedBy            *AccessSharedPromptResponseDataSharedBy       `json:"sharedBy,omitempty" url:"sharedBy,omitempty"`
+	SharedVersionNumber *int                                          `json:"sharedVersionNumber,omitempty" url:"sharedVersionNumber,omitempty"`
+	Label               *string                                       `json:"label,omitempty" url:"label,omitempty"`
+	LinkKind            *AccessSharedPromptResponseDataLinkKind       `json:"linkKind,omitempty" url:"linkKind,omitempty"`
+	Pinned              *bool                                         `json:"pinned,omitempty" url:"pinned,omitempty"`
+	SharedValues        map[string]*string                            `json:"sharedValues,omitempty" url:"sharedValues,omitempty"`
+	ResolveVariables    *bool                                         `json:"resolveVariables,omitempty" url:"resolveVariables,omitempty"`
+	CurrentVersion      *AccessSharedPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	CreatedAt           time.Time                                     `json:"createdAt" url:"createdAt"`
+	UpdatedAt           time.Time                                     `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (a *AccessSharedPromptResponseData) GetID() string {
-	if a == nil {
-		return ""
-	}
-	return a.ID
 }
 
 func (a *AccessSharedPromptResponseData) GetName() string {
@@ -384,25 +560,11 @@ func (a *AccessSharedPromptResponseData) GetName() string {
 	return a.Name
 }
 
-func (a *AccessSharedPromptResponseData) GetSlug() string {
-	if a == nil {
-		return ""
-	}
-	return a.Slug
-}
-
 func (a *AccessSharedPromptResponseData) GetDescription() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Description
-}
-
-func (a *AccessSharedPromptResponseData) GetStatus() AccessSharedPromptResponseDataStatus {
-	if a == nil {
-		return ""
-	}
-	return a.Status
 }
 
 func (a *AccessSharedPromptResponseData) GetKind() AccessSharedPromptResponseDataKind {
@@ -412,18 +574,11 @@ func (a *AccessSharedPromptResponseData) GetKind() AccessSharedPromptResponseDat
 	return a.Kind
 }
 
-func (a *AccessSharedPromptResponseData) GetContentKind() *AccessSharedPromptResponseDataContentKind {
+func (a *AccessSharedPromptResponseData) GetContentKind() AccessSharedPromptResponseDataContentKind {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ContentKind
-}
-
-func (a *AccessSharedPromptResponseData) GetMetadata() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.Metadata
 }
 
 func (a *AccessSharedPromptResponseData) GetTags() []string {
@@ -433,67 +588,67 @@ func (a *AccessSharedPromptResponseData) GetTags() []string {
 	return a.Tags
 }
 
-func (a *AccessSharedPromptResponseData) GetIsPublic() bool {
-	if a == nil {
-		return false
-	}
-	return a.IsPublic
-}
-
-func (a *AccessSharedPromptResponseData) GetWorkspaceID() string {
-	if a == nil {
-		return ""
-	}
-	return a.WorkspaceID
-}
-
-func (a *AccessSharedPromptResponseData) GetDirectoryID() *string {
+func (a *AccessSharedPromptResponseData) GetAuthorName() *string {
 	if a == nil {
 		return nil
 	}
-	return a.DirectoryID
+	return a.AuthorName
 }
 
-func (a *AccessSharedPromptResponseData) GetForkedFromPromptID() *string {
+func (a *AccessSharedPromptResponseData) GetSharedBy() *AccessSharedPromptResponseDataSharedBy {
 	if a == nil {
 		return nil
 	}
-	return a.ForkedFromPromptID
+	return a.SharedBy
 }
 
-func (a *AccessSharedPromptResponseData) GetImportedFromListingID() *string {
+func (a *AccessSharedPromptResponseData) GetSharedVersionNumber() *int {
 	if a == nil {
 		return nil
 	}
-	return a.ImportedFromListingID
+	return a.SharedVersionNumber
 }
 
-func (a *AccessSharedPromptResponseData) GetCapturedFromSessionID() *string {
+func (a *AccessSharedPromptResponseData) GetLabel() *string {
 	if a == nil {
 		return nil
 	}
-	return a.CapturedFromSessionID
+	return a.Label
 }
 
-func (a *AccessSharedPromptResponseData) GetCaptureRepoSlug() *string {
+func (a *AccessSharedPromptResponseData) GetLinkKind() *AccessSharedPromptResponseDataLinkKind {
 	if a == nil {
 		return nil
 	}
-	return a.CaptureRepoSlug
+	return a.LinkKind
 }
 
-func (a *AccessSharedPromptResponseData) GetCreatedByID() string {
-	if a == nil {
-		return ""
-	}
-	return a.CreatedByID
-}
-
-func (a *AccessSharedPromptResponseData) GetCreatedByName() *string {
+func (a *AccessSharedPromptResponseData) GetPinned() *bool {
 	if a == nil {
 		return nil
 	}
-	return a.CreatedByName
+	return a.Pinned
+}
+
+func (a *AccessSharedPromptResponseData) GetSharedValues() map[string]*string {
+	if a == nil {
+		return nil
+	}
+	return a.SharedValues
+}
+
+func (a *AccessSharedPromptResponseData) GetResolveVariables() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ResolveVariables
+}
+
+func (a *AccessSharedPromptResponseData) GetCurrentVersion() *AccessSharedPromptResponseDataCurrentVersion {
+	if a == nil {
+		return nil
+	}
+	return a.CurrentVersion
 }
 
 func (a *AccessSharedPromptResponseData) GetCreatedAt() time.Time {
@@ -510,20 +665,6 @@ func (a *AccessSharedPromptResponseData) GetUpdatedAt() time.Time {
 	return a.UpdatedAt
 }
 
-func (a *AccessSharedPromptResponseData) GetCurrentVersion() *AccessSharedPromptResponseDataCurrentVersion {
-	if a == nil {
-		return nil
-	}
-	return a.CurrentVersion
-}
-
-func (a *AccessSharedPromptResponseData) GetReleaseStatus() *AccessSharedPromptResponseDataReleaseStatus {
-	if a == nil {
-		return nil
-	}
-	return a.ReleaseStatus
-}
-
 func (a *AccessSharedPromptResponseData) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
@@ -535,13 +676,6 @@ func (a *AccessSharedPromptResponseData) require(field *big.Int) {
 	a.explicitFields.Or(a.explicitFields, field)
 }
 
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetID(id string) {
-	a.ID = id
-	a.require(accessSharedPromptResponseDataFieldID)
-}
-
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *AccessSharedPromptResponseData) SetName(name string) {
@@ -549,25 +683,11 @@ func (a *AccessSharedPromptResponseData) SetName(name string) {
 	a.require(accessSharedPromptResponseDataFieldName)
 }
 
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetSlug(slug string) {
-	a.Slug = slug
-	a.require(accessSharedPromptResponseDataFieldSlug)
-}
-
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *AccessSharedPromptResponseData) SetDescription(description *string) {
 	a.Description = description
 	a.require(accessSharedPromptResponseDataFieldDescription)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetStatus(status AccessSharedPromptResponseDataStatus) {
-	a.Status = status
-	a.require(accessSharedPromptResponseDataFieldStatus)
 }
 
 // SetKind sets the Kind field and marks it as non-optional;
@@ -579,16 +699,9 @@ func (a *AccessSharedPromptResponseData) SetKind(kind AccessSharedPromptResponse
 
 // SetContentKind sets the ContentKind field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetContentKind(contentKind *AccessSharedPromptResponseDataContentKind) {
+func (a *AccessSharedPromptResponseData) SetContentKind(contentKind AccessSharedPromptResponseDataContentKind) {
 	a.ContentKind = contentKind
 	a.require(accessSharedPromptResponseDataFieldContentKind)
-}
-
-// SetMetadata sets the Metadata field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetMetadata(metadata map[string]interface{}) {
-	a.Metadata = metadata
-	a.require(accessSharedPromptResponseDataFieldMetadata)
 }
 
 // SetTags sets the Tags field and marks it as non-optional;
@@ -598,67 +711,67 @@ func (a *AccessSharedPromptResponseData) SetTags(tags []string) {
 	a.require(accessSharedPromptResponseDataFieldTags)
 }
 
-// SetIsPublic sets the IsPublic field and marks it as non-optional;
+// SetAuthorName sets the AuthorName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetIsPublic(isPublic bool) {
-	a.IsPublic = isPublic
-	a.require(accessSharedPromptResponseDataFieldIsPublic)
+func (a *AccessSharedPromptResponseData) SetAuthorName(authorName *string) {
+	a.AuthorName = authorName
+	a.require(accessSharedPromptResponseDataFieldAuthorName)
 }
 
-// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// SetSharedBy sets the SharedBy field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetWorkspaceID(workspaceID string) {
-	a.WorkspaceID = workspaceID
-	a.require(accessSharedPromptResponseDataFieldWorkspaceID)
+func (a *AccessSharedPromptResponseData) SetSharedBy(sharedBy *AccessSharedPromptResponseDataSharedBy) {
+	a.SharedBy = sharedBy
+	a.require(accessSharedPromptResponseDataFieldSharedBy)
 }
 
-// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// SetSharedVersionNumber sets the SharedVersionNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetDirectoryID(directoryID *string) {
-	a.DirectoryID = directoryID
-	a.require(accessSharedPromptResponseDataFieldDirectoryID)
+func (a *AccessSharedPromptResponseData) SetSharedVersionNumber(sharedVersionNumber *int) {
+	a.SharedVersionNumber = sharedVersionNumber
+	a.require(accessSharedPromptResponseDataFieldSharedVersionNumber)
 }
 
-// SetForkedFromPromptID sets the ForkedFromPromptID field and marks it as non-optional;
+// SetLabel sets the Label field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetForkedFromPromptID(forkedFromPromptID *string) {
-	a.ForkedFromPromptID = forkedFromPromptID
-	a.require(accessSharedPromptResponseDataFieldForkedFromPromptID)
+func (a *AccessSharedPromptResponseData) SetLabel(label *string) {
+	a.Label = label
+	a.require(accessSharedPromptResponseDataFieldLabel)
 }
 
-// SetImportedFromListingID sets the ImportedFromListingID field and marks it as non-optional;
+// SetLinkKind sets the LinkKind field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
-	a.ImportedFromListingID = importedFromListingID
-	a.require(accessSharedPromptResponseDataFieldImportedFromListingID)
+func (a *AccessSharedPromptResponseData) SetLinkKind(linkKind *AccessSharedPromptResponseDataLinkKind) {
+	a.LinkKind = linkKind
+	a.require(accessSharedPromptResponseDataFieldLinkKind)
 }
 
-// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// SetPinned sets the Pinned field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetCapturedFromSessionID(capturedFromSessionID *string) {
-	a.CapturedFromSessionID = capturedFromSessionID
-	a.require(accessSharedPromptResponseDataFieldCapturedFromSessionID)
+func (a *AccessSharedPromptResponseData) SetPinned(pinned *bool) {
+	a.Pinned = pinned
+	a.require(accessSharedPromptResponseDataFieldPinned)
 }
 
-// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// SetSharedValues sets the SharedValues field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetCaptureRepoSlug(captureRepoSlug *string) {
-	a.CaptureRepoSlug = captureRepoSlug
-	a.require(accessSharedPromptResponseDataFieldCaptureRepoSlug)
+func (a *AccessSharedPromptResponseData) SetSharedValues(sharedValues map[string]*string) {
+	a.SharedValues = sharedValues
+	a.require(accessSharedPromptResponseDataFieldSharedValues)
 }
 
-// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// SetResolveVariables sets the ResolveVariables field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetCreatedByID(createdByID string) {
-	a.CreatedByID = createdByID
-	a.require(accessSharedPromptResponseDataFieldCreatedByID)
+func (a *AccessSharedPromptResponseData) SetResolveVariables(resolveVariables *bool) {
+	a.ResolveVariables = resolveVariables
+	a.require(accessSharedPromptResponseDataFieldResolveVariables)
 }
 
-// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// SetCurrentVersion sets the CurrentVersion field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetCreatedByName(createdByName *string) {
-	a.CreatedByName = createdByName
-	a.require(accessSharedPromptResponseDataFieldCreatedByName)
+func (a *AccessSharedPromptResponseData) SetCurrentVersion(currentVersion *AccessSharedPromptResponseDataCurrentVersion) {
+	a.CurrentVersion = currentVersion
+	a.require(accessSharedPromptResponseDataFieldCurrentVersion)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -673,20 +786,6 @@ func (a *AccessSharedPromptResponseData) SetCreatedAt(createdAt time.Time) {
 func (a *AccessSharedPromptResponseData) SetUpdatedAt(updatedAt time.Time) {
 	a.UpdatedAt = updatedAt
 	a.require(accessSharedPromptResponseDataFieldUpdatedAt)
-}
-
-// SetCurrentVersion sets the CurrentVersion field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetCurrentVersion(currentVersion *AccessSharedPromptResponseDataCurrentVersion) {
-	a.CurrentVersion = currentVersion
-	a.require(accessSharedPromptResponseDataFieldCurrentVersion)
-}
-
-// SetReleaseStatus sets the ReleaseStatus field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseData) SetReleaseStatus(releaseStatus *AccessSharedPromptResponseDataReleaseStatus) {
-	a.ReleaseStatus = releaseStatus
-	a.require(accessSharedPromptResponseDataFieldReleaseStatus)
 }
 
 func (a *AccessSharedPromptResponseData) UnmarshalJSON(data []byte) error {
@@ -745,6 +844,7 @@ type AccessSharedPromptResponseDataContentKind string
 const (
 	AccessSharedPromptResponseDataContentKindPrompt AccessSharedPromptResponseDataContentKind = "prompt"
 	AccessSharedPromptResponseDataContentKindSkill  AccessSharedPromptResponseDataContentKind = "skill"
+	AccessSharedPromptResponseDataContentKindHook   AccessSharedPromptResponseDataContentKind = "hook"
 )
 
 func NewAccessSharedPromptResponseDataContentKindFromString(s string) (AccessSharedPromptResponseDataContentKind, error) {
@@ -753,6 +853,8 @@ func NewAccessSharedPromptResponseDataContentKindFromString(s string) (AccessSha
 		return AccessSharedPromptResponseDataContentKindPrompt, nil
 	case "skill":
 		return AccessSharedPromptResponseDataContentKindSkill, nil
+	case "hook":
+		return AccessSharedPromptResponseDataContentKindHook, nil
 	}
 	var t AccessSharedPromptResponseDataContentKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -763,25 +865,17 @@ func (a AccessSharedPromptResponseDataContentKind) Ptr() *AccessSharedPromptResp
 }
 
 var (
-	accessSharedPromptResponseDataCurrentVersionFieldID              = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataCurrentVersionFieldVersionNumber   = big.NewInt(1 << 1)
-	accessSharedPromptResponseDataCurrentVersionFieldVersionLabel    = big.NewInt(1 << 2)
-	accessSharedPromptResponseDataCurrentVersionFieldContent         = big.NewInt(1 << 3)
-	accessSharedPromptResponseDataCurrentVersionFieldSystemPrompt    = big.NewInt(1 << 4)
-	accessSharedPromptResponseDataCurrentVersionFieldChangeNote      = big.NewInt(1 << 5)
-	accessSharedPromptResponseDataCurrentVersionFieldIsPublished     = big.NewInt(1 << 6)
-	accessSharedPromptResponseDataCurrentVersionFieldVariablesSchema = big.NewInt(1 << 7)
-	accessSharedPromptResponseDataCurrentVersionFieldCreatedAt       = big.NewInt(1 << 8)
+	accessSharedPromptResponseDataCurrentVersionFieldVersionNumber   = big.NewInt(1 << 0)
+	accessSharedPromptResponseDataCurrentVersionFieldContent         = big.NewInt(1 << 1)
+	accessSharedPromptResponseDataCurrentVersionFieldSystemPrompt    = big.NewInt(1 << 2)
+	accessSharedPromptResponseDataCurrentVersionFieldVariablesSchema = big.NewInt(1 << 3)
+	accessSharedPromptResponseDataCurrentVersionFieldCreatedAt       = big.NewInt(1 << 4)
 )
 
 type AccessSharedPromptResponseDataCurrentVersion struct {
-	ID              *string                                                                      `json:"id,omitempty" url:"id,omitempty"`
-	VersionNumber   *int                                                                         `json:"versionNumber,omitempty" url:"versionNumber,omitempty"`
-	VersionLabel    *string                                                                      `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
-	Content         *string                                                                      `json:"content,omitempty" url:"content,omitempty"`
+	VersionNumber   int                                                                          `json:"versionNumber" url:"versionNumber"`
+	Content         string                                                                       `json:"content" url:"content"`
 	SystemPrompt    *string                                                                      `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
-	ChangeNote      *string                                                                      `json:"changeNote,omitempty" url:"changeNote,omitempty"`
-	IsPublished     *bool                                                                        `json:"isPublished,omitempty" url:"isPublished,omitempty"`
 	VariablesSchema map[string]*AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
 	CreatedAt       *time.Time                                                                   `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 
@@ -792,30 +886,16 @@ type AccessSharedPromptResponseDataCurrentVersion struct {
 	rawJSON         json.RawMessage
 }
 
-func (a *AccessSharedPromptResponseDataCurrentVersion) GetID() *string {
+func (a *AccessSharedPromptResponseDataCurrentVersion) GetVersionNumber() int {
 	if a == nil {
-		return nil
-	}
-	return a.ID
-}
-
-func (a *AccessSharedPromptResponseDataCurrentVersion) GetVersionNumber() *int {
-	if a == nil {
-		return nil
+		return 0
 	}
 	return a.VersionNumber
 }
 
-func (a *AccessSharedPromptResponseDataCurrentVersion) GetVersionLabel() *string {
+func (a *AccessSharedPromptResponseDataCurrentVersion) GetContent() string {
 	if a == nil {
-		return nil
-	}
-	return a.VersionLabel
-}
-
-func (a *AccessSharedPromptResponseDataCurrentVersion) GetContent() *string {
-	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Content
 }
@@ -825,20 +905,6 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) GetSystemPrompt() *string
 		return nil
 	}
 	return a.SystemPrompt
-}
-
-func (a *AccessSharedPromptResponseDataCurrentVersion) GetChangeNote() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ChangeNote
-}
-
-func (a *AccessSharedPromptResponseDataCurrentVersion) GetIsPublished() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.IsPublished
 }
 
 func (a *AccessSharedPromptResponseDataCurrentVersion) GetVariablesSchema() map[string]*AccessSharedPromptResponseDataCurrentVersionVariablesSchemaValue {
@@ -866,30 +932,16 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) require(field *big.Int) {
 	a.explicitFields.Or(a.explicitFields, field)
 }
 
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataCurrentVersion) SetID(id *string) {
-	a.ID = id
-	a.require(accessSharedPromptResponseDataCurrentVersionFieldID)
-}
-
 // SetVersionNumber sets the VersionNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataCurrentVersion) SetVersionNumber(versionNumber *int) {
+func (a *AccessSharedPromptResponseDataCurrentVersion) SetVersionNumber(versionNumber int) {
 	a.VersionNumber = versionNumber
 	a.require(accessSharedPromptResponseDataCurrentVersionFieldVersionNumber)
 }
 
-// SetVersionLabel sets the VersionLabel field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataCurrentVersion) SetVersionLabel(versionLabel *string) {
-	a.VersionLabel = versionLabel
-	a.require(accessSharedPromptResponseDataCurrentVersionFieldVersionLabel)
-}
-
 // SetContent sets the Content field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataCurrentVersion) SetContent(content *string) {
+func (a *AccessSharedPromptResponseDataCurrentVersion) SetContent(content string) {
 	a.Content = content
 	a.require(accessSharedPromptResponseDataCurrentVersionFieldContent)
 }
@@ -899,20 +951,6 @@ func (a *AccessSharedPromptResponseDataCurrentVersion) SetContent(content *strin
 func (a *AccessSharedPromptResponseDataCurrentVersion) SetSystemPrompt(systemPrompt *string) {
 	a.SystemPrompt = systemPrompt
 	a.require(accessSharedPromptResponseDataCurrentVersionFieldSystemPrompt)
-}
-
-// SetChangeNote sets the ChangeNote field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
-	a.ChangeNote = changeNote
-	a.require(accessSharedPromptResponseDataCurrentVersionFieldChangeNote)
-}
-
-// SetIsPublished sets the IsPublished field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
-	a.IsPublished = isPublished
-	a.require(accessSharedPromptResponseDataCurrentVersionFieldIsPublished)
 }
 
 // SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
@@ -1076,16 +1114,34 @@ func (a AccessSharedPromptResponseDataKind) Ptr() *AccessSharedPromptResponseDat
 	return &a
 }
 
-var (
-	accessSharedPromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataReleaseStatusFieldLatestPublishedVersion     = big.NewInt(1 << 1)
-	accessSharedPromptResponseDataReleaseStatusFieldDeployments                = big.NewInt(1 << 2)
+type AccessSharedPromptResponseDataLinkKind string
+
+const (
+	AccessSharedPromptResponseDataLinkKindWeb   AccessSharedPromptResponseDataLinkKind = "web"
+	AccessSharedPromptResponseDataLinkKindAgent AccessSharedPromptResponseDataLinkKind = "agent"
 )
 
-type AccessSharedPromptResponseDataReleaseStatus struct {
-	DraftHasUnpublishedChanges bool                                                               `json:"draftHasUnpublishedChanges" url:"draftHasUnpublishedChanges"`
-	LatestPublishedVersion     *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion `json:"latestPublishedVersion,omitempty" url:"latestPublishedVersion,omitempty"`
-	Deployments                *AccessSharedPromptResponseDataReleaseStatusDeployments            `json:"deployments" url:"deployments"`
+func NewAccessSharedPromptResponseDataLinkKindFromString(s string) (AccessSharedPromptResponseDataLinkKind, error) {
+	switch s {
+	case "web":
+		return AccessSharedPromptResponseDataLinkKindWeb, nil
+	case "agent":
+		return AccessSharedPromptResponseDataLinkKindAgent, nil
+	}
+	var t AccessSharedPromptResponseDataLinkKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AccessSharedPromptResponseDataLinkKind) Ptr() *AccessSharedPromptResponseDataLinkKind {
+	return &a
+}
+
+var (
+	accessSharedPromptResponseDataSharedByFieldFirstName = big.NewInt(1 << 0)
+)
+
+type AccessSharedPromptResponseDataSharedBy struct {
+	FirstName *string `json:"firstName,omitempty" url:"firstName,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1094,66 +1150,38 @@ type AccessSharedPromptResponseDataReleaseStatus struct {
 	rawJSON         json.RawMessage
 }
 
-func (a *AccessSharedPromptResponseDataReleaseStatus) GetDraftHasUnpublishedChanges() bool {
-	if a == nil {
-		return false
-	}
-	return a.DraftHasUnpublishedChanges
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatus) GetLatestPublishedVersion() *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion {
+func (a *AccessSharedPromptResponseDataSharedBy) GetFirstName() *string {
 	if a == nil {
 		return nil
 	}
-	return a.LatestPublishedVersion
+	return a.FirstName
 }
 
-func (a *AccessSharedPromptResponseDataReleaseStatus) GetDeployments() *AccessSharedPromptResponseDataReleaseStatusDeployments {
-	if a == nil {
-		return nil
-	}
-	return a.Deployments
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatus) GetExtraProperties() map[string]interface{} {
+func (a *AccessSharedPromptResponseDataSharedBy) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
-func (a *AccessSharedPromptResponseDataReleaseStatus) require(field *big.Int) {
+func (a *AccessSharedPromptResponseDataSharedBy) require(field *big.Int) {
 	if a.explicitFields == nil {
 		a.explicitFields = big.NewInt(0)
 	}
 	a.explicitFields.Or(a.explicitFields, field)
 }
 
-// SetDraftHasUnpublishedChanges sets the DraftHasUnpublishedChanges field and marks it as non-optional;
+// SetFirstName sets the FirstName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatus) SetDraftHasUnpublishedChanges(draftHasUnpublishedChanges bool) {
-	a.DraftHasUnpublishedChanges = draftHasUnpublishedChanges
-	a.require(accessSharedPromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges)
+func (a *AccessSharedPromptResponseDataSharedBy) SetFirstName(firstName *string) {
+	a.FirstName = firstName
+	a.require(accessSharedPromptResponseDataSharedByFieldFirstName)
 }
 
-// SetLatestPublishedVersion sets the LatestPublishedVersion field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatus) SetLatestPublishedVersion(latestPublishedVersion *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) {
-	a.LatestPublishedVersion = latestPublishedVersion
-	a.require(accessSharedPromptResponseDataReleaseStatusFieldLatestPublishedVersion)
-}
-
-// SetDeployments sets the Deployments field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatus) SetDeployments(deployments *AccessSharedPromptResponseDataReleaseStatusDeployments) {
-	a.Deployments = deployments
-	a.require(accessSharedPromptResponseDataReleaseStatusFieldDeployments)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatus) UnmarshalJSON(data []byte) error {
-	type unmarshaler AccessSharedPromptResponseDataReleaseStatus
+func (a *AccessSharedPromptResponseDataSharedBy) UnmarshalJSON(data []byte) error {
+	type unmarshaler AccessSharedPromptResponseDataSharedBy
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = AccessSharedPromptResponseDataReleaseStatus(value)
+	*a = AccessSharedPromptResponseDataSharedBy(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -1163,8 +1191,8 @@ func (a *AccessSharedPromptResponseDataReleaseStatus) UnmarshalJSON(data []byte)
 	return nil
 }
 
-func (a *AccessSharedPromptResponseDataReleaseStatus) MarshalJSON() ([]byte, error) {
-	type embed AccessSharedPromptResponseDataReleaseStatus
+func (a *AccessSharedPromptResponseDataSharedBy) MarshalJSON() ([]byte, error) {
+	type embed AccessSharedPromptResponseDataSharedBy
 	var marshaler = struct {
 		embed
 	}{
@@ -1174,7 +1202,7 @@ func (a *AccessSharedPromptResponseDataReleaseStatus) MarshalJSON() ([]byte, err
 	return json.Marshal(explicitMarshaler)
 }
 
-func (a *AccessSharedPromptResponseDataReleaseStatus) String() string {
+func (a *AccessSharedPromptResponseDataSharedBy) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1186,604 +1214,26 @@ func (a *AccessSharedPromptResponseDataReleaseStatus) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-var (
-	accessSharedPromptResponseDataReleaseStatusDeploymentsFieldDevelopment = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsFieldProduction  = big.NewInt(1 << 1)
-)
-
-type AccessSharedPromptResponseDataReleaseStatusDeployments struct {
-	Development *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment `json:"development,omitempty" url:"development,omitempty"`
-	Production  *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction  `json:"production,omitempty" url:"production,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) GetDevelopment() *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment {
-	if a == nil {
-		return nil
-	}
-	return a.Development
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) GetProduction() *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction {
-	if a == nil {
-		return nil
-	}
-	return a.Production
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetDevelopment sets the Development field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) SetDevelopment(development *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) {
-	a.Development = development
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsFieldDevelopment)
-}
-
-// SetProduction sets the Production field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) SetProduction(production *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) {
-	a.Production = production
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsFieldProduction)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) UnmarshalJSON(data []byte) error {
-	type unmarshaler AccessSharedPromptResponseDataReleaseStatusDeployments
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AccessSharedPromptResponseDataReleaseStatusDeployments(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) MarshalJSON() ([]byte, error) {
-	type embed AccessSharedPromptResponseDataReleaseStatusDeployments
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeployments) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment   = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID     = big.NewInt(1 << 1)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber = big.NewInt(1 << 2)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt    = big.NewInt(1 << 3)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID  = big.NewInt(1 << 4)
-)
-
-type AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment struct {
-	Environment   AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment `json:"environment" url:"environment"`
-	VersionID     string                                                                       `json:"versionId" url:"versionId"`
-	VersionNumber int                                                                          `json:"versionNumber" url:"versionNumber"`
-	DeployedAt    time.Time                                                                    `json:"deployedAt" url:"deployedAt"`
-	DeployedByID  string                                                                       `json:"deployedById" url:"deployedById"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetEnvironment() AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
-	if a == nil {
-		return ""
-	}
-	return a.Environment
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionID() string {
-	if a == nil {
-		return ""
-	}
-	return a.VersionID
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionNumber() int {
-	if a == nil {
-		return 0
-	}
-	return a.VersionNumber
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedAt() time.Time {
-	if a == nil {
-		return time.Time{}
-	}
-	return a.DeployedAt
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedByID() string {
-	if a == nil {
-		return ""
-	}
-	return a.DeployedByID
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetEnvironment(environment AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) {
-	a.Environment = environment
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment)
-}
-
-// SetVersionID sets the VersionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionID(versionID string) {
-	a.VersionID = versionID
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID)
-}
-
-// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionNumber(versionNumber int) {
-	a.VersionNumber = versionNumber
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber)
-}
-
-// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedAt(deployedAt time.Time) {
-	a.DeployedAt = deployedAt
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt)
-}
-
-// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedByID(deployedByID string) {
-	a.DeployedByID = deployedByID
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) UnmarshalJSON(data []byte) error {
-	type embed AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment
-	var unmarshaler = struct {
-		embed
-		DeployedAt *internal.DateTime `json:"deployedAt"`
-	}{
-		embed: embed(*a),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*a = AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment(unmarshaler.embed)
-	a.DeployedAt = unmarshaler.DeployedAt.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) MarshalJSON() ([]byte, error) {
-	type embed AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment
-	var marshaler = struct {
-		embed
-		DeployedAt *internal.DateTime `json:"deployedAt"`
-	}{
-		embed:      embed(*a),
-		DeployedAt: internal.NewDateTime(a.DeployedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-type AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment string
+type CreatePromptShareLinkRequestKind string
 
 const (
-	AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "development"
-	AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction  AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "production"
+	CreatePromptShareLinkRequestKindWeb   CreatePromptShareLinkRequestKind = "web"
+	CreatePromptShareLinkRequestKindAgent CreatePromptShareLinkRequestKind = "agent"
 )
 
-func NewAccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentFromString(s string) (AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment, error) {
+func NewCreatePromptShareLinkRequestKindFromString(s string) (CreatePromptShareLinkRequestKind, error) {
 	switch s {
-	case "development":
-		return AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment, nil
-	case "production":
-		return AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction, nil
+	case "web":
+		return CreatePromptShareLinkRequestKindWeb, nil
+	case "agent":
+		return CreatePromptShareLinkRequestKindAgent, nil
 	}
-	var t AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment
+	var t CreatePromptShareLinkRequestKind
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (a AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) Ptr() *AccessSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
-	return &a
-}
-
-var (
-	accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment   = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID     = big.NewInt(1 << 1)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber = big.NewInt(1 << 2)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt    = big.NewInt(1 << 3)
-	accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID  = big.NewInt(1 << 4)
-)
-
-type AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction struct {
-	Environment   AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment `json:"environment" url:"environment"`
-	VersionID     string                                                                      `json:"versionId" url:"versionId"`
-	VersionNumber int                                                                         `json:"versionNumber" url:"versionNumber"`
-	DeployedAt    time.Time                                                                   `json:"deployedAt" url:"deployedAt"`
-	DeployedByID  string                                                                      `json:"deployedById" url:"deployedById"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetEnvironment() AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
-	if a == nil {
-		return ""
-	}
-	return a.Environment
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetVersionID() string {
-	if a == nil {
-		return ""
-	}
-	return a.VersionID
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetVersionNumber() int {
-	if a == nil {
-		return 0
-	}
-	return a.VersionNumber
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedAt() time.Time {
-	if a == nil {
-		return time.Time{}
-	}
-	return a.DeployedAt
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedByID() string {
-	if a == nil {
-		return ""
-	}
-	return a.DeployedByID
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetEnvironment(environment AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment) {
-	a.Environment = environment
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment)
-}
-
-// SetVersionID sets the VersionID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetVersionID(versionID string) {
-	a.VersionID = versionID
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID)
-}
-
-// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetVersionNumber(versionNumber int) {
-	a.VersionNumber = versionNumber
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber)
-}
-
-// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedAt(deployedAt time.Time) {
-	a.DeployedAt = deployedAt
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt)
-}
-
-// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedByID(deployedByID string) {
-	a.DeployedByID = deployedByID
-	a.require(accessSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) UnmarshalJSON(data []byte) error {
-	type embed AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction
-	var unmarshaler = struct {
-		embed
-		DeployedAt *internal.DateTime `json:"deployedAt"`
-	}{
-		embed: embed(*a),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*a = AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction(unmarshaler.embed)
-	a.DeployedAt = unmarshaler.DeployedAt.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) MarshalJSON() ([]byte, error) {
-	type embed AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction
-	var marshaler = struct {
-		embed
-		DeployedAt *internal.DateTime `json:"deployedAt"`
-	}{
-		embed:      embed(*a),
-		DeployedAt: internal.NewDateTime(a.DeployedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusDeploymentsProduction) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-type AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment string
-
-const (
-	AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "development"
-	AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction  AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "production"
-)
-
-func NewAccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentFromString(s string) (AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment, error) {
-	switch s {
-	case "development":
-		return AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment, nil
-	case "production":
-		return AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction, nil
-	}
-	var t AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (a AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment) Ptr() *AccessSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
-	return &a
-}
-
-var (
-	accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldID            = big.NewInt(1 << 0)
-	accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber = big.NewInt(1 << 1)
-	accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt     = big.NewInt(1 << 2)
-	accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID   = big.NewInt(1 << 3)
-)
-
-type AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion struct {
-	ID            string    `json:"id" url:"id"`
-	VersionNumber int       `json:"versionNumber" url:"versionNumber"`
-	CreatedAt     time.Time `json:"createdAt" url:"createdAt"`
-	CreatedByID   string    `json:"createdById" url:"createdById"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetID() string {
-	if a == nil {
-		return ""
-	}
-	return a.ID
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetVersionNumber() int {
-	if a == nil {
-		return 0
-	}
-	return a.VersionNumber
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedAt() time.Time {
-	if a == nil {
-		return time.Time{}
-	}
-	return a.CreatedAt
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedByID() string {
-	if a == nil {
-		return ""
-	}
-	return a.CreatedByID
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetID(id string) {
-	a.ID = id
-	a.require(accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldID)
-}
-
-// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetVersionNumber(versionNumber int) {
-	a.VersionNumber = versionNumber
-	a.require(accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedAt(createdAt time.Time) {
-	a.CreatedAt = createdAt
-	a.require(accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt)
-}
-
-// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedByID(createdByID string) {
-	a.CreatedByID = createdByID
-	a.require(accessSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) UnmarshalJSON(data []byte) error {
-	type embed AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"createdAt"`
-	}{
-		embed: embed(*a),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*a = AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion(unmarshaler.embed)
-	a.CreatedAt = unmarshaler.CreatedAt.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) MarshalJSON() ([]byte, error) {
-	type embed AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"createdAt"`
-	}{
-		embed:     embed(*a),
-		CreatedAt: internal.NewDateTime(a.CreatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AccessSharedPromptResponseDataReleaseStatusLatestPublishedVersion) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-type AccessSharedPromptResponseDataStatus string
-
-const (
-	AccessSharedPromptResponseDataStatusDraft      AccessSharedPromptResponseDataStatus = "draft"
-	AccessSharedPromptResponseDataStatusPublished  AccessSharedPromptResponseDataStatus = "published"
-	AccessSharedPromptResponseDataStatusArchived   AccessSharedPromptResponseDataStatus = "archived"
-	AccessSharedPromptResponseDataStatusDeprecated AccessSharedPromptResponseDataStatus = "deprecated"
-)
-
-func NewAccessSharedPromptResponseDataStatusFromString(s string) (AccessSharedPromptResponseDataStatus, error) {
-	switch s {
-	case "draft":
-		return AccessSharedPromptResponseDataStatusDraft, nil
-	case "published":
-		return AccessSharedPromptResponseDataStatusPublished, nil
-	case "archived":
-		return AccessSharedPromptResponseDataStatusArchived, nil
-	case "deprecated":
-		return AccessSharedPromptResponseDataStatusDeprecated, nil
-	}
-	var t AccessSharedPromptResponseDataStatus
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (a AccessSharedPromptResponseDataStatus) Ptr() *AccessSharedPromptResponseDataStatus {
-	return &a
+func (c CreatePromptShareLinkRequestKind) Ptr() *CreatePromptShareLinkRequestKind {
+	return &c
 }
 
 type CreatePromptShareLinkRequestPermission string
@@ -1811,6 +1261,87 @@ func NewCreatePromptShareLinkRequestPermissionFromString(s string) (CreatePrompt
 }
 
 func (c CreatePromptShareLinkRequestPermission) Ptr() *CreatePromptShareLinkRequestPermission {
+	return &c
+}
+
+type CreatePromptShareLinkRequestVersion struct {
+	Integer                                int
+	CreatePromptShareLinkRequestVersionOne CreatePromptShareLinkRequestVersionOne
+
+	typ string
+}
+
+func (c *CreatePromptShareLinkRequestVersion) GetInteger() int {
+	if c == nil {
+		return 0
+	}
+	return c.Integer
+}
+
+func (c *CreatePromptShareLinkRequestVersion) GetCreatePromptShareLinkRequestVersionOne() CreatePromptShareLinkRequestVersionOne {
+	if c == nil {
+		return ""
+	}
+	return c.CreatePromptShareLinkRequestVersionOne
+}
+
+func (c *CreatePromptShareLinkRequestVersion) UnmarshalJSON(data []byte) error {
+	var valueInteger int
+	if err := json.Unmarshal(data, &valueInteger); err == nil {
+		c.typ = "Integer"
+		c.Integer = valueInteger
+		return nil
+	}
+	var valueCreatePromptShareLinkRequestVersionOne CreatePromptShareLinkRequestVersionOne
+	if err := json.Unmarshal(data, &valueCreatePromptShareLinkRequestVersionOne); err == nil {
+		c.typ = "CreatePromptShareLinkRequestVersionOne"
+		c.CreatePromptShareLinkRequestVersionOne = valueCreatePromptShareLinkRequestVersionOne
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c CreatePromptShareLinkRequestVersion) MarshalJSON() ([]byte, error) {
+	if c.typ == "Integer" || c.Integer != 0 {
+		return json.Marshal(c.Integer)
+	}
+	if c.typ == "CreatePromptShareLinkRequestVersionOne" || c.CreatePromptShareLinkRequestVersionOne != "" {
+		return json.Marshal(c.CreatePromptShareLinkRequestVersionOne)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CreatePromptShareLinkRequestVersionVisitor interface {
+	VisitInteger(int) error
+	VisitCreatePromptShareLinkRequestVersionOne(CreatePromptShareLinkRequestVersionOne) error
+}
+
+func (c *CreatePromptShareLinkRequestVersion) Accept(visitor CreatePromptShareLinkRequestVersionVisitor) error {
+	if c.typ == "Integer" || c.Integer != 0 {
+		return visitor.VisitInteger(c.Integer)
+	}
+	if c.typ == "CreatePromptShareLinkRequestVersionOne" || c.CreatePromptShareLinkRequestVersionOne != "" {
+		return visitor.VisitCreatePromptShareLinkRequestVersionOne(c.CreatePromptShareLinkRequestVersionOne)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CreatePromptShareLinkRequestVersionOne string
+
+const (
+	CreatePromptShareLinkRequestVersionOneLatest CreatePromptShareLinkRequestVersionOne = "latest"
+)
+
+func NewCreatePromptShareLinkRequestVersionOneFromString(s string) (CreatePromptShareLinkRequestVersionOne, error) {
+	switch s {
+	case "latest":
+		return CreatePromptShareLinkRequestVersionOneLatest, nil
+	}
+	var t CreatePromptShareLinkRequestVersionOne
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreatePromptShareLinkRequestVersionOne) Ptr() *CreatePromptShareLinkRequestVersionOne {
 	return &c
 }
 
@@ -1894,23 +1425,35 @@ func (c *CreatePromptShareLinkResponse) String() string {
 }
 
 var (
-	createPromptShareLinkResponseDataFieldID         = big.NewInt(1 << 0)
-	createPromptShareLinkResponseDataFieldToken      = big.NewInt(1 << 1)
-	createPromptShareLinkResponseDataFieldURL        = big.NewInt(1 << 2)
-	createPromptShareLinkResponseDataFieldPermission = big.NewInt(1 << 3)
-	createPromptShareLinkResponseDataFieldExpiresAt  = big.NewInt(1 << 4)
-	createPromptShareLinkResponseDataFieldMaxUses    = big.NewInt(1 << 5)
-	createPromptShareLinkResponseDataFieldCreatedAt  = big.NewInt(1 << 6)
+	createPromptShareLinkResponseDataFieldID                  = big.NewInt(1 << 0)
+	createPromptShareLinkResponseDataFieldToken               = big.NewInt(1 << 1)
+	createPromptShareLinkResponseDataFieldURL                 = big.NewInt(1 << 2)
+	createPromptShareLinkResponseDataFieldURLs                = big.NewInt(1 << 3)
+	createPromptShareLinkResponseDataFieldPermission          = big.NewInt(1 << 4)
+	createPromptShareLinkResponseDataFieldLabel               = big.NewInt(1 << 5)
+	createPromptShareLinkResponseDataFieldKind                = big.NewInt(1 << 6)
+	createPromptShareLinkResponseDataFieldPinned              = big.NewInt(1 << 7)
+	createPromptShareLinkResponseDataFieldExpiresAt           = big.NewInt(1 << 8)
+	createPromptShareLinkResponseDataFieldMaxUses             = big.NewInt(1 << 9)
+	createPromptShareLinkResponseDataFieldSharedVersionNumber = big.NewInt(1 << 10)
+	createPromptShareLinkResponseDataFieldResolveVariables    = big.NewInt(1 << 11)
+	createPromptShareLinkResponseDataFieldCreatedAt           = big.NewInt(1 << 12)
 )
 
 type CreatePromptShareLinkResponseData struct {
-	ID         string     `json:"id" url:"id"`
-	Token      string     `json:"token" url:"token"`
-	URL        string     `json:"url" url:"url"`
-	Permission string     `json:"permission" url:"permission"`
-	ExpiresAt  *time.Time `json:"expiresAt,omitempty" url:"expiresAt,omitempty"`
-	MaxUses    *int       `json:"maxUses,omitempty" url:"maxUses,omitempty"`
-	CreatedAt  time.Time  `json:"createdAt" url:"createdAt"`
+	ID                  string                                 `json:"id" url:"id"`
+	Token               string                                 `json:"token" url:"token"`
+	URL                 string                                 `json:"url" url:"url"`
+	URLs                *CreatePromptShareLinkResponseDataURLs `json:"urls" url:"urls"`
+	Permission          string                                 `json:"permission" url:"permission"`
+	Label               *string                                `json:"label,omitempty" url:"label,omitempty"`
+	Kind                CreatePromptShareLinkResponseDataKind  `json:"kind" url:"kind"`
+	Pinned              bool                                   `json:"pinned" url:"pinned"`
+	ExpiresAt           *time.Time                             `json:"expiresAt,omitempty" url:"expiresAt,omitempty"`
+	MaxUses             *int                                   `json:"maxUses,omitempty" url:"maxUses,omitempty"`
+	SharedVersionNumber *int                                   `json:"sharedVersionNumber,omitempty" url:"sharedVersionNumber,omitempty"`
+	ResolveVariables    *bool                                  `json:"resolveVariables,omitempty" url:"resolveVariables,omitempty"`
+	CreatedAt           time.Time                              `json:"createdAt" url:"createdAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1940,11 +1483,39 @@ func (c *CreatePromptShareLinkResponseData) GetURL() string {
 	return c.URL
 }
 
+func (c *CreatePromptShareLinkResponseData) GetURLs() *CreatePromptShareLinkResponseDataURLs {
+	if c == nil {
+		return nil
+	}
+	return c.URLs
+}
+
 func (c *CreatePromptShareLinkResponseData) GetPermission() string {
 	if c == nil {
 		return ""
 	}
 	return c.Permission
+}
+
+func (c *CreatePromptShareLinkResponseData) GetLabel() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Label
+}
+
+func (c *CreatePromptShareLinkResponseData) GetKind() CreatePromptShareLinkResponseDataKind {
+	if c == nil {
+		return ""
+	}
+	return c.Kind
+}
+
+func (c *CreatePromptShareLinkResponseData) GetPinned() bool {
+	if c == nil {
+		return false
+	}
+	return c.Pinned
 }
 
 func (c *CreatePromptShareLinkResponseData) GetExpiresAt() *time.Time {
@@ -1959,6 +1530,20 @@ func (c *CreatePromptShareLinkResponseData) GetMaxUses() *int {
 		return nil
 	}
 	return c.MaxUses
+}
+
+func (c *CreatePromptShareLinkResponseData) GetSharedVersionNumber() *int {
+	if c == nil {
+		return nil
+	}
+	return c.SharedVersionNumber
+}
+
+func (c *CreatePromptShareLinkResponseData) GetResolveVariables() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ResolveVariables
 }
 
 func (c *CreatePromptShareLinkResponseData) GetCreatedAt() time.Time {
@@ -2000,11 +1585,39 @@ func (c *CreatePromptShareLinkResponseData) SetURL(url string) {
 	c.require(createPromptShareLinkResponseDataFieldURL)
 }
 
+// SetURLs sets the URLs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseData) SetURLs(urls *CreatePromptShareLinkResponseDataURLs) {
+	c.URLs = urls
+	c.require(createPromptShareLinkResponseDataFieldURLs)
+}
+
 // SetPermission sets the Permission field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreatePromptShareLinkResponseData) SetPermission(permission string) {
 	c.Permission = permission
 	c.require(createPromptShareLinkResponseDataFieldPermission)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseData) SetLabel(label *string) {
+	c.Label = label
+	c.require(createPromptShareLinkResponseDataFieldLabel)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseData) SetKind(kind CreatePromptShareLinkResponseDataKind) {
+	c.Kind = kind
+	c.require(createPromptShareLinkResponseDataFieldKind)
+}
+
+// SetPinned sets the Pinned field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseData) SetPinned(pinned bool) {
+	c.Pinned = pinned
+	c.require(createPromptShareLinkResponseDataFieldPinned)
 }
 
 // SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
@@ -2019,6 +1632,20 @@ func (c *CreatePromptShareLinkResponseData) SetExpiresAt(expiresAt *time.Time) {
 func (c *CreatePromptShareLinkResponseData) SetMaxUses(maxUses *int) {
 	c.MaxUses = maxUses
 	c.require(createPromptShareLinkResponseDataFieldMaxUses)
+}
+
+// SetSharedVersionNumber sets the SharedVersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseData) SetSharedVersionNumber(sharedVersionNumber *int) {
+	c.SharedVersionNumber = sharedVersionNumber
+	c.require(createPromptShareLinkResponseDataFieldSharedVersionNumber)
+}
+
+// SetResolveVariables sets the ResolveVariables field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseData) SetResolveVariables(resolveVariables *bool) {
+	c.ResolveVariables = resolveVariables
+	c.require(createPromptShareLinkResponseDataFieldResolveVariables)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -2077,6 +1704,1673 @@ func (c *CreatePromptShareLinkResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type CreatePromptShareLinkResponseDataKind string
+
+const (
+	CreatePromptShareLinkResponseDataKindWeb   CreatePromptShareLinkResponseDataKind = "web"
+	CreatePromptShareLinkResponseDataKindAgent CreatePromptShareLinkResponseDataKind = "agent"
+)
+
+func NewCreatePromptShareLinkResponseDataKindFromString(s string) (CreatePromptShareLinkResponseDataKind, error) {
+	switch s {
+	case "web":
+		return CreatePromptShareLinkResponseDataKindWeb, nil
+	case "agent":
+		return CreatePromptShareLinkResponseDataKindAgent, nil
+	}
+	var t CreatePromptShareLinkResponseDataKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreatePromptShareLinkResponseDataKind) Ptr() *CreatePromptShareLinkResponseDataKind {
+	return &c
+}
+
+var (
+	createPromptShareLinkResponseDataURLsFieldWeb   = big.NewInt(1 << 0)
+	createPromptShareLinkResponseDataURLsFieldAgent = big.NewInt(1 << 1)
+)
+
+type CreatePromptShareLinkResponseDataURLs struct {
+	Web   string `json:"web" url:"web"`
+	Agent string `json:"agent" url:"agent"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptShareLinkResponseDataURLs) GetWeb() string {
+	if c == nil {
+		return ""
+	}
+	return c.Web
+}
+
+func (c *CreatePromptShareLinkResponseDataURLs) GetAgent() string {
+	if c == nil {
+		return ""
+	}
+	return c.Agent
+}
+
+func (c *CreatePromptShareLinkResponseDataURLs) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptShareLinkResponseDataURLs) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetWeb sets the Web field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseDataURLs) SetWeb(web string) {
+	c.Web = web
+	c.require(createPromptShareLinkResponseDataURLsFieldWeb)
+}
+
+// SetAgent sets the Agent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptShareLinkResponseDataURLs) SetAgent(agent string) {
+	c.Agent = agent
+	c.require(createPromptShareLinkResponseDataURLsFieldAgent)
+}
+
+func (c *CreatePromptShareLinkResponseDataURLs) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePromptShareLinkResponseDataURLs
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreatePromptShareLinkResponseDataURLs(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptShareLinkResponseDataURLs) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptShareLinkResponseDataURLs
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptShareLinkResponseDataURLs) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Prompt imported
+var (
+	importSharedPromptResponseFieldData = big.NewInt(1 << 0)
+)
+
+type ImportSharedPromptResponse struct {
+	Data *ImportSharedPromptResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponse) GetData() *ImportSharedPromptResponseData {
+	if i == nil {
+		return nil
+	}
+	return i.Data
+}
+
+func (i *ImportSharedPromptResponse) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponse) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponse) SetData(data *ImportSharedPromptResponseData) {
+	i.Data = data
+	i.require(importSharedPromptResponseFieldData)
+}
+
+func (i *ImportSharedPromptResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ImportSharedPromptResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponse) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponse) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	importSharedPromptResponseDataFieldID                    = big.NewInt(1 << 0)
+	importSharedPromptResponseDataFieldName                  = big.NewInt(1 << 1)
+	importSharedPromptResponseDataFieldSlug                  = big.NewInt(1 << 2)
+	importSharedPromptResponseDataFieldDescription           = big.NewInt(1 << 3)
+	importSharedPromptResponseDataFieldStatus                = big.NewInt(1 << 4)
+	importSharedPromptResponseDataFieldKind                  = big.NewInt(1 << 5)
+	importSharedPromptResponseDataFieldContentKind           = big.NewInt(1 << 6)
+	importSharedPromptResponseDataFieldMetadata              = big.NewInt(1 << 7)
+	importSharedPromptResponseDataFieldTags                  = big.NewInt(1 << 8)
+	importSharedPromptResponseDataFieldIsPublic              = big.NewInt(1 << 9)
+	importSharedPromptResponseDataFieldWorkspaceID           = big.NewInt(1 << 10)
+	importSharedPromptResponseDataFieldDirectoryID           = big.NewInt(1 << 11)
+	importSharedPromptResponseDataFieldForkedFromPromptID    = big.NewInt(1 << 12)
+	importSharedPromptResponseDataFieldImportedFromListingID = big.NewInt(1 << 13)
+	importSharedPromptResponseDataFieldCapturedFromSessionID = big.NewInt(1 << 14)
+	importSharedPromptResponseDataFieldCaptureRepoSlug       = big.NewInt(1 << 15)
+	importSharedPromptResponseDataFieldCreatedByID           = big.NewInt(1 << 16)
+	importSharedPromptResponseDataFieldCreatedByName         = big.NewInt(1 << 17)
+	importSharedPromptResponseDataFieldCreatedAt             = big.NewInt(1 << 18)
+	importSharedPromptResponseDataFieldUpdatedAt             = big.NewInt(1 << 19)
+	importSharedPromptResponseDataFieldCurrentVersion        = big.NewInt(1 << 20)
+	importSharedPromptResponseDataFieldReleaseStatus         = big.NewInt(1 << 21)
+)
+
+type ImportSharedPromptResponseData struct {
+	ID                    string                                        `json:"id" url:"id"`
+	Name                  string                                        `json:"name" url:"name"`
+	Slug                  string                                        `json:"slug" url:"slug"`
+	Description           *string                                       `json:"description,omitempty" url:"description,omitempty"`
+	Status                ImportSharedPromptResponseDataStatus          `json:"status" url:"status"`
+	Kind                  ImportSharedPromptResponseDataKind            `json:"kind" url:"kind"`
+	ContentKind           *ImportSharedPromptResponseDataContentKind    `json:"content_kind,omitempty" url:"content_kind,omitempty"`
+	Metadata              map[string]interface{}                        `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Tags                  []string                                      `json:"tags" url:"tags"`
+	IsPublic              bool                                          `json:"isPublic" url:"isPublic"`
+	WorkspaceID           string                                        `json:"workspaceId" url:"workspaceId"`
+	DirectoryID           *string                                       `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	ForkedFromPromptID    *string                                       `json:"forkedFromPromptId,omitempty" url:"forkedFromPromptId,omitempty"`
+	ImportedFromListingID *string                                       `json:"importedFromListingId,omitempty" url:"importedFromListingId,omitempty"`
+	CapturedFromSessionID *string                                       `json:"capturedFromSessionId,omitempty" url:"capturedFromSessionId,omitempty"`
+	CaptureRepoSlug       *string                                       `json:"captureRepoSlug,omitempty" url:"captureRepoSlug,omitempty"`
+	CreatedByID           string                                        `json:"createdById" url:"createdById"`
+	CreatedByName         *string                                       `json:"createdByName,omitempty" url:"createdByName,omitempty"`
+	CreatedAt             time.Time                                     `json:"createdAt" url:"createdAt"`
+	UpdatedAt             time.Time                                     `json:"updatedAt" url:"updatedAt"`
+	CurrentVersion        *ImportSharedPromptResponseDataCurrentVersion `json:"currentVersion,omitempty" url:"currentVersion,omitempty"`
+	ReleaseStatus         *ImportSharedPromptResponseDataReleaseStatus  `json:"releaseStatus,omitempty" url:"releaseStatus,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseData) GetID() string {
+	if i == nil {
+		return ""
+	}
+	return i.ID
+}
+
+func (i *ImportSharedPromptResponseData) GetName() string {
+	if i == nil {
+		return ""
+	}
+	return i.Name
+}
+
+func (i *ImportSharedPromptResponseData) GetSlug() string {
+	if i == nil {
+		return ""
+	}
+	return i.Slug
+}
+
+func (i *ImportSharedPromptResponseData) GetDescription() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Description
+}
+
+func (i *ImportSharedPromptResponseData) GetStatus() ImportSharedPromptResponseDataStatus {
+	if i == nil {
+		return ""
+	}
+	return i.Status
+}
+
+func (i *ImportSharedPromptResponseData) GetKind() ImportSharedPromptResponseDataKind {
+	if i == nil {
+		return ""
+	}
+	return i.Kind
+}
+
+func (i *ImportSharedPromptResponseData) GetContentKind() *ImportSharedPromptResponseDataContentKind {
+	if i == nil {
+		return nil
+	}
+	return i.ContentKind
+}
+
+func (i *ImportSharedPromptResponseData) GetMetadata() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.Metadata
+}
+
+func (i *ImportSharedPromptResponseData) GetTags() []string {
+	if i == nil {
+		return nil
+	}
+	return i.Tags
+}
+
+func (i *ImportSharedPromptResponseData) GetIsPublic() bool {
+	if i == nil {
+		return false
+	}
+	return i.IsPublic
+}
+
+func (i *ImportSharedPromptResponseData) GetWorkspaceID() string {
+	if i == nil {
+		return ""
+	}
+	return i.WorkspaceID
+}
+
+func (i *ImportSharedPromptResponseData) GetDirectoryID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.DirectoryID
+}
+
+func (i *ImportSharedPromptResponseData) GetForkedFromPromptID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ForkedFromPromptID
+}
+
+func (i *ImportSharedPromptResponseData) GetImportedFromListingID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ImportedFromListingID
+}
+
+func (i *ImportSharedPromptResponseData) GetCapturedFromSessionID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.CapturedFromSessionID
+}
+
+func (i *ImportSharedPromptResponseData) GetCaptureRepoSlug() *string {
+	if i == nil {
+		return nil
+	}
+	return i.CaptureRepoSlug
+}
+
+func (i *ImportSharedPromptResponseData) GetCreatedByID() string {
+	if i == nil {
+		return ""
+	}
+	return i.CreatedByID
+}
+
+func (i *ImportSharedPromptResponseData) GetCreatedByName() *string {
+	if i == nil {
+		return nil
+	}
+	return i.CreatedByName
+}
+
+func (i *ImportSharedPromptResponseData) GetCreatedAt() time.Time {
+	if i == nil {
+		return time.Time{}
+	}
+	return i.CreatedAt
+}
+
+func (i *ImportSharedPromptResponseData) GetUpdatedAt() time.Time {
+	if i == nil {
+		return time.Time{}
+	}
+	return i.UpdatedAt
+}
+
+func (i *ImportSharedPromptResponseData) GetCurrentVersion() *ImportSharedPromptResponseDataCurrentVersion {
+	if i == nil {
+		return nil
+	}
+	return i.CurrentVersion
+}
+
+func (i *ImportSharedPromptResponseData) GetReleaseStatus() *ImportSharedPromptResponseDataReleaseStatus {
+	if i == nil {
+		return nil
+	}
+	return i.ReleaseStatus
+}
+
+func (i *ImportSharedPromptResponseData) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseData) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetID(id string) {
+	i.ID = id
+	i.require(importSharedPromptResponseDataFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetName(name string) {
+	i.Name = name
+	i.require(importSharedPromptResponseDataFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetSlug(slug string) {
+	i.Slug = slug
+	i.require(importSharedPromptResponseDataFieldSlug)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetDescription(description *string) {
+	i.Description = description
+	i.require(importSharedPromptResponseDataFieldDescription)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetStatus(status ImportSharedPromptResponseDataStatus) {
+	i.Status = status
+	i.require(importSharedPromptResponseDataFieldStatus)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetKind(kind ImportSharedPromptResponseDataKind) {
+	i.Kind = kind
+	i.require(importSharedPromptResponseDataFieldKind)
+}
+
+// SetContentKind sets the ContentKind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetContentKind(contentKind *ImportSharedPromptResponseDataContentKind) {
+	i.ContentKind = contentKind
+	i.require(importSharedPromptResponseDataFieldContentKind)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetMetadata(metadata map[string]interface{}) {
+	i.Metadata = metadata
+	i.require(importSharedPromptResponseDataFieldMetadata)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetTags(tags []string) {
+	i.Tags = tags
+	i.require(importSharedPromptResponseDataFieldTags)
+}
+
+// SetIsPublic sets the IsPublic field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetIsPublic(isPublic bool) {
+	i.IsPublic = isPublic
+	i.require(importSharedPromptResponseDataFieldIsPublic)
+}
+
+// SetWorkspaceID sets the WorkspaceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetWorkspaceID(workspaceID string) {
+	i.WorkspaceID = workspaceID
+	i.require(importSharedPromptResponseDataFieldWorkspaceID)
+}
+
+// SetDirectoryID sets the DirectoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetDirectoryID(directoryID *string) {
+	i.DirectoryID = directoryID
+	i.require(importSharedPromptResponseDataFieldDirectoryID)
+}
+
+// SetForkedFromPromptID sets the ForkedFromPromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetForkedFromPromptID(forkedFromPromptID *string) {
+	i.ForkedFromPromptID = forkedFromPromptID
+	i.require(importSharedPromptResponseDataFieldForkedFromPromptID)
+}
+
+// SetImportedFromListingID sets the ImportedFromListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetImportedFromListingID(importedFromListingID *string) {
+	i.ImportedFromListingID = importedFromListingID
+	i.require(importSharedPromptResponseDataFieldImportedFromListingID)
+}
+
+// SetCapturedFromSessionID sets the CapturedFromSessionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetCapturedFromSessionID(capturedFromSessionID *string) {
+	i.CapturedFromSessionID = capturedFromSessionID
+	i.require(importSharedPromptResponseDataFieldCapturedFromSessionID)
+}
+
+// SetCaptureRepoSlug sets the CaptureRepoSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetCaptureRepoSlug(captureRepoSlug *string) {
+	i.CaptureRepoSlug = captureRepoSlug
+	i.require(importSharedPromptResponseDataFieldCaptureRepoSlug)
+}
+
+// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetCreatedByID(createdByID string) {
+	i.CreatedByID = createdByID
+	i.require(importSharedPromptResponseDataFieldCreatedByID)
+}
+
+// SetCreatedByName sets the CreatedByName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetCreatedByName(createdByName *string) {
+	i.CreatedByName = createdByName
+	i.require(importSharedPromptResponseDataFieldCreatedByName)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetCreatedAt(createdAt time.Time) {
+	i.CreatedAt = createdAt
+	i.require(importSharedPromptResponseDataFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetUpdatedAt(updatedAt time.Time) {
+	i.UpdatedAt = updatedAt
+	i.require(importSharedPromptResponseDataFieldUpdatedAt)
+}
+
+// SetCurrentVersion sets the CurrentVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetCurrentVersion(currentVersion *ImportSharedPromptResponseDataCurrentVersion) {
+	i.CurrentVersion = currentVersion
+	i.require(importSharedPromptResponseDataFieldCurrentVersion)
+}
+
+// SetReleaseStatus sets the ReleaseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseData) SetReleaseStatus(releaseStatus *ImportSharedPromptResponseDataReleaseStatus) {
+	i.ReleaseStatus = releaseStatus
+	i.require(importSharedPromptResponseDataFieldReleaseStatus)
+}
+
+func (i *ImportSharedPromptResponseData) UnmarshalJSON(data []byte) error {
+	type embed ImportSharedPromptResponseData
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseData(unmarshaler.embed)
+	i.CreatedAt = unmarshaler.CreatedAt.Time()
+	i.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseData) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseData
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed:     embed(*i),
+		CreatedAt: internal.NewDateTime(i.CreatedAt),
+		UpdatedAt: internal.NewDateTime(i.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseData) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type ImportSharedPromptResponseDataContentKind string
+
+const (
+	ImportSharedPromptResponseDataContentKindPrompt ImportSharedPromptResponseDataContentKind = "prompt"
+	ImportSharedPromptResponseDataContentKindSkill  ImportSharedPromptResponseDataContentKind = "skill"
+)
+
+func NewImportSharedPromptResponseDataContentKindFromString(s string) (ImportSharedPromptResponseDataContentKind, error) {
+	switch s {
+	case "prompt":
+		return ImportSharedPromptResponseDataContentKindPrompt, nil
+	case "skill":
+		return ImportSharedPromptResponseDataContentKindSkill, nil
+	}
+	var t ImportSharedPromptResponseDataContentKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i ImportSharedPromptResponseDataContentKind) Ptr() *ImportSharedPromptResponseDataContentKind {
+	return &i
+}
+
+var (
+	importSharedPromptResponseDataCurrentVersionFieldID              = big.NewInt(1 << 0)
+	importSharedPromptResponseDataCurrentVersionFieldVersionNumber   = big.NewInt(1 << 1)
+	importSharedPromptResponseDataCurrentVersionFieldVersionLabel    = big.NewInt(1 << 2)
+	importSharedPromptResponseDataCurrentVersionFieldContent         = big.NewInt(1 << 3)
+	importSharedPromptResponseDataCurrentVersionFieldSystemPrompt    = big.NewInt(1 << 4)
+	importSharedPromptResponseDataCurrentVersionFieldChangeNote      = big.NewInt(1 << 5)
+	importSharedPromptResponseDataCurrentVersionFieldIsPublished     = big.NewInt(1 << 6)
+	importSharedPromptResponseDataCurrentVersionFieldVariablesSchema = big.NewInt(1 << 7)
+	importSharedPromptResponseDataCurrentVersionFieldCreatedAt       = big.NewInt(1 << 8)
+)
+
+type ImportSharedPromptResponseDataCurrentVersion struct {
+	ID              *string                                                                      `json:"id,omitempty" url:"id,omitempty"`
+	VersionNumber   *int                                                                         `json:"versionNumber,omitempty" url:"versionNumber,omitempty"`
+	VersionLabel    *string                                                                      `json:"versionLabel,omitempty" url:"versionLabel,omitempty"`
+	Content         *string                                                                      `json:"content,omitempty" url:"content,omitempty"`
+	SystemPrompt    *string                                                                      `json:"systemPrompt,omitempty" url:"systemPrompt,omitempty"`
+	ChangeNote      *string                                                                      `json:"changeNote,omitempty" url:"changeNote,omitempty"`
+	IsPublished     *bool                                                                        `json:"isPublished,omitempty" url:"isPublished,omitempty"`
+	VariablesSchema map[string]*ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue `json:"variablesSchema,omitempty" url:"variablesSchema,omitempty"`
+	CreatedAt       *time.Time                                                                   `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetID() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ID
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetVersionNumber() *int {
+	if i == nil {
+		return nil
+	}
+	return i.VersionNumber
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetVersionLabel() *string {
+	if i == nil {
+		return nil
+	}
+	return i.VersionLabel
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetContent() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Content
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetSystemPrompt() *string {
+	if i == nil {
+		return nil
+	}
+	return i.SystemPrompt
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetChangeNote() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ChangeNote
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetIsPublished() *bool {
+	if i == nil {
+		return nil
+	}
+	return i.IsPublished
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetVariablesSchema() map[string]*ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue {
+	if i == nil {
+		return nil
+	}
+	return i.VariablesSchema
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetCreatedAt() *time.Time {
+	if i == nil {
+		return nil
+	}
+	return i.CreatedAt
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetID(id *string) {
+	i.ID = id
+	i.require(importSharedPromptResponseDataCurrentVersionFieldID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetVersionNumber(versionNumber *int) {
+	i.VersionNumber = versionNumber
+	i.require(importSharedPromptResponseDataCurrentVersionFieldVersionNumber)
+}
+
+// SetVersionLabel sets the VersionLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetVersionLabel(versionLabel *string) {
+	i.VersionLabel = versionLabel
+	i.require(importSharedPromptResponseDataCurrentVersionFieldVersionLabel)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetContent(content *string) {
+	i.Content = content
+	i.require(importSharedPromptResponseDataCurrentVersionFieldContent)
+}
+
+// SetSystemPrompt sets the SystemPrompt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetSystemPrompt(systemPrompt *string) {
+	i.SystemPrompt = systemPrompt
+	i.require(importSharedPromptResponseDataCurrentVersionFieldSystemPrompt)
+}
+
+// SetChangeNote sets the ChangeNote field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetChangeNote(changeNote *string) {
+	i.ChangeNote = changeNote
+	i.require(importSharedPromptResponseDataCurrentVersionFieldChangeNote)
+}
+
+// SetIsPublished sets the IsPublished field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetIsPublished(isPublished *bool) {
+	i.IsPublished = isPublished
+	i.require(importSharedPromptResponseDataCurrentVersionFieldIsPublished)
+}
+
+// SetVariablesSchema sets the VariablesSchema field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetVariablesSchema(variablesSchema map[string]*ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) {
+	i.VariablesSchema = variablesSchema
+	i.require(importSharedPromptResponseDataCurrentVersionFieldVariablesSchema)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersion) SetCreatedAt(createdAt *time.Time) {
+	i.CreatedAt = createdAt
+	i.require(importSharedPromptResponseDataCurrentVersionFieldCreatedAt)
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) UnmarshalJSON(data []byte) error {
+	type embed ImportSharedPromptResponseDataCurrentVersion
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseDataCurrentVersion(unmarshaler.embed)
+	i.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseDataCurrentVersion
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+	}{
+		embed:     embed(*i),
+		CreatedAt: internal.NewOptionalDateTime(i.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersion) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	importSharedPromptResponseDataCurrentVersionVariablesSchemaValueFieldDefault = big.NewInt(1 << 0)
+)
+
+type ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue struct {
+	Default *string `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) GetDefault() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Default
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) SetDefault(default_ *string) {
+	i.Default = default_
+	i.require(importSharedPromptResponseDataCurrentVersionVariablesSchemaValueFieldDefault)
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) UnmarshalJSON(data []byte) error {
+	type unmarshaler ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseDataCurrentVersionVariablesSchemaValue) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type ImportSharedPromptResponseDataKind string
+
+const (
+	ImportSharedPromptResponseDataKindTemplate ImportSharedPromptResponseDataKind = "template"
+	ImportSharedPromptResponseDataKindInstance ImportSharedPromptResponseDataKind = "instance"
+)
+
+func NewImportSharedPromptResponseDataKindFromString(s string) (ImportSharedPromptResponseDataKind, error) {
+	switch s {
+	case "template":
+		return ImportSharedPromptResponseDataKindTemplate, nil
+	case "instance":
+		return ImportSharedPromptResponseDataKindInstance, nil
+	}
+	var t ImportSharedPromptResponseDataKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i ImportSharedPromptResponseDataKind) Ptr() *ImportSharedPromptResponseDataKind {
+	return &i
+}
+
+var (
+	importSharedPromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges = big.NewInt(1 << 0)
+	importSharedPromptResponseDataReleaseStatusFieldLatestPublishedVersion     = big.NewInt(1 << 1)
+	importSharedPromptResponseDataReleaseStatusFieldDeployments                = big.NewInt(1 << 2)
+)
+
+type ImportSharedPromptResponseDataReleaseStatus struct {
+	DraftHasUnpublishedChanges bool                                                               `json:"draftHasUnpublishedChanges" url:"draftHasUnpublishedChanges"`
+	LatestPublishedVersion     *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion `json:"latestPublishedVersion,omitempty" url:"latestPublishedVersion,omitempty"`
+	Deployments                *ImportSharedPromptResponseDataReleaseStatusDeployments            `json:"deployments" url:"deployments"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) GetDraftHasUnpublishedChanges() bool {
+	if i == nil {
+		return false
+	}
+	return i.DraftHasUnpublishedChanges
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) GetLatestPublishedVersion() *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion {
+	if i == nil {
+		return nil
+	}
+	return i.LatestPublishedVersion
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) GetDeployments() *ImportSharedPromptResponseDataReleaseStatusDeployments {
+	if i == nil {
+		return nil
+	}
+	return i.Deployments
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetDraftHasUnpublishedChanges sets the DraftHasUnpublishedChanges field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatus) SetDraftHasUnpublishedChanges(draftHasUnpublishedChanges bool) {
+	i.DraftHasUnpublishedChanges = draftHasUnpublishedChanges
+	i.require(importSharedPromptResponseDataReleaseStatusFieldDraftHasUnpublishedChanges)
+}
+
+// SetLatestPublishedVersion sets the LatestPublishedVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatus) SetLatestPublishedVersion(latestPublishedVersion *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) {
+	i.LatestPublishedVersion = latestPublishedVersion
+	i.require(importSharedPromptResponseDataReleaseStatusFieldLatestPublishedVersion)
+}
+
+// SetDeployments sets the Deployments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatus) SetDeployments(deployments *ImportSharedPromptResponseDataReleaseStatusDeployments) {
+	i.Deployments = deployments
+	i.require(importSharedPromptResponseDataReleaseStatusFieldDeployments)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) UnmarshalJSON(data []byte) error {
+	type unmarshaler ImportSharedPromptResponseDataReleaseStatus
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseDataReleaseStatus(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseDataReleaseStatus
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatus) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	importSharedPromptResponseDataReleaseStatusDeploymentsFieldDevelopment = big.NewInt(1 << 0)
+	importSharedPromptResponseDataReleaseStatusDeploymentsFieldProduction  = big.NewInt(1 << 1)
+)
+
+type ImportSharedPromptResponseDataReleaseStatusDeployments struct {
+	Development *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment `json:"development,omitempty" url:"development,omitempty"`
+	Production  *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction  `json:"production,omitempty" url:"production,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) GetDevelopment() *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment {
+	if i == nil {
+		return nil
+	}
+	return i.Development
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) GetProduction() *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction {
+	if i == nil {
+		return nil
+	}
+	return i.Production
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetDevelopment sets the Development field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) SetDevelopment(development *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) {
+	i.Development = development
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsFieldDevelopment)
+}
+
+// SetProduction sets the Production field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) SetProduction(production *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) {
+	i.Production = production
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsFieldProduction)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) UnmarshalJSON(data []byte) error {
+	type unmarshaler ImportSharedPromptResponseDataReleaseStatusDeployments
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseDataReleaseStatusDeployments(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseDataReleaseStatusDeployments
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeployments) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
+	importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment   = big.NewInt(1 << 0)
+	importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID     = big.NewInt(1 << 1)
+	importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber = big.NewInt(1 << 2)
+	importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt    = big.NewInt(1 << 3)
+	importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment struct {
+	Environment   ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                                       `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                          `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                                    `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                                       `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetEnvironment() ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	if i == nil {
+		return ""
+	}
+	return i.Environment
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionID() string {
+	if i == nil {
+		return ""
+	}
+	return i.VersionID
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetVersionNumber() int {
+	if i == nil {
+		return 0
+	}
+	return i.VersionNumber
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedAt() time.Time {
+	if i == nil {
+		return time.Time{}
+	}
+	return i.DeployedAt
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetDeployedByID() string {
+	if i == nil {
+		return ""
+	}
+	return i.DeployedByID
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetEnvironment(environment ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) {
+	i.Environment = environment
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionID(versionID string) {
+	i.VersionID = versionID
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetVersionNumber(versionNumber int) {
+	i.VersionNumber = versionNumber
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedAt(deployedAt time.Time) {
+	i.DeployedAt = deployedAt
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) SetDeployedByID(deployedByID string) {
+	i.DeployedByID = deployedByID
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentFieldDeployedByID)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) UnmarshalJSON(data []byte) error {
+	type embed ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment(unmarshaler.embed)
+	i.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*i),
+		DeployedAt: internal.NewDateTime(i.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopment) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment string
+
+const (
+	ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "development"
+	ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction  ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment = "production"
+)
+
+func NewImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentFromString(s string) (ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment, error) {
+	switch s {
+	case "development":
+		return ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentDevelopment, nil
+	case "production":
+		return ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironmentProduction, nil
+	}
+	var t ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment) Ptr() *ImportSharedPromptResponseDataReleaseStatusDeploymentsDevelopmentEnvironment {
+	return &i
+}
+
+var (
+	importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment   = big.NewInt(1 << 0)
+	importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID     = big.NewInt(1 << 1)
+	importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber = big.NewInt(1 << 2)
+	importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt    = big.NewInt(1 << 3)
+	importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID  = big.NewInt(1 << 4)
+)
+
+type ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction struct {
+	Environment   ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment `json:"environment" url:"environment"`
+	VersionID     string                                                                      `json:"versionId" url:"versionId"`
+	VersionNumber int                                                                         `json:"versionNumber" url:"versionNumber"`
+	DeployedAt    time.Time                                                                   `json:"deployedAt" url:"deployedAt"`
+	DeployedByID  string                                                                      `json:"deployedById" url:"deployedById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetEnvironment() ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	if i == nil {
+		return ""
+	}
+	return i.Environment
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetVersionID() string {
+	if i == nil {
+		return ""
+	}
+	return i.VersionID
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetVersionNumber() int {
+	if i == nil {
+		return 0
+	}
+	return i.VersionNumber
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedAt() time.Time {
+	if i == nil {
+		return time.Time{}
+	}
+	return i.DeployedAt
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetDeployedByID() string {
+	if i == nil {
+		return ""
+	}
+	return i.DeployedByID
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetEnvironment(environment ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment) {
+	i.Environment = environment
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldEnvironment)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetVersionID(versionID string) {
+	i.VersionID = versionID
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetVersionNumber(versionNumber int) {
+	i.VersionNumber = versionNumber
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldVersionNumber)
+}
+
+// SetDeployedAt sets the DeployedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedAt(deployedAt time.Time) {
+	i.DeployedAt = deployedAt
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedAt)
+}
+
+// SetDeployedByID sets the DeployedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) SetDeployedByID(deployedByID string) {
+	i.DeployedByID = deployedByID
+	i.require(importSharedPromptResponseDataReleaseStatusDeploymentsProductionFieldDeployedByID)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) UnmarshalJSON(data []byte) error {
+	type embed ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction
+	var unmarshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction(unmarshaler.embed)
+	i.DeployedAt = unmarshaler.DeployedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction
+	var marshaler = struct {
+		embed
+		DeployedAt *internal.DateTime `json:"deployedAt"`
+	}{
+		embed:      embed(*i),
+		DeployedAt: internal.NewDateTime(i.DeployedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusDeploymentsProduction) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment string
+
+const (
+	ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "development"
+	ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction  ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment = "production"
+)
+
+func NewImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentFromString(s string) (ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment, error) {
+	switch s {
+	case "development":
+		return ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentDevelopment, nil
+	case "production":
+		return ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironmentProduction, nil
+	}
+	var t ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment) Ptr() *ImportSharedPromptResponseDataReleaseStatusDeploymentsProductionEnvironment {
+	return &i
+}
+
+var (
+	importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldID            = big.NewInt(1 << 0)
+	importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber = big.NewInt(1 << 1)
+	importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt     = big.NewInt(1 << 2)
+	importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID   = big.NewInt(1 << 3)
+)
+
+type ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion struct {
+	ID            string    `json:"id" url:"id"`
+	VersionNumber int       `json:"versionNumber" url:"versionNumber"`
+	CreatedAt     time.Time `json:"createdAt" url:"createdAt"`
+	CreatedByID   string    `json:"createdById" url:"createdById"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetID() string {
+	if i == nil {
+		return ""
+	}
+	return i.ID
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetVersionNumber() int {
+	if i == nil {
+		return 0
+	}
+	return i.VersionNumber
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedAt() time.Time {
+	if i == nil {
+		return time.Time{}
+	}
+	return i.CreatedAt
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetCreatedByID() string {
+	if i == nil {
+		return ""
+	}
+	return i.CreatedByID
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetID(id string) {
+	i.ID = id
+	i.require(importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldID)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetVersionNumber(versionNumber int) {
+	i.VersionNumber = versionNumber
+	i.require(importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldVersionNumber)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedAt(createdAt time.Time) {
+	i.CreatedAt = createdAt
+	i.require(importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedAt)
+}
+
+// SetCreatedByID sets the CreatedByID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) SetCreatedByID(createdByID string) {
+	i.CreatedByID = createdByID
+	i.require(importSharedPromptResponseDataReleaseStatusLatestPublishedVersionFieldCreatedByID)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) UnmarshalJSON(data []byte) error {
+	type embed ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*i = ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion(unmarshaler.embed)
+	i.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) MarshalJSON() ([]byte, error) {
+	type embed ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*i),
+		CreatedAt: internal.NewDateTime(i.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *ImportSharedPromptResponseDataReleaseStatusLatestPublishedVersion) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type ImportSharedPromptResponseDataStatus string
+
+const (
+	ImportSharedPromptResponseDataStatusDraft      ImportSharedPromptResponseDataStatus = "draft"
+	ImportSharedPromptResponseDataStatusPublished  ImportSharedPromptResponseDataStatus = "published"
+	ImportSharedPromptResponseDataStatusArchived   ImportSharedPromptResponseDataStatus = "archived"
+	ImportSharedPromptResponseDataStatusDeprecated ImportSharedPromptResponseDataStatus = "deprecated"
+)
+
+func NewImportSharedPromptResponseDataStatusFromString(s string) (ImportSharedPromptResponseDataStatus, error) {
+	switch s {
+	case "draft":
+		return ImportSharedPromptResponseDataStatusDraft, nil
+	case "published":
+		return ImportSharedPromptResponseDataStatusPublished, nil
+	case "archived":
+		return ImportSharedPromptResponseDataStatusArchived, nil
+	case "deprecated":
+		return ImportSharedPromptResponseDataStatusDeprecated, nil
+	}
+	var t ImportSharedPromptResponseDataStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i ImportSharedPromptResponseDataStatus) Ptr() *ImportSharedPromptResponseDataStatus {
+	return &i
 }
 
 // Collaborators
@@ -2329,6 +3623,547 @@ func (l *ListPromptCollaboratorsResponseDataItem) MarshalJSON() ([]byte, error) 
 }
 
 func (l *ListPromptCollaboratorsResponseDataItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// Active share links
+var (
+	listPromptShareLinksResponseFieldData = big.NewInt(1 << 0)
+)
+
+type ListPromptShareLinksResponse struct {
+	Data []*ListPromptShareLinksResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPromptShareLinksResponse) GetData() []*ListPromptShareLinksResponseDataItem {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListPromptShareLinksResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListPromptShareLinksResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponse) SetData(data []*ListPromptShareLinksResponseDataItem) {
+	l.Data = data
+	l.require(listPromptShareLinksResponseFieldData)
+}
+
+func (l *ListPromptShareLinksResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPromptShareLinksResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPromptShareLinksResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPromptShareLinksResponse) MarshalJSON() ([]byte, error) {
+	type embed ListPromptShareLinksResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPromptShareLinksResponse) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listPromptShareLinksResponseDataItemFieldID                  = big.NewInt(1 << 0)
+	listPromptShareLinksResponseDataItemFieldToken               = big.NewInt(1 << 1)
+	listPromptShareLinksResponseDataItemFieldURL                 = big.NewInt(1 << 2)
+	listPromptShareLinksResponseDataItemFieldURLs                = big.NewInt(1 << 3)
+	listPromptShareLinksResponseDataItemFieldPermission          = big.NewInt(1 << 4)
+	listPromptShareLinksResponseDataItemFieldHasPassword         = big.NewInt(1 << 5)
+	listPromptShareLinksResponseDataItemFieldExpiresAt           = big.NewInt(1 << 6)
+	listPromptShareLinksResponseDataItemFieldMaxUses             = big.NewInt(1 << 7)
+	listPromptShareLinksResponseDataItemFieldUseCount            = big.NewInt(1 << 8)
+	listPromptShareLinksResponseDataItemFieldSharedVersionNumber = big.NewInt(1 << 9)
+	listPromptShareLinksResponseDataItemFieldLabel               = big.NewInt(1 << 10)
+	listPromptShareLinksResponseDataItemFieldKind                = big.NewInt(1 << 11)
+	listPromptShareLinksResponseDataItemFieldPinned              = big.NewInt(1 << 12)
+	listPromptShareLinksResponseDataItemFieldResolveVariables    = big.NewInt(1 << 13)
+	listPromptShareLinksResponseDataItemFieldHasValues           = big.NewInt(1 << 14)
+	listPromptShareLinksResponseDataItemFieldCreatedAt           = big.NewInt(1 << 15)
+	listPromptShareLinksResponseDataItemFieldCreatedBy           = big.NewInt(1 << 16)
+)
+
+type ListPromptShareLinksResponseDataItem struct {
+	ID                  string                                    `json:"id" url:"id"`
+	Token               string                                    `json:"token" url:"token"`
+	URL                 string                                    `json:"url" url:"url"`
+	URLs                *ListPromptShareLinksResponseDataItemURLs `json:"urls" url:"urls"`
+	Permission          string                                    `json:"permission" url:"permission"`
+	HasPassword         bool                                      `json:"hasPassword" url:"hasPassword"`
+	ExpiresAt           *time.Time                                `json:"expiresAt,omitempty" url:"expiresAt,omitempty"`
+	MaxUses             *int                                      `json:"maxUses,omitempty" url:"maxUses,omitempty"`
+	UseCount            int                                       `json:"useCount" url:"useCount"`
+	SharedVersionNumber *int                                      `json:"sharedVersionNumber,omitempty" url:"sharedVersionNumber,omitempty"`
+	Label               *string                                   `json:"label,omitempty" url:"label,omitempty"`
+	Kind                ListPromptShareLinksResponseDataItemKind  `json:"kind" url:"kind"`
+	Pinned              bool                                      `json:"pinned" url:"pinned"`
+	ResolveVariables    bool                                      `json:"resolveVariables" url:"resolveVariables"`
+	HasValues           bool                                      `json:"hasValues" url:"hasValues"`
+	CreatedAt           time.Time                                 `json:"createdAt" url:"createdAt"`
+	CreatedBy           *string                                   `json:"createdBy,omitempty" url:"createdBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetToken() string {
+	if l == nil {
+		return ""
+	}
+	return l.Token
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetURL() string {
+	if l == nil {
+		return ""
+	}
+	return l.URL
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetURLs() *ListPromptShareLinksResponseDataItemURLs {
+	if l == nil {
+		return nil
+	}
+	return l.URLs
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetPermission() string {
+	if l == nil {
+		return ""
+	}
+	return l.Permission
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetHasPassword() bool {
+	if l == nil {
+		return false
+	}
+	return l.HasPassword
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetExpiresAt() *time.Time {
+	if l == nil {
+		return nil
+	}
+	return l.ExpiresAt
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetMaxUses() *int {
+	if l == nil {
+		return nil
+	}
+	return l.MaxUses
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetUseCount() int {
+	if l == nil {
+		return 0
+	}
+	return l.UseCount
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetSharedVersionNumber() *int {
+	if l == nil {
+		return nil
+	}
+	return l.SharedVersionNumber
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetLabel() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Label
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetKind() ListPromptShareLinksResponseDataItemKind {
+	if l == nil {
+		return ""
+	}
+	return l.Kind
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetPinned() bool {
+	if l == nil {
+		return false
+	}
+	return l.Pinned
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetResolveVariables() bool {
+	if l == nil {
+		return false
+	}
+	return l.ResolveVariables
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetHasValues() bool {
+	if l == nil {
+		return false
+	}
+	return l.HasValues
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetCreatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.CreatedAt
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetCreatedBy() *string {
+	if l == nil {
+		return nil
+	}
+	return l.CreatedBy
+}
+
+func (l *ListPromptShareLinksResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListPromptShareLinksResponseDataItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetID(id string) {
+	l.ID = id
+	l.require(listPromptShareLinksResponseDataItemFieldID)
+}
+
+// SetToken sets the Token field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetToken(token string) {
+	l.Token = token
+	l.require(listPromptShareLinksResponseDataItemFieldToken)
+}
+
+// SetURL sets the URL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetURL(url string) {
+	l.URL = url
+	l.require(listPromptShareLinksResponseDataItemFieldURL)
+}
+
+// SetURLs sets the URLs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetURLs(urls *ListPromptShareLinksResponseDataItemURLs) {
+	l.URLs = urls
+	l.require(listPromptShareLinksResponseDataItemFieldURLs)
+}
+
+// SetPermission sets the Permission field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetPermission(permission string) {
+	l.Permission = permission
+	l.require(listPromptShareLinksResponseDataItemFieldPermission)
+}
+
+// SetHasPassword sets the HasPassword field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetHasPassword(hasPassword bool) {
+	l.HasPassword = hasPassword
+	l.require(listPromptShareLinksResponseDataItemFieldHasPassword)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetExpiresAt(expiresAt *time.Time) {
+	l.ExpiresAt = expiresAt
+	l.require(listPromptShareLinksResponseDataItemFieldExpiresAt)
+}
+
+// SetMaxUses sets the MaxUses field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetMaxUses(maxUses *int) {
+	l.MaxUses = maxUses
+	l.require(listPromptShareLinksResponseDataItemFieldMaxUses)
+}
+
+// SetUseCount sets the UseCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetUseCount(useCount int) {
+	l.UseCount = useCount
+	l.require(listPromptShareLinksResponseDataItemFieldUseCount)
+}
+
+// SetSharedVersionNumber sets the SharedVersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetSharedVersionNumber(sharedVersionNumber *int) {
+	l.SharedVersionNumber = sharedVersionNumber
+	l.require(listPromptShareLinksResponseDataItemFieldSharedVersionNumber)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetLabel(label *string) {
+	l.Label = label
+	l.require(listPromptShareLinksResponseDataItemFieldLabel)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetKind(kind ListPromptShareLinksResponseDataItemKind) {
+	l.Kind = kind
+	l.require(listPromptShareLinksResponseDataItemFieldKind)
+}
+
+// SetPinned sets the Pinned field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetPinned(pinned bool) {
+	l.Pinned = pinned
+	l.require(listPromptShareLinksResponseDataItemFieldPinned)
+}
+
+// SetResolveVariables sets the ResolveVariables field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetResolveVariables(resolveVariables bool) {
+	l.ResolveVariables = resolveVariables
+	l.require(listPromptShareLinksResponseDataItemFieldResolveVariables)
+}
+
+// SetHasValues sets the HasValues field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetHasValues(hasValues bool) {
+	l.HasValues = hasValues
+	l.require(listPromptShareLinksResponseDataItemFieldHasValues)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetCreatedAt(createdAt time.Time) {
+	l.CreatedAt = createdAt
+	l.require(listPromptShareLinksResponseDataItemFieldCreatedAt)
+}
+
+// SetCreatedBy sets the CreatedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItem) SetCreatedBy(createdBy *string) {
+	l.CreatedBy = createdBy
+	l.require(listPromptShareLinksResponseDataItemFieldCreatedBy)
+}
+
+func (l *ListPromptShareLinksResponseDataItem) UnmarshalJSON(data []byte) error {
+	type embed ListPromptShareLinksResponseDataItem
+	var unmarshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expiresAt,omitempty"`
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = ListPromptShareLinksResponseDataItem(unmarshaler.embed)
+	l.ExpiresAt = unmarshaler.ExpiresAt.TimePtr()
+	l.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPromptShareLinksResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed ListPromptShareLinksResponseDataItem
+	var marshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expiresAt,omitempty"`
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*l),
+		ExpiresAt: internal.NewOptionalDateTime(l.ExpiresAt),
+		CreatedAt: internal.NewDateTime(l.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPromptShareLinksResponseDataItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ListPromptShareLinksResponseDataItemKind string
+
+const (
+	ListPromptShareLinksResponseDataItemKindWeb   ListPromptShareLinksResponseDataItemKind = "web"
+	ListPromptShareLinksResponseDataItemKindAgent ListPromptShareLinksResponseDataItemKind = "agent"
+)
+
+func NewListPromptShareLinksResponseDataItemKindFromString(s string) (ListPromptShareLinksResponseDataItemKind, error) {
+	switch s {
+	case "web":
+		return ListPromptShareLinksResponseDataItemKindWeb, nil
+	case "agent":
+		return ListPromptShareLinksResponseDataItemKindAgent, nil
+	}
+	var t ListPromptShareLinksResponseDataItemKind
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListPromptShareLinksResponseDataItemKind) Ptr() *ListPromptShareLinksResponseDataItemKind {
+	return &l
+}
+
+var (
+	listPromptShareLinksResponseDataItemURLsFieldWeb   = big.NewInt(1 << 0)
+	listPromptShareLinksResponseDataItemURLsFieldAgent = big.NewInt(1 << 1)
+)
+
+type ListPromptShareLinksResponseDataItemURLs struct {
+	Web   string `json:"web" url:"web"`
+	Agent string `json:"agent" url:"agent"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPromptShareLinksResponseDataItemURLs) GetWeb() string {
+	if l == nil {
+		return ""
+	}
+	return l.Web
+}
+
+func (l *ListPromptShareLinksResponseDataItemURLs) GetAgent() string {
+	if l == nil {
+		return ""
+	}
+	return l.Agent
+}
+
+func (l *ListPromptShareLinksResponseDataItemURLs) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListPromptShareLinksResponseDataItemURLs) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetWeb sets the Web field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItemURLs) SetWeb(web string) {
+	l.Web = web
+	l.require(listPromptShareLinksResponseDataItemURLsFieldWeb)
+}
+
+// SetAgent sets the Agent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptShareLinksResponseDataItemURLs) SetAgent(agent string) {
+	l.Agent = agent
+	l.require(listPromptShareLinksResponseDataItemURLsFieldAgent)
+}
+
+func (l *ListPromptShareLinksResponseDataItemURLs) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPromptShareLinksResponseDataItemURLs
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPromptShareLinksResponseDataItemURLs(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPromptShareLinksResponseDataItemURLs) MarshalJSON() ([]byte, error) {
+	type embed ListPromptShareLinksResponseDataItemURLs
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPromptShareLinksResponseDataItemURLs) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value

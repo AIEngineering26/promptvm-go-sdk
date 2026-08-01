@@ -1317,26 +1317,29 @@ var (
 	getBillingStatusResponseEntitlementsFieldWorkspaces          = big.NewInt(1 << 0)
 	getBillingStatusResponseEntitlementsFieldPrompts             = big.NewInt(1 << 1)
 	getBillingStatusResponseEntitlementsFieldAPIRequestsPerMonth = big.NewInt(1 << 2)
-	getBillingStatusResponseEntitlementsFieldSharingPublic       = big.NewInt(1 << 3)
-	getBillingStatusResponseEntitlementsFieldSharingPrivate      = big.NewInt(1 << 4)
-	getBillingStatusResponseEntitlementsFieldAPIAccess           = big.NewInt(1 << 5)
-	getBillingStatusResponseEntitlementsFieldPremiumLibrary      = big.NewInt(1 << 6)
-	getBillingStatusResponseEntitlementsFieldAuditLogs           = big.NewInt(1 << 7)
-	getBillingStatusResponseEntitlementsFieldPrioritySupport     = big.NewInt(1 << 8)
-	getBillingStatusResponseEntitlementsFieldSSO                 = big.NewInt(1 << 9)
+	getBillingStatusResponseEntitlementsFieldStorageBytes        = big.NewInt(1 << 3)
+	getBillingStatusResponseEntitlementsFieldSharingPublic       = big.NewInt(1 << 4)
+	getBillingStatusResponseEntitlementsFieldSharingPrivate      = big.NewInt(1 << 5)
+	getBillingStatusResponseEntitlementsFieldAPIAccess           = big.NewInt(1 << 6)
+	getBillingStatusResponseEntitlementsFieldPremiumLibrary      = big.NewInt(1 << 7)
+	getBillingStatusResponseEntitlementsFieldAuditLogs           = big.NewInt(1 << 8)
+	getBillingStatusResponseEntitlementsFieldPrioritySupport     = big.NewInt(1 << 9)
+	getBillingStatusResponseEntitlementsFieldSSO                 = big.NewInt(1 << 10)
 )
 
 type GetBillingStatusResponseEntitlements struct {
 	Workspaces          *int `json:"workspaces,omitempty" url:"workspaces,omitempty"`
 	Prompts             *int `json:"prompts,omitempty" url:"prompts,omitempty"`
 	APIRequestsPerMonth *int `json:"apiRequestsPerMonth,omitempty" url:"apiRequestsPerMonth,omitempty"`
-	SharingPublic       bool `json:"sharingPublic" url:"sharingPublic"`
-	SharingPrivate      bool `json:"sharingPrivate" url:"sharingPrivate"`
-	APIAccess           bool `json:"apiAccess" url:"apiAccess"`
-	PremiumLibrary      bool `json:"premiumLibrary" url:"premiumLibrary"`
-	AuditLogs           bool `json:"auditLogs" url:"auditLogs"`
-	PrioritySupport     bool `json:"prioritySupport" url:"prioritySupport"`
-	SSO                 bool `json:"sso" url:"sso"`
+	// Storage quota in bytes. null = unlimited.
+	StorageBytes    *int `json:"storageBytes,omitempty" url:"storageBytes,omitempty"`
+	SharingPublic   bool `json:"sharingPublic" url:"sharingPublic"`
+	SharingPrivate  bool `json:"sharingPrivate" url:"sharingPrivate"`
+	APIAccess       bool `json:"apiAccess" url:"apiAccess"`
+	PremiumLibrary  bool `json:"premiumLibrary" url:"premiumLibrary"`
+	AuditLogs       bool `json:"auditLogs" url:"auditLogs"`
+	PrioritySupport bool `json:"prioritySupport" url:"prioritySupport"`
+	SSO             bool `json:"sso" url:"sso"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1364,6 +1367,13 @@ func (g *GetBillingStatusResponseEntitlements) GetAPIRequestsPerMonth() *int {
 		return nil
 	}
 	return g.APIRequestsPerMonth
+}
+
+func (g *GetBillingStatusResponseEntitlements) GetStorageBytes() *int {
+	if g == nil {
+		return nil
+	}
+	return g.StorageBytes
 }
 
 func (g *GetBillingStatusResponseEntitlements) GetSharingPublic() bool {
@@ -1445,6 +1455,13 @@ func (g *GetBillingStatusResponseEntitlements) SetPrompts(prompts *int) {
 func (g *GetBillingStatusResponseEntitlements) SetAPIRequestsPerMonth(apiRequestsPerMonth *int) {
 	g.APIRequestsPerMonth = apiRequestsPerMonth
 	g.require(getBillingStatusResponseEntitlementsFieldAPIRequestsPerMonth)
+}
+
+// SetStorageBytes sets the StorageBytes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseEntitlements) SetStorageBytes(storageBytes *int) {
+	g.StorageBytes = storageBytes
+	g.require(getBillingStatusResponseEntitlementsFieldStorageBytes)
 }
 
 // SetSharingPublic sets the SharingPublic field and marks it as non-optional;
@@ -1955,6 +1972,7 @@ var (
 	getBillingStatusResponseUsageFieldWorkspaces            = big.NewInt(1 << 0)
 	getBillingStatusResponseUsageFieldPrompts               = big.NewInt(1 << 1)
 	getBillingStatusResponseUsageFieldAPIRequestsThisPeriod = big.NewInt(1 << 2)
+	getBillingStatusResponseUsageFieldStorageBytes          = big.NewInt(1 << 3)
 )
 
 type GetBillingStatusResponseUsage struct {
@@ -1964,6 +1982,8 @@ type GetBillingStatusResponseUsage struct {
 	Prompts int `json:"prompts" url:"prompts"`
 	// API requests in the current billing period. Wired in Phase 04 — returns 0 until then.
 	APIRequestsThisPeriod int `json:"apiRequestsThisPeriod" url:"apiRequestsThisPeriod"`
+	// Total stored bytes across the org's resource file versions. Read from org_usage_stats; falls back to a live SUM when the row is missing.
+	StorageBytes int `json:"storageBytes" url:"storageBytes"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1991,6 +2011,13 @@ func (g *GetBillingStatusResponseUsage) GetAPIRequestsThisPeriod() int {
 		return 0
 	}
 	return g.APIRequestsThisPeriod
+}
+
+func (g *GetBillingStatusResponseUsage) GetStorageBytes() int {
+	if g == nil {
+		return 0
+	}
+	return g.StorageBytes
 }
 
 func (g *GetBillingStatusResponseUsage) GetExtraProperties() map[string]interface{} {
@@ -2023,6 +2050,13 @@ func (g *GetBillingStatusResponseUsage) SetPrompts(prompts int) {
 func (g *GetBillingStatusResponseUsage) SetAPIRequestsThisPeriod(apiRequestsThisPeriod int) {
 	g.APIRequestsThisPeriod = apiRequestsThisPeriod
 	g.require(getBillingStatusResponseUsageFieldAPIRequestsThisPeriod)
+}
+
+// SetStorageBytes sets the StorageBytes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillingStatusResponseUsage) SetStorageBytes(storageBytes int) {
+	g.StorageBytes = storageBytes
+	g.require(getBillingStatusResponseUsageFieldStorageBytes)
 }
 
 func (g *GetBillingStatusResponseUsage) UnmarshalJSON(data []byte) error {

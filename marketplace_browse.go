@@ -11,6 +11,32 @@ import (
 )
 
 var (
+	getMarketplaceFacetsRequestFieldSellerID = big.NewInt(1 << 0)
+)
+
+type GetMarketplaceFacetsRequest struct {
+	// Scope counts to a single creator's active listings (listings.seller_id).
+	SellerID *string `json:"-" url:"sellerId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetMarketplaceFacetsRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetSellerID sets the SellerID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsRequest) SetSellerID(sellerID *string) {
+	g.SellerID = sellerID
+	g.require(getMarketplaceFacetsRequestFieldSellerID)
+}
+
+var (
 	getMarketplaceListingRequestFieldListingID = big.NewInt(1 << 0)
 )
 
@@ -38,17 +64,20 @@ func (g *GetMarketplaceListingRequest) SetListingID(listingID string) {
 var (
 	listMarketplaceListingsRequestFieldQ          = big.NewInt(1 << 0)
 	listMarketplaceListingsRequestFieldCategoryID = big.NewInt(1 << 1)
-	listMarketplaceListingsRequestFieldKind       = big.NewInt(1 << 2)
-	listMarketplaceListingsRequestFieldTag        = big.NewInt(1 << 3)
-	listMarketplaceListingsRequestFieldSort       = big.NewInt(1 << 4)
-	listMarketplaceListingsRequestFieldPage       = big.NewInt(1 << 5)
-	listMarketplaceListingsRequestFieldLimit      = big.NewInt(1 << 6)
+	listMarketplaceListingsRequestFieldSellerID   = big.NewInt(1 << 2)
+	listMarketplaceListingsRequestFieldKind       = big.NewInt(1 << 3)
+	listMarketplaceListingsRequestFieldTag        = big.NewInt(1 << 4)
+	listMarketplaceListingsRequestFieldSort       = big.NewInt(1 << 5)
+	listMarketplaceListingsRequestFieldPage       = big.NewInt(1 << 6)
+	listMarketplaceListingsRequestFieldLimit      = big.NewInt(1 << 7)
 )
 
 type ListMarketplaceListingsRequest struct {
 	// Search query — matches title/description plus the underlying prompt description and SKILL.md when_to_use.
 	Q          *string `json:"-" url:"q,omitempty"`
 	CategoryID *string `json:"-" url:"categoryId,omitempty"`
+	// Filter to a single creator's own listings (listings.seller_id). Powers the public creator profile.
+	SellerID *string `json:"-" url:"sellerId,omitempty"`
 	// Filter listings by their underlying content_kind.
 	Kind *ListMarketplaceListingsRequestKind `json:"-" url:"kind,omitempty"`
 	// Match a single listing tag (case-insensitive).
@@ -80,6 +109,13 @@ func (l *ListMarketplaceListingsRequest) SetQ(q *string) {
 func (l *ListMarketplaceListingsRequest) SetCategoryID(categoryID *string) {
 	l.CategoryID = categoryID
 	l.require(listMarketplaceListingsRequestFieldCategoryID)
+}
+
+// SetSellerID sets the SellerID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsRequest) SetSellerID(sellerID *string) {
+	l.SellerID = sellerID
+	l.require(listMarketplaceListingsRequestFieldSellerID)
 }
 
 // SetKind sets the Kind field and marks it as non-optional;
@@ -115,6 +151,420 @@ func (l *ListMarketplaceListingsRequest) SetPage(page *string) {
 func (l *ListMarketplaceListingsRequest) SetLimit(limit *string) {
 	l.Limit = limit
 	l.require(listMarketplaceListingsRequestFieldLimit)
+}
+
+// Marketplace facet counts
+var (
+	getMarketplaceFacetsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type GetMarketplaceFacetsResponse struct {
+	Data *GetMarketplaceFacetsResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceFacetsResponse) GetData() *GetMarketplaceFacetsResponseData {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetMarketplaceFacetsResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceFacetsResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponse) SetData(data *GetMarketplaceFacetsResponseData) {
+	g.Data = data
+	g.require(getMarketplaceFacetsResponseFieldData)
+}
+
+func (g *GetMarketplaceFacetsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarketplaceFacetsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarketplaceFacetsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceFacetsResponse) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceFacetsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceFacetsResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getMarketplaceFacetsResponseDataFieldTotal      = big.NewInt(1 << 0)
+	getMarketplaceFacetsResponseDataFieldKinds      = big.NewInt(1 << 1)
+	getMarketplaceFacetsResponseDataFieldCategories = big.NewInt(1 << 2)
+)
+
+type GetMarketplaceFacetsResponseData struct {
+	// Count of active listings in scope (sum of kind counts).
+	Total int `json:"total" url:"total"`
+	// Per-content-kind counts over active listings. Includes every enabled content_type even at count 0 so the frontend can hide empty types.
+	Kinds []*GetMarketplaceFacetsResponseDataKindsItem `json:"kinds" url:"kinds"`
+	// Per-category counts over active listings, most-populated first.
+	Categories []*GetMarketplaceFacetsResponseDataCategoriesItem `json:"categories" url:"categories"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceFacetsResponseData) GetTotal() int {
+	if g == nil {
+		return 0
+	}
+	return g.Total
+}
+
+func (g *GetMarketplaceFacetsResponseData) GetKinds() []*GetMarketplaceFacetsResponseDataKindsItem {
+	if g == nil {
+		return nil
+	}
+	return g.Kinds
+}
+
+func (g *GetMarketplaceFacetsResponseData) GetCategories() []*GetMarketplaceFacetsResponseDataCategoriesItem {
+	if g == nil {
+		return nil
+	}
+	return g.Categories
+}
+
+func (g *GetMarketplaceFacetsResponseData) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceFacetsResponseData) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetTotal sets the Total field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseData) SetTotal(total int) {
+	g.Total = total
+	g.require(getMarketplaceFacetsResponseDataFieldTotal)
+}
+
+// SetKinds sets the Kinds field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseData) SetKinds(kinds []*GetMarketplaceFacetsResponseDataKindsItem) {
+	g.Kinds = kinds
+	g.require(getMarketplaceFacetsResponseDataFieldKinds)
+}
+
+// SetCategories sets the Categories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseData) SetCategories(categories []*GetMarketplaceFacetsResponseDataCategoriesItem) {
+	g.Categories = categories
+	g.require(getMarketplaceFacetsResponseDataFieldCategories)
+}
+
+func (g *GetMarketplaceFacetsResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarketplaceFacetsResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarketplaceFacetsResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceFacetsResponseData) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceFacetsResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceFacetsResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getMarketplaceFacetsResponseDataCategoriesItemFieldCategoryID = big.NewInt(1 << 0)
+	getMarketplaceFacetsResponseDataCategoriesItemFieldSlug       = big.NewInt(1 << 1)
+	getMarketplaceFacetsResponseDataCategoriesItemFieldLabel      = big.NewInt(1 << 2)
+	getMarketplaceFacetsResponseDataCategoriesItemFieldCount      = big.NewInt(1 << 3)
+)
+
+type GetMarketplaceFacetsResponseDataCategoriesItem struct {
+	CategoryID string `json:"categoryId" url:"categoryId"`
+	Slug       string `json:"slug" url:"slug"`
+	// Human-readable category name.
+	Label string `json:"label" url:"label"`
+	Count int    `json:"count" url:"count"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) GetCategoryID() string {
+	if g == nil {
+		return ""
+	}
+	return g.CategoryID
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) GetSlug() string {
+	if g == nil {
+		return ""
+	}
+	return g.Slug
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) GetLabel() string {
+	if g == nil {
+		return ""
+	}
+	return g.Label
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) GetCount() int {
+	if g == nil {
+		return 0
+	}
+	return g.Count
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetCategoryID sets the CategoryID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) SetCategoryID(categoryID string) {
+	g.CategoryID = categoryID
+	g.require(getMarketplaceFacetsResponseDataCategoriesItemFieldCategoryID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) SetSlug(slug string) {
+	g.Slug = slug
+	g.require(getMarketplaceFacetsResponseDataCategoriesItemFieldSlug)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) SetLabel(label string) {
+	g.Label = label
+	g.require(getMarketplaceFacetsResponseDataCategoriesItemFieldLabel)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) SetCount(count int) {
+	g.Count = count
+	g.require(getMarketplaceFacetsResponseDataCategoriesItemFieldCount)
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarketplaceFacetsResponseDataCategoriesItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarketplaceFacetsResponseDataCategoriesItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceFacetsResponseDataCategoriesItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceFacetsResponseDataCategoriesItem) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getMarketplaceFacetsResponseDataKindsItemFieldKind  = big.NewInt(1 << 0)
+	getMarketplaceFacetsResponseDataKindsItemFieldCount = big.NewInt(1 << 1)
+)
+
+type GetMarketplaceFacetsResponseDataKindsItem struct {
+	// content_kind slug (e.g. skill, agent, mcp, command, settings, prompt, hook, collection, folder).
+	Kind  string `json:"kind" url:"kind"`
+	Count int    `json:"count" url:"count"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceFacetsResponseDataKindsItem) GetKind() string {
+	if g == nil {
+		return ""
+	}
+	return g.Kind
+}
+
+func (g *GetMarketplaceFacetsResponseDataKindsItem) GetCount() int {
+	if g == nil {
+		return 0
+	}
+	return g.Count
+}
+
+func (g *GetMarketplaceFacetsResponseDataKindsItem) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceFacetsResponseDataKindsItem) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetKind sets the Kind field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseDataKindsItem) SetKind(kind string) {
+	g.Kind = kind
+	g.require(getMarketplaceFacetsResponseDataKindsItemFieldKind)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceFacetsResponseDataKindsItem) SetCount(count int) {
+	g.Count = count
+	g.require(getMarketplaceFacetsResponseDataKindsItemFieldCount)
+}
+
+func (g *GetMarketplaceFacetsResponseDataKindsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarketplaceFacetsResponseDataKindsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarketplaceFacetsResponseDataKindsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceFacetsResponseDataKindsItem) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceFacetsResponseDataKindsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceFacetsResponseDataKindsItem) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 // Listing detail
@@ -218,16 +668,20 @@ var (
 	getMarketplaceListingResponseDataFieldCategories             = big.NewInt(1 << 18)
 	getMarketplaceListingResponseDataFieldSeller                 = big.NewInt(1 << 19)
 	getMarketplaceListingResponseDataFieldContentKind            = big.NewInt(1 << 20)
-	getMarketplaceListingResponseDataFieldPromptSlug             = big.NewInt(1 << 21)
-	getMarketplaceListingResponseDataFieldCollectionItemCount    = big.NewInt(1 << 22)
-	getMarketplaceListingResponseDataFieldSkill                  = big.NewInt(1 << 23)
-	getMarketplaceListingResponseDataFieldPublishedAt            = big.NewInt(1 << 24)
-	getMarketplaceListingResponseDataFieldCreatedAt              = big.NewInt(1 << 25)
-	getMarketplaceListingResponseDataFieldUpdatedAt              = big.NewInt(1 << 26)
-	getMarketplaceListingResponseDataFieldCollectionItemPreviews = big.NewInt(1 << 27)
-	getMarketplaceListingResponseDataFieldCollectionContents     = big.NewInt(1 << 28)
-	getMarketplaceListingResponseDataFieldDirectoryContents      = big.NewInt(1 << 29)
-	getMarketplaceListingResponseDataFieldViewer                 = big.NewInt(1 << 30)
+	getMarketplaceListingResponseDataFieldFeaturedImageURL       = big.NewInt(1 << 21)
+	getMarketplaceListingResponseDataFieldFeaturedVideoURL       = big.NewInt(1 << 22)
+	getMarketplaceListingResponseDataFieldFeaturedMediaPosterURL = big.NewInt(1 << 23)
+	getMarketplaceListingResponseDataFieldPromptSlug             = big.NewInt(1 << 24)
+	getMarketplaceListingResponseDataFieldInstallRef             = big.NewInt(1 << 25)
+	getMarketplaceListingResponseDataFieldCollectionItemCount    = big.NewInt(1 << 26)
+	getMarketplaceListingResponseDataFieldSkill                  = big.NewInt(1 << 27)
+	getMarketplaceListingResponseDataFieldPublishedAt            = big.NewInt(1 << 28)
+	getMarketplaceListingResponseDataFieldCreatedAt              = big.NewInt(1 << 29)
+	getMarketplaceListingResponseDataFieldUpdatedAt              = big.NewInt(1 << 30)
+	getMarketplaceListingResponseDataFieldCollectionItemPreviews = big.NewInt(1 << 31)
+	getMarketplaceListingResponseDataFieldCollectionContents     = big.NewInt(1 << 32)
+	getMarketplaceListingResponseDataFieldDirectoryContents      = big.NewInt(1 << 33)
+	getMarketplaceListingResponseDataFieldViewer                 = big.NewInt(1 << 34)
 )
 
 type GetMarketplaceListingResponseData struct {
@@ -252,7 +706,11 @@ type GetMarketplaceListingResponseData struct {
 	Categories             []*GetMarketplaceListingResponseDataCategoriesItem             `json:"categories,omitempty" url:"categories,omitempty"`
 	Seller                 *GetMarketplaceListingResponseDataSeller                       `json:"seller,omitempty" url:"seller,omitempty"`
 	ContentKind            *GetMarketplaceListingResponseDataContentKind                  `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	FeaturedImageURL       *string                                                        `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
+	FeaturedVideoURL       *string                                                        `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
+	FeaturedMediaPosterURL *string                                                        `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
 	PromptSlug             *string                                                        `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	InstallRef             *string                                                        `json:"installRef,omitempty" url:"installRef,omitempty"`
 	CollectionItemCount    *int                                                           `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
 	Skill                  *GetMarketplaceListingResponseDataSkill                        `json:"skill,omitempty" url:"skill,omitempty"`
 	PublishedAt            *time.Time                                                     `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
@@ -417,11 +875,39 @@ func (g *GetMarketplaceListingResponseData) GetContentKind() *GetMarketplaceList
 	return g.ContentKind
 }
 
+func (g *GetMarketplaceListingResponseData) GetFeaturedImageURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FeaturedImageURL
+}
+
+func (g *GetMarketplaceListingResponseData) GetFeaturedVideoURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FeaturedVideoURL
+}
+
+func (g *GetMarketplaceListingResponseData) GetFeaturedMediaPosterURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FeaturedMediaPosterURL
+}
+
 func (g *GetMarketplaceListingResponseData) GetPromptSlug() *string {
 	if g == nil {
 		return nil
 	}
 	return g.PromptSlug
+}
+
+func (g *GetMarketplaceListingResponseData) GetInstallRef() *string {
+	if g == nil {
+		return nil
+	}
+	return g.InstallRef
 }
 
 func (g *GetMarketplaceListingResponseData) GetCollectionItemCount() *int {
@@ -645,11 +1131,39 @@ func (g *GetMarketplaceListingResponseData) SetContentKind(contentKind *GetMarke
 	g.require(getMarketplaceListingResponseDataFieldContentKind)
 }
 
+// SetFeaturedImageURL sets the FeaturedImageURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseData) SetFeaturedImageURL(featuredImageURL *string) {
+	g.FeaturedImageURL = featuredImageURL
+	g.require(getMarketplaceListingResponseDataFieldFeaturedImageURL)
+}
+
+// SetFeaturedVideoURL sets the FeaturedVideoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseData) SetFeaturedVideoURL(featuredVideoURL *string) {
+	g.FeaturedVideoURL = featuredVideoURL
+	g.require(getMarketplaceListingResponseDataFieldFeaturedVideoURL)
+}
+
+// SetFeaturedMediaPosterURL sets the FeaturedMediaPosterURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseData) SetFeaturedMediaPosterURL(featuredMediaPosterURL *string) {
+	g.FeaturedMediaPosterURL = featuredMediaPosterURL
+	g.require(getMarketplaceListingResponseDataFieldFeaturedMediaPosterURL)
+}
+
 // SetPromptSlug sets the PromptSlug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetMarketplaceListingResponseData) SetPromptSlug(promptSlug *string) {
 	g.PromptSlug = promptSlug
 	g.require(getMarketplaceListingResponseDataFieldPromptSlug)
+}
+
+// SetInstallRef sets the InstallRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseData) SetInstallRef(installRef *string) {
+	g.InstallRef = installRef
+	g.require(getMarketplaceListingResponseDataFieldInstallRef)
 }
 
 // SetCollectionItemCount sets the CollectionItemCount field and marks it as non-optional;
@@ -1179,7 +1693,8 @@ var (
 	getMarketplaceListingResponseDataCollectionContentsItemsItemFieldNote      = big.NewInt(1 << 5)
 	getMarketplaceListingResponseDataCollectionContentsItemsItemFieldPosition  = big.NewInt(1 << 6)
 	getMarketplaceListingResponseDataCollectionContentsItemsItemFieldFileCount = big.NewInt(1 << 7)
-	getMarketplaceListingResponseDataCollectionContentsItemsItemFieldCreatedAt = big.NewInt(1 << 8)
+	getMarketplaceListingResponseDataCollectionContentsItemsItemFieldListingID = big.NewInt(1 << 8)
+	getMarketplaceListingResponseDataCollectionContentsItemsItemFieldCreatedAt = big.NewInt(1 << 9)
 )
 
 type GetMarketplaceListingResponseDataCollectionContentsItemsItem struct {
@@ -1191,6 +1706,7 @@ type GetMarketplaceListingResponseDataCollectionContentsItemsItem struct {
 	Note      *string                                                              `json:"note,omitempty" url:"note,omitempty"`
 	Position  int                                                                  `json:"position" url:"position"`
 	FileCount *int                                                                 `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	ListingID *string                                                              `json:"listingId,omitempty" url:"listingId,omitempty"`
 	CreatedAt time.Time                                                            `json:"createdAt" url:"createdAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1254,6 +1770,13 @@ func (g *GetMarketplaceListingResponseDataCollectionContentsItemsItem) GetFileCo
 		return nil
 	}
 	return g.FileCount
+}
+
+func (g *GetMarketplaceListingResponseDataCollectionContentsItemsItem) GetListingID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ListingID
 }
 
 func (g *GetMarketplaceListingResponseDataCollectionContentsItemsItem) GetCreatedAt() time.Time {
@@ -1328,6 +1851,13 @@ func (g *GetMarketplaceListingResponseDataCollectionContentsItemsItem) SetPositi
 func (g *GetMarketplaceListingResponseDataCollectionContentsItemsItem) SetFileCount(fileCount *int) {
 	g.FileCount = fileCount
 	g.require(getMarketplaceListingResponseDataCollectionContentsItemsItemFieldFileCount)
+}
+
+// SetListingID sets the ListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceListingResponseDataCollectionContentsItemsItem) SetListingID(listingID *string) {
+	g.ListingID = listingID
+	g.require(getMarketplaceListingResponseDataCollectionContentsItemsItemFieldListingID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -1496,6 +2026,10 @@ const (
 	GetMarketplaceListingResponseDataContentKindPrompt     GetMarketplaceListingResponseDataContentKind = "prompt"
 	GetMarketplaceListingResponseDataContentKindSkill      GetMarketplaceListingResponseDataContentKind = "skill"
 	GetMarketplaceListingResponseDataContentKindHook       GetMarketplaceListingResponseDataContentKind = "hook"
+	GetMarketplaceListingResponseDataContentKindAgent      GetMarketplaceListingResponseDataContentKind = "agent"
+	GetMarketplaceListingResponseDataContentKindMcp        GetMarketplaceListingResponseDataContentKind = "mcp"
+	GetMarketplaceListingResponseDataContentKindCommand    GetMarketplaceListingResponseDataContentKind = "command"
+	GetMarketplaceListingResponseDataContentKindSettings   GetMarketplaceListingResponseDataContentKind = "settings"
 	GetMarketplaceListingResponseDataContentKindFolder     GetMarketplaceListingResponseDataContentKind = "folder"
 	GetMarketplaceListingResponseDataContentKindCollection GetMarketplaceListingResponseDataContentKind = "collection"
 )
@@ -1508,6 +2042,14 @@ func NewGetMarketplaceListingResponseDataContentKindFromString(s string) (GetMar
 		return GetMarketplaceListingResponseDataContentKindSkill, nil
 	case "hook":
 		return GetMarketplaceListingResponseDataContentKindHook, nil
+	case "agent":
+		return GetMarketplaceListingResponseDataContentKindAgent, nil
+	case "mcp":
+		return GetMarketplaceListingResponseDataContentKindMcp, nil
+	case "command":
+		return GetMarketplaceListingResponseDataContentKindCommand, nil
+	case "settings":
+		return GetMarketplaceListingResponseDataContentKindSettings, nil
 	case "folder":
 		return GetMarketplaceListingResponseDataContentKindFolder, nil
 	case "collection":
@@ -2214,63 +2756,71 @@ func (l *ListFeaturedMarketplaceListingsResponse) String() string {
 }
 
 var (
-	listFeaturedMarketplaceListingsResponseDataItemFieldID                  = big.NewInt(1 << 0)
-	listFeaturedMarketplaceListingsResponseDataItemFieldPromptID            = big.NewInt(1 << 1)
-	listFeaturedMarketplaceListingsResponseDataItemFieldCollectionID        = big.NewInt(1 << 2)
-	listFeaturedMarketplaceListingsResponseDataItemFieldDirectoryID         = big.NewInt(1 << 3)
-	listFeaturedMarketplaceListingsResponseDataItemFieldSellerID            = big.NewInt(1 << 4)
-	listFeaturedMarketplaceListingsResponseDataItemFieldTitle               = big.NewInt(1 << 5)
-	listFeaturedMarketplaceListingsResponseDataItemFieldDescription         = big.NewInt(1 << 6)
-	listFeaturedMarketplaceListingsResponseDataItemFieldStatus              = big.NewInt(1 << 7)
-	listFeaturedMarketplaceListingsResponseDataItemFieldPriceCents          = big.NewInt(1 << 8)
-	listFeaturedMarketplaceListingsResponseDataItemFieldCurrency            = big.NewInt(1 << 9)
-	listFeaturedMarketplaceListingsResponseDataItemFieldAccessType          = big.NewInt(1 << 10)
-	listFeaturedMarketplaceListingsResponseDataItemFieldAvgRating           = big.NewInt(1 << 11)
-	listFeaturedMarketplaceListingsResponseDataItemFieldRatingCount         = big.NewInt(1 << 12)
-	listFeaturedMarketplaceListingsResponseDataItemFieldViewCount           = big.NewInt(1 << 13)
-	listFeaturedMarketplaceListingsResponseDataItemFieldPurchaseCount       = big.NewInt(1 << 14)
-	listFeaturedMarketplaceListingsResponseDataItemFieldImportCount         = big.NewInt(1 << 15)
-	listFeaturedMarketplaceListingsResponseDataItemFieldTags                = big.NewInt(1 << 16)
-	listFeaturedMarketplaceListingsResponseDataItemFieldIsFeatured          = big.NewInt(1 << 17)
-	listFeaturedMarketplaceListingsResponseDataItemFieldCategories          = big.NewInt(1 << 18)
-	listFeaturedMarketplaceListingsResponseDataItemFieldSeller              = big.NewInt(1 << 19)
-	listFeaturedMarketplaceListingsResponseDataItemFieldContentKind         = big.NewInt(1 << 20)
-	listFeaturedMarketplaceListingsResponseDataItemFieldPromptSlug          = big.NewInt(1 << 21)
-	listFeaturedMarketplaceListingsResponseDataItemFieldCollectionItemCount = big.NewInt(1 << 22)
-	listFeaturedMarketplaceListingsResponseDataItemFieldSkill               = big.NewInt(1 << 23)
-	listFeaturedMarketplaceListingsResponseDataItemFieldPublishedAt         = big.NewInt(1 << 24)
-	listFeaturedMarketplaceListingsResponseDataItemFieldCreatedAt           = big.NewInt(1 << 25)
-	listFeaturedMarketplaceListingsResponseDataItemFieldUpdatedAt           = big.NewInt(1 << 26)
+	listFeaturedMarketplaceListingsResponseDataItemFieldID                     = big.NewInt(1 << 0)
+	listFeaturedMarketplaceListingsResponseDataItemFieldPromptID               = big.NewInt(1 << 1)
+	listFeaturedMarketplaceListingsResponseDataItemFieldCollectionID           = big.NewInt(1 << 2)
+	listFeaturedMarketplaceListingsResponseDataItemFieldDirectoryID            = big.NewInt(1 << 3)
+	listFeaturedMarketplaceListingsResponseDataItemFieldSellerID               = big.NewInt(1 << 4)
+	listFeaturedMarketplaceListingsResponseDataItemFieldTitle                  = big.NewInt(1 << 5)
+	listFeaturedMarketplaceListingsResponseDataItemFieldDescription            = big.NewInt(1 << 6)
+	listFeaturedMarketplaceListingsResponseDataItemFieldStatus                 = big.NewInt(1 << 7)
+	listFeaturedMarketplaceListingsResponseDataItemFieldPriceCents             = big.NewInt(1 << 8)
+	listFeaturedMarketplaceListingsResponseDataItemFieldCurrency               = big.NewInt(1 << 9)
+	listFeaturedMarketplaceListingsResponseDataItemFieldAccessType             = big.NewInt(1 << 10)
+	listFeaturedMarketplaceListingsResponseDataItemFieldAvgRating              = big.NewInt(1 << 11)
+	listFeaturedMarketplaceListingsResponseDataItemFieldRatingCount            = big.NewInt(1 << 12)
+	listFeaturedMarketplaceListingsResponseDataItemFieldViewCount              = big.NewInt(1 << 13)
+	listFeaturedMarketplaceListingsResponseDataItemFieldPurchaseCount          = big.NewInt(1 << 14)
+	listFeaturedMarketplaceListingsResponseDataItemFieldImportCount            = big.NewInt(1 << 15)
+	listFeaturedMarketplaceListingsResponseDataItemFieldTags                   = big.NewInt(1 << 16)
+	listFeaturedMarketplaceListingsResponseDataItemFieldIsFeatured             = big.NewInt(1 << 17)
+	listFeaturedMarketplaceListingsResponseDataItemFieldCategories             = big.NewInt(1 << 18)
+	listFeaturedMarketplaceListingsResponseDataItemFieldSeller                 = big.NewInt(1 << 19)
+	listFeaturedMarketplaceListingsResponseDataItemFieldContentKind            = big.NewInt(1 << 20)
+	listFeaturedMarketplaceListingsResponseDataItemFieldFeaturedImageURL       = big.NewInt(1 << 21)
+	listFeaturedMarketplaceListingsResponseDataItemFieldFeaturedVideoURL       = big.NewInt(1 << 22)
+	listFeaturedMarketplaceListingsResponseDataItemFieldFeaturedMediaPosterURL = big.NewInt(1 << 23)
+	listFeaturedMarketplaceListingsResponseDataItemFieldPromptSlug             = big.NewInt(1 << 24)
+	listFeaturedMarketplaceListingsResponseDataItemFieldInstallRef             = big.NewInt(1 << 25)
+	listFeaturedMarketplaceListingsResponseDataItemFieldCollectionItemCount    = big.NewInt(1 << 26)
+	listFeaturedMarketplaceListingsResponseDataItemFieldSkill                  = big.NewInt(1 << 27)
+	listFeaturedMarketplaceListingsResponseDataItemFieldPublishedAt            = big.NewInt(1 << 28)
+	listFeaturedMarketplaceListingsResponseDataItemFieldCreatedAt              = big.NewInt(1 << 29)
+	listFeaturedMarketplaceListingsResponseDataItemFieldUpdatedAt              = big.NewInt(1 << 30)
 )
 
 type ListFeaturedMarketplaceListingsResponseDataItem struct {
-	ID                  string                                                           `json:"id" url:"id"`
-	PromptID            *string                                                          `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID        *string                                                          `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID         *string                                                          `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID            string                                                           `json:"sellerId" url:"sellerId"`
-	Title               string                                                           `json:"title" url:"title"`
-	Description         *string                                                          `json:"description,omitempty" url:"description,omitempty"`
-	Status              ListFeaturedMarketplaceListingsResponseDataItemStatus            `json:"status" url:"status"`
-	PriceCents          int                                                              `json:"priceCents" url:"priceCents"`
-	Currency            string                                                           `json:"currency" url:"currency"`
-	AccessType          *ListFeaturedMarketplaceListingsResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating           *string                                                          `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount         *int                                                             `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount           *int                                                             `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount       *int                                                             `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount         *int                                                             `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags                []string                                                         `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured          *bool                                                            `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories          []*ListFeaturedMarketplaceListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller              *ListFeaturedMarketplaceListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind         *ListFeaturedMarketplaceListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	PromptSlug          *string                                                          `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	CollectionItemCount *int                                                             `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
-	Skill               *ListFeaturedMarketplaceListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt         *time.Time                                                       `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt           time.Time                                                        `json:"createdAt" url:"createdAt"`
-	UpdatedAt           time.Time                                                        `json:"updatedAt" url:"updatedAt"`
+	ID                     string                                                           `json:"id" url:"id"`
+	PromptID               *string                                                          `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID           *string                                                          `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID            *string                                                          `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID               string                                                           `json:"sellerId" url:"sellerId"`
+	Title                  string                                                           `json:"title" url:"title"`
+	Description            *string                                                          `json:"description,omitempty" url:"description,omitempty"`
+	Status                 ListFeaturedMarketplaceListingsResponseDataItemStatus            `json:"status" url:"status"`
+	PriceCents             int                                                              `json:"priceCents" url:"priceCents"`
+	Currency               string                                                           `json:"currency" url:"currency"`
+	AccessType             *ListFeaturedMarketplaceListingsResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating              *string                                                          `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount            *int                                                             `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount              *int                                                             `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount          *int                                                             `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount            *int                                                             `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                   []string                                                         `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured             *bool                                                            `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories             []*ListFeaturedMarketplaceListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
+	Seller                 *ListFeaturedMarketplaceListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind            *ListFeaturedMarketplaceListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	FeaturedImageURL       *string                                                          `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
+	FeaturedVideoURL       *string                                                          `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
+	FeaturedMediaPosterURL *string                                                          `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
+	PromptSlug             *string                                                          `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	InstallRef             *string                                                          `json:"installRef,omitempty" url:"installRef,omitempty"`
+	CollectionItemCount    *int                                                             `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill                  *ListFeaturedMarketplaceListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt            *time.Time                                                       `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt              time.Time                                                        `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time                                                        `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2426,11 +2976,39 @@ func (l *ListFeaturedMarketplaceListingsResponseDataItem) GetContentKind() *List
 	return l.ContentKind
 }
 
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) GetFeaturedImageURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.FeaturedImageURL
+}
+
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) GetFeaturedVideoURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.FeaturedVideoURL
+}
+
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) GetFeaturedMediaPosterURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.FeaturedMediaPosterURL
+}
+
 func (l *ListFeaturedMarketplaceListingsResponseDataItem) GetPromptSlug() *string {
 	if l == nil {
 		return nil
 	}
 	return l.PromptSlug
+}
+
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) GetInstallRef() *string {
+	if l == nil {
+		return nil
+	}
+	return l.InstallRef
 }
 
 func (l *ListFeaturedMarketplaceListingsResponseDataItem) GetCollectionItemCount() *int {
@@ -2626,11 +3204,39 @@ func (l *ListFeaturedMarketplaceListingsResponseDataItem) SetContentKind(content
 	l.require(listFeaturedMarketplaceListingsResponseDataItemFieldContentKind)
 }
 
+// SetFeaturedImageURL sets the FeaturedImageURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) SetFeaturedImageURL(featuredImageURL *string) {
+	l.FeaturedImageURL = featuredImageURL
+	l.require(listFeaturedMarketplaceListingsResponseDataItemFieldFeaturedImageURL)
+}
+
+// SetFeaturedVideoURL sets the FeaturedVideoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) SetFeaturedVideoURL(featuredVideoURL *string) {
+	l.FeaturedVideoURL = featuredVideoURL
+	l.require(listFeaturedMarketplaceListingsResponseDataItemFieldFeaturedVideoURL)
+}
+
+// SetFeaturedMediaPosterURL sets the FeaturedMediaPosterURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) SetFeaturedMediaPosterURL(featuredMediaPosterURL *string) {
+	l.FeaturedMediaPosterURL = featuredMediaPosterURL
+	l.require(listFeaturedMarketplaceListingsResponseDataItemFieldFeaturedMediaPosterURL)
+}
+
 // SetPromptSlug sets the PromptSlug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListFeaturedMarketplaceListingsResponseDataItem) SetPromptSlug(promptSlug *string) {
 	l.PromptSlug = promptSlug
 	l.require(listFeaturedMarketplaceListingsResponseDataItemFieldPromptSlug)
+}
+
+// SetInstallRef sets the InstallRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListFeaturedMarketplaceListingsResponseDataItem) SetInstallRef(installRef *string) {
+	l.InstallRef = installRef
+	l.require(listFeaturedMarketplaceListingsResponseDataItemFieldInstallRef)
 }
 
 // SetCollectionItemCount sets the CollectionItemCount field and marks it as non-optional;
@@ -2909,6 +3515,10 @@ const (
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindPrompt     ListFeaturedMarketplaceListingsResponseDataItemContentKind = "prompt"
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindSkill      ListFeaturedMarketplaceListingsResponseDataItemContentKind = "skill"
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindHook       ListFeaturedMarketplaceListingsResponseDataItemContentKind = "hook"
+	ListFeaturedMarketplaceListingsResponseDataItemContentKindAgent      ListFeaturedMarketplaceListingsResponseDataItemContentKind = "agent"
+	ListFeaturedMarketplaceListingsResponseDataItemContentKindMcp        ListFeaturedMarketplaceListingsResponseDataItemContentKind = "mcp"
+	ListFeaturedMarketplaceListingsResponseDataItemContentKindCommand    ListFeaturedMarketplaceListingsResponseDataItemContentKind = "command"
+	ListFeaturedMarketplaceListingsResponseDataItemContentKindSettings   ListFeaturedMarketplaceListingsResponseDataItemContentKind = "settings"
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindFolder     ListFeaturedMarketplaceListingsResponseDataItemContentKind = "folder"
 	ListFeaturedMarketplaceListingsResponseDataItemContentKindCollection ListFeaturedMarketplaceListingsResponseDataItemContentKind = "collection"
 )
@@ -2921,6 +3531,14 @@ func NewListFeaturedMarketplaceListingsResponseDataItemContentKindFromString(s s
 		return ListFeaturedMarketplaceListingsResponseDataItemContentKindSkill, nil
 	case "hook":
 		return ListFeaturedMarketplaceListingsResponseDataItemContentKindHook, nil
+	case "agent":
+		return ListFeaturedMarketplaceListingsResponseDataItemContentKindAgent, nil
+	case "mcp":
+		return ListFeaturedMarketplaceListingsResponseDataItemContentKindMcp, nil
+	case "command":
+		return ListFeaturedMarketplaceListingsResponseDataItemContentKindCommand, nil
+	case "settings":
+		return ListFeaturedMarketplaceListingsResponseDataItemContentKindSettings, nil
 	case "folder":
 		return ListFeaturedMarketplaceListingsResponseDataItemContentKindFolder, nil
 	case "collection":
@@ -3470,12 +4088,377 @@ func (l *ListMarketplaceCategoriesResponseDataItem) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+// Content types
+var (
+	listMarketplaceContentTypesResponseFieldData = big.NewInt(1 << 0)
+)
+
+type ListMarketplaceContentTypesResponse struct {
+	Data []*ListMarketplaceContentTypesResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListMarketplaceContentTypesResponse) GetData() []*ListMarketplaceContentTypesResponseDataItem {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListMarketplaceContentTypesResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListMarketplaceContentTypesResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponse) SetData(data []*ListMarketplaceContentTypesResponseDataItem) {
+	l.Data = data
+	l.require(listMarketplaceContentTypesResponseFieldData)
+}
+
+func (l *ListMarketplaceContentTypesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListMarketplaceContentTypesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListMarketplaceContentTypesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListMarketplaceContentTypesResponse) MarshalJSON() ([]byte, error) {
+	type embed ListMarketplaceContentTypesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListMarketplaceContentTypesResponse) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listMarketplaceContentTypesResponseDataItemFieldSlug                = big.NewInt(1 << 0)
+	listMarketplaceContentTypesResponseDataItemFieldLabel               = big.NewInt(1 << 1)
+	listMarketplaceContentTypesResponseDataItemFieldPluralLabel         = big.NewInt(1 << 2)
+	listMarketplaceContentTypesResponseDataItemFieldIcon                = big.NewInt(1 << 3)
+	listMarketplaceContentTypesResponseDataItemFieldColor               = big.NewInt(1 << 4)
+	listMarketplaceContentTypesResponseDataItemFieldSortOrder           = big.NewInt(1 << 5)
+	listMarketplaceContentTypesResponseDataItemFieldMediaAllowed        = big.NewInt(1 << 6)
+	listMarketplaceContentTypesResponseDataItemFieldEnabled             = big.NewInt(1 << 7)
+	listMarketplaceContentTypesResponseDataItemFieldInstallVerb         = big.NewInt(1 << 8)
+	listMarketplaceContentTypesResponseDataItemFieldDescriptionOneLiner = big.NewInt(1 << 9)
+	listMarketplaceContentTypesResponseDataItemFieldSettingsSchema      = big.NewInt(1 << 10)
+	listMarketplaceContentTypesResponseDataItemFieldCreatedAt           = big.NewInt(1 << 11)
+	listMarketplaceContentTypesResponseDataItemFieldUpdatedAt           = big.NewInt(1 << 12)
+)
+
+type ListMarketplaceContentTypesResponseDataItem struct {
+	Slug                string                 `json:"slug" url:"slug"`
+	Label               string                 `json:"label" url:"label"`
+	PluralLabel         string                 `json:"pluralLabel" url:"pluralLabel"`
+	Icon                string                 `json:"icon" url:"icon"`
+	Color               string                 `json:"color" url:"color"`
+	SortOrder           int                    `json:"sortOrder" url:"sortOrder"`
+	MediaAllowed        bool                   `json:"mediaAllowed" url:"mediaAllowed"`
+	Enabled             bool                   `json:"enabled" url:"enabled"`
+	InstallVerb         *string                `json:"installVerb,omitempty" url:"installVerb,omitempty"`
+	DescriptionOneLiner *string                `json:"descriptionOneLiner,omitempty" url:"descriptionOneLiner,omitempty"`
+	SettingsSchema      map[string]interface{} `json:"settingsSchema" url:"settingsSchema"`
+	CreatedAt           time.Time              `json:"createdAt" url:"createdAt"`
+	UpdatedAt           time.Time              `json:"updatedAt" url:"updatedAt"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.Slug
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetLabel() string {
+	if l == nil {
+		return ""
+	}
+	return l.Label
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetPluralLabel() string {
+	if l == nil {
+		return ""
+	}
+	return l.PluralLabel
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetIcon() string {
+	if l == nil {
+		return ""
+	}
+	return l.Icon
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetColor() string {
+	if l == nil {
+		return ""
+	}
+	return l.Color
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetSortOrder() int {
+	if l == nil {
+		return 0
+	}
+	return l.SortOrder
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetMediaAllowed() bool {
+	if l == nil {
+		return false
+	}
+	return l.MediaAllowed
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetEnabled() bool {
+	if l == nil {
+		return false
+	}
+	return l.Enabled
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetInstallVerb() *string {
+	if l == nil {
+		return nil
+	}
+	return l.InstallVerb
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetDescriptionOneLiner() *string {
+	if l == nil {
+		return nil
+	}
+	return l.DescriptionOneLiner
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetSettingsSchema() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.SettingsSchema
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetCreatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.CreatedAt
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetUpdatedAt() time.Time {
+	if l == nil {
+		return time.Time{}
+	}
+	return l.UpdatedAt
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetSlug(slug string) {
+	l.Slug = slug
+	l.require(listMarketplaceContentTypesResponseDataItemFieldSlug)
+}
+
+// SetLabel sets the Label field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetLabel(label string) {
+	l.Label = label
+	l.require(listMarketplaceContentTypesResponseDataItemFieldLabel)
+}
+
+// SetPluralLabel sets the PluralLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetPluralLabel(pluralLabel string) {
+	l.PluralLabel = pluralLabel
+	l.require(listMarketplaceContentTypesResponseDataItemFieldPluralLabel)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetIcon(icon string) {
+	l.Icon = icon
+	l.require(listMarketplaceContentTypesResponseDataItemFieldIcon)
+}
+
+// SetColor sets the Color field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetColor(color string) {
+	l.Color = color
+	l.require(listMarketplaceContentTypesResponseDataItemFieldColor)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetSortOrder(sortOrder int) {
+	l.SortOrder = sortOrder
+	l.require(listMarketplaceContentTypesResponseDataItemFieldSortOrder)
+}
+
+// SetMediaAllowed sets the MediaAllowed field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetMediaAllowed(mediaAllowed bool) {
+	l.MediaAllowed = mediaAllowed
+	l.require(listMarketplaceContentTypesResponseDataItemFieldMediaAllowed)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetEnabled(enabled bool) {
+	l.Enabled = enabled
+	l.require(listMarketplaceContentTypesResponseDataItemFieldEnabled)
+}
+
+// SetInstallVerb sets the InstallVerb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetInstallVerb(installVerb *string) {
+	l.InstallVerb = installVerb
+	l.require(listMarketplaceContentTypesResponseDataItemFieldInstallVerb)
+}
+
+// SetDescriptionOneLiner sets the DescriptionOneLiner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetDescriptionOneLiner(descriptionOneLiner *string) {
+	l.DescriptionOneLiner = descriptionOneLiner
+	l.require(listMarketplaceContentTypesResponseDataItemFieldDescriptionOneLiner)
+}
+
+// SetSettingsSchema sets the SettingsSchema field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetSettingsSchema(settingsSchema map[string]interface{}) {
+	l.SettingsSchema = settingsSchema
+	l.require(listMarketplaceContentTypesResponseDataItemFieldSettingsSchema)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetCreatedAt(createdAt time.Time) {
+	l.CreatedAt = createdAt
+	l.require(listMarketplaceContentTypesResponseDataItemFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceContentTypesResponseDataItem) SetUpdatedAt(updatedAt time.Time) {
+	l.UpdatedAt = updatedAt
+	l.require(listMarketplaceContentTypesResponseDataItemFieldUpdatedAt)
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) UnmarshalJSON(data []byte) error {
+	type embed ListMarketplaceContentTypesResponseDataItem
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = ListMarketplaceContentTypesResponseDataItem(unmarshaler.embed)
+	l.CreatedAt = unmarshaler.CreatedAt.Time()
+	l.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed ListMarketplaceContentTypesResponseDataItem
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed:     embed(*l),
+		CreatedAt: internal.NewDateTime(l.CreatedAt),
+		UpdatedAt: internal.NewDateTime(l.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListMarketplaceContentTypesResponseDataItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
 type ListMarketplaceListingsRequestKind string
 
 const (
 	ListMarketplaceListingsRequestKindPrompt     ListMarketplaceListingsRequestKind = "prompt"
 	ListMarketplaceListingsRequestKindSkill      ListMarketplaceListingsRequestKind = "skill"
 	ListMarketplaceListingsRequestKindHook       ListMarketplaceListingsRequestKind = "hook"
+	ListMarketplaceListingsRequestKindAgent      ListMarketplaceListingsRequestKind = "agent"
+	ListMarketplaceListingsRequestKindMcp        ListMarketplaceListingsRequestKind = "mcp"
+	ListMarketplaceListingsRequestKindCommand    ListMarketplaceListingsRequestKind = "command"
+	ListMarketplaceListingsRequestKindSettings   ListMarketplaceListingsRequestKind = "settings"
 	ListMarketplaceListingsRequestKindFolder     ListMarketplaceListingsRequestKind = "folder"
 	ListMarketplaceListingsRequestKindCollection ListMarketplaceListingsRequestKind = "collection"
 )
@@ -3488,6 +4471,14 @@ func NewListMarketplaceListingsRequestKindFromString(s string) (ListMarketplaceL
 		return ListMarketplaceListingsRequestKindSkill, nil
 	case "hook":
 		return ListMarketplaceListingsRequestKindHook, nil
+	case "agent":
+		return ListMarketplaceListingsRequestKindAgent, nil
+	case "mcp":
+		return ListMarketplaceListingsRequestKindMcp, nil
+	case "command":
+		return ListMarketplaceListingsRequestKindCommand, nil
+	case "settings":
+		return ListMarketplaceListingsRequestKindSettings, nil
 	case "folder":
 		return ListMarketplaceListingsRequestKindFolder, nil
 	case "collection":
@@ -3622,63 +4613,71 @@ func (l *ListMarketplaceListingsResponse) String() string {
 }
 
 var (
-	listMarketplaceListingsResponseDataItemFieldID                  = big.NewInt(1 << 0)
-	listMarketplaceListingsResponseDataItemFieldPromptID            = big.NewInt(1 << 1)
-	listMarketplaceListingsResponseDataItemFieldCollectionID        = big.NewInt(1 << 2)
-	listMarketplaceListingsResponseDataItemFieldDirectoryID         = big.NewInt(1 << 3)
-	listMarketplaceListingsResponseDataItemFieldSellerID            = big.NewInt(1 << 4)
-	listMarketplaceListingsResponseDataItemFieldTitle               = big.NewInt(1 << 5)
-	listMarketplaceListingsResponseDataItemFieldDescription         = big.NewInt(1 << 6)
-	listMarketplaceListingsResponseDataItemFieldStatus              = big.NewInt(1 << 7)
-	listMarketplaceListingsResponseDataItemFieldPriceCents          = big.NewInt(1 << 8)
-	listMarketplaceListingsResponseDataItemFieldCurrency            = big.NewInt(1 << 9)
-	listMarketplaceListingsResponseDataItemFieldAccessType          = big.NewInt(1 << 10)
-	listMarketplaceListingsResponseDataItemFieldAvgRating           = big.NewInt(1 << 11)
-	listMarketplaceListingsResponseDataItemFieldRatingCount         = big.NewInt(1 << 12)
-	listMarketplaceListingsResponseDataItemFieldViewCount           = big.NewInt(1 << 13)
-	listMarketplaceListingsResponseDataItemFieldPurchaseCount       = big.NewInt(1 << 14)
-	listMarketplaceListingsResponseDataItemFieldImportCount         = big.NewInt(1 << 15)
-	listMarketplaceListingsResponseDataItemFieldTags                = big.NewInt(1 << 16)
-	listMarketplaceListingsResponseDataItemFieldIsFeatured          = big.NewInt(1 << 17)
-	listMarketplaceListingsResponseDataItemFieldCategories          = big.NewInt(1 << 18)
-	listMarketplaceListingsResponseDataItemFieldSeller              = big.NewInt(1 << 19)
-	listMarketplaceListingsResponseDataItemFieldContentKind         = big.NewInt(1 << 20)
-	listMarketplaceListingsResponseDataItemFieldPromptSlug          = big.NewInt(1 << 21)
-	listMarketplaceListingsResponseDataItemFieldCollectionItemCount = big.NewInt(1 << 22)
-	listMarketplaceListingsResponseDataItemFieldSkill               = big.NewInt(1 << 23)
-	listMarketplaceListingsResponseDataItemFieldPublishedAt         = big.NewInt(1 << 24)
-	listMarketplaceListingsResponseDataItemFieldCreatedAt           = big.NewInt(1 << 25)
-	listMarketplaceListingsResponseDataItemFieldUpdatedAt           = big.NewInt(1 << 26)
+	listMarketplaceListingsResponseDataItemFieldID                     = big.NewInt(1 << 0)
+	listMarketplaceListingsResponseDataItemFieldPromptID               = big.NewInt(1 << 1)
+	listMarketplaceListingsResponseDataItemFieldCollectionID           = big.NewInt(1 << 2)
+	listMarketplaceListingsResponseDataItemFieldDirectoryID            = big.NewInt(1 << 3)
+	listMarketplaceListingsResponseDataItemFieldSellerID               = big.NewInt(1 << 4)
+	listMarketplaceListingsResponseDataItemFieldTitle                  = big.NewInt(1 << 5)
+	listMarketplaceListingsResponseDataItemFieldDescription            = big.NewInt(1 << 6)
+	listMarketplaceListingsResponseDataItemFieldStatus                 = big.NewInt(1 << 7)
+	listMarketplaceListingsResponseDataItemFieldPriceCents             = big.NewInt(1 << 8)
+	listMarketplaceListingsResponseDataItemFieldCurrency               = big.NewInt(1 << 9)
+	listMarketplaceListingsResponseDataItemFieldAccessType             = big.NewInt(1 << 10)
+	listMarketplaceListingsResponseDataItemFieldAvgRating              = big.NewInt(1 << 11)
+	listMarketplaceListingsResponseDataItemFieldRatingCount            = big.NewInt(1 << 12)
+	listMarketplaceListingsResponseDataItemFieldViewCount              = big.NewInt(1 << 13)
+	listMarketplaceListingsResponseDataItemFieldPurchaseCount          = big.NewInt(1 << 14)
+	listMarketplaceListingsResponseDataItemFieldImportCount            = big.NewInt(1 << 15)
+	listMarketplaceListingsResponseDataItemFieldTags                   = big.NewInt(1 << 16)
+	listMarketplaceListingsResponseDataItemFieldIsFeatured             = big.NewInt(1 << 17)
+	listMarketplaceListingsResponseDataItemFieldCategories             = big.NewInt(1 << 18)
+	listMarketplaceListingsResponseDataItemFieldSeller                 = big.NewInt(1 << 19)
+	listMarketplaceListingsResponseDataItemFieldContentKind            = big.NewInt(1 << 20)
+	listMarketplaceListingsResponseDataItemFieldFeaturedImageURL       = big.NewInt(1 << 21)
+	listMarketplaceListingsResponseDataItemFieldFeaturedVideoURL       = big.NewInt(1 << 22)
+	listMarketplaceListingsResponseDataItemFieldFeaturedMediaPosterURL = big.NewInt(1 << 23)
+	listMarketplaceListingsResponseDataItemFieldPromptSlug             = big.NewInt(1 << 24)
+	listMarketplaceListingsResponseDataItemFieldInstallRef             = big.NewInt(1 << 25)
+	listMarketplaceListingsResponseDataItemFieldCollectionItemCount    = big.NewInt(1 << 26)
+	listMarketplaceListingsResponseDataItemFieldSkill                  = big.NewInt(1 << 27)
+	listMarketplaceListingsResponseDataItemFieldPublishedAt            = big.NewInt(1 << 28)
+	listMarketplaceListingsResponseDataItemFieldCreatedAt              = big.NewInt(1 << 29)
+	listMarketplaceListingsResponseDataItemFieldUpdatedAt              = big.NewInt(1 << 30)
 )
 
 type ListMarketplaceListingsResponseDataItem struct {
-	ID                  string                                                   `json:"id" url:"id"`
-	PromptID            *string                                                  `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID        *string                                                  `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID         *string                                                  `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID            string                                                   `json:"sellerId" url:"sellerId"`
-	Title               string                                                   `json:"title" url:"title"`
-	Description         *string                                                  `json:"description,omitempty" url:"description,omitempty"`
-	Status              ListMarketplaceListingsResponseDataItemStatus            `json:"status" url:"status"`
-	PriceCents          int                                                      `json:"priceCents" url:"priceCents"`
-	Currency            string                                                   `json:"currency" url:"currency"`
-	AccessType          *ListMarketplaceListingsResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating           *string                                                  `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount         *int                                                     `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount           *int                                                     `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount       *int                                                     `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount         *int                                                     `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags                []string                                                 `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured          *bool                                                    `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories          []*ListMarketplaceListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller              *ListMarketplaceListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind         *ListMarketplaceListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	PromptSlug          *string                                                  `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	CollectionItemCount *int                                                     `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
-	Skill               *ListMarketplaceListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt         *time.Time                                               `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt           time.Time                                                `json:"createdAt" url:"createdAt"`
-	UpdatedAt           time.Time                                                `json:"updatedAt" url:"updatedAt"`
+	ID                     string                                                   `json:"id" url:"id"`
+	PromptID               *string                                                  `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID           *string                                                  `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID            *string                                                  `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID               string                                                   `json:"sellerId" url:"sellerId"`
+	Title                  string                                                   `json:"title" url:"title"`
+	Description            *string                                                  `json:"description,omitempty" url:"description,omitempty"`
+	Status                 ListMarketplaceListingsResponseDataItemStatus            `json:"status" url:"status"`
+	PriceCents             int                                                      `json:"priceCents" url:"priceCents"`
+	Currency               string                                                   `json:"currency" url:"currency"`
+	AccessType             *ListMarketplaceListingsResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating              *string                                                  `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount            *int                                                     `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount              *int                                                     `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount          *int                                                     `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount            *int                                                     `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                   []string                                                 `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured             *bool                                                    `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories             []*ListMarketplaceListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
+	Seller                 *ListMarketplaceListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind            *ListMarketplaceListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	FeaturedImageURL       *string                                                  `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
+	FeaturedVideoURL       *string                                                  `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
+	FeaturedMediaPosterURL *string                                                  `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
+	PromptSlug             *string                                                  `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	InstallRef             *string                                                  `json:"installRef,omitempty" url:"installRef,omitempty"`
+	CollectionItemCount    *int                                                     `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill                  *ListMarketplaceListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt            *time.Time                                               `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt              time.Time                                                `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time                                                `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3834,11 +4833,39 @@ func (l *ListMarketplaceListingsResponseDataItem) GetContentKind() *ListMarketpl
 	return l.ContentKind
 }
 
+func (l *ListMarketplaceListingsResponseDataItem) GetFeaturedImageURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.FeaturedImageURL
+}
+
+func (l *ListMarketplaceListingsResponseDataItem) GetFeaturedVideoURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.FeaturedVideoURL
+}
+
+func (l *ListMarketplaceListingsResponseDataItem) GetFeaturedMediaPosterURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.FeaturedMediaPosterURL
+}
+
 func (l *ListMarketplaceListingsResponseDataItem) GetPromptSlug() *string {
 	if l == nil {
 		return nil
 	}
 	return l.PromptSlug
+}
+
+func (l *ListMarketplaceListingsResponseDataItem) GetInstallRef() *string {
+	if l == nil {
+		return nil
+	}
+	return l.InstallRef
 }
 
 func (l *ListMarketplaceListingsResponseDataItem) GetCollectionItemCount() *int {
@@ -4034,11 +5061,39 @@ func (l *ListMarketplaceListingsResponseDataItem) SetContentKind(contentKind *Li
 	l.require(listMarketplaceListingsResponseDataItemFieldContentKind)
 }
 
+// SetFeaturedImageURL sets the FeaturedImageURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsResponseDataItem) SetFeaturedImageURL(featuredImageURL *string) {
+	l.FeaturedImageURL = featuredImageURL
+	l.require(listMarketplaceListingsResponseDataItemFieldFeaturedImageURL)
+}
+
+// SetFeaturedVideoURL sets the FeaturedVideoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsResponseDataItem) SetFeaturedVideoURL(featuredVideoURL *string) {
+	l.FeaturedVideoURL = featuredVideoURL
+	l.require(listMarketplaceListingsResponseDataItemFieldFeaturedVideoURL)
+}
+
+// SetFeaturedMediaPosterURL sets the FeaturedMediaPosterURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsResponseDataItem) SetFeaturedMediaPosterURL(featuredMediaPosterURL *string) {
+	l.FeaturedMediaPosterURL = featuredMediaPosterURL
+	l.require(listMarketplaceListingsResponseDataItemFieldFeaturedMediaPosterURL)
+}
+
 // SetPromptSlug sets the PromptSlug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListMarketplaceListingsResponseDataItem) SetPromptSlug(promptSlug *string) {
 	l.PromptSlug = promptSlug
 	l.require(listMarketplaceListingsResponseDataItemFieldPromptSlug)
+}
+
+// SetInstallRef sets the InstallRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsResponseDataItem) SetInstallRef(installRef *string) {
+	l.InstallRef = installRef
+	l.require(listMarketplaceListingsResponseDataItemFieldInstallRef)
 }
 
 // SetCollectionItemCount sets the CollectionItemCount field and marks it as non-optional;
@@ -4317,6 +5372,10 @@ const (
 	ListMarketplaceListingsResponseDataItemContentKindPrompt     ListMarketplaceListingsResponseDataItemContentKind = "prompt"
 	ListMarketplaceListingsResponseDataItemContentKindSkill      ListMarketplaceListingsResponseDataItemContentKind = "skill"
 	ListMarketplaceListingsResponseDataItemContentKindHook       ListMarketplaceListingsResponseDataItemContentKind = "hook"
+	ListMarketplaceListingsResponseDataItemContentKindAgent      ListMarketplaceListingsResponseDataItemContentKind = "agent"
+	ListMarketplaceListingsResponseDataItemContentKindMcp        ListMarketplaceListingsResponseDataItemContentKind = "mcp"
+	ListMarketplaceListingsResponseDataItemContentKindCommand    ListMarketplaceListingsResponseDataItemContentKind = "command"
+	ListMarketplaceListingsResponseDataItemContentKindSettings   ListMarketplaceListingsResponseDataItemContentKind = "settings"
 	ListMarketplaceListingsResponseDataItemContentKindFolder     ListMarketplaceListingsResponseDataItemContentKind = "folder"
 	ListMarketplaceListingsResponseDataItemContentKindCollection ListMarketplaceListingsResponseDataItemContentKind = "collection"
 )
@@ -4329,6 +5388,14 @@ func NewListMarketplaceListingsResponseDataItemContentKindFromString(s string) (
 		return ListMarketplaceListingsResponseDataItemContentKindSkill, nil
 	case "hook":
 		return ListMarketplaceListingsResponseDataItemContentKindHook, nil
+	case "agent":
+		return ListMarketplaceListingsResponseDataItemContentKindAgent, nil
+	case "mcp":
+		return ListMarketplaceListingsResponseDataItemContentKindMcp, nil
+	case "command":
+		return ListMarketplaceListingsResponseDataItemContentKindCommand, nil
+	case "settings":
+		return ListMarketplaceListingsResponseDataItemContentKindSettings, nil
 	case "folder":
 		return ListMarketplaceListingsResponseDataItemContentKindFolder, nil
 	case "collection":

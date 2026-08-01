@@ -109,6 +109,48 @@ func (r *RawClient) CreateOrganization(
 	}, nil
 }
 
+func (r *RawClient) DeleteOrganization(
+	ctx context.Context,
+	request *promptvmgosdk.DeleteOrganizationRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/organizations/%v",
+		request.OrgID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
 func (r *RawClient) AcceptOrganizationInvitation(
 	ctx context.Context,
 	request *promptvmgosdk.AcceptOrganizationInvitationRequest,

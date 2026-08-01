@@ -63,6 +63,58 @@ func (b *BrowseMarketplaceCreatorsRequest) SetLimit(limit *string) {
 }
 
 var (
+	claimMarketplaceCreatorProfileRequestFieldCreatorUserID = big.NewInt(1 << 0)
+	claimMarketplaceCreatorProfileRequestFieldReason        = big.NewInt(1 << 1)
+	claimMarketplaceCreatorProfileRequestFieldProofURL      = big.NewInt(1 << 2)
+	claimMarketplaceCreatorProfileRequestFieldMessage       = big.NewInt(1 << 3)
+)
+
+type ClaimMarketplaceCreatorProfileRequest struct {
+	CreatorUserID string  `json:"-" url:"-"`
+	Reason        string  `json:"reason" url:"-"`
+	ProofURL      string  `json:"proofUrl" url:"-"`
+	Message       *string `json:"message,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *ClaimMarketplaceCreatorProfileRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetCreatorUserID sets the CreatorUserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceCreatorProfileRequest) SetCreatorUserID(creatorUserID string) {
+	c.CreatorUserID = creatorUserID
+	c.require(claimMarketplaceCreatorProfileRequestFieldCreatorUserID)
+}
+
+// SetReason sets the Reason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceCreatorProfileRequest) SetReason(reason string) {
+	c.Reason = reason
+	c.require(claimMarketplaceCreatorProfileRequestFieldReason)
+}
+
+// SetProofURL sets the ProofURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceCreatorProfileRequest) SetProofURL(proofURL string) {
+	c.ProofURL = proofURL
+	c.require(claimMarketplaceCreatorProfileRequestFieldProofURL)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceCreatorProfileRequest) SetMessage(message *string) {
+	c.Message = message
+	c.require(claimMarketplaceCreatorProfileRequestFieldMessage)
+}
+
+var (
 	createMarketplaceCreatorProfileRequestFieldBio         = big.NewInt(1 << 0)
 	createMarketplaceCreatorProfileRequestFieldWebsite     = big.NewInt(1 << 1)
 	createMarketplaceCreatorProfileRequestFieldSocialLinks = big.NewInt(1 << 2)
@@ -606,6 +658,163 @@ func (b *BrowseMarketplaceCreatorsResponseMeta) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// Claim request accepted
+var (
+	claimMarketplaceCreatorProfileResponseFieldData = big.NewInt(1 << 0)
+)
+
+type ClaimMarketplaceCreatorProfileResponse struct {
+	Data *ClaimMarketplaceCreatorProfileResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponse) GetData() *ClaimMarketplaceCreatorProfileResponseData {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceCreatorProfileResponse) SetData(data *ClaimMarketplaceCreatorProfileResponseData) {
+	c.Data = data
+	c.require(claimMarketplaceCreatorProfileResponseFieldData)
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClaimMarketplaceCreatorProfileResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClaimMarketplaceCreatorProfileResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponse) MarshalJSON() ([]byte, error) {
+	type embed ClaimMarketplaceCreatorProfileResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	claimMarketplaceCreatorProfileResponseDataFieldRequested = big.NewInt(1 << 0)
+)
+
+type ClaimMarketplaceCreatorProfileResponseData struct {
+	Requested bool `json:"requested" url:"requested"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponseData) GetRequested() bool {
+	if c == nil {
+		return false
+	}
+	return c.Requested
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponseData) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponseData) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetRequested sets the Requested field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClaimMarketplaceCreatorProfileResponseData) SetRequested(requested bool) {
+	c.Requested = requested
+	c.require(claimMarketplaceCreatorProfileResponseDataFieldRequested)
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClaimMarketplaceCreatorProfileResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClaimMarketplaceCreatorProfileResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponseData) MarshalJSON() ([]byte, error) {
+	type embed ClaimMarketplaceCreatorProfileResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClaimMarketplaceCreatorProfileResponseData) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // Profile created
 var (
 	createMarketplaceCreatorProfileResponseFieldData = big.NewInt(1 << 0)
@@ -1044,6 +1253,7 @@ var (
 	getMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 6)
 	getMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 7)
 	getMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 8)
+	getMarketplaceCreatorProfileResponseDataFieldIsClaimable = big.NewInt(1 << 9)
 )
 
 type GetMarketplaceCreatorProfileResponseData struct {
@@ -1056,6 +1266,7 @@ type GetMarketplaceCreatorProfileResponseData struct {
 	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
 	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
 	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	IsClaimable *bool                  `json:"isClaimable,omitempty" url:"isClaimable,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1125,6 +1336,13 @@ func (g *GetMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
 		return nil
 	}
 	return g.AvatarURL
+}
+
+func (g *GetMarketplaceCreatorProfileResponseData) GetIsClaimable() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsClaimable
 }
 
 func (g *GetMarketplaceCreatorProfileResponseData) GetExtraProperties() map[string]interface{} {
@@ -1199,6 +1417,13 @@ func (g *GetMarketplaceCreatorProfileResponseData) SetUsername(username *string)
 func (g *GetMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *string) {
 	g.AvatarURL = avatarURL
 	g.require(getMarketplaceCreatorProfileResponseDataFieldAvatarURL)
+}
+
+// SetIsClaimable sets the IsClaimable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileResponseData) SetIsClaimable(isClaimable *bool) {
+	g.IsClaimable = isClaimable
+	g.require(getMarketplaceCreatorProfileResponseDataFieldIsClaimable)
 }
 
 func (g *GetMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte) error {

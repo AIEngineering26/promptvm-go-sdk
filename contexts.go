@@ -265,10 +265,14 @@ func (l *ListContextKindsResponseKindsItem) String() string {
 type ListContextKindsResponseKindsItemName string
 
 const (
-	ListContextKindsResponseKindsItemNamePrompt  ListContextKindsResponseKindsItemName = "prompt"
-	ListContextKindsResponseKindsItemNameSkill   ListContextKindsResponseKindsItemName = "skill"
-	ListContextKindsResponseKindsItemNameHook    ListContextKindsResponseKindsItemName = "hook"
-	ListContextKindsResponseKindsItemNameCapture ListContextKindsResponseKindsItemName = "capture"
+	ListContextKindsResponseKindsItemNamePrompt   ListContextKindsResponseKindsItemName = "prompt"
+	ListContextKindsResponseKindsItemNameSkill    ListContextKindsResponseKindsItemName = "skill"
+	ListContextKindsResponseKindsItemNameHook     ListContextKindsResponseKindsItemName = "hook"
+	ListContextKindsResponseKindsItemNameCapture  ListContextKindsResponseKindsItemName = "capture"
+	ListContextKindsResponseKindsItemNameAgent    ListContextKindsResponseKindsItemName = "agent"
+	ListContextKindsResponseKindsItemNameMcp      ListContextKindsResponseKindsItemName = "mcp"
+	ListContextKindsResponseKindsItemNameCommand  ListContextKindsResponseKindsItemName = "command"
+	ListContextKindsResponseKindsItemNameSettings ListContextKindsResponseKindsItemName = "settings"
 )
 
 func NewListContextKindsResponseKindsItemNameFromString(s string) (ListContextKindsResponseKindsItemName, error) {
@@ -281,6 +285,14 @@ func NewListContextKindsResponseKindsItemNameFromString(s string) (ListContextKi
 		return ListContextKindsResponseKindsItemNameHook, nil
 	case "capture":
 		return ListContextKindsResponseKindsItemNameCapture, nil
+	case "agent":
+		return ListContextKindsResponseKindsItemNameAgent, nil
+	case "mcp":
+		return ListContextKindsResponseKindsItemNameMcp, nil
+	case "command":
+		return ListContextKindsResponseKindsItemNameCommand, nil
+	case "settings":
+		return ListContextKindsResponseKindsItemNameSettings, nil
 	}
 	var t ListContextKindsResponseKindsItemName
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

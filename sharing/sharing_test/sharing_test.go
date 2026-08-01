@@ -168,6 +168,59 @@ func TestSharingRevokePromptCollaboratorWithWireMock(
 	VerifyRequestCount(t, "TestSharingRevokePromptCollaboratorWithWireMock", "DELETE", "/api/v1/prompts/promptId/collaborators/collaboratorId", nil, 1)
 }
 
+func TestSharingListPromptShareLinksWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ListPromptShareLinksRequest{
+		PromptID: "promptId",
+	}
+	_, invocationErr := client.Sharing.ListPromptShareLinks(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestSharingListPromptShareLinksWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestSharingListPromptShareLinksWithWireMock", "GET", "/api/v1/prompts/promptId/share-links", nil, 1)
+}
+
+func TestSharingRevokePromptShareLinkWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.RevokePromptShareLinkRequest{
+		PromptID: "promptId",
+		LinkID:   "linkId",
+	}
+	invocationErr := client.Sharing.RevokePromptShareLink(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestSharingRevokePromptShareLinkWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestSharingRevokePromptShareLinkWithWireMock", "DELETE", "/api/v1/prompts/promptId/share-links/linkId", nil, 1)
+}
+
 func TestSharingCreatePromptShareLinkWithWireMock(
 	t *testing.T,
 ) {
@@ -192,4 +245,30 @@ func TestSharingCreatePromptShareLinkWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestSharingCreatePromptShareLinkWithWireMock", "POST", "/api/v1/prompts/promptId/share-link", nil, 1)
+}
+
+func TestSharingImportSharedPromptWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ImportSharedPromptRequest{
+		Token: "token",
+	}
+	_, invocationErr := client.Sharing.ImportSharedPrompt(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestSharingImportSharedPromptWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestSharingImportSharedPromptWithWireMock", "POST", "/api/v1/share/token/import", nil, 1)
 }

@@ -634,6 +634,25 @@ func (c *ConflictErrorBody) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ConflictErrorBodyError string
+
+const (
+	ConflictErrorBodyErrorAmbiguousRef ConflictErrorBodyError = "AMBIGUOUS_REF"
+)
+
+func NewConflictErrorBodyErrorFromString(s string) (ConflictErrorBodyError, error) {
+	switch s {
+	case "AMBIGUOUS_REF":
+		return ConflictErrorBodyErrorAmbiguousRef, nil
+	}
+	var t ConflictErrorBodyError
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ConflictErrorBodyError) Ptr() *ConflictErrorBodyError {
+	return &c
+}
+
 // Scope denied or not an org member
 var (
 	forbiddenErrorBodyFieldError     = big.NewInt(1 << 0)
@@ -1214,7 +1233,7 @@ func (g *GatewayTimeoutErrorBody) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
-// Link expired or max uses reached
+// Link revoked, expired, or max uses reached
 var (
 	goneErrorBodyFieldStatusCode = big.NewInt(1 << 0)
 	goneErrorBodyFieldError      = big.NewInt(1 << 1)
@@ -1830,6 +1849,25 @@ func (n *NotFoundErrorBody) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", n)
+}
+
+type NotFoundErrorBodyError string
+
+const (
+	NotFoundErrorBodyErrorNotFound NotFoundErrorBodyError = "NOT_FOUND"
+)
+
+func NewNotFoundErrorBodyErrorFromString(s string) (NotFoundErrorBodyError, error) {
+	switch s {
+	case "NOT_FOUND":
+		return NotFoundErrorBodyErrorNotFound, nil
+	}
+	var t NotFoundErrorBodyError
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (n NotFoundErrorBodyError) Ptr() *NotFoundErrorBodyError {
+	return &n
 }
 
 // Payment Required — the active org's plan does not grant the requested feature or its numeric limit has been reached. Spec: FR-04-4.

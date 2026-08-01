@@ -110,6 +110,32 @@ func TestOrganizationsCreateOrganizationWithWireMock(
 	VerifyRequestCount(t, "TestOrganizationsCreateOrganizationWithWireMock", "POST", "/api/v1/organizations/", nil, 1)
 }
 
+func TestOrganizationsDeleteOrganizationWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.DeleteOrganizationRequest{
+		OrgID: "orgId",
+	}
+	invocationErr := client.Organizations.DeleteOrganization(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestOrganizationsDeleteOrganizationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestOrganizationsDeleteOrganizationWithWireMock", "DELETE", "/api/v1/organizations/orgId", nil, 1)
+}
+
 func TestOrganizationsAcceptOrganizationInvitationWithWireMock(
 	t *testing.T,
 ) {

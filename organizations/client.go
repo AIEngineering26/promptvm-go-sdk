@@ -62,6 +62,23 @@ func (c *Client) CreateOrganization(
 	return nil
 }
 
+// Soft-deletes the organization and cascades: workspaces and files are soft-deleted, members removed, API keys and org-scoped sessions revoked, the active Stripe subscription is cancelled immediately, and an org.deleted audit log is written. Owner only; JWT session only — API-key and CLI-token callers are rejected with 403 regardless of role. Personal organizations cannot be deleted standalone (422) — they are deleted together with the account.
+func (c *Client) DeleteOrganization(
+	ctx context.Context,
+	request *promptvmgosdk.DeleteOrganizationRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.DeleteOrganization(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *Client) AcceptOrganizationInvitation(
 	ctx context.Context,
 	request *promptvmgosdk.AcceptOrganizationInvitationRequest,

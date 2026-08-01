@@ -295,7 +295,7 @@ func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
 }
 
-// Idempotency conflict
+// File exceeds the size limit
 type UnprocessableEntityError struct {
 	*core.APIError
 	Body interface{}

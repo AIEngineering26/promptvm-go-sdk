@@ -2460,6 +2460,9 @@ const (
 	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpEnabled     GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_enabled"
 	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpDisabled    GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_disabled"
 	GetSettingsOverviewResponseRecentActivityItemEventTypeOrgMfaPolicyUpdated    GetSettingsOverviewResponseRecentActivityItemEventType = "org.mfa_policy_updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeShareLinkRevoked       GetSettingsOverviewResponseRecentActivityItemEventType = "share_link.revoked"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeOrgDeleted             GetSettingsOverviewResponseRecentActivityItemEventType = "org.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAccountDeleted         GetSettingsOverviewResponseRecentActivityItemEventType = "account.deleted"
 )
 
 func NewGetSettingsOverviewResponseRecentActivityItemEventTypeFromString(s string) (GetSettingsOverviewResponseRecentActivityItemEventType, error) {
@@ -2518,6 +2521,12 @@ func NewGetSettingsOverviewResponseRecentActivityItemEventTypeFromString(s strin
 		return GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpDisabled, nil
 	case "org.mfa_policy_updated":
 		return GetSettingsOverviewResponseRecentActivityItemEventTypeOrgMfaPolicyUpdated, nil
+	case "share_link.revoked":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeShareLinkRevoked, nil
+	case "org.deleted":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeOrgDeleted, nil
+	case "account.deleted":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAccountDeleted, nil
 	}
 	var t GetSettingsOverviewResponseRecentActivityItemEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -3019,6 +3028,9 @@ const (
 	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpEnabled     ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_enabled"
 	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpDisabled    ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_disabled"
 	ListAuditLogsResponseEventsItemEventTypeOrgMfaPolicyUpdated    ListAuditLogsResponseEventsItemEventType = "org.mfa_policy_updated"
+	ListAuditLogsResponseEventsItemEventTypeShareLinkRevoked       ListAuditLogsResponseEventsItemEventType = "share_link.revoked"
+	ListAuditLogsResponseEventsItemEventTypeOrgDeleted             ListAuditLogsResponseEventsItemEventType = "org.deleted"
+	ListAuditLogsResponseEventsItemEventTypeAccountDeleted         ListAuditLogsResponseEventsItemEventType = "account.deleted"
 )
 
 func NewListAuditLogsResponseEventsItemEventTypeFromString(s string) (ListAuditLogsResponseEventsItemEventType, error) {
@@ -3077,6 +3089,12 @@ func NewListAuditLogsResponseEventsItemEventTypeFromString(s string) (ListAuditL
 		return ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpDisabled, nil
 	case "org.mfa_policy_updated":
 		return ListAuditLogsResponseEventsItemEventTypeOrgMfaPolicyUpdated, nil
+	case "share_link.revoked":
+		return ListAuditLogsResponseEventsItemEventTypeShareLinkRevoked, nil
+	case "org.deleted":
+		return ListAuditLogsResponseEventsItemEventTypeOrgDeleted, nil
+	case "account.deleted":
+		return ListAuditLogsResponseEventsItemEventTypeAccountDeleted, nil
 	}
 	var t ListAuditLogsResponseEventsItemEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

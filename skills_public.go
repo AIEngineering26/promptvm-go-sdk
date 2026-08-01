@@ -14,12 +14,14 @@ var (
 	getPublicSkillBySlugRequestFieldSlug    = big.NewInt(1 << 0)
 	getPublicSkillBySlugRequestFieldVersion = big.NewInt(1 << 1)
 	getPublicSkillBySlugRequestFieldFormat  = big.NewInt(1 << 2)
+	getPublicSkillBySlugRequestFieldCreator = big.NewInt(1 << 3)
 )
 
 type GetPublicSkillBySlugRequest struct {
 	Slug    string                             `json:"-" url:"-"`
 	Version *string                            `json:"-" url:"version,omitempty"`
 	Format  *GetPublicSkillBySlugRequestFormat `json:"-" url:"format,omitempty"`
+	Creator *string                            `json:"-" url:"creator,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -53,12 +55,21 @@ func (g *GetPublicSkillBySlugRequest) SetFormat(format *GetPublicSkillBySlugRequ
 	g.require(getPublicSkillBySlugRequestFieldFormat)
 }
 
+// SetCreator sets the Creator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPublicSkillBySlugRequest) SetCreator(creator *string) {
+	g.Creator = creator
+	g.require(getPublicSkillBySlugRequestFieldCreator)
+}
+
 var (
-	recordPublicSkillInstallRequestFieldSlug = big.NewInt(1 << 0)
+	recordPublicSkillInstallRequestFieldSlug    = big.NewInt(1 << 0)
+	recordPublicSkillInstallRequestFieldCreator = big.NewInt(1 << 1)
 )
 
 type RecordPublicSkillInstallRequest struct {
-	Slug string `json:"-" url:"-"`
+	Slug    string  `json:"-" url:"-"`
+	Creator *string `json:"-" url:"creator,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -76,6 +87,13 @@ func (r *RecordPublicSkillInstallRequest) require(field *big.Int) {
 func (r *RecordPublicSkillInstallRequest) SetSlug(slug string) {
 	r.Slug = slug
 	r.require(recordPublicSkillInstallRequestFieldSlug)
+}
+
+// SetCreator sets the Creator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RecordPublicSkillInstallRequest) SetCreator(creator *string) {
+	r.Creator = creator
+	r.require(recordPublicSkillInstallRequestFieldCreator)
 }
 
 type GetPublicSkillBySlugRequestFormat string

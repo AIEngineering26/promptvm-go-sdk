@@ -32,7 +32,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Public endpoint — no authentication required.
+// Public endpoint — no authentication required. Each successful access increments the link's useCount (counted against maxUses). Pass meta=1 (or meta=true) for a metadata-only read: the response and all state checks (revoked / expired / password / max-use) are identical, but useCount is NOT incremented — intended for server-side metadata/OG/share-image fetches so they never burn maxUses.
 func (c *Client) AccessSharedPrompt(
 	ctx context.Context,
 	request *promptvmgosdk.AccessSharedPromptRequest,
@@ -97,12 +97,63 @@ func (c *Client) RevokePromptCollaborator(
 	return response.Body, nil
 }
 
+// Returns non-revoked share links for the prompt. Requires share permission.
+func (c *Client) ListPromptShareLinks(
+	ctx context.Context,
+	request *promptvmgosdk.ListPromptShareLinksRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ListPromptShareLinksResponse, error) {
+	response, err := c.WithRawResponse.ListPromptShareLinks(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Sets revokedAt/revokedBy. Idempotent — revoking an already-revoked link returns 204.
+func (c *Client) RevokePromptShareLink(
+	ctx context.Context,
+	request *promptvmgosdk.RevokePromptShareLinkRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.RevokePromptShareLink(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *Client) CreatePromptShareLink(
 	ctx context.Context,
 	request *promptvmgosdk.CreatePromptShareLinkRequest,
 	opts ...option.RequestOption,
 ) (*promptvmgosdk.CreatePromptShareLinkResponse, error) {
 	response, err := c.WithRawResponse.CreatePromptShareLink(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Copies the prompt behind a share link into the caller's workspace (body.workspaceId, or the caller's default/first writable workspace when omitted). Imports the SHARED version — the pinned version's content for pinned links, else the latest. Link-state semantics match GET /share/:token (404/410/401); the link's useCount is incremented only when the import succeeds, never on a 402/403/404 failure.
+func (c *Client) ImportSharedPrompt(
+	ctx context.Context,
+	request *promptvmgosdk.ImportSharedPromptRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ImportSharedPromptResponse, error) {
+	response, err := c.WithRawResponse.ImportSharedPrompt(
 		ctx,
 		request,
 		opts...,

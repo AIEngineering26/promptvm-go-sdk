@@ -216,6 +216,93 @@ func (r *RawClient) RevokePromptCollaborator(
 	}, nil
 }
 
+func (r *RawClient) ListPromptShareLinks(
+	ctx context.Context,
+	request *promptvmgosdk.ListPromptShareLinksRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.ListPromptShareLinksResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/prompts/%v/share-links",
+		request.PromptID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *promptvmgosdk.ListPromptShareLinksResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.ListPromptShareLinksResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) RevokePromptShareLink(
+	ctx context.Context,
+	request *promptvmgosdk.RevokePromptShareLinkRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/prompts/%v/share-links/%v",
+		request.PromptID,
+		request.LinkID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
 func (r *RawClient) CreatePromptShareLink(
 	ctx context.Context,
 	request *promptvmgosdk.CreatePromptShareLinkRequest,
@@ -259,6 +346,55 @@ func (r *RawClient) CreatePromptShareLink(
 		return nil, err
 	}
 	return &core.Response[*promptvmgosdk.CreatePromptShareLinkResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ImportSharedPrompt(
+	ctx context.Context,
+	request *promptvmgosdk.ImportSharedPromptRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.ImportSharedPromptResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/share/%v/import",
+		request.Token,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotency-key", *request.IdempotencyKey)
+	}
+	headers.Add("Content-Type", "application/json")
+	var response *promptvmgosdk.ImportSharedPromptResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.ImportSharedPromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -53,13 +53,13 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	503: func(apiError *core.APIError) error {
-		return &ServiceUnavailableError{
+	422: func(apiError *core.APIError) error {
+		return &UnprocessableEntityError{
 			APIError: apiError,
 		}
 	},
-	422: func(apiError *core.APIError) error {
-		return &UnprocessableEntityError{
+	503: func(apiError *core.APIError) error {
+		return &ServiceUnavailableError{
 			APIError: apiError,
 		}
 	},

@@ -133,7 +133,7 @@ func (c *Client) UpdateResource(
 	return response.Body, nil
 }
 
-// Returns a time-limited presigned URL (1 hour) for downloading the resource from S3.
+// Returns a time-limited presigned URL (1 hour) for downloading the resource from S3. Disposition defaults to attachment; inline is honored only for sniff-verified preview-safe types (png, jpeg, gif, webp, pdf) and otherwise falls back to attachment, reported in the response.
 func (c *Client) GetResourceDownloadURL(
 	ctx context.Context,
 	request *promptvmgosdk.GetResourceDownloadURLRequest,

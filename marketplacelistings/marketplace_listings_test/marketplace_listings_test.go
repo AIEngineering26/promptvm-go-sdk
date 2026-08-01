@@ -141,6 +141,90 @@ func TestMarketplaceListingsUpdateMarketplaceListingWithWireMock(
 	VerifyRequestCount(t, "TestMarketplaceListingsUpdateMarketplaceListingWithWireMock", "PATCH", "/api/v1/marketplace/listings/listingId", nil, 1)
 }
 
+func TestMarketplaceListingsInitiateListingMediaUploadWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.InitiateListingMediaUploadRequest{
+		ListingID:   "listingId",
+		Kind:        promptvmgosdk.InitiateListingMediaUploadRequestKindImage,
+		ContentType: "contentType",
+		SizeBytes:   1,
+	}
+	_, invocationErr := client.MarketplaceListings.InitiateListingMediaUpload(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceListingsInitiateListingMediaUploadWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceListingsInitiateListingMediaUploadWithWireMock", "POST", "/api/v1/marketplace/listings/listingId/media/upload", nil, 1)
+}
+
+func TestMarketplaceListingsConfirmListingMediaUploadWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ConfirmListingMediaUploadRequest{
+		ListingID: "listingId",
+		Kind:      promptvmgosdk.ConfirmListingMediaUploadRequestKindImage,
+		Key:       "key",
+	}
+	_, invocationErr := client.MarketplaceListings.ConfirmListingMediaUpload(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceListingsConfirmListingMediaUploadWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceListingsConfirmListingMediaUploadWithWireMock", "POST", "/api/v1/marketplace/listings/listingId/media/confirm", nil, 1)
+}
+
+func TestMarketplaceListingsDeleteListingMediaWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.DeleteListingMediaRequest{
+		ListingID: "listingId",
+		Kind:      promptvmgosdk.DeleteListingMediaRequestKindImage.Ptr(),
+	}
+	invocationErr := client.MarketplaceListings.DeleteListingMedia(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceListingsDeleteListingMediaWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceListingsDeleteListingMediaWithWireMock", "DELETE", "/api/v1/marketplace/listings/listingId/media/image", nil, 1)
+}
+
 func TestMarketplaceListingsClaimMarketplaceListingWithWireMock(
 	t *testing.T,
 ) {

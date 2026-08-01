@@ -597,63 +597,71 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponse) String() string {
 }
 
 var (
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldID                  = big.NewInt(1 << 0)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptID            = big.NewInt(1 << 1)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionID        = big.NewInt(1 << 2)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDirectoryID         = big.NewInt(1 << 3)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSellerID            = big.NewInt(1 << 4)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTitle               = big.NewInt(1 << 5)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDescription         = big.NewInt(1 << 6)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldStatus              = big.NewInt(1 << 7)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPriceCents          = big.NewInt(1 << 8)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCurrency            = big.NewInt(1 << 9)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAccessType          = big.NewInt(1 << 10)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAvgRating           = big.NewInt(1 << 11)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldRatingCount         = big.NewInt(1 << 12)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldViewCount           = big.NewInt(1 << 13)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPurchaseCount       = big.NewInt(1 << 14)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldImportCount         = big.NewInt(1 << 15)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTags                = big.NewInt(1 << 16)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldIsFeatured          = big.NewInt(1 << 17)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCategories          = big.NewInt(1 << 18)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller              = big.NewInt(1 << 19)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind         = big.NewInt(1 << 20)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug          = big.NewInt(1 << 21)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionItemCount = big.NewInt(1 << 22)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill               = big.NewInt(1 << 23)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt         = big.NewInt(1 << 24)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt           = big.NewInt(1 << 25)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt           = big.NewInt(1 << 26)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldID                     = big.NewInt(1 << 0)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptID               = big.NewInt(1 << 1)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionID           = big.NewInt(1 << 2)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDirectoryID            = big.NewInt(1 << 3)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSellerID               = big.NewInt(1 << 4)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTitle                  = big.NewInt(1 << 5)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldDescription            = big.NewInt(1 << 6)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldStatus                 = big.NewInt(1 << 7)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPriceCents             = big.NewInt(1 << 8)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCurrency               = big.NewInt(1 << 9)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAccessType             = big.NewInt(1 << 10)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldAvgRating              = big.NewInt(1 << 11)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldRatingCount            = big.NewInt(1 << 12)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldViewCount              = big.NewInt(1 << 13)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPurchaseCount          = big.NewInt(1 << 14)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldImportCount            = big.NewInt(1 << 15)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTags                   = big.NewInt(1 << 16)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldIsFeatured             = big.NewInt(1 << 17)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCategories             = big.NewInt(1 << 18)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller                 = big.NewInt(1 << 19)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind            = big.NewInt(1 << 20)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedImageURL       = big.NewInt(1 << 21)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedVideoURL       = big.NewInt(1 << 22)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedMediaPosterURL = big.NewInt(1 << 23)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug             = big.NewInt(1 << 24)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldInstallRef             = big.NewInt(1 << 25)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionItemCount    = big.NewInt(1 << 26)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill                  = big.NewInt(1 << 27)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt            = big.NewInt(1 << 28)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt              = big.NewInt(1 << 29)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt              = big.NewInt(1 << 30)
 )
 
 type GetAPIV1MarketplaceCreatorMeFeedResponseDataItem struct {
-	ID                  string                                                            `json:"id" url:"id"`
-	PromptID            *string                                                           `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID        *string                                                           `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID         *string                                                           `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID            string                                                            `json:"sellerId" url:"sellerId"`
-	Title               string                                                            `json:"title" url:"title"`
-	Description         *string                                                           `json:"description,omitempty" url:"description,omitempty"`
-	Status              GetAPIV1MarketplaceCreatorMeFeedResponseDataItemStatus            `json:"status" url:"status"`
-	PriceCents          int                                                               `json:"priceCents" url:"priceCents"`
-	Currency            string                                                            `json:"currency" url:"currency"`
-	AccessType          *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating           *string                                                           `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount         *int                                                              `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount           *int                                                              `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount       *int                                                              `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount         *int                                                              `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags                []string                                                          `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured          *bool                                                             `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories          []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller              *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind         *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	PromptSlug          *string                                                           `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	CollectionItemCount *int                                                              `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
-	Skill               *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt         *time.Time                                                        `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt           time.Time                                                         `json:"createdAt" url:"createdAt"`
-	UpdatedAt           time.Time                                                         `json:"updatedAt" url:"updatedAt"`
+	ID                     string                                                            `json:"id" url:"id"`
+	PromptID               *string                                                           `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID           *string                                                           `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID            *string                                                           `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID               string                                                            `json:"sellerId" url:"sellerId"`
+	Title                  string                                                            `json:"title" url:"title"`
+	Description            *string                                                           `json:"description,omitempty" url:"description,omitempty"`
+	Status                 GetAPIV1MarketplaceCreatorMeFeedResponseDataItemStatus            `json:"status" url:"status"`
+	PriceCents             int                                                               `json:"priceCents" url:"priceCents"`
+	Currency               string                                                            `json:"currency" url:"currency"`
+	AccessType             *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating              *string                                                           `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount            *int                                                              `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount              *int                                                              `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount          *int                                                              `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount            *int                                                              `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                   []string                                                          `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured             *bool                                                             `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories             []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
+	Seller                 *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind            *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	FeaturedImageURL       *string                                                           `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
+	FeaturedVideoURL       *string                                                           `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
+	FeaturedMediaPosterURL *string                                                           `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
+	PromptSlug             *string                                                           `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	InstallRef             *string                                                           `json:"installRef,omitempty" url:"installRef,omitempty"`
+	CollectionItemCount    *int                                                              `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill                  *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt            *time.Time                                                        `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt              time.Time                                                         `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time                                                         `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -809,11 +817,39 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetContentKind() *Get
 	return g.ContentKind
 }
 
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetFeaturedImageURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FeaturedImageURL
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetFeaturedVideoURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FeaturedVideoURL
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetFeaturedMediaPosterURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FeaturedMediaPosterURL
+}
+
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetPromptSlug() *string {
 	if g == nil {
 		return nil
 	}
 	return g.PromptSlug
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetInstallRef() *string {
+	if g == nil {
+		return nil
+	}
+	return g.InstallRef
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetCollectionItemCount() *int {
@@ -1009,11 +1045,39 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetContentKind(conten
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind)
 }
 
+// SetFeaturedImageURL sets the FeaturedImageURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetFeaturedImageURL(featuredImageURL *string) {
+	g.FeaturedImageURL = featuredImageURL
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedImageURL)
+}
+
+// SetFeaturedVideoURL sets the FeaturedVideoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetFeaturedVideoURL(featuredVideoURL *string) {
+	g.FeaturedVideoURL = featuredVideoURL
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedVideoURL)
+}
+
+// SetFeaturedMediaPosterURL sets the FeaturedMediaPosterURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetFeaturedMediaPosterURL(featuredMediaPosterURL *string) {
+	g.FeaturedMediaPosterURL = featuredMediaPosterURL
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedMediaPosterURL)
+}
+
 // SetPromptSlug sets the PromptSlug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetPromptSlug(promptSlug *string) {
 	g.PromptSlug = promptSlug
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug)
+}
+
+// SetInstallRef sets the InstallRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetInstallRef(installRef *string) {
+	g.InstallRef = installRef
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldInstallRef)
 }
 
 // SetCollectionItemCount sets the CollectionItemCount field and marks it as non-optional;
@@ -1292,6 +1356,10 @@ const (
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindPrompt     GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "prompt"
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill      GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "skill"
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindHook       GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "hook"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindAgent      GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "agent"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindMcp        GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "mcp"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindCommand    GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "command"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSettings   GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "settings"
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFolder     GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "folder"
 	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindCollection GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind = "collection"
 )
@@ -1304,6 +1372,14 @@ func NewGetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFromString(s 
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSkill, nil
 	case "hook":
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindHook, nil
+	case "agent":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindAgent, nil
+	case "mcp":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindMcp, nil
+	case "command":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindCommand, nil
+	case "settings":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindSettings, nil
 	case "folder":
 		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKindFolder, nil
 	case "collection":

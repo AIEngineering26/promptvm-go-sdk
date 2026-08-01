@@ -1549,6 +1549,14 @@ client.SkillsPublic.RecordPublicSkillInstall(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**creator:** `*string` 
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -1626,6 +1634,14 @@ client.SkillsPublic.GetPublicSkillBySlug(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**creator:** `*string` 
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -1693,6 +1709,14 @@ client.HooksPublic.GetPublicHookBySlug(
 <dd>
 
 **version:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator:** `*string` 
     
 </dd>
 </dl>
@@ -2481,6 +2505,14 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 <dl>
 <dd>
 
+**sellerID:** `*string` — Filter to a single creator's own listings (listings.seller_id). Powers the public creator profile.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **kind:** `*promptvmgosdk.ListMarketplaceListingsRequestKind` — Filter listings by their underlying content_kind.
     
 </dd>
@@ -2618,6 +2650,107 @@ client.MarketplaceBrowse.ListMarketplaceCategories(
     )
 }
 ```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceContentTypes() -> *promptvmgosdk.ListMarketplaceContentTypesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns ENABLED marketplace content types ordered by sort order (public storefront nav). Disabled types are never exposed here; the full set lives at the platform-admin surface /api/v1/admin/content-types.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MarketplaceBrowse.ListMarketplaceContentTypes(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceBrowse.GetMarketplaceFacets() -> *promptvmgosdk.GetMarketplaceFacetsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated. Returns { total, kinds, categories } counted over ACTIVE listings using the same predicate as browse. Optional ?sellerId scopes to one creator. kinds includes every enabled content_type (0-count included) so the frontend can hide empty types.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetMarketplaceFacetsRequest{}
+client.MarketplaceBrowse.GetMarketplaceFacets(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**sellerID:** `*string` — Scope counts to a single creator's active listings (listings.seller_id).
+    
 </dd>
 </dl>
 </dd>
@@ -2910,6 +3043,243 @@ client.MarketplaceListings.UpdateMarketplaceListing(
 <dd>
 
 **accessType:** `*promptvmgosdk.UpdateMarketplaceListingRequestAccessType` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.InitiateListingMediaUpload(ListingID, request) -> *promptvmgosdk.InitiateListingMediaUploadResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Owner-only. Validates the MIME type and size against the featured-media allowlist (images ≤ 5 MB: png/jpeg/webp/gif/svg; videos ≤ 50 MB: mp4/webm) and returns a presigned S3 PUT URL plus the deterministic storage key. Upload the bytes to the URL, then call the confirm endpoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.InitiateListingMediaUploadRequest{
+        ListingID: "listingId",
+        Kind: promptvmgosdk.InitiateListingMediaUploadRequestKindImage,
+        ContentType: "contentType",
+        SizeBytes: 1,
+    }
+client.MarketplaceListings.InitiateListingMediaUpload(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.InitiateListingMediaUploadRequestKind` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contentType:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sizeBytes:** `int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.ConfirmListingMediaUpload(ListingID, request) -> *promptvmgosdk.ConfirmListingMediaUploadResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Owner-only. Verifies the uploaded object exists in S3 with a valid size/content-type, then persists the key to the listing. Idempotent — re-confirming the same key returns the updated listing.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ConfirmListingMediaUploadRequest{
+        ListingID: "listingId",
+        Kind: promptvmgosdk.ConfirmListingMediaUploadRequestKindImage,
+        Key: "key",
+    }
+client.MarketplaceListings.ConfirmListingMediaUpload(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.ConfirmListingMediaUploadRequestKind` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**key:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceListings.DeleteListingMedia(ListingID, Kind) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Owner-only. Clears the stored key for the given kind and best-effort deletes the S3 object. Deleting a video also clears its poster. Idempotent.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteListingMediaRequest{
+        ListingID: "listingId",
+        Kind: promptvmgosdk.DeleteListingMediaRequestKindImage.Ptr(),
+    }
+client.MarketplaceListings.DeleteListingMedia(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**listingID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.DeleteListingMediaRequestKind` 
     
 </dd>
 </dl>
@@ -3292,6 +3662,79 @@ client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
 </dl>
 </details>
 
+<details><summary><code>client.MarketplaceCreator.ClaimMarketplaceCreatorProfile(CreatorUserID, request) -> *promptvmgosdk.ClaimMarketplaceCreatorProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ClaimMarketplaceCreatorProfileRequest{
+        CreatorUserID: "creatorUserId",
+        Reason: "reason",
+        ProofURL: "proofUrl",
+    }
+client.MarketplaceCreator.ClaimMarketplaceCreatorProfile(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**creatorUserID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proofURL:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**message:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## MarketplaceStats
 <details><summary><code>client.MarketplaceStats.GetMarketplaceStats() -> *promptvmgosdk.GetMarketplaceStatsResponse</code></summary>
 <dl>
@@ -3335,6 +3778,129 @@ client.MarketplaceStats.GetMarketplaceStats(
 </dl>
 </details>
 
+## MarketplaceResolve
+<details><summary><code>client.MarketplaceResolve.ResolveInstallRef() -> *promptvmgosdk.ResolveInstallRefResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated. Resolves `creator/name`, a legacy vanity slug, a `name-<uuid8>` file slug, or an unambiguous bare name. Returns { ref, kind, content, … } for skill/agent/command/hook/mcp/settings/prompt. 404 for missing/non-public; 409 AMBIGUOUS_REF + candidates when a bare name is owned by multiple creators.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ResolveInstallRefRequest{
+        Ref: "ref",
+    }
+client.MarketplaceResolve.ResolveInstallRef(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ref:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MarketplaceResolve.RecordResolveInstall() -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Unauthenticated. Resolves the ref and atomically increments the tied active listing's downloadCount (never importCount). 204 even when the resolved artifact has no active listing. 404 for missing/non-public; 409 AMBIGUOUS_REF.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RecordResolveInstallRequest{
+        Ref: "ref",
+    }
+client.MarketplaceResolve.RecordResolveInstall(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ref:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Sharing
 <details><summary><code>client.Sharing.AccessSharedPrompt(Token) -> *promptvmgosdk.AccessSharedPromptResponse</code></summary>
 <dl>
@@ -3348,7 +3914,7 @@ client.MarketplaceStats.GetMarketplaceStats(
 <dl>
 <dd>
 
-Public endpoint — no authentication required.
+Public endpoint — no authentication required. Each successful access increments the link's useCount (counted against maxUses). Pass meta=1 (or meta=true) for a metadata-only read: the response and all state checks (revoked / expired / password / max-use) are identical, but useCount is NOT incremented — intended for server-side metadata/OG/share-image fetches so they never burn maxUses.
 </dd>
 </dl>
 </dd>
@@ -3394,6 +3960,14 @@ client.Sharing.AccessSharedPrompt(
 <dd>
 
 **password:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**meta:** `*promptvmgosdk.AccessSharedPromptRequestMeta` — When "1" or "true", performs a metadata-only read that does not increment useCount.
     
 </dd>
 </dl>
@@ -3580,6 +4154,137 @@ client.Sharing.RevokePromptCollaborator(
 </dl>
 </details>
 
+<details><summary><code>client.Sharing.ListPromptShareLinks(PromptID) -> *promptvmgosdk.ListPromptShareLinksResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns non-revoked share links for the prompt. Requires share permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListPromptShareLinksRequest{
+        PromptID: "promptId",
+    }
+client.Sharing.ListPromptShareLinks(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.RevokePromptShareLink(PromptID, LinkID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sets revokedAt/revokedBy. Idempotent — revoking an already-revoked link returns 204.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.RevokePromptShareLinkRequest{
+        PromptID: "promptId",
+        LinkID: "linkId",
+    }
+client.Sharing.RevokePromptShareLink(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**linkID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Sharing.CreatePromptShareLink(PromptID, request) -> *promptvmgosdk.CreatePromptShareLinkResponse</code></summary>
 <dl>
 <dd>
@@ -3664,6 +4369,131 @@ client.Sharing.CreatePromptShareLink(
 <dd>
 
 **versionNumber:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**label:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `*promptvmgosdk.CreatePromptShareLinkRequestKind` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `*promptvmgosdk.CreatePromptShareLinkRequestVersion` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**values:** `map[string]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**resolveVariables:** `*bool` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Sharing.ImportSharedPrompt(Token, request) -> *promptvmgosdk.ImportSharedPromptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Copies the prompt behind a share link into the caller's workspace (body.workspaceId, or the caller's default/first writable workspace when omitted). Imports the SHARED version — the pinned version's content for pinned links, else the latest. Link-state semantics match GET /share/:token (404/410/401); the link's useCount is incremented only when the import succeeds, never on a 402/403/404 failure.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ImportSharedPromptRequest{
+        Token: "token",
+    }
+client.Sharing.ImportSharedPrompt(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*string` — Optional. Replays the original 2xx response for 24h on retry with the same key + same body. A different body with the same key returns 422 idempotency_conflict.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workspaceID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `*string` 
     
 </dd>
 </dl>
@@ -5455,6 +6285,49 @@ client.Onboarding.DismissOnboarding(
 </dl>
 </details>
 
+## Users
+<details><summary><code>client.Users.DeleteAccount() -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft-deletes the caller: every organization the user owns is deleted (workspaces and files soft-deleted, members removed, API keys and sessions revoked, Stripe subscription cancelled immediately), memberships in other organizations are removed, and all of the user's sessions and API keys are revoked. Irreversible from the client perspective; data is retained for 30 days for compliance before purge.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Users.DeleteAccount(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Settings
 <details><summary><code>client.Settings.GetSettingsOverview() -> *promptvmgosdk.GetSettingsOverviewResponse</code></summary>
 <dl>
@@ -6396,6 +7269,462 @@ client.Settings.DisableEmailOtp(
 </dl>
 </details>
 
+## Marketplace
+<details><summary><code>client.Marketplace.AdminListContentTypes() -> *promptvmgosdk.AdminListContentTypesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns ALL marketplace content types including disabled ones, ordered by sort order. Platform-admin only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Marketplace.AdminListContentTypes(
+        context.TODO(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Marketplace.AdminCreateContentType(request) -> *promptvmgosdk.AdminCreateContentTypeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new marketplace content type. Slug must be unique and match ^[a-z0-9][a-z0-9-]{0,31}$. Setting enabled=true requires a registered code kind (422 otherwise). Platform-admin only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AdminCreateContentTypeRequest{
+        Slug: "slug",
+        Label: "label",
+        PluralLabel: "pluralLabel",
+        Icon: "icon",
+        Color: "color",
+    }
+client.Marketplace.AdminCreateContentType(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**slug:** `string` — Stable key; matches the code kind-registry slug.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**label:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pluralLabel:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**color:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortOrder:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mediaAllowed:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**installVerb:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**descriptionOneLiner:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**settingsSchema:** `map[string]any` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Marketplace.AdminReorderContentTypes(request) -> *promptvmgosdk.AdminReorderContentTypesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Bulk-updates sort_order for a set of slugs in one transaction. Every slug must exist. Platform-admin only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AdminReorderContentTypesRequest{
+        Items: []*promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
+            &promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
+                Slug: "slug",
+                SortOrder: 1,
+            },
+        },
+    }
+client.Marketplace.AdminReorderContentTypes(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**items:** `[]*promptvmgosdk.AdminReorderContentTypesRequestItemsItem` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Marketplace.AdminDeleteContentType(Slug) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a content type. Allowed ONLY for non-built-in slugs with no dependent content — otherwise 409 (disable instead). Platform-admin only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AdminDeleteContentTypeRequest{
+        Slug: "slug",
+    }
+client.Marketplace.AdminDeleteContentType(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**slug:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Marketplace.AdminUpdateContentType(Slug, request) -> *promptvmgosdk.AdminUpdateContentTypeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Partially updates a content type's presentation/config fields. The slug is immutable. Flipping enabled=true requires a registered code kind (422 otherwise). Platform-admin only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.AdminUpdateContentTypeRequest{
+        Slug: "slug",
+    }
+client.Marketplace.AdminUpdateContentType(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**slug:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**label:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pluralLabel:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**color:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortOrder:** `*int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mediaAllowed:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**installVerb:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**descriptionOneLiner:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**settingsSchema:** `map[string]any` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Organizations
 <details><summary><code>client.Organizations.ListOrganizations() -> *promptvmgosdk.ListOrganizationsResponse</code></summary>
 <dl>
@@ -6461,6 +7790,67 @@ client.Organizations.CreateOrganization(
 <dd>
 
 **name:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organizations.DeleteOrganization(OrgID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft-deletes the organization and cascades: workspaces and files are soft-deleted, members removed, API keys and org-scoped sessions revoked, the active Stripe subscription is cancelled immediately, and an org.deleted audit log is written. Owner only; JWT session only — API-key and CLI-token callers are rejected with 403 regardless of role. Personal organizations cannot be deleted standalone (422) — they are deleted together with the account.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.DeleteOrganizationRequest{
+        OrgID: "orgId",
+    }
+client.Organizations.DeleteOrganization(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgID:** `string` 
     
 </dd>
 </dl>
@@ -10413,7 +11803,7 @@ client.Resources.UpdateResource(
 <dl>
 <dd>
 
-Returns a time-limited presigned URL (1 hour) for downloading the resource from S3.
+Returns a time-limited presigned URL (1 hour) for downloading the resource from S3. Disposition defaults to attachment; inline is honored only for sniff-verified preview-safe types (png, jpeg, gif, webp, pdf) and otherwise falls back to attachment, reported in the response.
 </dd>
 </dl>
 </dd>
@@ -10451,6 +11841,14 @@ client.Resources.GetResourceDownloadURL(
 <dd>
 
 **resourceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**disposition:** `*promptvmgosdk.GetResourceDownloadURLRequestDisposition` 
     
 </dd>
 </dl>

@@ -155,3 +155,49 @@ func TestMarketplaceBrowseListMarketplaceCategoriesWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMarketplaceBrowseListMarketplaceCategoriesWithWireMock", "GET", "/api/v1/marketplace/categories", nil, 1)
 }
+
+func TestMarketplaceBrowseListMarketplaceContentTypesWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	_, invocationErr := client.MarketplaceBrowse.ListMarketplaceContentTypes(
+		context.TODO(),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceBrowseListMarketplaceContentTypesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceBrowseListMarketplaceContentTypesWithWireMock", "GET", "/api/v1/marketplace/content-types", nil, 1)
+}
+
+func TestMarketplaceBrowseGetMarketplaceFacetsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetMarketplaceFacetsRequest{}
+	_, invocationErr := client.MarketplaceBrowse.GetMarketplaceFacets(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceBrowseGetMarketplaceFacetsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceBrowseGetMarketplaceFacetsWithWireMock", "GET", "/api/v1/marketplace/facets", nil, 1)
+}

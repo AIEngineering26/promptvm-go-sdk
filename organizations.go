@@ -165,6 +165,31 @@ func (c *CreateOrganizationRoleRequest) SetColor(color *string) {
 }
 
 var (
+	deleteOrganizationRequestFieldOrgID = big.NewInt(1 << 0)
+)
+
+type DeleteOrganizationRequest struct {
+	OrgID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (d *DeleteOrganizationRequest) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetOrgID sets the OrgID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteOrganizationRequest) SetOrgID(orgID string) {
+	d.OrgID = orgID
+	d.require(deleteOrganizationRequestFieldOrgID)
+}
+
+var (
 	deleteOrganizationRoleRequestFieldOrgID  = big.NewInt(1 << 0)
 	deleteOrganizationRoleRequestFieldRoleID = big.NewInt(1 << 1)
 )

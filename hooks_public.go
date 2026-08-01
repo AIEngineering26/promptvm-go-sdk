@@ -13,11 +13,13 @@ import (
 var (
 	getPublicHookBySlugRequestFieldSlug    = big.NewInt(1 << 0)
 	getPublicHookBySlugRequestFieldVersion = big.NewInt(1 << 1)
+	getPublicHookBySlugRequestFieldCreator = big.NewInt(1 << 2)
 )
 
 type GetPublicHookBySlugRequest struct {
 	Slug    string  `json:"-" url:"-"`
 	Version *string `json:"-" url:"version,omitempty"`
+	Creator *string `json:"-" url:"creator,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -42,6 +44,13 @@ func (g *GetPublicHookBySlugRequest) SetSlug(slug string) {
 func (g *GetPublicHookBySlugRequest) SetVersion(version *string) {
 	g.Version = version
 	g.require(getPublicHookBySlugRequestFieldVersion)
+}
+
+// SetCreator sets the Creator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPublicHookBySlugRequest) SetCreator(creator *string) {
+	g.Creator = creator
+	g.require(getPublicHookBySlugRequestFieldCreator)
 }
 
 // Hook payload

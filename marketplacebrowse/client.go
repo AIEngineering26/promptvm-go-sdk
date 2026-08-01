@@ -92,3 +92,35 @@ func (c *Client) ListMarketplaceCategories(
 	}
 	return response.Body, nil
 }
+
+// Returns ENABLED marketplace content types ordered by sort order (public storefront nav). Disabled types are never exposed here; the full set lives at the platform-admin surface /api/v1/admin/content-types.
+func (c *Client) ListMarketplaceContentTypes(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ListMarketplaceContentTypesResponse, error) {
+	response, err := c.WithRawResponse.ListMarketplaceContentTypes(
+		ctx,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Unauthenticated. Returns { total, kinds, categories } counted over ACTIVE listings using the same predicate as browse. Optional ?sellerId scopes to one creator. kinds includes every enabled content_type (0-count included) so the frontend can hide empty types.
+func (c *Client) GetMarketplaceFacets(
+	ctx context.Context,
+	request *promptvmgosdk.GetMarketplaceFacetsRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetMarketplaceFacetsResponse, error) {
+	response, err := c.WithRawResponse.GetMarketplaceFacets(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

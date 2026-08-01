@@ -1256,7 +1256,8 @@ var (
 	getCollectionResponseDataItemsItemFieldNote      = big.NewInt(1 << 5)
 	getCollectionResponseDataItemsItemFieldPosition  = big.NewInt(1 << 6)
 	getCollectionResponseDataItemsItemFieldFileCount = big.NewInt(1 << 7)
-	getCollectionResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 8)
+	getCollectionResponseDataItemsItemFieldListingID = big.NewInt(1 << 8)
+	getCollectionResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 9)
 )
 
 type GetCollectionResponseDataItemsItem struct {
@@ -1268,6 +1269,7 @@ type GetCollectionResponseDataItemsItem struct {
 	Note      *string                                    `json:"note,omitempty" url:"note,omitempty"`
 	Position  int                                        `json:"position" url:"position"`
 	FileCount *int                                       `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	ListingID *string                                    `json:"listingId,omitempty" url:"listingId,omitempty"`
 	CreatedAt time.Time                                  `json:"createdAt" url:"createdAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1331,6 +1333,13 @@ func (g *GetCollectionResponseDataItemsItem) GetFileCount() *int {
 		return nil
 	}
 	return g.FileCount
+}
+
+func (g *GetCollectionResponseDataItemsItem) GetListingID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ListingID
 }
 
 func (g *GetCollectionResponseDataItemsItem) GetCreatedAt() time.Time {
@@ -1405,6 +1414,13 @@ func (g *GetCollectionResponseDataItemsItem) SetPosition(position int) {
 func (g *GetCollectionResponseDataItemsItem) SetFileCount(fileCount *int) {
 	g.FileCount = fileCount
 	g.require(getCollectionResponseDataItemsItemFieldFileCount)
+}
+
+// SetListingID sets the ListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCollectionResponseDataItemsItem) SetListingID(listingID *string) {
+	g.ListingID = listingID
+	g.require(getCollectionResponseDataItemsItemFieldListingID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -2343,7 +2359,8 @@ var (
 	reorderCollectionItemsResponseDataItemsItemFieldNote      = big.NewInt(1 << 5)
 	reorderCollectionItemsResponseDataItemsItemFieldPosition  = big.NewInt(1 << 6)
 	reorderCollectionItemsResponseDataItemsItemFieldFileCount = big.NewInt(1 << 7)
-	reorderCollectionItemsResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 8)
+	reorderCollectionItemsResponseDataItemsItemFieldListingID = big.NewInt(1 << 8)
+	reorderCollectionItemsResponseDataItemsItemFieldCreatedAt = big.NewInt(1 << 9)
 )
 
 type ReorderCollectionItemsResponseDataItemsItem struct {
@@ -2355,6 +2372,7 @@ type ReorderCollectionItemsResponseDataItemsItem struct {
 	Note      *string                                             `json:"note,omitempty" url:"note,omitempty"`
 	Position  int                                                 `json:"position" url:"position"`
 	FileCount *int                                                `json:"fileCount,omitempty" url:"fileCount,omitempty"`
+	ListingID *string                                             `json:"listingId,omitempty" url:"listingId,omitempty"`
 	CreatedAt time.Time                                           `json:"createdAt" url:"createdAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2418,6 +2436,13 @@ func (r *ReorderCollectionItemsResponseDataItemsItem) GetFileCount() *int {
 		return nil
 	}
 	return r.FileCount
+}
+
+func (r *ReorderCollectionItemsResponseDataItemsItem) GetListingID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ListingID
 }
 
 func (r *ReorderCollectionItemsResponseDataItemsItem) GetCreatedAt() time.Time {
@@ -2492,6 +2517,13 @@ func (r *ReorderCollectionItemsResponseDataItemsItem) SetPosition(position int) 
 func (r *ReorderCollectionItemsResponseDataItemsItem) SetFileCount(fileCount *int) {
 	r.FileCount = fileCount
 	r.require(reorderCollectionItemsResponseDataItemsItemFieldFileCount)
+}
+
+// SetListingID sets the ListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReorderCollectionItemsResponseDataItemsItem) SetListingID(listingID *string) {
+	r.ListingID = listingID
+	r.require(reorderCollectionItemsResponseDataItemsItemFieldListingID)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;

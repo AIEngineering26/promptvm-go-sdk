@@ -165,11 +165,13 @@ func (g *GetResourceRequest) SetResourceID(resourceID string) {
 }
 
 var (
-	getResourceDownloadURLRequestFieldResourceID = big.NewInt(1 << 0)
+	getResourceDownloadURLRequestFieldResourceID  = big.NewInt(1 << 0)
+	getResourceDownloadURLRequestFieldDisposition = big.NewInt(1 << 1)
 )
 
 type GetResourceDownloadURLRequest struct {
-	ResourceID string `json:"-" url:"-"`
+	ResourceID  string                                    `json:"-" url:"-"`
+	Disposition *GetResourceDownloadURLRequestDisposition `json:"-" url:"disposition,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -187,6 +189,13 @@ func (g *GetResourceDownloadURLRequest) require(field *big.Int) {
 func (g *GetResourceDownloadURLRequest) SetResourceID(resourceID string) {
 	g.ResourceID = resourceID
 	g.require(getResourceDownloadURLRequestFieldResourceID)
+}
+
+// SetDisposition sets the Disposition field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceDownloadURLRequest) SetDisposition(disposition *GetResourceDownloadURLRequestDisposition) {
+	g.Disposition = disposition
+	g.require(getResourceDownloadURLRequestFieldDisposition)
 }
 
 var (
@@ -744,23 +753,26 @@ var (
 	confirmResourceUploadResponseDataFieldName        = big.NewInt(1 << 3)
 	confirmResourceUploadResponseDataFieldSlug        = big.NewInt(1 << 4)
 	confirmResourceUploadResponseDataFieldContentType = big.NewInt(1 << 5)
-	confirmResourceUploadResponseDataFieldStorageKey  = big.NewInt(1 << 6)
-	confirmResourceUploadResponseDataFieldSizeBytes   = big.NewInt(1 << 7)
-	confirmResourceUploadResponseDataFieldTags        = big.NewInt(1 << 8)
-	confirmResourceUploadResponseDataFieldCategories  = big.NewInt(1 << 9)
-	confirmResourceUploadResponseDataFieldConfirmed   = big.NewInt(1 << 10)
-	confirmResourceUploadResponseDataFieldCreatedByID = big.NewInt(1 << 11)
-	confirmResourceUploadResponseDataFieldCreatedAt   = big.NewInt(1 << 12)
-	confirmResourceUploadResponseDataFieldUpdatedAt   = big.NewInt(1 << 13)
+	confirmResourceUploadResponseDataFieldExtension   = big.NewInt(1 << 6)
+	confirmResourceUploadResponseDataFieldStorageKey  = big.NewInt(1 << 7)
+	confirmResourceUploadResponseDataFieldSizeBytes   = big.NewInt(1 << 8)
+	confirmResourceUploadResponseDataFieldTags        = big.NewInt(1 << 9)
+	confirmResourceUploadResponseDataFieldCategories  = big.NewInt(1 << 10)
+	confirmResourceUploadResponseDataFieldConfirmed   = big.NewInt(1 << 11)
+	confirmResourceUploadResponseDataFieldCreatedByID = big.NewInt(1 << 12)
+	confirmResourceUploadResponseDataFieldCreatedAt   = big.NewInt(1 << 13)
+	confirmResourceUploadResponseDataFieldUpdatedAt   = big.NewInt(1 << 14)
 )
 
 type ConfirmResourceUploadResponseData struct {
-	ID          string     `json:"id" url:"id"`
-	WorkspaceID string     `json:"workspaceId" url:"workspaceId"`
-	DirectoryID *string    `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	Name        string     `json:"name" url:"name"`
-	Slug        string     `json:"slug" url:"slug"`
-	ContentType string     `json:"contentType" url:"contentType"`
+	ID          string  `json:"id" url:"id"`
+	WorkspaceID string  `json:"workspaceId" url:"workspaceId"`
+	DirectoryID *string `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	Name        string  `json:"name" url:"name"`
+	Slug        string  `json:"slug" url:"slug"`
+	ContentType string  `json:"contentType" url:"contentType"`
+	// Canonical extension derived from the sniffed type at upload confirmation. Null for legacy rows.
+	Extension   *string    `json:"extension,omitempty" url:"extension,omitempty"`
 	StorageKey  string     `json:"storageKey" url:"storageKey"`
 	SizeBytes   int        `json:"sizeBytes" url:"sizeBytes"`
 	Tags        []string   `json:"tags" url:"tags"`
@@ -817,6 +829,13 @@ func (c *ConfirmResourceUploadResponseData) GetContentType() string {
 		return ""
 	}
 	return c.ContentType
+}
+
+func (c *ConfirmResourceUploadResponseData) GetExtension() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Extension
 }
 
 func (c *ConfirmResourceUploadResponseData) GetStorageKey() string {
@@ -928,6 +947,13 @@ func (c *ConfirmResourceUploadResponseData) SetContentType(contentType string) {
 	c.require(confirmResourceUploadResponseDataFieldContentType)
 }
 
+// SetExtension sets the Extension field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConfirmResourceUploadResponseData) SetExtension(extension *string) {
+	c.Extension = extension
+	c.require(confirmResourceUploadResponseDataFieldExtension)
+}
+
 // SetStorageKey sets the StorageKey field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *ConfirmResourceUploadResponseData) SetStorageKey(storageKey string) {
@@ -1035,6 +1061,28 @@ func (c *ConfirmResourceUploadResponseData) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type GetResourceDownloadURLRequestDisposition string
+
+const (
+	GetResourceDownloadURLRequestDispositionAttachment GetResourceDownloadURLRequestDisposition = "attachment"
+	GetResourceDownloadURLRequestDispositionInline     GetResourceDownloadURLRequestDisposition = "inline"
+)
+
+func NewGetResourceDownloadURLRequestDispositionFromString(s string) (GetResourceDownloadURLRequestDisposition, error) {
+	switch s {
+	case "attachment":
+		return GetResourceDownloadURLRequestDispositionAttachment, nil
+	case "inline":
+		return GetResourceDownloadURLRequestDispositionInline, nil
+	}
+	var t GetResourceDownloadURLRequestDisposition
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetResourceDownloadURLRequestDisposition) Ptr() *GetResourceDownloadURLRequestDisposition {
+	return &g
+}
+
 // Presigned download URL
 var (
 	getResourceDownloadURLResponseFieldData = big.NewInt(1 << 0)
@@ -1115,13 +1163,15 @@ func (g *GetResourceDownloadURLResponse) String() string {
 }
 
 var (
-	getResourceDownloadURLResponseDataFieldURL       = big.NewInt(1 << 0)
-	getResourceDownloadURLResponseDataFieldExpiresAt = big.NewInt(1 << 1)
+	getResourceDownloadURLResponseDataFieldURL         = big.NewInt(1 << 0)
+	getResourceDownloadURLResponseDataFieldExpiresAt   = big.NewInt(1 << 1)
+	getResourceDownloadURLResponseDataFieldDisposition = big.NewInt(1 << 2)
 )
 
 type GetResourceDownloadURLResponseData struct {
-	URL       string    `json:"url" url:"url"`
-	ExpiresAt time.Time `json:"expiresAt" url:"expiresAt"`
+	URL         string                                        `json:"url" url:"url"`
+	ExpiresAt   time.Time                                     `json:"expiresAt" url:"expiresAt"`
+	Disposition GetResourceDownloadURLResponseDataDisposition `json:"disposition" url:"disposition"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1142,6 +1192,13 @@ func (g *GetResourceDownloadURLResponseData) GetExpiresAt() time.Time {
 		return time.Time{}
 	}
 	return g.ExpiresAt
+}
+
+func (g *GetResourceDownloadURLResponseData) GetDisposition() GetResourceDownloadURLResponseDataDisposition {
+	if g == nil {
+		return ""
+	}
+	return g.Disposition
 }
 
 func (g *GetResourceDownloadURLResponseData) GetExtraProperties() map[string]interface{} {
@@ -1167,6 +1224,13 @@ func (g *GetResourceDownloadURLResponseData) SetURL(url string) {
 func (g *GetResourceDownloadURLResponseData) SetExpiresAt(expiresAt time.Time) {
 	g.ExpiresAt = expiresAt
 	g.require(getResourceDownloadURLResponseDataFieldExpiresAt)
+}
+
+// SetDisposition sets the Disposition field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceDownloadURLResponseData) SetDisposition(disposition GetResourceDownloadURLResponseDataDisposition) {
+	g.Disposition = disposition
+	g.require(getResourceDownloadURLResponseDataFieldDisposition)
 }
 
 func (g *GetResourceDownloadURLResponseData) UnmarshalJSON(data []byte) error {
@@ -1214,6 +1278,28 @@ func (g *GetResourceDownloadURLResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+type GetResourceDownloadURLResponseDataDisposition string
+
+const (
+	GetResourceDownloadURLResponseDataDispositionAttachment GetResourceDownloadURLResponseDataDisposition = "attachment"
+	GetResourceDownloadURLResponseDataDispositionInline     GetResourceDownloadURLResponseDataDisposition = "inline"
+)
+
+func NewGetResourceDownloadURLResponseDataDispositionFromString(s string) (GetResourceDownloadURLResponseDataDisposition, error) {
+	switch s {
+	case "attachment":
+		return GetResourceDownloadURLResponseDataDispositionAttachment, nil
+	case "inline":
+		return GetResourceDownloadURLResponseDataDispositionInline, nil
+	}
+	var t GetResourceDownloadURLResponseDataDisposition
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetResourceDownloadURLResponseDataDisposition) Ptr() *GetResourceDownloadURLResponseDataDisposition {
+	return &g
 }
 
 // Resource metadata
@@ -1302,23 +1388,26 @@ var (
 	getResourceResponseDataFieldName        = big.NewInt(1 << 3)
 	getResourceResponseDataFieldSlug        = big.NewInt(1 << 4)
 	getResourceResponseDataFieldContentType = big.NewInt(1 << 5)
-	getResourceResponseDataFieldStorageKey  = big.NewInt(1 << 6)
-	getResourceResponseDataFieldSizeBytes   = big.NewInt(1 << 7)
-	getResourceResponseDataFieldTags        = big.NewInt(1 << 8)
-	getResourceResponseDataFieldCategories  = big.NewInt(1 << 9)
-	getResourceResponseDataFieldConfirmed   = big.NewInt(1 << 10)
-	getResourceResponseDataFieldCreatedByID = big.NewInt(1 << 11)
-	getResourceResponseDataFieldCreatedAt   = big.NewInt(1 << 12)
-	getResourceResponseDataFieldUpdatedAt   = big.NewInt(1 << 13)
+	getResourceResponseDataFieldExtension   = big.NewInt(1 << 6)
+	getResourceResponseDataFieldStorageKey  = big.NewInt(1 << 7)
+	getResourceResponseDataFieldSizeBytes   = big.NewInt(1 << 8)
+	getResourceResponseDataFieldTags        = big.NewInt(1 << 9)
+	getResourceResponseDataFieldCategories  = big.NewInt(1 << 10)
+	getResourceResponseDataFieldConfirmed   = big.NewInt(1 << 11)
+	getResourceResponseDataFieldCreatedByID = big.NewInt(1 << 12)
+	getResourceResponseDataFieldCreatedAt   = big.NewInt(1 << 13)
+	getResourceResponseDataFieldUpdatedAt   = big.NewInt(1 << 14)
 )
 
 type GetResourceResponseData struct {
-	ID          string     `json:"id" url:"id"`
-	WorkspaceID string     `json:"workspaceId" url:"workspaceId"`
-	DirectoryID *string    `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	Name        string     `json:"name" url:"name"`
-	Slug        string     `json:"slug" url:"slug"`
-	ContentType string     `json:"contentType" url:"contentType"`
+	ID          string  `json:"id" url:"id"`
+	WorkspaceID string  `json:"workspaceId" url:"workspaceId"`
+	DirectoryID *string `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	Name        string  `json:"name" url:"name"`
+	Slug        string  `json:"slug" url:"slug"`
+	ContentType string  `json:"contentType" url:"contentType"`
+	// Canonical extension derived from the sniffed type at upload confirmation. Null for legacy rows.
+	Extension   *string    `json:"extension,omitempty" url:"extension,omitempty"`
 	StorageKey  string     `json:"storageKey" url:"storageKey"`
 	SizeBytes   int        `json:"sizeBytes" url:"sizeBytes"`
 	Tags        []string   `json:"tags" url:"tags"`
@@ -1375,6 +1464,13 @@ func (g *GetResourceResponseData) GetContentType() string {
 		return ""
 	}
 	return g.ContentType
+}
+
+func (g *GetResourceResponseData) GetExtension() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Extension
 }
 
 func (g *GetResourceResponseData) GetStorageKey() string {
@@ -1484,6 +1580,13 @@ func (g *GetResourceResponseData) SetSlug(slug string) {
 func (g *GetResourceResponseData) SetContentType(contentType string) {
 	g.ContentType = contentType
 	g.require(getResourceResponseDataFieldContentType)
+}
+
+// SetExtension sets the Extension field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceResponseData) SetExtension(extension *string) {
+	g.Extension = extension
+	g.require(getResourceResponseDataFieldExtension)
 }
 
 // SetStorageKey sets the StorageKey field and marks it as non-optional;
@@ -2186,23 +2289,26 @@ var (
 	listWorkspaceResourcesResponseDataItemFieldName        = big.NewInt(1 << 3)
 	listWorkspaceResourcesResponseDataItemFieldSlug        = big.NewInt(1 << 4)
 	listWorkspaceResourcesResponseDataItemFieldContentType = big.NewInt(1 << 5)
-	listWorkspaceResourcesResponseDataItemFieldStorageKey  = big.NewInt(1 << 6)
-	listWorkspaceResourcesResponseDataItemFieldSizeBytes   = big.NewInt(1 << 7)
-	listWorkspaceResourcesResponseDataItemFieldTags        = big.NewInt(1 << 8)
-	listWorkspaceResourcesResponseDataItemFieldCategories  = big.NewInt(1 << 9)
-	listWorkspaceResourcesResponseDataItemFieldConfirmed   = big.NewInt(1 << 10)
-	listWorkspaceResourcesResponseDataItemFieldCreatedByID = big.NewInt(1 << 11)
-	listWorkspaceResourcesResponseDataItemFieldCreatedAt   = big.NewInt(1 << 12)
-	listWorkspaceResourcesResponseDataItemFieldUpdatedAt   = big.NewInt(1 << 13)
+	listWorkspaceResourcesResponseDataItemFieldExtension   = big.NewInt(1 << 6)
+	listWorkspaceResourcesResponseDataItemFieldStorageKey  = big.NewInt(1 << 7)
+	listWorkspaceResourcesResponseDataItemFieldSizeBytes   = big.NewInt(1 << 8)
+	listWorkspaceResourcesResponseDataItemFieldTags        = big.NewInt(1 << 9)
+	listWorkspaceResourcesResponseDataItemFieldCategories  = big.NewInt(1 << 10)
+	listWorkspaceResourcesResponseDataItemFieldConfirmed   = big.NewInt(1 << 11)
+	listWorkspaceResourcesResponseDataItemFieldCreatedByID = big.NewInt(1 << 12)
+	listWorkspaceResourcesResponseDataItemFieldCreatedAt   = big.NewInt(1 << 13)
+	listWorkspaceResourcesResponseDataItemFieldUpdatedAt   = big.NewInt(1 << 14)
 )
 
 type ListWorkspaceResourcesResponseDataItem struct {
-	ID          string     `json:"id" url:"id"`
-	WorkspaceID string     `json:"workspaceId" url:"workspaceId"`
-	DirectoryID *string    `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	Name        string     `json:"name" url:"name"`
-	Slug        string     `json:"slug" url:"slug"`
-	ContentType string     `json:"contentType" url:"contentType"`
+	ID          string  `json:"id" url:"id"`
+	WorkspaceID string  `json:"workspaceId" url:"workspaceId"`
+	DirectoryID *string `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	Name        string  `json:"name" url:"name"`
+	Slug        string  `json:"slug" url:"slug"`
+	ContentType string  `json:"contentType" url:"contentType"`
+	// Canonical extension derived from the sniffed type at upload confirmation. Null for legacy rows.
+	Extension   *string    `json:"extension,omitempty" url:"extension,omitempty"`
 	StorageKey  string     `json:"storageKey" url:"storageKey"`
 	SizeBytes   int        `json:"sizeBytes" url:"sizeBytes"`
 	Tags        []string   `json:"tags" url:"tags"`
@@ -2259,6 +2365,13 @@ func (l *ListWorkspaceResourcesResponseDataItem) GetContentType() string {
 		return ""
 	}
 	return l.ContentType
+}
+
+func (l *ListWorkspaceResourcesResponseDataItem) GetExtension() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Extension
 }
 
 func (l *ListWorkspaceResourcesResponseDataItem) GetStorageKey() string {
@@ -2368,6 +2481,13 @@ func (l *ListWorkspaceResourcesResponseDataItem) SetSlug(slug string) {
 func (l *ListWorkspaceResourcesResponseDataItem) SetContentType(contentType string) {
 	l.ContentType = contentType
 	l.require(listWorkspaceResourcesResponseDataItemFieldContentType)
+}
+
+// SetExtension sets the Extension field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspaceResourcesResponseDataItem) SetExtension(extension *string) {
+	l.Extension = extension
+	l.require(listWorkspaceResourcesResponseDataItemFieldExtension)
 }
 
 // SetStorageKey sets the StorageKey field and marks it as non-optional;
@@ -2563,23 +2683,26 @@ var (
 	updateResourceResponseDataFieldName        = big.NewInt(1 << 3)
 	updateResourceResponseDataFieldSlug        = big.NewInt(1 << 4)
 	updateResourceResponseDataFieldContentType = big.NewInt(1 << 5)
-	updateResourceResponseDataFieldStorageKey  = big.NewInt(1 << 6)
-	updateResourceResponseDataFieldSizeBytes   = big.NewInt(1 << 7)
-	updateResourceResponseDataFieldTags        = big.NewInt(1 << 8)
-	updateResourceResponseDataFieldCategories  = big.NewInt(1 << 9)
-	updateResourceResponseDataFieldConfirmed   = big.NewInt(1 << 10)
-	updateResourceResponseDataFieldCreatedByID = big.NewInt(1 << 11)
-	updateResourceResponseDataFieldCreatedAt   = big.NewInt(1 << 12)
-	updateResourceResponseDataFieldUpdatedAt   = big.NewInt(1 << 13)
+	updateResourceResponseDataFieldExtension   = big.NewInt(1 << 6)
+	updateResourceResponseDataFieldStorageKey  = big.NewInt(1 << 7)
+	updateResourceResponseDataFieldSizeBytes   = big.NewInt(1 << 8)
+	updateResourceResponseDataFieldTags        = big.NewInt(1 << 9)
+	updateResourceResponseDataFieldCategories  = big.NewInt(1 << 10)
+	updateResourceResponseDataFieldConfirmed   = big.NewInt(1 << 11)
+	updateResourceResponseDataFieldCreatedByID = big.NewInt(1 << 12)
+	updateResourceResponseDataFieldCreatedAt   = big.NewInt(1 << 13)
+	updateResourceResponseDataFieldUpdatedAt   = big.NewInt(1 << 14)
 )
 
 type UpdateResourceResponseData struct {
-	ID          string     `json:"id" url:"id"`
-	WorkspaceID string     `json:"workspaceId" url:"workspaceId"`
-	DirectoryID *string    `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	Name        string     `json:"name" url:"name"`
-	Slug        string     `json:"slug" url:"slug"`
-	ContentType string     `json:"contentType" url:"contentType"`
+	ID          string  `json:"id" url:"id"`
+	WorkspaceID string  `json:"workspaceId" url:"workspaceId"`
+	DirectoryID *string `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	Name        string  `json:"name" url:"name"`
+	Slug        string  `json:"slug" url:"slug"`
+	ContentType string  `json:"contentType" url:"contentType"`
+	// Canonical extension derived from the sniffed type at upload confirmation. Null for legacy rows.
+	Extension   *string    `json:"extension,omitempty" url:"extension,omitempty"`
 	StorageKey  string     `json:"storageKey" url:"storageKey"`
 	SizeBytes   int        `json:"sizeBytes" url:"sizeBytes"`
 	Tags        []string   `json:"tags" url:"tags"`
@@ -2636,6 +2759,13 @@ func (u *UpdateResourceResponseData) GetContentType() string {
 		return ""
 	}
 	return u.ContentType
+}
+
+func (u *UpdateResourceResponseData) GetExtension() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Extension
 }
 
 func (u *UpdateResourceResponseData) GetStorageKey() string {
@@ -2745,6 +2875,13 @@ func (u *UpdateResourceResponseData) SetSlug(slug string) {
 func (u *UpdateResourceResponseData) SetContentType(contentType string) {
 	u.ContentType = contentType
 	u.require(updateResourceResponseDataFieldContentType)
+}
+
+// SetExtension sets the Extension field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateResourceResponseData) SetExtension(extension *string) {
+	u.Extension = extension
+	u.require(updateResourceResponseDataFieldExtension)
 }
 
 // SetStorageKey sets the StorageKey field and marks it as non-optional;

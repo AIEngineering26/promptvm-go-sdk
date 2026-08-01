@@ -161,6 +161,141 @@ func (r *RawClient) UpdateMarketplaceListing(
 	}, nil
 }
 
+func (r *RawClient) InitiateListingMediaUpload(
+	ctx context.Context,
+	request *promptvmgosdk.InitiateListingMediaUploadRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.InitiateListingMediaUploadResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/marketplace/listings/%v/media/upload",
+		request.ListingID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *promptvmgosdk.InitiateListingMediaUploadResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.InitiateListingMediaUploadResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ConfirmListingMediaUpload(
+	ctx context.Context,
+	request *promptvmgosdk.ConfirmListingMediaUploadRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.ConfirmListingMediaUploadResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/marketplace/listings/%v/media/confirm",
+		request.ListingID,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	var response *promptvmgosdk.ConfirmListingMediaUploadResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.ConfirmListingMediaUploadResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) DeleteListingMedia(
+	ctx context.Context,
+	request *promptvmgosdk.DeleteListingMediaRequest,
+	opts ...option.RequestOption,
+) (*core.Response[any], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/api/v1/marketplace/listings/%v/media/%v",
+		request.ListingID,
+		request.Kind,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[any]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       nil,
+	}, nil
+}
+
 func (r *RawClient) ClaimMarketplaceListing(
 	ctx context.Context,
 	request *promptvmgosdk.ClaimMarketplaceListingRequest,

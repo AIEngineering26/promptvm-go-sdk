@@ -81,6 +81,57 @@ func (c *Client) UpdateMarketplaceListing(
 	return response.Body, nil
 }
 
+// Owner-only. Validates the MIME type and size against the featured-media allowlist (images ≤ 5 MB: png/jpeg/webp/gif/svg; videos ≤ 50 MB: mp4/webm) and returns a presigned S3 PUT URL plus the deterministic storage key. Upload the bytes to the URL, then call the confirm endpoint.
+func (c *Client) InitiateListingMediaUpload(
+	ctx context.Context,
+	request *promptvmgosdk.InitiateListingMediaUploadRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.InitiateListingMediaUploadResponse, error) {
+	response, err := c.WithRawResponse.InitiateListingMediaUpload(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Owner-only. Verifies the uploaded object exists in S3 with a valid size/content-type, then persists the key to the listing. Idempotent — re-confirming the same key returns the updated listing.
+func (c *Client) ConfirmListingMediaUpload(
+	ctx context.Context,
+	request *promptvmgosdk.ConfirmListingMediaUploadRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ConfirmListingMediaUploadResponse, error) {
+	response, err := c.WithRawResponse.ConfirmListingMediaUpload(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Owner-only. Clears the stored key for the given kind and best-effort deletes the S3 object. Deleting a video also clears its poster. Idempotent.
+func (c *Client) DeleteListingMedia(
+	ctx context.Context,
+	request *promptvmgosdk.DeleteListingMediaRequest,
+	opts ...option.RequestOption,
+) error {
+	_, err := c.WithRawResponse.DeleteListingMedia(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Claims a free listing and copies the prompt/collection into the user workspace.
 func (c *Client) ClaimMarketplaceListing(
 	ctx context.Context,

@@ -18,12 +18,14 @@ import (
 	hookspublic "github.com/AIEngineering26/promptvm-go-sdk/hookspublic"
 	identity "github.com/AIEngineering26/promptvm-go-sdk/identity"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
+	marketplace "github.com/AIEngineering26/promptvm-go-sdk/marketplace"
 	marketplacebrowse "github.com/AIEngineering26/promptvm-go-sdk/marketplacebrowse"
 	marketplacecomments "github.com/AIEngineering26/promptvm-go-sdk/marketplacecomments"
 	marketplacecreator "github.com/AIEngineering26/promptvm-go-sdk/marketplacecreator"
 	marketplacecreatordashboard "github.com/AIEngineering26/promptvm-go-sdk/marketplacecreatordashboard"
 	marketplacelistings "github.com/AIEngineering26/promptvm-go-sdk/marketplacelistings"
 	marketplaceratings "github.com/AIEngineering26/promptvm-go-sdk/marketplaceratings"
+	marketplaceresolve "github.com/AIEngineering26/promptvm-go-sdk/marketplaceresolve"
 	marketplaceskillsfeed "github.com/AIEngineering26/promptvm-go-sdk/marketplaceskillsfeed"
 	marketplacesocial "github.com/AIEngineering26/promptvm-go-sdk/marketplacesocial"
 	marketplacestats "github.com/AIEngineering26/promptvm-go-sdk/marketplacestats"
@@ -46,6 +48,7 @@ import (
 	skills "github.com/AIEngineering26/promptvm-go-sdk/skills"
 	skillspublic "github.com/AIEngineering26/promptvm-go-sdk/skillspublic"
 	templates "github.com/AIEngineering26/promptvm-go-sdk/templates"
+	users "github.com/AIEngineering26/promptvm-go-sdk/users"
 	workspaces "github.com/AIEngineering26/promptvm-go-sdk/workspaces"
 )
 
@@ -63,6 +66,7 @@ type Client struct {
 	MarketplaceListings         *marketplacelistings.Client
 	MarketplaceCreator          *marketplacecreator.Client
 	MarketplaceStats            *marketplacestats.Client
+	MarketplaceResolve          *marketplaceresolve.Client
 	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
 	MarketplaceSocial           *marketplacesocial.Client
@@ -71,7 +75,9 @@ type Client struct {
 	MarketplaceRatings          *marketplaceratings.Client
 	MarketplaceComments         *marketplacecomments.Client
 	Onboarding                  *onboarding.Client
+	Users                       *users.Client
 	Settings                    *settings.Client
+	Marketplace                 *marketplace.Client
 	Organizations               *organizations.Client
 	Prompts                     *prompts.Client
 	PromptVersions              *promptversions.Client
@@ -113,6 +119,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		MarketplaceListings:         marketplacelistings.NewClient(options),
 		MarketplaceCreator:          marketplacecreator.NewClient(options),
 		MarketplaceStats:            marketplacestats.NewClient(options),
+		MarketplaceResolve:          marketplaceresolve.NewClient(options),
 		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
 		MarketplaceSocial:           marketplacesocial.NewClient(options),
@@ -121,7 +128,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 		MarketplaceRatings:          marketplaceratings.NewClient(options),
 		MarketplaceComments:         marketplacecomments.NewClient(options),
 		Onboarding:                  onboarding.NewClient(options),
+		Users:                       users.NewClient(options),
 		Settings:                    settings.NewClient(options),
+		Marketplace:                 marketplace.NewClient(options),
 		Organizations:               organizations.NewClient(options),
 		Prompts:                     prompts.NewClient(options),
 		PromptVersions:              promptversions.NewClient(options),

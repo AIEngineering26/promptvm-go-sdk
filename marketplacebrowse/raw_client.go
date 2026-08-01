@@ -201,3 +201,91 @@ func (r *RawClient) ListMarketplaceCategories(
 		Body:       response,
 	}, nil
 }
+
+func (r *RawClient) ListMarketplaceContentTypes(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.ListMarketplaceContentTypesResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/marketplace/content-types"
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *promptvmgosdk.ListMarketplaceContentTypesResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.ListMarketplaceContentTypesResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) GetMarketplaceFacets(
+	ctx context.Context,
+	request *promptvmgosdk.GetMarketplaceFacetsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*promptvmgosdk.GetMarketplaceFacetsResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"http://localhost:3000",
+	)
+	endpointURL := baseURL + "/api/v1/marketplace/facets"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *promptvmgosdk.GetMarketplaceFacetsResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*promptvmgosdk.GetMarketplaceFacetsResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
