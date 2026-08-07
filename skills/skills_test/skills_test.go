@@ -192,3 +192,56 @@ func TestSkillsUpdateSkillWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestSkillsUpdateSkillWithWireMock", "PATCH", "/api/v1/skills/skillId", nil, 1)
 }
+
+func TestSkillsListSkillFilesWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.ListSkillFilesRequest{
+		SkillID: "skillId",
+	}
+	_, invocationErr := client.Skills.ListSkillFiles(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestSkillsListSkillFilesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestSkillsListSkillFilesWithWireMock", "GET", "/api/v1/skills/skillId/files", nil, 1)
+}
+
+func TestSkillsGetSkillFileContentWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetSkillFileContentRequest{
+		SkillID: "skillId",
+		Path:    "path",
+	}
+	_, invocationErr := client.Skills.GetSkillFileContent(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestSkillsGetSkillFileContentWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestSkillsGetSkillFileContentWithWireMock", "GET", "/api/v1/skills/skillId/files/content", map[string]string{"path": "path"}, 1)
+}

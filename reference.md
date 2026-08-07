@@ -9443,6 +9443,14 @@ client.PromptVersions.CreatePromptVersion(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**baseVersion:** `*int` — Optional optimistic-concurrency guard. Must equal the current head versionNumber (0 for a prompt with no versions). A stale value yields 409 version_conflict with no mutation; omit for append-only (last writer wins).
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -9670,6 +9678,14 @@ client.PromptVersions.UpdatePromptVersion(
 <dd>
 
 **variablesSchema:** `map[string]*promptvmgosdk.UpdatePromptVersionRequestVariablesSchemaValue` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**baseVersion:** `*int` — Optional optimistic-concurrency guard. Must equal the targeted version’s current versionNumber; a mismatch yields 409 version_conflict with no columns written.
     
 </dd>
 </dl>
@@ -12467,6 +12483,145 @@ client.Skills.UpdateSkill(
 <dd>
 
 **directoryID:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**baseVersion:** `*int` — Optional optimistic-concurrency guard for the skill_md re-version path. Must equal the current head versionNumber; a stale value yields 409 version_conflict with no new version committed.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Skills.ListSkillFiles(SkillID) -> *promptvmgosdk.ListSkillFilesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the manifest of files bundled into the skill’s current version — path, sizeBytes, contentType — without any file bytes. Pull an individual file with GET /skills/:skillId/files/content?path=…
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.ListSkillFilesRequest{
+        SkillID: "skillId",
+    }
+client.Skills.ListSkillFiles(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**skillID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Skills.GetSkillFileContent(SkillID) -> *promptvmgosdk.GetSkillFileContentResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a single bundled file identified by its manifest path. Text files are returned inline (encoding=inline, content is UTF-8); binary files (and any file over the inline cap) return a short-lived presigned download URL (encoding=url, downloadUrl).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetSkillFileContentRequest{
+        SkillID: "skillId",
+        Path: "path",
+    }
+client.Skills.GetSkillFileContent(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**skillID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**path:** `string` 
     
 </dd>
 </dl>

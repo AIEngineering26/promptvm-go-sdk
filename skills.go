@@ -140,6 +140,65 @@ func (g *GetSkillRequest) SetSkillID(skillID string) {
 }
 
 var (
+	getSkillFileContentRequestFieldSkillID = big.NewInt(1 << 0)
+	getSkillFileContentRequestFieldPath    = big.NewInt(1 << 1)
+)
+
+type GetSkillFileContentRequest struct {
+	SkillID string `json:"-" url:"-"`
+	Path    string `json:"-" url:"path"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetSkillFileContentRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetSkillID sets the SkillID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentRequest) SetSkillID(skillID string) {
+	g.SkillID = skillID
+	g.require(getSkillFileContentRequestFieldSkillID)
+}
+
+// SetPath sets the Path field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentRequest) SetPath(path string) {
+	g.Path = path
+	g.require(getSkillFileContentRequestFieldPath)
+}
+
+var (
+	listSkillFilesRequestFieldSkillID = big.NewInt(1 << 0)
+)
+
+type ListSkillFilesRequest struct {
+	SkillID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListSkillFilesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetSkillID sets the SkillID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSkillFilesRequest) SetSkillID(skillID string) {
+	l.SkillID = skillID
+	l.require(listSkillFilesRequestFieldSkillID)
+}
+
+var (
 	listSkillsRequestFieldWorkspaceID = big.NewInt(1 << 0)
 	listSkillsRequestFieldCursor      = big.NewInt(1 << 1)
 	listSkillsRequestFieldLimit       = big.NewInt(1 << 2)
@@ -1504,6 +1563,187 @@ func (d *DeleteSkillResponse) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// File content
+var (
+	getSkillFileContentResponseFieldPath        = big.NewInt(1 << 0)
+	getSkillFileContentResponseFieldContentType = big.NewInt(1 << 1)
+	getSkillFileContentResponseFieldSizeBytes   = big.NewInt(1 << 2)
+	getSkillFileContentResponseFieldEncoding    = big.NewInt(1 << 3)
+	getSkillFileContentResponseFieldContent     = big.NewInt(1 << 4)
+	getSkillFileContentResponseFieldDownloadURL = big.NewInt(1 << 5)
+)
+
+type GetSkillFileContentResponse struct {
+	Path        string                              `json:"path" url:"path"`
+	ContentType *string                             `json:"contentType,omitempty" url:"contentType,omitempty"`
+	SizeBytes   *int                                `json:"sizeBytes,omitempty" url:"sizeBytes,omitempty"`
+	Encoding    GetSkillFileContentResponseEncoding `json:"encoding" url:"encoding"`
+	Content     *string                             `json:"content,omitempty" url:"content,omitempty"`
+	DownloadURL *string                             `json:"downloadUrl,omitempty" url:"downloadUrl,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetSkillFileContentResponse) GetPath() string {
+	if g == nil {
+		return ""
+	}
+	return g.Path
+}
+
+func (g *GetSkillFileContentResponse) GetContentType() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ContentType
+}
+
+func (g *GetSkillFileContentResponse) GetSizeBytes() *int {
+	if g == nil {
+		return nil
+	}
+	return g.SizeBytes
+}
+
+func (g *GetSkillFileContentResponse) GetEncoding() GetSkillFileContentResponseEncoding {
+	if g == nil {
+		return ""
+	}
+	return g.Encoding
+}
+
+func (g *GetSkillFileContentResponse) GetContent() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Content
+}
+
+func (g *GetSkillFileContentResponse) GetDownloadURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DownloadURL
+}
+
+func (g *GetSkillFileContentResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetSkillFileContentResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetPath sets the Path field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentResponse) SetPath(path string) {
+	g.Path = path
+	g.require(getSkillFileContentResponseFieldPath)
+}
+
+// SetContentType sets the ContentType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentResponse) SetContentType(contentType *string) {
+	g.ContentType = contentType
+	g.require(getSkillFileContentResponseFieldContentType)
+}
+
+// SetSizeBytes sets the SizeBytes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentResponse) SetSizeBytes(sizeBytes *int) {
+	g.SizeBytes = sizeBytes
+	g.require(getSkillFileContentResponseFieldSizeBytes)
+}
+
+// SetEncoding sets the Encoding field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentResponse) SetEncoding(encoding GetSkillFileContentResponseEncoding) {
+	g.Encoding = encoding
+	g.require(getSkillFileContentResponseFieldEncoding)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentResponse) SetContent(content *string) {
+	g.Content = content
+	g.require(getSkillFileContentResponseFieldContent)
+}
+
+// SetDownloadURL sets the DownloadURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillFileContentResponse) SetDownloadURL(downloadURL *string) {
+	g.DownloadURL = downloadURL
+	g.require(getSkillFileContentResponseFieldDownloadURL)
+}
+
+func (g *GetSkillFileContentResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetSkillFileContentResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetSkillFileContentResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetSkillFileContentResponse) MarshalJSON() ([]byte, error) {
+	type embed GetSkillFileContentResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetSkillFileContentResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetSkillFileContentResponseEncoding string
+
+const (
+	GetSkillFileContentResponseEncodingInline GetSkillFileContentResponseEncoding = "inline"
+	GetSkillFileContentResponseEncodingURL    GetSkillFileContentResponseEncoding = "url"
+)
+
+func NewGetSkillFileContentResponseEncodingFromString(s string) (GetSkillFileContentResponseEncoding, error) {
+	switch s {
+	case "inline":
+		return GetSkillFileContentResponseEncodingInline, nil
+	case "url":
+		return GetSkillFileContentResponseEncodingURL, nil
+	}
+	var t GetSkillFileContentResponseEncoding
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetSkillFileContentResponseEncoding) Ptr() *GetSkillFileContentResponseEncoding {
+	return &g
+}
+
 // Skill
 var (
 	getSkillResponseFieldData = big.NewInt(1 << 0)
@@ -2602,6 +2842,195 @@ func NewGetSkillResponseDataShellFromString(s string) (GetSkillResponseDataShell
 
 func (g GetSkillResponseDataShell) Ptr() *GetSkillResponseDataShell {
 	return &g
+}
+
+// File manifest
+var (
+	listSkillFilesResponseFieldFiles = big.NewInt(1 << 0)
+)
+
+type ListSkillFilesResponse struct {
+	Files []*ListSkillFilesResponseFilesItem `json:"files" url:"files"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListSkillFilesResponse) GetFiles() []*ListSkillFilesResponseFilesItem {
+	if l == nil {
+		return nil
+	}
+	return l.Files
+}
+
+func (l *ListSkillFilesResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListSkillFilesResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFiles sets the Files field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSkillFilesResponse) SetFiles(files []*ListSkillFilesResponseFilesItem) {
+	l.Files = files
+	l.require(listSkillFilesResponseFieldFiles)
+}
+
+func (l *ListSkillFilesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListSkillFilesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListSkillFilesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListSkillFilesResponse) MarshalJSON() ([]byte, error) {
+	type embed ListSkillFilesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListSkillFilesResponse) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listSkillFilesResponseFilesItemFieldPath        = big.NewInt(1 << 0)
+	listSkillFilesResponseFilesItemFieldSizeBytes   = big.NewInt(1 << 1)
+	listSkillFilesResponseFilesItemFieldContentType = big.NewInt(1 << 2)
+)
+
+type ListSkillFilesResponseFilesItem struct {
+	Path        string  `json:"path" url:"path"`
+	SizeBytes   *int    `json:"sizeBytes,omitempty" url:"sizeBytes,omitempty"`
+	ContentType *string `json:"contentType,omitempty" url:"contentType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListSkillFilesResponseFilesItem) GetPath() string {
+	if l == nil {
+		return ""
+	}
+	return l.Path
+}
+
+func (l *ListSkillFilesResponseFilesItem) GetSizeBytes() *int {
+	if l == nil {
+		return nil
+	}
+	return l.SizeBytes
+}
+
+func (l *ListSkillFilesResponseFilesItem) GetContentType() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ContentType
+}
+
+func (l *ListSkillFilesResponseFilesItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListSkillFilesResponseFilesItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetPath sets the Path field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSkillFilesResponseFilesItem) SetPath(path string) {
+	l.Path = path
+	l.require(listSkillFilesResponseFilesItemFieldPath)
+}
+
+// SetSizeBytes sets the SizeBytes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSkillFilesResponseFilesItem) SetSizeBytes(sizeBytes *int) {
+	l.SizeBytes = sizeBytes
+	l.require(listSkillFilesResponseFilesItemFieldSizeBytes)
+}
+
+// SetContentType sets the ContentType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSkillFilesResponseFilesItem) SetContentType(contentType *string) {
+	l.ContentType = contentType
+	l.require(listSkillFilesResponseFilesItemFieldContentType)
+}
+
+func (l *ListSkillFilesResponseFilesItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListSkillFilesResponseFilesItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListSkillFilesResponseFilesItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListSkillFilesResponseFilesItem) MarshalJSON() ([]byte, error) {
+	type embed ListSkillFilesResponseFilesItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListSkillFilesResponseFilesItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
 }
 
 type ListSkillsRequestIsPublic string
@@ -4391,6 +4820,7 @@ var (
 	updateSkillRequestFieldStatus      = big.NewInt(1 << 4)
 	updateSkillRequestFieldTags        = big.NewInt(1 << 5)
 	updateSkillRequestFieldDirectoryID = big.NewInt(1 << 6)
+	updateSkillRequestFieldBaseVersion = big.NewInt(1 << 7)
 )
 
 type UpdateSkillRequest struct {
@@ -4401,6 +4831,8 @@ type UpdateSkillRequest struct {
 	Status      *UpdateSkillRequestStatus      `json:"status,omitempty" url:"-"`
 	Tags        []string                       `json:"tags,omitempty" url:"-"`
 	DirectoryID *string                        `json:"directoryId,omitempty" url:"-"`
+	// Optional optimistic-concurrency guard for the skill_md re-version path. Must equal the current head versionNumber; a stale value yields 409 version_conflict with no new version committed.
+	BaseVersion *int `json:"base_version,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4460,4 +4892,11 @@ func (u *UpdateSkillRequest) SetTags(tags []string) {
 func (u *UpdateSkillRequest) SetDirectoryID(directoryID *string) {
 	u.DirectoryID = directoryID
 	u.require(updateSkillRequestFieldDirectoryID)
+}
+
+// SetBaseVersion sets the BaseVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSkillRequest) SetBaseVersion(baseVersion *int) {
+	u.BaseVersion = baseVersion
+	u.require(updateSkillRequestFieldBaseVersion)
 }

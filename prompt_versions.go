@@ -18,6 +18,7 @@ var (
 	createPromptVersionRequestFieldChangeNote      = big.NewInt(1 << 4)
 	createPromptVersionRequestFieldVersionLabel    = big.NewInt(1 << 5)
 	createPromptVersionRequestFieldVariablesSchema = big.NewInt(1 << 6)
+	createPromptVersionRequestFieldBaseVersion     = big.NewInt(1 << 7)
 )
 
 type CreatePromptVersionRequest struct {
@@ -29,6 +30,8 @@ type CreatePromptVersionRequest struct {
 	ChangeNote      *string                                                    `json:"changeNote,omitempty" url:"-"`
 	VersionLabel    *string                                                    `json:"versionLabel,omitempty" url:"-"`
 	VariablesSchema map[string]*CreatePromptVersionRequestVariablesSchemaValue `json:"variablesSchema,omitempty" url:"-"`
+	// Optional optimistic-concurrency guard. Must equal the current head versionNumber (0 for a prompt with no versions). A stale value yields 409 version_conflict with no mutation; omit for append-only (last writer wins).
+	BaseVersion *int `json:"base_version,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -88,6 +91,13 @@ func (c *CreatePromptVersionRequest) SetVersionLabel(versionLabel *string) {
 func (c *CreatePromptVersionRequest) SetVariablesSchema(variablesSchema map[string]*CreatePromptVersionRequestVariablesSchemaValue) {
 	c.VariablesSchema = variablesSchema
 	c.require(createPromptVersionRequestFieldVariablesSchema)
+}
+
+// SetBaseVersion sets the BaseVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionRequest) SetBaseVersion(baseVersion *int) {
+	c.BaseVersion = baseVersion
+	c.require(createPromptVersionRequestFieldBaseVersion)
 }
 
 var (
@@ -3178,6 +3188,7 @@ var (
 	updatePromptVersionRequestFieldContent         = big.NewInt(1 << 4)
 	updatePromptVersionRequestFieldSystemPrompt    = big.NewInt(1 << 5)
 	updatePromptVersionRequestFieldVariablesSchema = big.NewInt(1 << 6)
+	updatePromptVersionRequestFieldBaseVersion     = big.NewInt(1 << 7)
 )
 
 type UpdatePromptVersionRequest struct {
@@ -3188,6 +3199,8 @@ type UpdatePromptVersionRequest struct {
 	Content         *string                                                    `json:"content,omitempty" url:"-"`
 	SystemPrompt    *string                                                    `json:"systemPrompt,omitempty" url:"-"`
 	VariablesSchema map[string]*UpdatePromptVersionRequestVariablesSchemaValue `json:"variablesSchema,omitempty" url:"-"`
+	// Optional optimistic-concurrency guard. Must equal the targeted version’s current versionNumber; a mismatch yields 409 version_conflict with no columns written.
+	BaseVersion *int `json:"base_version,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3247,4 +3260,11 @@ func (u *UpdatePromptVersionRequest) SetSystemPrompt(systemPrompt *string) {
 func (u *UpdatePromptVersionRequest) SetVariablesSchema(variablesSchema map[string]*UpdatePromptVersionRequestVariablesSchemaValue) {
 	u.VariablesSchema = variablesSchema
 	u.require(updatePromptVersionRequestFieldVariablesSchema)
+}
+
+// SetBaseVersion sets the BaseVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionRequest) SetBaseVersion(baseVersion *int) {
+	u.BaseVersion = baseVersion
+	u.require(updatePromptVersionRequestFieldBaseVersion)
 }

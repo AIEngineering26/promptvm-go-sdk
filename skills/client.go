@@ -114,3 +114,37 @@ func (c *Client) UpdateSkill(
 	}
 	return response.Body, nil
 }
+
+// Returns the manifest of files bundled into the skill’s current version — path, sizeBytes, contentType — without any file bytes. Pull an individual file with GET /skills/:skillId/files/content?path=…
+func (c *Client) ListSkillFiles(
+	ctx context.Context,
+	request *promptvmgosdk.ListSkillFilesRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.ListSkillFilesResponse, error) {
+	response, err := c.WithRawResponse.ListSkillFiles(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns a single bundled file identified by its manifest path. Text files are returned inline (encoding=inline, content is UTF-8); binary files (and any file over the inline cap) return a short-lived presigned download URL (encoding=url, downloadUrl).
+func (c *Client) GetSkillFileContent(
+	ctx context.Context,
+	request *promptvmgosdk.GetSkillFileContentRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetSkillFileContentResponse, error) {
+	response, err := c.WithRawResponse.GetSkillFileContent(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
