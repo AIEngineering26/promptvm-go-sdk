@@ -310,12 +310,15 @@ func (l *ListPromptResourcesRequest) SetPromptID(promptID string) {
 var (
 	listWorkspaceResourcesRequestFieldWorkspaceID    = big.NewInt(1 << 0)
 	listWorkspaceResourcesRequestFieldIncludeBundled = big.NewInt(1 << 1)
+	listWorkspaceResourcesRequestFieldOrphansOnly    = big.NewInt(1 << 2)
 )
 
 type ListWorkspaceResourcesRequest struct {
 	WorkspaceID string `json:"-" url:"workspaceId"`
 	// Include resources bundled into the current version of a skill. Default false.
 	IncludeBundled *bool `json:"-" url:"includeBundled,omitempty"`
+	// Return only orphan resources (no binding to any prompt/skill version). Default false. Overrides includeBundled.
+	OrphansOnly *bool `json:"-" url:"orphansOnly,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -340,6 +343,13 @@ func (l *ListWorkspaceResourcesRequest) SetWorkspaceID(workspaceID string) {
 func (l *ListWorkspaceResourcesRequest) SetIncludeBundled(includeBundled *bool) {
 	l.IncludeBundled = includeBundled
 	l.require(listWorkspaceResourcesRequestFieldIncludeBundled)
+}
+
+// SetOrphansOnly sets the OrphansOnly field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListWorkspaceResourcesRequest) SetOrphansOnly(orphansOnly *bool) {
+	l.OrphansOnly = orphansOnly
+	l.require(listWorkspaceResourcesRequestFieldOrphansOnly)
 }
 
 // How the resource is used by the LLM at execution time

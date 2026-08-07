@@ -11376,7 +11376,7 @@ client.Directories.UpdateDirectory(
 <dl>
 <dd>
 
-Returns all confirmed, non-deleted resources belonging to a workspace. By default, resources bundled into the current version of a skill are excluded — they are internal to the skill and surface through its files manifest. Resources attached to ordinary prompts remain included. Pass includeBundled=true to return everything, including skill-bundled resources.
+Returns all confirmed, non-deleted resources belonging to a workspace. By default, resources bundled into the current version of a skill are excluded — they are internal to the skill and surface through its files manifest. Resources attached to ordinary prompts remain included. Pass includeBundled=true to return everything, including skill-bundled resources. Pass orphansOnly=true to return ONLY resources not bound to any prompt/skill version — typically leftovers from failed CLI skill uploads (the CLI cleanup-orphans command uses this).
 </dd>
 </dl>
 </dd>
@@ -11422,6 +11422,14 @@ client.Resources.ListWorkspaceResources(
 <dd>
 
 **includeBundled:** `*bool` — Include resources bundled into the current version of a skill. Default false.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orphansOnly:** `*bool` — Return only orphan resources (no binding to any prompt/skill version). Default false. Overrides includeBundled.
     
 </dd>
 </dl>
