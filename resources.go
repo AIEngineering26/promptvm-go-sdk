@@ -140,6 +140,31 @@ func (d *DetachPromptResourceRequest) SetResourceID(resourceID string) {
 }
 
 var (
+	getPromptRagStatusRequestFieldPromptID = big.NewInt(1 << 0)
+)
+
+type GetPromptRagStatusRequest struct {
+	PromptID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetPromptRagStatusRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetPromptID sets the PromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusRequest) SetPromptID(promptID string) {
+	g.PromptID = promptID
+	g.require(getPromptRagStatusRequestFieldPromptID)
+}
+
+var (
 	getResourceRequestFieldResourceID = big.NewInt(1 << 0)
 )
 
@@ -196,6 +221,56 @@ func (g *GetResourceDownloadURLRequest) SetResourceID(resourceID string) {
 func (g *GetResourceDownloadURLRequest) SetDisposition(disposition *GetResourceDownloadURLRequestDisposition) {
 	g.Disposition = disposition
 	g.require(getResourceDownloadURLRequestFieldDisposition)
+}
+
+var (
+	getResourceMarkdownURLRequestFieldResourceID = big.NewInt(1 << 0)
+)
+
+type GetResourceMarkdownURLRequest struct {
+	ResourceID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetResourceMarkdownURLRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetResourceID sets the ResourceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceMarkdownURLRequest) SetResourceID(resourceID string) {
+	g.ResourceID = resourceID
+	g.require(getResourceMarkdownURLRequestFieldResourceID)
+}
+
+var (
+	getResourceRagStatusRequestFieldResourceID = big.NewInt(1 << 0)
+)
+
+type GetResourceRagStatusRequest struct {
+	ResourceID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetResourceRagStatusRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetResourceID sets the ResourceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusRequest) SetResourceID(resourceID string) {
+	g.ResourceID = resourceID
+	g.require(getResourceRagStatusRequestFieldResourceID)
 }
 
 var (
@@ -350,6 +425,76 @@ func (l *ListWorkspaceResourcesRequest) SetIncludeBundled(includeBundled *bool) 
 func (l *ListWorkspaceResourcesRequest) SetOrphansOnly(orphansOnly *bool) {
 	l.OrphansOnly = orphansOnly
 	l.require(listWorkspaceResourcesRequestFieldOrphansOnly)
+}
+
+var (
+	setPromptSearchIndexingRequestFieldPromptID = big.NewInt(1 << 0)
+	setPromptSearchIndexingRequestFieldEnabled  = big.NewInt(1 << 1)
+)
+
+type SetPromptSearchIndexingRequest struct {
+	PromptID string `json:"-" url:"-"`
+	// Include this item in Knowledge Search.
+	Enabled bool `json:"enabled" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SetPromptSearchIndexingRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetPromptID sets the PromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingRequest) SetPromptID(promptID string) {
+	s.PromptID = promptID
+	s.require(setPromptSearchIndexingRequestFieldPromptID)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingRequest) SetEnabled(enabled bool) {
+	s.Enabled = enabled
+	s.require(setPromptSearchIndexingRequestFieldEnabled)
+}
+
+var (
+	setResourceSearchIndexingRequestFieldResourceID = big.NewInt(1 << 0)
+	setResourceSearchIndexingRequestFieldEnabled    = big.NewInt(1 << 1)
+)
+
+type SetResourceSearchIndexingRequest struct {
+	ResourceID string `json:"-" url:"-"`
+	// Include this item in Knowledge Search.
+	Enabled bool `json:"enabled" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SetResourceSearchIndexingRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetResourceID sets the ResourceID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingRequest) SetResourceID(resourceID string) {
+	s.ResourceID = resourceID
+	s.require(setResourceSearchIndexingRequestFieldResourceID)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingRequest) SetEnabled(enabled bool) {
+	s.Enabled = enabled
+	s.require(setResourceSearchIndexingRequestFieldEnabled)
 }
 
 // How the resource is used by the LLM at execution time
@@ -1071,6 +1216,301 @@ func (c *ConfirmResourceUploadResponseData) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// RAG status
+var (
+	getPromptRagStatusResponseFieldData = big.NewInt(1 << 0)
+)
+
+type GetPromptRagStatusResponse struct {
+	Data *GetPromptRagStatusResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetPromptRagStatusResponse) GetData() *GetPromptRagStatusResponseData {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetPromptRagStatusResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetPromptRagStatusResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponse) SetData(data *GetPromptRagStatusResponseData) {
+	g.Data = data
+	g.require(getPromptRagStatusResponseFieldData)
+}
+
+func (g *GetPromptRagStatusResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetPromptRagStatusResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetPromptRagStatusResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetPromptRagStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed GetPromptRagStatusResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetPromptRagStatusResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getPromptRagStatusResponseDataFieldVersionNumber     = big.NewInt(1 << 0)
+	getPromptRagStatusResponseDataFieldStatus            = big.NewInt(1 << 1)
+	getPromptRagStatusResponseDataFieldErrorStage        = big.NewInt(1 << 2)
+	getPromptRagStatusResponseDataFieldErrorMessage      = big.NewInt(1 << 3)
+	getPromptRagStatusResponseDataFieldChunkCount        = big.NewInt(1 << 4)
+	getPromptRagStatusResponseDataFieldHasMarkdownRender = big.NewInt(1 << 5)
+	getPromptRagStatusResponseDataFieldEmbeddingChunks   = big.NewInt(1 << 6)
+	getPromptRagStatusResponseDataFieldUpdatedAt         = big.NewInt(1 << 7)
+	getPromptRagStatusResponseDataFieldEnabled           = big.NewInt(1 << 8)
+)
+
+type GetPromptRagStatusResponseData struct {
+	VersionNumber int `json:"versionNumber" url:"versionNumber"`
+	// Ingestion job status for the current version; null when never queued.
+	Status            *string    `json:"status,omitempty" url:"status,omitempty"`
+	ErrorStage        *string    `json:"errorStage,omitempty" url:"errorStage,omitempty"`
+	ErrorMessage      *string    `json:"errorMessage,omitempty" url:"errorMessage,omitempty"`
+	ChunkCount        *int       `json:"chunkCount,omitempty" url:"chunkCount,omitempty"`
+	HasMarkdownRender bool       `json:"hasMarkdownRender" url:"hasMarkdownRender"`
+	EmbeddingChunks   int        `json:"embeddingChunks" url:"embeddingChunks"`
+	UpdatedAt         *time.Time `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	// Owner's Include-in-Knowledge-Search toggle (files.search_indexing_enabled).
+	Enabled bool `json:"enabled" url:"enabled"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetPromptRagStatusResponseData) GetVersionNumber() int {
+	if g == nil {
+		return 0
+	}
+	return g.VersionNumber
+}
+
+func (g *GetPromptRagStatusResponseData) GetStatus() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Status
+}
+
+func (g *GetPromptRagStatusResponseData) GetErrorStage() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ErrorStage
+}
+
+func (g *GetPromptRagStatusResponseData) GetErrorMessage() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ErrorMessage
+}
+
+func (g *GetPromptRagStatusResponseData) GetChunkCount() *int {
+	if g == nil {
+		return nil
+	}
+	return g.ChunkCount
+}
+
+func (g *GetPromptRagStatusResponseData) GetHasMarkdownRender() bool {
+	if g == nil {
+		return false
+	}
+	return g.HasMarkdownRender
+}
+
+func (g *GetPromptRagStatusResponseData) GetEmbeddingChunks() int {
+	if g == nil {
+		return 0
+	}
+	return g.EmbeddingChunks
+}
+
+func (g *GetPromptRagStatusResponseData) GetUpdatedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.UpdatedAt
+}
+
+func (g *GetPromptRagStatusResponseData) GetEnabled() bool {
+	if g == nil {
+		return false
+	}
+	return g.Enabled
+}
+
+func (g *GetPromptRagStatusResponseData) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetPromptRagStatusResponseData) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetVersionNumber(versionNumber int) {
+	g.VersionNumber = versionNumber
+	g.require(getPromptRagStatusResponseDataFieldVersionNumber)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetStatus(status *string) {
+	g.Status = status
+	g.require(getPromptRagStatusResponseDataFieldStatus)
+}
+
+// SetErrorStage sets the ErrorStage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetErrorStage(errorStage *string) {
+	g.ErrorStage = errorStage
+	g.require(getPromptRagStatusResponseDataFieldErrorStage)
+}
+
+// SetErrorMessage sets the ErrorMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetErrorMessage(errorMessage *string) {
+	g.ErrorMessage = errorMessage
+	g.require(getPromptRagStatusResponseDataFieldErrorMessage)
+}
+
+// SetChunkCount sets the ChunkCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetChunkCount(chunkCount *int) {
+	g.ChunkCount = chunkCount
+	g.require(getPromptRagStatusResponseDataFieldChunkCount)
+}
+
+// SetHasMarkdownRender sets the HasMarkdownRender field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetHasMarkdownRender(hasMarkdownRender bool) {
+	g.HasMarkdownRender = hasMarkdownRender
+	g.require(getPromptRagStatusResponseDataFieldHasMarkdownRender)
+}
+
+// SetEmbeddingChunks sets the EmbeddingChunks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetEmbeddingChunks(embeddingChunks int) {
+	g.EmbeddingChunks = embeddingChunks
+	g.require(getPromptRagStatusResponseDataFieldEmbeddingChunks)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetUpdatedAt(updatedAt *time.Time) {
+	g.UpdatedAt = updatedAt
+	g.require(getPromptRagStatusResponseDataFieldUpdatedAt)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptRagStatusResponseData) SetEnabled(enabled bool) {
+	g.Enabled = enabled
+	g.require(getPromptRagStatusResponseDataFieldEnabled)
+}
+
+func (g *GetPromptRagStatusResponseData) UnmarshalJSON(data []byte) error {
+	type embed GetPromptRagStatusResponseData
+	var unmarshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetPromptRagStatusResponseData(unmarshaler.embed)
+	g.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetPromptRagStatusResponseData) MarshalJSON() ([]byte, error) {
+	type embed GetPromptRagStatusResponseData
+	var marshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed:     embed(*g),
+		UpdatedAt: internal.NewOptionalDateTime(g.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetPromptRagStatusResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GetResourceDownloadURLRequestDisposition string
 
 const (
@@ -1310,6 +1750,520 @@ func NewGetResourceDownloadURLResponseDataDispositionFromString(s string) (GetRe
 
 func (g GetResourceDownloadURLResponseDataDisposition) Ptr() *GetResourceDownloadURLResponseDataDisposition {
 	return &g
+}
+
+// Presigned markdown URL
+var (
+	getResourceMarkdownURLResponseFieldData = big.NewInt(1 << 0)
+)
+
+type GetResourceMarkdownURLResponse struct {
+	Data *GetResourceMarkdownURLResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetResourceMarkdownURLResponse) GetData() *GetResourceMarkdownURLResponseData {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetResourceMarkdownURLResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetResourceMarkdownURLResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceMarkdownURLResponse) SetData(data *GetResourceMarkdownURLResponseData) {
+	g.Data = data
+	g.require(getResourceMarkdownURLResponseFieldData)
+}
+
+func (g *GetResourceMarkdownURLResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetResourceMarkdownURLResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetResourceMarkdownURLResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetResourceMarkdownURLResponse) MarshalJSON() ([]byte, error) {
+	type embed GetResourceMarkdownURLResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetResourceMarkdownURLResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getResourceMarkdownURLResponseDataFieldURL         = big.NewInt(1 << 0)
+	getResourceMarkdownURLResponseDataFieldExpiresAt   = big.NewInt(1 << 1)
+	getResourceMarkdownURLResponseDataFieldDisposition = big.NewInt(1 << 2)
+)
+
+type GetResourceMarkdownURLResponseData struct {
+	URL         string                                        `json:"url" url:"url"`
+	ExpiresAt   time.Time                                     `json:"expiresAt" url:"expiresAt"`
+	Disposition GetResourceMarkdownURLResponseDataDisposition `json:"disposition" url:"disposition"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetResourceMarkdownURLResponseData) GetURL() string {
+	if g == nil {
+		return ""
+	}
+	return g.URL
+}
+
+func (g *GetResourceMarkdownURLResponseData) GetExpiresAt() time.Time {
+	if g == nil {
+		return time.Time{}
+	}
+	return g.ExpiresAt
+}
+
+func (g *GetResourceMarkdownURLResponseData) GetDisposition() GetResourceMarkdownURLResponseDataDisposition {
+	if g == nil {
+		return ""
+	}
+	return g.Disposition
+}
+
+func (g *GetResourceMarkdownURLResponseData) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetResourceMarkdownURLResponseData) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetURL sets the URL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceMarkdownURLResponseData) SetURL(url string) {
+	g.URL = url
+	g.require(getResourceMarkdownURLResponseDataFieldURL)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceMarkdownURLResponseData) SetExpiresAt(expiresAt time.Time) {
+	g.ExpiresAt = expiresAt
+	g.require(getResourceMarkdownURLResponseDataFieldExpiresAt)
+}
+
+// SetDisposition sets the Disposition field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceMarkdownURLResponseData) SetDisposition(disposition GetResourceMarkdownURLResponseDataDisposition) {
+	g.Disposition = disposition
+	g.require(getResourceMarkdownURLResponseDataFieldDisposition)
+}
+
+func (g *GetResourceMarkdownURLResponseData) UnmarshalJSON(data []byte) error {
+	type embed GetResourceMarkdownURLResponseData
+	var unmarshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expiresAt"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetResourceMarkdownURLResponseData(unmarshaler.embed)
+	g.ExpiresAt = unmarshaler.ExpiresAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetResourceMarkdownURLResponseData) MarshalJSON() ([]byte, error) {
+	type embed GetResourceMarkdownURLResponseData
+	var marshaler = struct {
+		embed
+		ExpiresAt *internal.DateTime `json:"expiresAt"`
+	}{
+		embed:     embed(*g),
+		ExpiresAt: internal.NewDateTime(g.ExpiresAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetResourceMarkdownURLResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetResourceMarkdownURLResponseDataDisposition string
+
+const (
+	GetResourceMarkdownURLResponseDataDispositionAttachment GetResourceMarkdownURLResponseDataDisposition = "attachment"
+	GetResourceMarkdownURLResponseDataDispositionInline     GetResourceMarkdownURLResponseDataDisposition = "inline"
+)
+
+func NewGetResourceMarkdownURLResponseDataDispositionFromString(s string) (GetResourceMarkdownURLResponseDataDisposition, error) {
+	switch s {
+	case "attachment":
+		return GetResourceMarkdownURLResponseDataDispositionAttachment, nil
+	case "inline":
+		return GetResourceMarkdownURLResponseDataDispositionInline, nil
+	}
+	var t GetResourceMarkdownURLResponseDataDisposition
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetResourceMarkdownURLResponseDataDisposition) Ptr() *GetResourceMarkdownURLResponseDataDisposition {
+	return &g
+}
+
+// RAG status
+var (
+	getResourceRagStatusResponseFieldData = big.NewInt(1 << 0)
+)
+
+type GetResourceRagStatusResponse struct {
+	Data *GetResourceRagStatusResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetResourceRagStatusResponse) GetData() *GetResourceRagStatusResponseData {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetResourceRagStatusResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetResourceRagStatusResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponse) SetData(data *GetResourceRagStatusResponseData) {
+	g.Data = data
+	g.require(getResourceRagStatusResponseFieldData)
+}
+
+func (g *GetResourceRagStatusResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetResourceRagStatusResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetResourceRagStatusResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetResourceRagStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed GetResourceRagStatusResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetResourceRagStatusResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getResourceRagStatusResponseDataFieldVersionNumber     = big.NewInt(1 << 0)
+	getResourceRagStatusResponseDataFieldStatus            = big.NewInt(1 << 1)
+	getResourceRagStatusResponseDataFieldErrorStage        = big.NewInt(1 << 2)
+	getResourceRagStatusResponseDataFieldErrorMessage      = big.NewInt(1 << 3)
+	getResourceRagStatusResponseDataFieldChunkCount        = big.NewInt(1 << 4)
+	getResourceRagStatusResponseDataFieldHasMarkdownRender = big.NewInt(1 << 5)
+	getResourceRagStatusResponseDataFieldEmbeddingChunks   = big.NewInt(1 << 6)
+	getResourceRagStatusResponseDataFieldUpdatedAt         = big.NewInt(1 << 7)
+	getResourceRagStatusResponseDataFieldEnabled           = big.NewInt(1 << 8)
+)
+
+type GetResourceRagStatusResponseData struct {
+	VersionNumber int `json:"versionNumber" url:"versionNumber"`
+	// Ingestion job status for the current version; null when never queued.
+	Status            *string    `json:"status,omitempty" url:"status,omitempty"`
+	ErrorStage        *string    `json:"errorStage,omitempty" url:"errorStage,omitempty"`
+	ErrorMessage      *string    `json:"errorMessage,omitempty" url:"errorMessage,omitempty"`
+	ChunkCount        *int       `json:"chunkCount,omitempty" url:"chunkCount,omitempty"`
+	HasMarkdownRender bool       `json:"hasMarkdownRender" url:"hasMarkdownRender"`
+	EmbeddingChunks   int        `json:"embeddingChunks" url:"embeddingChunks"`
+	UpdatedAt         *time.Time `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	// Owner's Include-in-Knowledge-Search toggle (files.search_indexing_enabled).
+	Enabled bool `json:"enabled" url:"enabled"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetResourceRagStatusResponseData) GetVersionNumber() int {
+	if g == nil {
+		return 0
+	}
+	return g.VersionNumber
+}
+
+func (g *GetResourceRagStatusResponseData) GetStatus() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Status
+}
+
+func (g *GetResourceRagStatusResponseData) GetErrorStage() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ErrorStage
+}
+
+func (g *GetResourceRagStatusResponseData) GetErrorMessage() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ErrorMessage
+}
+
+func (g *GetResourceRagStatusResponseData) GetChunkCount() *int {
+	if g == nil {
+		return nil
+	}
+	return g.ChunkCount
+}
+
+func (g *GetResourceRagStatusResponseData) GetHasMarkdownRender() bool {
+	if g == nil {
+		return false
+	}
+	return g.HasMarkdownRender
+}
+
+func (g *GetResourceRagStatusResponseData) GetEmbeddingChunks() int {
+	if g == nil {
+		return 0
+	}
+	return g.EmbeddingChunks
+}
+
+func (g *GetResourceRagStatusResponseData) GetUpdatedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.UpdatedAt
+}
+
+func (g *GetResourceRagStatusResponseData) GetEnabled() bool {
+	if g == nil {
+		return false
+	}
+	return g.Enabled
+}
+
+func (g *GetResourceRagStatusResponseData) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetResourceRagStatusResponseData) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetVersionNumber(versionNumber int) {
+	g.VersionNumber = versionNumber
+	g.require(getResourceRagStatusResponseDataFieldVersionNumber)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetStatus(status *string) {
+	g.Status = status
+	g.require(getResourceRagStatusResponseDataFieldStatus)
+}
+
+// SetErrorStage sets the ErrorStage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetErrorStage(errorStage *string) {
+	g.ErrorStage = errorStage
+	g.require(getResourceRagStatusResponseDataFieldErrorStage)
+}
+
+// SetErrorMessage sets the ErrorMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetErrorMessage(errorMessage *string) {
+	g.ErrorMessage = errorMessage
+	g.require(getResourceRagStatusResponseDataFieldErrorMessage)
+}
+
+// SetChunkCount sets the ChunkCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetChunkCount(chunkCount *int) {
+	g.ChunkCount = chunkCount
+	g.require(getResourceRagStatusResponseDataFieldChunkCount)
+}
+
+// SetHasMarkdownRender sets the HasMarkdownRender field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetHasMarkdownRender(hasMarkdownRender bool) {
+	g.HasMarkdownRender = hasMarkdownRender
+	g.require(getResourceRagStatusResponseDataFieldHasMarkdownRender)
+}
+
+// SetEmbeddingChunks sets the EmbeddingChunks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetEmbeddingChunks(embeddingChunks int) {
+	g.EmbeddingChunks = embeddingChunks
+	g.require(getResourceRagStatusResponseDataFieldEmbeddingChunks)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetUpdatedAt(updatedAt *time.Time) {
+	g.UpdatedAt = updatedAt
+	g.require(getResourceRagStatusResponseDataFieldUpdatedAt)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetResourceRagStatusResponseData) SetEnabled(enabled bool) {
+	g.Enabled = enabled
+	g.require(getResourceRagStatusResponseDataFieldEnabled)
+}
+
+func (g *GetResourceRagStatusResponseData) UnmarshalJSON(data []byte) error {
+	type embed GetResourceRagStatusResponseData
+	var unmarshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetResourceRagStatusResponseData(unmarshaler.embed)
+	g.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetResourceRagStatusResponseData) MarshalJSON() ([]byte, error) {
+	type embed GetResourceRagStatusResponseData
+	var marshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed:     embed(*g),
+		UpdatedAt: internal.NewOptionalDateTime(g.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetResourceRagStatusResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 // Resource metadata
@@ -2605,6 +3559,596 @@ func (l *ListWorkspaceResourcesResponseDataItem) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
+}
+
+// Updated RAG status
+var (
+	setPromptSearchIndexingResponseFieldData = big.NewInt(1 << 0)
+)
+
+type SetPromptSearchIndexingResponse struct {
+	Data *SetPromptSearchIndexingResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetPromptSearchIndexingResponse) GetData() *SetPromptSearchIndexingResponseData {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SetPromptSearchIndexingResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetPromptSearchIndexingResponse) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponse) SetData(data *SetPromptSearchIndexingResponseData) {
+	s.Data = data
+	s.require(setPromptSearchIndexingResponseFieldData)
+}
+
+func (s *SetPromptSearchIndexingResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SetPromptSearchIndexingResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SetPromptSearchIndexingResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetPromptSearchIndexingResponse) MarshalJSON() ([]byte, error) {
+	type embed SetPromptSearchIndexingResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetPromptSearchIndexingResponse) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	setPromptSearchIndexingResponseDataFieldVersionNumber     = big.NewInt(1 << 0)
+	setPromptSearchIndexingResponseDataFieldStatus            = big.NewInt(1 << 1)
+	setPromptSearchIndexingResponseDataFieldErrorStage        = big.NewInt(1 << 2)
+	setPromptSearchIndexingResponseDataFieldErrorMessage      = big.NewInt(1 << 3)
+	setPromptSearchIndexingResponseDataFieldChunkCount        = big.NewInt(1 << 4)
+	setPromptSearchIndexingResponseDataFieldHasMarkdownRender = big.NewInt(1 << 5)
+	setPromptSearchIndexingResponseDataFieldEmbeddingChunks   = big.NewInt(1 << 6)
+	setPromptSearchIndexingResponseDataFieldUpdatedAt         = big.NewInt(1 << 7)
+	setPromptSearchIndexingResponseDataFieldEnabled           = big.NewInt(1 << 8)
+)
+
+type SetPromptSearchIndexingResponseData struct {
+	VersionNumber int `json:"versionNumber" url:"versionNumber"`
+	// Ingestion job status for the current version; null when never queued.
+	Status            *string    `json:"status,omitempty" url:"status,omitempty"`
+	ErrorStage        *string    `json:"errorStage,omitempty" url:"errorStage,omitempty"`
+	ErrorMessage      *string    `json:"errorMessage,omitempty" url:"errorMessage,omitempty"`
+	ChunkCount        *int       `json:"chunkCount,omitempty" url:"chunkCount,omitempty"`
+	HasMarkdownRender bool       `json:"hasMarkdownRender" url:"hasMarkdownRender"`
+	EmbeddingChunks   int        `json:"embeddingChunks" url:"embeddingChunks"`
+	UpdatedAt         *time.Time `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	// Owner's Include-in-Knowledge-Search toggle (files.search_indexing_enabled).
+	Enabled bool `json:"enabled" url:"enabled"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetVersionNumber() int {
+	if s == nil {
+		return 0
+	}
+	return s.VersionNumber
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetStatus() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Status
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetErrorStage() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ErrorStage
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetErrorMessage() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ErrorMessage
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetChunkCount() *int {
+	if s == nil {
+		return nil
+	}
+	return s.ChunkCount
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetHasMarkdownRender() bool {
+	if s == nil {
+		return false
+	}
+	return s.HasMarkdownRender
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetEmbeddingChunks() int {
+	if s == nil {
+		return 0
+	}
+	return s.EmbeddingChunks
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetUpdatedAt() *time.Time {
+	if s == nil {
+		return nil
+	}
+	return s.UpdatedAt
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetEnabled() bool {
+	if s == nil {
+		return false
+	}
+	return s.Enabled
+}
+
+func (s *SetPromptSearchIndexingResponseData) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetPromptSearchIndexingResponseData) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetVersionNumber(versionNumber int) {
+	s.VersionNumber = versionNumber
+	s.require(setPromptSearchIndexingResponseDataFieldVersionNumber)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetStatus(status *string) {
+	s.Status = status
+	s.require(setPromptSearchIndexingResponseDataFieldStatus)
+}
+
+// SetErrorStage sets the ErrorStage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetErrorStage(errorStage *string) {
+	s.ErrorStage = errorStage
+	s.require(setPromptSearchIndexingResponseDataFieldErrorStage)
+}
+
+// SetErrorMessage sets the ErrorMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetErrorMessage(errorMessage *string) {
+	s.ErrorMessage = errorMessage
+	s.require(setPromptSearchIndexingResponseDataFieldErrorMessage)
+}
+
+// SetChunkCount sets the ChunkCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetChunkCount(chunkCount *int) {
+	s.ChunkCount = chunkCount
+	s.require(setPromptSearchIndexingResponseDataFieldChunkCount)
+}
+
+// SetHasMarkdownRender sets the HasMarkdownRender field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetHasMarkdownRender(hasMarkdownRender bool) {
+	s.HasMarkdownRender = hasMarkdownRender
+	s.require(setPromptSearchIndexingResponseDataFieldHasMarkdownRender)
+}
+
+// SetEmbeddingChunks sets the EmbeddingChunks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetEmbeddingChunks(embeddingChunks int) {
+	s.EmbeddingChunks = embeddingChunks
+	s.require(setPromptSearchIndexingResponseDataFieldEmbeddingChunks)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetUpdatedAt(updatedAt *time.Time) {
+	s.UpdatedAt = updatedAt
+	s.require(setPromptSearchIndexingResponseDataFieldUpdatedAt)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetPromptSearchIndexingResponseData) SetEnabled(enabled bool) {
+	s.Enabled = enabled
+	s.require(setPromptSearchIndexingResponseDataFieldEnabled)
+}
+
+func (s *SetPromptSearchIndexingResponseData) UnmarshalJSON(data []byte) error {
+	type embed SetPromptSearchIndexingResponseData
+	var unmarshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SetPromptSearchIndexingResponseData(unmarshaler.embed)
+	s.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetPromptSearchIndexingResponseData) MarshalJSON() ([]byte, error) {
+	type embed SetPromptSearchIndexingResponseData
+	var marshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed:     embed(*s),
+		UpdatedAt: internal.NewOptionalDateTime(s.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetPromptSearchIndexingResponseData) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+// Updated RAG status
+var (
+	setResourceSearchIndexingResponseFieldData = big.NewInt(1 << 0)
+)
+
+type SetResourceSearchIndexingResponse struct {
+	Data *SetResourceSearchIndexingResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetResourceSearchIndexingResponse) GetData() *SetResourceSearchIndexingResponseData {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SetResourceSearchIndexingResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetResourceSearchIndexingResponse) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponse) SetData(data *SetResourceSearchIndexingResponseData) {
+	s.Data = data
+	s.require(setResourceSearchIndexingResponseFieldData)
+}
+
+func (s *SetResourceSearchIndexingResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SetResourceSearchIndexingResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SetResourceSearchIndexingResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetResourceSearchIndexingResponse) MarshalJSON() ([]byte, error) {
+	type embed SetResourceSearchIndexingResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetResourceSearchIndexingResponse) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	setResourceSearchIndexingResponseDataFieldVersionNumber     = big.NewInt(1 << 0)
+	setResourceSearchIndexingResponseDataFieldStatus            = big.NewInt(1 << 1)
+	setResourceSearchIndexingResponseDataFieldErrorStage        = big.NewInt(1 << 2)
+	setResourceSearchIndexingResponseDataFieldErrorMessage      = big.NewInt(1 << 3)
+	setResourceSearchIndexingResponseDataFieldChunkCount        = big.NewInt(1 << 4)
+	setResourceSearchIndexingResponseDataFieldHasMarkdownRender = big.NewInt(1 << 5)
+	setResourceSearchIndexingResponseDataFieldEmbeddingChunks   = big.NewInt(1 << 6)
+	setResourceSearchIndexingResponseDataFieldUpdatedAt         = big.NewInt(1 << 7)
+	setResourceSearchIndexingResponseDataFieldEnabled           = big.NewInt(1 << 8)
+)
+
+type SetResourceSearchIndexingResponseData struct {
+	VersionNumber int `json:"versionNumber" url:"versionNumber"`
+	// Ingestion job status for the current version; null when never queued.
+	Status            *string    `json:"status,omitempty" url:"status,omitempty"`
+	ErrorStage        *string    `json:"errorStage,omitempty" url:"errorStage,omitempty"`
+	ErrorMessage      *string    `json:"errorMessage,omitempty" url:"errorMessage,omitempty"`
+	ChunkCount        *int       `json:"chunkCount,omitempty" url:"chunkCount,omitempty"`
+	HasMarkdownRender bool       `json:"hasMarkdownRender" url:"hasMarkdownRender"`
+	EmbeddingChunks   int        `json:"embeddingChunks" url:"embeddingChunks"`
+	UpdatedAt         *time.Time `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	// Owner's Include-in-Knowledge-Search toggle (files.search_indexing_enabled).
+	Enabled bool `json:"enabled" url:"enabled"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetVersionNumber() int {
+	if s == nil {
+		return 0
+	}
+	return s.VersionNumber
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetStatus() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Status
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetErrorStage() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ErrorStage
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetErrorMessage() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ErrorMessage
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetChunkCount() *int {
+	if s == nil {
+		return nil
+	}
+	return s.ChunkCount
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetHasMarkdownRender() bool {
+	if s == nil {
+		return false
+	}
+	return s.HasMarkdownRender
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetEmbeddingChunks() int {
+	if s == nil {
+		return 0
+	}
+	return s.EmbeddingChunks
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetUpdatedAt() *time.Time {
+	if s == nil {
+		return nil
+	}
+	return s.UpdatedAt
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetEnabled() bool {
+	if s == nil {
+		return false
+	}
+	return s.Enabled
+}
+
+func (s *SetResourceSearchIndexingResponseData) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetResourceSearchIndexingResponseData) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetVersionNumber sets the VersionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetVersionNumber(versionNumber int) {
+	s.VersionNumber = versionNumber
+	s.require(setResourceSearchIndexingResponseDataFieldVersionNumber)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetStatus(status *string) {
+	s.Status = status
+	s.require(setResourceSearchIndexingResponseDataFieldStatus)
+}
+
+// SetErrorStage sets the ErrorStage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetErrorStage(errorStage *string) {
+	s.ErrorStage = errorStage
+	s.require(setResourceSearchIndexingResponseDataFieldErrorStage)
+}
+
+// SetErrorMessage sets the ErrorMessage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetErrorMessage(errorMessage *string) {
+	s.ErrorMessage = errorMessage
+	s.require(setResourceSearchIndexingResponseDataFieldErrorMessage)
+}
+
+// SetChunkCount sets the ChunkCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetChunkCount(chunkCount *int) {
+	s.ChunkCount = chunkCount
+	s.require(setResourceSearchIndexingResponseDataFieldChunkCount)
+}
+
+// SetHasMarkdownRender sets the HasMarkdownRender field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetHasMarkdownRender(hasMarkdownRender bool) {
+	s.HasMarkdownRender = hasMarkdownRender
+	s.require(setResourceSearchIndexingResponseDataFieldHasMarkdownRender)
+}
+
+// SetEmbeddingChunks sets the EmbeddingChunks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetEmbeddingChunks(embeddingChunks int) {
+	s.EmbeddingChunks = embeddingChunks
+	s.require(setResourceSearchIndexingResponseDataFieldEmbeddingChunks)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetUpdatedAt(updatedAt *time.Time) {
+	s.UpdatedAt = updatedAt
+	s.require(setResourceSearchIndexingResponseDataFieldUpdatedAt)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetResourceSearchIndexingResponseData) SetEnabled(enabled bool) {
+	s.Enabled = enabled
+	s.require(setResourceSearchIndexingResponseDataFieldEnabled)
+}
+
+func (s *SetResourceSearchIndexingResponseData) UnmarshalJSON(data []byte) error {
+	type embed SetResourceSearchIndexingResponseData
+	var unmarshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SetResourceSearchIndexingResponseData(unmarshaler.embed)
+	s.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetResourceSearchIndexingResponseData) MarshalJSON() ([]byte, error) {
+	type embed SetResourceSearchIndexingResponseData
+	var marshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed:     embed(*s),
+		UpdatedAt: internal.NewOptionalDateTime(s.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetResourceSearchIndexingResponseData) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 // Resource updated

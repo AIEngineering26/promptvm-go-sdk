@@ -2549,6 +2549,14 @@ client.MarketplaceBrowse.ListMarketplaceListings(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**ranking:** `*promptvmgosdk.ListMarketplaceListingsRequestRanking` — Search ranking for `q`. `semantic` ranks by multilingual embedding similarity (503 when the embedding backend is down); `hybrid` fuses keyword + semantic via RRF and degrades to keyword with `meta.degraded: true`.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -7282,7 +7290,7 @@ client.Settings.DisableEmailOtp(
 <dl>
 <dd>
 
-Returns ALL marketplace content types including disabled ones, ordered by sort order. Platform-admin only.
+Returns ALL marketplace content types including disabled ones, ordered by sort order. Requires internal_marketplace:manage.
 </dd>
 </dl>
 </dd>
@@ -7324,7 +7332,7 @@ client.Marketplace.AdminListContentTypes(
 <dl>
 <dd>
 
-Creates a new marketplace content type. Slug must be unique and match ^[a-z0-9][a-z0-9-]{0,31}$. Setting enabled=true requires a registered code kind (422 otherwise). Platform-admin only.
+Creates a new marketplace content type. Slug must be unique and match ^[a-z0-9][a-z0-9-]{0,31}$. Setting enabled=true requires a registered code kind (422 otherwise). Requires internal_marketplace:manage.
 </dd>
 </dl>
 </dd>
@@ -7469,7 +7477,7 @@ client.Marketplace.AdminCreateContentType(
 <dl>
 <dd>
 
-Bulk-updates sort_order for a set of slugs in one transaction. Every slug must exist. Platform-admin only.
+Bulk-updates sort_order for a set of slugs in one transaction. Every slug must exist. Requires internal_marketplace:manage.
 </dd>
 </dl>
 </dd>
@@ -7535,7 +7543,7 @@ client.Marketplace.AdminReorderContentTypes(
 <dl>
 <dd>
 
-Deletes a content type. Allowed ONLY for non-built-in slugs with no dependent content — otherwise 409 (disable instead). Platform-admin only.
+Deletes a content type. Allowed ONLY for non-built-in slugs with no dependent content — otherwise 409 (disable instead). Requires internal_marketplace:manage.
 </dd>
 </dl>
 </dd>
@@ -7596,7 +7604,7 @@ client.Marketplace.AdminDeleteContentType(
 <dl>
 <dd>
 
-Partially updates a content type's presentation/config fields. The slug is immutable. Flipping enabled=true requires a registered code kind (422 otherwise). Platform-admin only.
+Partially updates a content type's presentation/config fields. The slug is immutable. Flipping enabled=true requires a registered code kind (422 otherwise). Requires internal_marketplace:manage.
 </dd>
 </dl>
 </dd>
@@ -11884,6 +11892,329 @@ client.Resources.GetResourceDownloadURL(
 </dl>
 </details>
 
+<details><summary><code>client.Resources.GetResourceRagStatus(ResourceID) -> *promptvmgosdk.GetResourceRagStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the document-processing status for the resource's current version: ingestion job status, failure stage/message, chunk count, whether a markdown render exists, and the number of current embeddings. Powers the "RAG Status" metadata row in the resource detail panel.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetResourceRagStatusRequest{
+        ResourceID: "resourceId",
+    }
+client.Resources.GetResourceRagStatus(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.SetResourceSearchIndexing(ResourceID, request) -> *promptvmgosdk.SetResourceSearchIndexingResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Toggle whether this resource is indexed for Knowledge Search (RAG). Disabling removes it from search and purges its embeddings; enabling re-triggers processing. Returns the refreshed RAG status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.SetResourceSearchIndexingRequest{
+        ResourceID: "resourceId",
+        Enabled: true,
+    }
+client.Resources.SetResourceSearchIndexing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `bool` — Include this item in Knowledge Search.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.GetResourceMarkdownURL(ResourceID) -> *promptvmgosdk.GetResourceMarkdownURLResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a time-limited presigned URL (1 hour) for the markdown render of the resource's current version (e.g. a PDF converted to markdown by docproc). Returns 404 when no markdown render is available. Powers the Original/Markdown toggle.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetResourceMarkdownURLRequest{
+        ResourceID: "resourceId",
+    }
+client.Resources.GetResourceMarkdownURL(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**resourceID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.GetPromptRagStatus(PromptID) -> *promptvmgosdk.GetPromptRagStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the document-processing status for the prompt's current version: ingestion job status, chunk count, and current embedding count. Prompts are embedded like files, so this powers the RAG status indicator in the editor.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.GetPromptRagStatusRequest{
+        PromptID: "promptId",
+    }
+client.Resources.GetPromptRagStatus(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Resources.SetPromptSearchIndexing(PromptID, request) -> *promptvmgosdk.SetPromptSearchIndexingResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Toggle whether this prompt is indexed for Knowledge Search (RAG). Disabling removes it from search and purges its embeddings; enabling re-triggers processing. Returns the refreshed RAG status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &promptvmgosdk.SetPromptSearchIndexingRequest{
+        PromptID: "promptId",
+        Enabled: true,
+    }
+client.Resources.SetPromptSearchIndexing(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptID:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `bool` — Include this item in Knowledge Search.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Resources.ListPromptResources(PromptID) -> *promptvmgosdk.ListPromptResourcesResponse</code></summary>
 <dl>
 <dd>
@@ -13915,7 +14246,7 @@ client.Search.Organization(
 <dl>
 <dd>
 
-**ranking:** `*string` — MVP only honours `keyword`. Other values return 400 UNSUPPORTED_RANKING. Reserved future values: `semantic`, `hybrid`.
+**ranking:** `*promptvmgosdk.SearchOrganizationRequestRanking` — Ranking mode. `semantic` returns 503 SEARCH_BACKEND_UNAVAILABLE when the embedding backend is down; `hybrid` degrades to keyword (response flag `degraded: true`). Semantic hits carry a plain-text `content` highlight (the best-matching chunk). Hybrid pagination is bounded by the fused candidate pool (60 keyword + 60 semantic).
     
 </dd>
 </dl>

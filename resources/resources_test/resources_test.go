@@ -247,6 +247,138 @@ func TestResourcesGetResourceDownloadURLWithWireMock(
 	VerifyRequestCount(t, "TestResourcesGetResourceDownloadURLWithWireMock", "GET", "/api/v1/resources/resourceId/download-url", nil, 1)
 }
 
+func TestResourcesGetResourceRagStatusWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetResourceRagStatusRequest{
+		ResourceID: "resourceId",
+	}
+	_, invocationErr := client.Resources.GetResourceRagStatus(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestResourcesGetResourceRagStatusWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestResourcesGetResourceRagStatusWithWireMock", "GET", "/api/v1/resources/resourceId/rag-status", nil, 1)
+}
+
+func TestResourcesSetResourceSearchIndexingWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.SetResourceSearchIndexingRequest{
+		ResourceID: "resourceId",
+		Enabled:    true,
+	}
+	_, invocationErr := client.Resources.SetResourceSearchIndexing(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestResourcesSetResourceSearchIndexingWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestResourcesSetResourceSearchIndexingWithWireMock", "PATCH", "/api/v1/resources/resourceId/knowledge-search", nil, 1)
+}
+
+func TestResourcesGetResourceMarkdownURLWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetResourceMarkdownURLRequest{
+		ResourceID: "resourceId",
+	}
+	_, invocationErr := client.Resources.GetResourceMarkdownURL(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestResourcesGetResourceMarkdownURLWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestResourcesGetResourceMarkdownURLWithWireMock", "GET", "/api/v1/resources/resourceId/markdown-url", nil, 1)
+}
+
+func TestResourcesGetPromptRagStatusWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.GetPromptRagStatusRequest{
+		PromptID: "promptId",
+	}
+	_, invocationErr := client.Resources.GetPromptRagStatus(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestResourcesGetPromptRagStatusWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestResourcesGetPromptRagStatusWithWireMock", "GET", "/api/v1/prompts/promptId/rag-status", nil, 1)
+}
+
+func TestResourcesSetPromptSearchIndexingWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &promptvmgosdk.SetPromptSearchIndexingRequest{
+		PromptID: "promptId",
+		Enabled:  true,
+	}
+	_, invocationErr := client.Resources.SetPromptSearchIndexing(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestResourcesSetPromptSearchIndexingWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestResourcesSetPromptSearchIndexingWithWireMock", "PATCH", "/api/v1/prompts/promptId/knowledge-search", nil, 1)
+}
+
 func TestResourcesListPromptResourcesWithWireMock(
 	t *testing.T,
 ) {

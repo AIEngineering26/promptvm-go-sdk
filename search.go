@@ -37,8 +37,8 @@ type SearchOrganizationRequest struct {
 	Limit       *int                                  `json:"-" url:"limit,omitempty"`
 	// Opaque base64url cursor returned in a previous response.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
-	// MVP only honours `keyword`. Other values return 400 UNSUPPORTED_RANKING. Reserved future values: `semantic`, `hybrid`.
-	Ranking *string `json:"-" url:"ranking,omitempty"`
+	// Ranking mode. `semantic` returns 503 SEARCH_BACKEND_UNAVAILABLE when the embedding backend is down; `hybrid` degrades to keyword (response flag `degraded: true`). Semantic hits carry a plain-text `content` highlight (the best-matching chunk). Hybrid pagination is bounded by the fused candidate pool (60 keyword + 60 semantic).
+	Ranking *SearchOrganizationRequestRanking `json:"-" url:"ranking,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -109,7 +109,7 @@ func (s *SearchOrganizationRequest) SetCursor(cursor *string) {
 
 // SetRanking sets the Ranking field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SearchOrganizationRequest) SetRanking(ranking *string) {
+func (s *SearchOrganizationRequest) SetRanking(ranking *SearchOrganizationRequestRanking) {
 	s.Ranking = ranking
 	s.require(searchOrganizationRequestFieldRanking)
 }
@@ -161,21 +161,49 @@ func (s SearchOrganizationRequestKindsItem) Ptr() *SearchOrganizationRequestKind
 	return &s
 }
 
+type SearchOrganizationRequestRanking string
+
+const (
+	SearchOrganizationRequestRankingKeyword  SearchOrganizationRequestRanking = "keyword"
+	SearchOrganizationRequestRankingSemantic SearchOrganizationRequestRanking = "semantic"
+	SearchOrganizationRequestRankingHybrid   SearchOrganizationRequestRanking = "hybrid"
+)
+
+func NewSearchOrganizationRequestRankingFromString(s string) (SearchOrganizationRequestRanking, error) {
+	switch s {
+	case "keyword":
+		return SearchOrganizationRequestRankingKeyword, nil
+	case "semantic":
+		return SearchOrganizationRequestRankingSemantic, nil
+	case "hybrid":
+		return SearchOrganizationRequestRankingHybrid, nil
+	}
+	var t SearchOrganizationRequestRanking
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SearchOrganizationRequestRanking) Ptr() *SearchOrganizationRequestRanking {
+	return &s
+}
+
 // Search results
 var (
 	searchOrganizationResponseFieldQuery         = big.NewInt(1 << 0)
 	searchOrganizationResponseFieldRanking       = big.NewInt(1 << 1)
-	searchOrganizationResponseFieldTookMs        = big.NewInt(1 << 2)
-	searchOrganizationResponseFieldTotalEstimate = big.NewInt(1 << 3)
-	searchOrganizationResponseFieldResults       = big.NewInt(1 << 4)
-	searchOrganizationResponseFieldNextCursor    = big.NewInt(1 << 5)
+	searchOrganizationResponseFieldDegraded      = big.NewInt(1 << 2)
+	searchOrganizationResponseFieldTookMs        = big.NewInt(1 << 3)
+	searchOrganizationResponseFieldTotalEstimate = big.NewInt(1 << 4)
+	searchOrganizationResponseFieldResults       = big.NewInt(1 << 5)
+	searchOrganizationResponseFieldNextCursor    = big.NewInt(1 << 6)
 )
 
 type SearchOrganizationResponse struct {
 	Query string `json:"query" url:"query"`
-	// Ranking mode used for this response. MVP only honours `keyword`; `semantic` and `hybrid` are reserved for future use.
+	// Ranking mode used for this response. `keyword` = tsvector full-text; `semantic` = multilingual embedding similarity over document chunks; `hybrid` = Reciprocal Rank Fusion of both.
 	Ranking SearchOrganizationResponseRanking `json:"ranking" url:"ranking"`
-	TookMs  int                               `json:"took_ms" url:"took_ms"`
+	// Present (true) when a `hybrid` request fell back to keyword-only because the embedding backend was unavailable.
+	Degraded *bool `json:"degraded,omitempty" url:"degraded,omitempty"`
+	TookMs   int   `json:"took_ms" url:"took_ms"`
 	// Approximate number of matches across the corpus. Not exact — fast Postgres count estimate.
 	TotalEstimate int                                      `json:"total_estimate" url:"total_estimate"`
 	Results       []*SearchOrganizationResponseResultsItem `json:"results" url:"results"`
@@ -201,6 +229,13 @@ func (s *SearchOrganizationResponse) GetRanking() SearchOrganizationResponseRank
 		return ""
 	}
 	return s.Ranking
+}
+
+func (s *SearchOrganizationResponse) GetDegraded() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.Degraded
 }
 
 func (s *SearchOrganizationResponse) GetTookMs() int {
@@ -254,6 +289,13 @@ func (s *SearchOrganizationResponse) SetQuery(query string) {
 func (s *SearchOrganizationResponse) SetRanking(ranking SearchOrganizationResponseRanking) {
 	s.Ranking = ranking
 	s.require(searchOrganizationResponseFieldRanking)
+}
+
+// SetDegraded sets the Degraded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchOrganizationResponse) SetDegraded(degraded *bool) {
+	s.Degraded = degraded
+	s.require(searchOrganizationResponseFieldDegraded)
 }
 
 // SetTookMs sets the TookMs field and marks it as non-optional;
@@ -323,17 +365,23 @@ func (s *SearchOrganizationResponse) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-// Ranking mode used for this response. MVP only honours `keyword`; `semantic` and `hybrid` are reserved for future use.
+// Ranking mode used for this response. `keyword` = tsvector full-text; `semantic` = multilingual embedding similarity over document chunks; `hybrid` = Reciprocal Rank Fusion of both.
 type SearchOrganizationResponseRanking string
 
 const (
-	SearchOrganizationResponseRankingKeyword SearchOrganizationResponseRanking = "keyword"
+	SearchOrganizationResponseRankingKeyword  SearchOrganizationResponseRanking = "keyword"
+	SearchOrganizationResponseRankingSemantic SearchOrganizationResponseRanking = "semantic"
+	SearchOrganizationResponseRankingHybrid   SearchOrganizationResponseRanking = "hybrid"
 )
 
 func NewSearchOrganizationResponseRankingFromString(s string) (SearchOrganizationResponseRanking, error) {
 	switch s {
 	case "keyword":
 		return SearchOrganizationResponseRankingKeyword, nil
+	case "semantic":
+		return SearchOrganizationResponseRankingSemantic, nil
+	case "hybrid":
+		return SearchOrganizationResponseRankingHybrid, nil
 	}
 	var t SearchOrganizationResponseRanking
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -565,9 +613,9 @@ var (
 )
 
 type SearchOrganizationResponseResultsItemHighlightsItem struct {
-	// The field that produced this snippet (e.g. "title", "description").
+	// The field that produced this snippet (e.g. "title", "description", "name", or "content" for semantic chunk matches).
 	Field string `json:"field" url:"field"`
-	// Excerpt with <mark>...</mark> markers around matched terms. The frontend renders these as data after sanitizing for the <mark> tag only.
+	// Excerpt with <mark>...</mark> markers around matched terms. Semantic "content" snippets are plain text (no <mark> — there is no lexical match). The frontend renders these as data after sanitizing for the <mark> tag only.
 	Snippet string `json:"snippet" url:"snippet"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

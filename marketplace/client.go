@@ -32,7 +32,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Returns ALL marketplace content types including disabled ones, ordered by sort order. Platform-admin only.
+// Returns ALL marketplace content types including disabled ones, ordered by sort order. Requires internal_marketplace:manage.
 func (c *Client) AdminListContentTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -47,7 +47,7 @@ func (c *Client) AdminListContentTypes(
 	return response.Body, nil
 }
 
-// Creates a new marketplace content type. Slug must be unique and match ^[a-z0-9][a-z0-9-]{0,31}$. Setting enabled=true requires a registered code kind (422 otherwise). Platform-admin only.
+// Creates a new marketplace content type. Slug must be unique and match ^[a-z0-9][a-z0-9-]{0,31}$. Setting enabled=true requires a registered code kind (422 otherwise). Requires internal_marketplace:manage.
 func (c *Client) AdminCreateContentType(
 	ctx context.Context,
 	request *promptvmgosdk.AdminCreateContentTypeRequest,
@@ -64,7 +64,7 @@ func (c *Client) AdminCreateContentType(
 	return response.Body, nil
 }
 
-// Bulk-updates sort_order for a set of slugs in one transaction. Every slug must exist. Platform-admin only.
+// Bulk-updates sort_order for a set of slugs in one transaction. Every slug must exist. Requires internal_marketplace:manage.
 func (c *Client) AdminReorderContentTypes(
 	ctx context.Context,
 	request *promptvmgosdk.AdminReorderContentTypesRequest,
@@ -81,7 +81,7 @@ func (c *Client) AdminReorderContentTypes(
 	return response.Body, nil
 }
 
-// Deletes a content type. Allowed ONLY for non-built-in slugs with no dependent content — otherwise 409 (disable instead). Platform-admin only.
+// Deletes a content type. Allowed ONLY for non-built-in slugs with no dependent content — otherwise 409 (disable instead). Requires internal_marketplace:manage.
 func (c *Client) AdminDeleteContentType(
 	ctx context.Context,
 	request *promptvmgosdk.AdminDeleteContentTypeRequest,
@@ -98,7 +98,7 @@ func (c *Client) AdminDeleteContentType(
 	return nil
 }
 
-// Partially updates a content type's presentation/config fields. The slug is immutable. Flipping enabled=true requires a registered code kind (422 otherwise). Platform-admin only.
+// Partially updates a content type's presentation/config fields. The slug is immutable. Flipping enabled=true requires a registered code kind (422 otherwise). Requires internal_marketplace:manage.
 func (c *Client) AdminUpdateContentType(
 	ctx context.Context,
 	request *promptvmgosdk.AdminUpdateContentTypeRequest,

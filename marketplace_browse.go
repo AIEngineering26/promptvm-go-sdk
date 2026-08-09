@@ -70,6 +70,7 @@ var (
 	listMarketplaceListingsRequestFieldSort       = big.NewInt(1 << 5)
 	listMarketplaceListingsRequestFieldPage       = big.NewInt(1 << 6)
 	listMarketplaceListingsRequestFieldLimit      = big.NewInt(1 << 7)
+	listMarketplaceListingsRequestFieldRanking    = big.NewInt(1 << 8)
 )
 
 type ListMarketplaceListingsRequest struct {
@@ -85,6 +86,8 @@ type ListMarketplaceListingsRequest struct {
 	Sort  *ListMarketplaceListingsRequestSort `json:"-" url:"sort,omitempty"`
 	Page  *string                             `json:"-" url:"page,omitempty"`
 	Limit *string                             `json:"-" url:"limit,omitempty"`
+	// Search ranking for `q`. `semantic` ranks by multilingual embedding similarity (503 when the embedding backend is down); `hybrid` fuses keyword + semantic via RRF and degrades to keyword with `meta.degraded: true`.
+	Ranking *ListMarketplaceListingsRequestRanking `json:"-" url:"ranking,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -151,6 +154,13 @@ func (l *ListMarketplaceListingsRequest) SetPage(page *string) {
 func (l *ListMarketplaceListingsRequest) SetLimit(limit *string) {
 	l.Limit = limit
 	l.require(listMarketplaceListingsRequestFieldLimit)
+}
+
+// SetRanking sets the Ranking field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsRequest) SetRanking(ranking *ListMarketplaceListingsRequestRanking) {
+	l.Ranking = ranking
+	l.require(listMarketplaceListingsRequestFieldRanking)
 }
 
 // Marketplace facet counts
@@ -4492,6 +4502,31 @@ func (l ListMarketplaceListingsRequestKind) Ptr() *ListMarketplaceListingsReques
 	return &l
 }
 
+type ListMarketplaceListingsRequestRanking string
+
+const (
+	ListMarketplaceListingsRequestRankingKeyword  ListMarketplaceListingsRequestRanking = "keyword"
+	ListMarketplaceListingsRequestRankingSemantic ListMarketplaceListingsRequestRanking = "semantic"
+	ListMarketplaceListingsRequestRankingHybrid   ListMarketplaceListingsRequestRanking = "hybrid"
+)
+
+func NewListMarketplaceListingsRequestRankingFromString(s string) (ListMarketplaceListingsRequestRanking, error) {
+	switch s {
+	case "keyword":
+		return ListMarketplaceListingsRequestRankingKeyword, nil
+	case "semantic":
+		return ListMarketplaceListingsRequestRankingSemantic, nil
+	case "hybrid":
+		return ListMarketplaceListingsRequestRankingHybrid, nil
+	}
+	var t ListMarketplaceListingsRequestRanking
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListMarketplaceListingsRequestRanking) Ptr() *ListMarketplaceListingsRequestRanking {
+	return &l
+}
+
 type ListMarketplaceListingsRequestSort string
 
 const (
@@ -5709,15 +5744,18 @@ func (l ListMarketplaceListingsResponseDataItemStatus) Ptr() *ListMarketplaceLis
 }
 
 var (
-	listMarketplaceListingsResponseMetaFieldPage  = big.NewInt(1 << 0)
-	listMarketplaceListingsResponseMetaFieldLimit = big.NewInt(1 << 1)
-	listMarketplaceListingsResponseMetaFieldTotal = big.NewInt(1 << 2)
+	listMarketplaceListingsResponseMetaFieldPage     = big.NewInt(1 << 0)
+	listMarketplaceListingsResponseMetaFieldLimit    = big.NewInt(1 << 1)
+	listMarketplaceListingsResponseMetaFieldTotal    = big.NewInt(1 << 2)
+	listMarketplaceListingsResponseMetaFieldDegraded = big.NewInt(1 << 3)
 )
 
 type ListMarketplaceListingsResponseMeta struct {
 	Page  int `json:"page" url:"page"`
 	Limit int `json:"limit" url:"limit"`
 	Total int `json:"total" url:"total"`
+	// Present (true) when a `ranking=hybrid` request fell back to keyword because the embedding backend was unavailable.
+	Degraded *bool `json:"degraded,omitempty" url:"degraded,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5745,6 +5783,13 @@ func (l *ListMarketplaceListingsResponseMeta) GetTotal() int {
 		return 0
 	}
 	return l.Total
+}
+
+func (l *ListMarketplaceListingsResponseMeta) GetDegraded() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.Degraded
 }
 
 func (l *ListMarketplaceListingsResponseMeta) GetExtraProperties() map[string]interface{} {
@@ -5777,6 +5822,13 @@ func (l *ListMarketplaceListingsResponseMeta) SetLimit(limit int) {
 func (l *ListMarketplaceListingsResponseMeta) SetTotal(total int) {
 	l.Total = total
 	l.require(listMarketplaceListingsResponseMetaFieldTotal)
+}
+
+// SetDegraded sets the Degraded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceListingsResponseMeta) SetDegraded(degraded *bool) {
+	l.Degraded = degraded
+	l.require(listMarketplaceListingsResponseMetaFieldDegraded)
 }
 
 func (l *ListMarketplaceListingsResponseMeta) UnmarshalJSON(data []byte) error {

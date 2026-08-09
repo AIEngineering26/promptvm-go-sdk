@@ -150,6 +150,91 @@ func (c *Client) GetResourceDownloadURL(
 	return response.Body, nil
 }
 
+// Returns the document-processing status for the resource's current version: ingestion job status, failure stage/message, chunk count, whether a markdown render exists, and the number of current embeddings. Powers the "RAG Status" metadata row in the resource detail panel.
+func (c *Client) GetResourceRagStatus(
+	ctx context.Context,
+	request *promptvmgosdk.GetResourceRagStatusRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetResourceRagStatusResponse, error) {
+	response, err := c.WithRawResponse.GetResourceRagStatus(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Toggle whether this resource is indexed for Knowledge Search (RAG). Disabling removes it from search and purges its embeddings; enabling re-triggers processing. Returns the refreshed RAG status.
+func (c *Client) SetResourceSearchIndexing(
+	ctx context.Context,
+	request *promptvmgosdk.SetResourceSearchIndexingRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.SetResourceSearchIndexingResponse, error) {
+	response, err := c.WithRawResponse.SetResourceSearchIndexing(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns a time-limited presigned URL (1 hour) for the markdown render of the resource's current version (e.g. a PDF converted to markdown by docproc). Returns 404 when no markdown render is available. Powers the Original/Markdown toggle.
+func (c *Client) GetResourceMarkdownURL(
+	ctx context.Context,
+	request *promptvmgosdk.GetResourceMarkdownURLRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetResourceMarkdownURLResponse, error) {
+	response, err := c.WithRawResponse.GetResourceMarkdownURL(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns the document-processing status for the prompt's current version: ingestion job status, chunk count, and current embedding count. Prompts are embedded like files, so this powers the RAG status indicator in the editor.
+func (c *Client) GetPromptRagStatus(
+	ctx context.Context,
+	request *promptvmgosdk.GetPromptRagStatusRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.GetPromptRagStatusResponse, error) {
+	response, err := c.WithRawResponse.GetPromptRagStatus(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Toggle whether this prompt is indexed for Knowledge Search (RAG). Disabling removes it from search and purges its embeddings; enabling re-triggers processing. Returns the refreshed RAG status.
+func (c *Client) SetPromptSearchIndexing(
+	ctx context.Context,
+	request *promptvmgosdk.SetPromptSearchIndexingRequest,
+	opts ...option.RequestOption,
+) (*promptvmgosdk.SetPromptSearchIndexingResponse, error) {
+	response, err := c.WithRawResponse.SetPromptSearchIndexing(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 func (c *Client) ListPromptResources(
 	ctx context.Context,
 	request *promptvmgosdk.ListPromptResourcesRequest,

@@ -2210,7 +2210,8 @@ var (
 	getSettingsOverviewResponseRecentActivityItemFieldAction       = big.NewInt(1 << 6)
 	getSettingsOverviewResponseRecentActivityItemFieldResourceType = big.NewInt(1 << 7)
 	getSettingsOverviewResponseRecentActivityItemFieldResourceID   = big.NewInt(1 << 8)
-	getSettingsOverviewResponseRecentActivityItemFieldDescription  = big.NewInt(1 << 9)
+	getSettingsOverviewResponseRecentActivityItemFieldResourceName = big.NewInt(1 << 9)
+	getSettingsOverviewResponseRecentActivityItemFieldDescription  = big.NewInt(1 << 10)
 )
 
 type GetSettingsOverviewResponseRecentActivityItem struct {
@@ -2223,6 +2224,7 @@ type GetSettingsOverviewResponseRecentActivityItem struct {
 	Action       string                                                  `json:"action" url:"action"`
 	ResourceType string                                                  `json:"resourceType" url:"resourceType"`
 	ResourceID   *string                                                 `json:"resourceId,omitempty" url:"resourceId,omitempty"`
+	ResourceName *string                                                 `json:"resourceName,omitempty" url:"resourceName,omitempty"`
 	Description  *string                                                 `json:"description,omitempty" url:"description,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2293,6 +2295,13 @@ func (g *GetSettingsOverviewResponseRecentActivityItem) GetResourceID() *string 
 		return nil
 	}
 	return g.ResourceID
+}
+
+func (g *GetSettingsOverviewResponseRecentActivityItem) GetResourceName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ResourceName
 }
 
 func (g *GetSettingsOverviewResponseRecentActivityItem) GetDescription() *string {
@@ -2376,6 +2385,13 @@ func (g *GetSettingsOverviewResponseRecentActivityItem) SetResourceID(resourceID
 	g.require(getSettingsOverviewResponseRecentActivityItemFieldResourceID)
 }
 
+// SetResourceName sets the ResourceName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSettingsOverviewResponseRecentActivityItem) SetResourceName(resourceName *string) {
+	g.ResourceName = resourceName
+	g.require(getSettingsOverviewResponseRecentActivityItemFieldResourceName)
+}
+
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetSettingsOverviewResponseRecentActivityItem) SetDescription(description *string) {
@@ -2433,36 +2449,51 @@ func (g *GetSettingsOverviewResponseRecentActivityItem) String() string {
 type GetSettingsOverviewResponseRecentActivityItemEventType string
 
 const (
-	GetSettingsOverviewResponseRecentActivityItemEventTypeUserCreated            GetSettingsOverviewResponseRecentActivityItemEventType = "user.created"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeUserUpdated            GetSettingsOverviewResponseRecentActivityItemEventType = "user.updated"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeUserDeleted            GetSettingsOverviewResponseRecentActivityItemEventType = "user.deleted"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeUserLogin              GetSettingsOverviewResponseRecentActivityItemEventType = "user.login"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeUserLogout             GetSettingsOverviewResponseRecentActivityItemEventType = "user.logout"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeUserPasswordChanged    GetSettingsOverviewResponseRecentActivityItemEventType = "user.password_changed"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeOrganizationCreated    GetSettingsOverviewResponseRecentActivityItemEventType = "organization.created"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeOrganizationUpdated    GetSettingsOverviewResponseRecentActivityItemEventType = "organization.updated"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeOrganizationDeleted    GetSettingsOverviewResponseRecentActivityItemEventType = "organization.deleted"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeWorkspaceCreated       GetSettingsOverviewResponseRecentActivityItemEventType = "workspace.created"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeWorkspaceUpdated       GetSettingsOverviewResponseRecentActivityItemEventType = "workspace.updated"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeWorkspaceDeleted       GetSettingsOverviewResponseRecentActivityItemEventType = "workspace.deleted"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyGenerated        GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.generated"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyRevoked          GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.revoked"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyEdited           GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.edited"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyAuthFailed       GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.auth_failed"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyAuthSuccess      GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.auth_success"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeTagCreated             GetSettingsOverviewResponseRecentActivityItemEventType = "tag.created"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeTagUpdated             GetSettingsOverviewResponseRecentActivityItemEventType = "tag.updated"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeTagDeleted             GetSettingsOverviewResponseRecentActivityItemEventType = "tag.deleted"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaTotpEnabled         GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.totp_enabled"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaTotpDisabled        GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.totp_disabled"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaRecoveryRegenerated GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.recovery_regenerated"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpSent        GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_sent"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpEnabled     GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_enabled"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpDisabled    GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_disabled"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeOrgMfaPolicyUpdated    GetSettingsOverviewResponseRecentActivityItemEventType = "org.mfa_policy_updated"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeShareLinkRevoked       GetSettingsOverviewResponseRecentActivityItemEventType = "share_link.revoked"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeOrgDeleted             GetSettingsOverviewResponseRecentActivityItemEventType = "org.deleted"
-	GetSettingsOverviewResponseRecentActivityItemEventTypeAccountDeleted         GetSettingsOverviewResponseRecentActivityItemEventType = "account.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeUserCreated                     GetSettingsOverviewResponseRecentActivityItemEventType = "user.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeUserUpdated                     GetSettingsOverviewResponseRecentActivityItemEventType = "user.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeUserDeleted                     GetSettingsOverviewResponseRecentActivityItemEventType = "user.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeUserLogin                       GetSettingsOverviewResponseRecentActivityItemEventType = "user.login"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeUserLogout                      GetSettingsOverviewResponseRecentActivityItemEventType = "user.logout"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeUserPasswordChanged             GetSettingsOverviewResponseRecentActivityItemEventType = "user.password_changed"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeOrganizationCreated             GetSettingsOverviewResponseRecentActivityItemEventType = "organization.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeOrganizationUpdated             GetSettingsOverviewResponseRecentActivityItemEventType = "organization.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeOrganizationDeleted             GetSettingsOverviewResponseRecentActivityItemEventType = "organization.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeWorkspaceCreated                GetSettingsOverviewResponseRecentActivityItemEventType = "workspace.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeWorkspaceUpdated                GetSettingsOverviewResponseRecentActivityItemEventType = "workspace.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeWorkspaceDeleted                GetSettingsOverviewResponseRecentActivityItemEventType = "workspace.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyGenerated                 GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.generated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyRevoked                   GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.revoked"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyEdited                    GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.edited"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyAuthFailed                GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.auth_failed"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAPIKeyAuthSuccess               GetSettingsOverviewResponseRecentActivityItemEventType = "api_key.auth_success"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeTagCreated                      GetSettingsOverviewResponseRecentActivityItemEventType = "tag.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeTagUpdated                      GetSettingsOverviewResponseRecentActivityItemEventType = "tag.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeTagDeleted                      GetSettingsOverviewResponseRecentActivityItemEventType = "tag.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaTotpEnabled                  GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.totp_enabled"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaTotpDisabled                 GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.totp_disabled"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaRecoveryRegenerated          GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.recovery_regenerated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpSent                 GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_sent"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpEnabled              GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_enabled"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeMfaEmailOtpDisabled             GetSettingsOverviewResponseRecentActivityItemEventType = "mfa.email_otp_disabled"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeOrgMfaPolicyUpdated             GetSettingsOverviewResponseRecentActivityItemEventType = "org.mfa_policy_updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeShareLinkRevoked                GetSettingsOverviewResponseRecentActivityItemEventType = "share_link.revoked"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeOrgDeleted                      GetSettingsOverviewResponseRecentActivityItemEventType = "org.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAccountDeleted                  GetSettingsOverviewResponseRecentActivityItemEventType = "account.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeFilePurged                      GetSettingsOverviewResponseRecentActivityItemEventType = "file.purged"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeFileSearchIndexDisabled         GetSettingsOverviewResponseRecentActivityItemEventType = "file.search_index_disabled"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeFileSearchIndexEnabled          GetSettingsOverviewResponseRecentActivityItemEventType = "file.search_index_enabled"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminContentRead                GetSettingsOverviewResponseRecentActivityItemEventType = "admin.content.read"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminIngestionJobRetried        GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ingestion.job.retried"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminIngestionBackfillTriggered GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ingestion.backfill.triggered"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerSourceCreated       GetSettingsOverviewResponseRecentActivityItemEventType = "admin.crawler.source.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerSourceUpdated       GetSettingsOverviewResponseRecentActivityItemEventType = "admin.crawler.source.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerSourceDeleted       GetSettingsOverviewResponseRecentActivityItemEventType = "admin.crawler.source.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerRunTriggered        GetSettingsOverviewResponseRecentActivityItemEventType = "admin.crawler.run.triggered"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerRunCancelled        GetSettingsOverviewResponseRecentActivityItemEventType = "admin.crawler.run.cancelled"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerItemApproved        GetSettingsOverviewResponseRecentActivityItemEventType = "admin.crawler.item.approved"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalMemberInvited      GetSettingsOverviewResponseRecentActivityItemEventType = "admin.internal.member.invited"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalMemberRoleChanged  GetSettingsOverviewResponseRecentActivityItemEventType = "admin.internal.member.role_changed"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalGrantCreated       GetSettingsOverviewResponseRecentActivityItemEventType = "admin.internal.grant.created"
 )
 
 func NewGetSettingsOverviewResponseRecentActivityItemEventTypeFromString(s string) (GetSettingsOverviewResponseRecentActivityItemEventType, error) {
@@ -2527,6 +2558,36 @@ func NewGetSettingsOverviewResponseRecentActivityItemEventTypeFromString(s strin
 		return GetSettingsOverviewResponseRecentActivityItemEventTypeOrgDeleted, nil
 	case "account.deleted":
 		return GetSettingsOverviewResponseRecentActivityItemEventTypeAccountDeleted, nil
+	case "file.purged":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeFilePurged, nil
+	case "file.search_index_disabled":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeFileSearchIndexDisabled, nil
+	case "file.search_index_enabled":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeFileSearchIndexEnabled, nil
+	case "admin.content.read":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminContentRead, nil
+	case "admin.ingestion.job.retried":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminIngestionJobRetried, nil
+	case "admin.ingestion.backfill.triggered":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminIngestionBackfillTriggered, nil
+	case "admin.crawler.source.created":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerSourceCreated, nil
+	case "admin.crawler.source.updated":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerSourceUpdated, nil
+	case "admin.crawler.source.deleted":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerSourceDeleted, nil
+	case "admin.crawler.run.triggered":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerRunTriggered, nil
+	case "admin.crawler.run.cancelled":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerRunCancelled, nil
+	case "admin.crawler.item.approved":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminCrawlerItemApproved, nil
+	case "admin.internal.member.invited":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalMemberInvited, nil
+	case "admin.internal.member.role_changed":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalMemberRoleChanged, nil
+	case "admin.internal.grant.created":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalGrantCreated, nil
 	}
 	var t GetSettingsOverviewResponseRecentActivityItemEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -2778,7 +2839,8 @@ var (
 	listAuditLogsResponseEventsItemFieldAction       = big.NewInt(1 << 6)
 	listAuditLogsResponseEventsItemFieldResourceType = big.NewInt(1 << 7)
 	listAuditLogsResponseEventsItemFieldResourceID   = big.NewInt(1 << 8)
-	listAuditLogsResponseEventsItemFieldDescription  = big.NewInt(1 << 9)
+	listAuditLogsResponseEventsItemFieldResourceName = big.NewInt(1 << 9)
+	listAuditLogsResponseEventsItemFieldDescription  = big.NewInt(1 << 10)
 )
 
 type ListAuditLogsResponseEventsItem struct {
@@ -2791,6 +2853,7 @@ type ListAuditLogsResponseEventsItem struct {
 	Action       string                                    `json:"action" url:"action"`
 	ResourceType string                                    `json:"resourceType" url:"resourceType"`
 	ResourceID   *string                                   `json:"resourceId,omitempty" url:"resourceId,omitempty"`
+	ResourceName *string                                   `json:"resourceName,omitempty" url:"resourceName,omitempty"`
 	Description  *string                                   `json:"description,omitempty" url:"description,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2861,6 +2924,13 @@ func (l *ListAuditLogsResponseEventsItem) GetResourceID() *string {
 		return nil
 	}
 	return l.ResourceID
+}
+
+func (l *ListAuditLogsResponseEventsItem) GetResourceName() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ResourceName
 }
 
 func (l *ListAuditLogsResponseEventsItem) GetDescription() *string {
@@ -2944,6 +3014,13 @@ func (l *ListAuditLogsResponseEventsItem) SetResourceID(resourceID *string) {
 	l.require(listAuditLogsResponseEventsItemFieldResourceID)
 }
 
+// SetResourceName sets the ResourceName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListAuditLogsResponseEventsItem) SetResourceName(resourceName *string) {
+	l.ResourceName = resourceName
+	l.require(listAuditLogsResponseEventsItemFieldResourceName)
+}
+
 // SetDescription sets the Description field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListAuditLogsResponseEventsItem) SetDescription(description *string) {
@@ -3001,36 +3078,51 @@ func (l *ListAuditLogsResponseEventsItem) String() string {
 type ListAuditLogsResponseEventsItemEventType string
 
 const (
-	ListAuditLogsResponseEventsItemEventTypeUserCreated            ListAuditLogsResponseEventsItemEventType = "user.created"
-	ListAuditLogsResponseEventsItemEventTypeUserUpdated            ListAuditLogsResponseEventsItemEventType = "user.updated"
-	ListAuditLogsResponseEventsItemEventTypeUserDeleted            ListAuditLogsResponseEventsItemEventType = "user.deleted"
-	ListAuditLogsResponseEventsItemEventTypeUserLogin              ListAuditLogsResponseEventsItemEventType = "user.login"
-	ListAuditLogsResponseEventsItemEventTypeUserLogout             ListAuditLogsResponseEventsItemEventType = "user.logout"
-	ListAuditLogsResponseEventsItemEventTypeUserPasswordChanged    ListAuditLogsResponseEventsItemEventType = "user.password_changed"
-	ListAuditLogsResponseEventsItemEventTypeOrganizationCreated    ListAuditLogsResponseEventsItemEventType = "organization.created"
-	ListAuditLogsResponseEventsItemEventTypeOrganizationUpdated    ListAuditLogsResponseEventsItemEventType = "organization.updated"
-	ListAuditLogsResponseEventsItemEventTypeOrganizationDeleted    ListAuditLogsResponseEventsItemEventType = "organization.deleted"
-	ListAuditLogsResponseEventsItemEventTypeWorkspaceCreated       ListAuditLogsResponseEventsItemEventType = "workspace.created"
-	ListAuditLogsResponseEventsItemEventTypeWorkspaceUpdated       ListAuditLogsResponseEventsItemEventType = "workspace.updated"
-	ListAuditLogsResponseEventsItemEventTypeWorkspaceDeleted       ListAuditLogsResponseEventsItemEventType = "workspace.deleted"
-	ListAuditLogsResponseEventsItemEventTypeAPIKeyGenerated        ListAuditLogsResponseEventsItemEventType = "api_key.generated"
-	ListAuditLogsResponseEventsItemEventTypeAPIKeyRevoked          ListAuditLogsResponseEventsItemEventType = "api_key.revoked"
-	ListAuditLogsResponseEventsItemEventTypeAPIKeyEdited           ListAuditLogsResponseEventsItemEventType = "api_key.edited"
-	ListAuditLogsResponseEventsItemEventTypeAPIKeyAuthFailed       ListAuditLogsResponseEventsItemEventType = "api_key.auth_failed"
-	ListAuditLogsResponseEventsItemEventTypeAPIKeyAuthSuccess      ListAuditLogsResponseEventsItemEventType = "api_key.auth_success"
-	ListAuditLogsResponseEventsItemEventTypeTagCreated             ListAuditLogsResponseEventsItemEventType = "tag.created"
-	ListAuditLogsResponseEventsItemEventTypeTagUpdated             ListAuditLogsResponseEventsItemEventType = "tag.updated"
-	ListAuditLogsResponseEventsItemEventTypeTagDeleted             ListAuditLogsResponseEventsItemEventType = "tag.deleted"
-	ListAuditLogsResponseEventsItemEventTypeMfaTotpEnabled         ListAuditLogsResponseEventsItemEventType = "mfa.totp_enabled"
-	ListAuditLogsResponseEventsItemEventTypeMfaTotpDisabled        ListAuditLogsResponseEventsItemEventType = "mfa.totp_disabled"
-	ListAuditLogsResponseEventsItemEventTypeMfaRecoveryRegenerated ListAuditLogsResponseEventsItemEventType = "mfa.recovery_regenerated"
-	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpSent        ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_sent"
-	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpEnabled     ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_enabled"
-	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpDisabled    ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_disabled"
-	ListAuditLogsResponseEventsItemEventTypeOrgMfaPolicyUpdated    ListAuditLogsResponseEventsItemEventType = "org.mfa_policy_updated"
-	ListAuditLogsResponseEventsItemEventTypeShareLinkRevoked       ListAuditLogsResponseEventsItemEventType = "share_link.revoked"
-	ListAuditLogsResponseEventsItemEventTypeOrgDeleted             ListAuditLogsResponseEventsItemEventType = "org.deleted"
-	ListAuditLogsResponseEventsItemEventTypeAccountDeleted         ListAuditLogsResponseEventsItemEventType = "account.deleted"
+	ListAuditLogsResponseEventsItemEventTypeUserCreated                     ListAuditLogsResponseEventsItemEventType = "user.created"
+	ListAuditLogsResponseEventsItemEventTypeUserUpdated                     ListAuditLogsResponseEventsItemEventType = "user.updated"
+	ListAuditLogsResponseEventsItemEventTypeUserDeleted                     ListAuditLogsResponseEventsItemEventType = "user.deleted"
+	ListAuditLogsResponseEventsItemEventTypeUserLogin                       ListAuditLogsResponseEventsItemEventType = "user.login"
+	ListAuditLogsResponseEventsItemEventTypeUserLogout                      ListAuditLogsResponseEventsItemEventType = "user.logout"
+	ListAuditLogsResponseEventsItemEventTypeUserPasswordChanged             ListAuditLogsResponseEventsItemEventType = "user.password_changed"
+	ListAuditLogsResponseEventsItemEventTypeOrganizationCreated             ListAuditLogsResponseEventsItemEventType = "organization.created"
+	ListAuditLogsResponseEventsItemEventTypeOrganizationUpdated             ListAuditLogsResponseEventsItemEventType = "organization.updated"
+	ListAuditLogsResponseEventsItemEventTypeOrganizationDeleted             ListAuditLogsResponseEventsItemEventType = "organization.deleted"
+	ListAuditLogsResponseEventsItemEventTypeWorkspaceCreated                ListAuditLogsResponseEventsItemEventType = "workspace.created"
+	ListAuditLogsResponseEventsItemEventTypeWorkspaceUpdated                ListAuditLogsResponseEventsItemEventType = "workspace.updated"
+	ListAuditLogsResponseEventsItemEventTypeWorkspaceDeleted                ListAuditLogsResponseEventsItemEventType = "workspace.deleted"
+	ListAuditLogsResponseEventsItemEventTypeAPIKeyGenerated                 ListAuditLogsResponseEventsItemEventType = "api_key.generated"
+	ListAuditLogsResponseEventsItemEventTypeAPIKeyRevoked                   ListAuditLogsResponseEventsItemEventType = "api_key.revoked"
+	ListAuditLogsResponseEventsItemEventTypeAPIKeyEdited                    ListAuditLogsResponseEventsItemEventType = "api_key.edited"
+	ListAuditLogsResponseEventsItemEventTypeAPIKeyAuthFailed                ListAuditLogsResponseEventsItemEventType = "api_key.auth_failed"
+	ListAuditLogsResponseEventsItemEventTypeAPIKeyAuthSuccess               ListAuditLogsResponseEventsItemEventType = "api_key.auth_success"
+	ListAuditLogsResponseEventsItemEventTypeTagCreated                      ListAuditLogsResponseEventsItemEventType = "tag.created"
+	ListAuditLogsResponseEventsItemEventTypeTagUpdated                      ListAuditLogsResponseEventsItemEventType = "tag.updated"
+	ListAuditLogsResponseEventsItemEventTypeTagDeleted                      ListAuditLogsResponseEventsItemEventType = "tag.deleted"
+	ListAuditLogsResponseEventsItemEventTypeMfaTotpEnabled                  ListAuditLogsResponseEventsItemEventType = "mfa.totp_enabled"
+	ListAuditLogsResponseEventsItemEventTypeMfaTotpDisabled                 ListAuditLogsResponseEventsItemEventType = "mfa.totp_disabled"
+	ListAuditLogsResponseEventsItemEventTypeMfaRecoveryRegenerated          ListAuditLogsResponseEventsItemEventType = "mfa.recovery_regenerated"
+	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpSent                 ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_sent"
+	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpEnabled              ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_enabled"
+	ListAuditLogsResponseEventsItemEventTypeMfaEmailOtpDisabled             ListAuditLogsResponseEventsItemEventType = "mfa.email_otp_disabled"
+	ListAuditLogsResponseEventsItemEventTypeOrgMfaPolicyUpdated             ListAuditLogsResponseEventsItemEventType = "org.mfa_policy_updated"
+	ListAuditLogsResponseEventsItemEventTypeShareLinkRevoked                ListAuditLogsResponseEventsItemEventType = "share_link.revoked"
+	ListAuditLogsResponseEventsItemEventTypeOrgDeleted                      ListAuditLogsResponseEventsItemEventType = "org.deleted"
+	ListAuditLogsResponseEventsItemEventTypeAccountDeleted                  ListAuditLogsResponseEventsItemEventType = "account.deleted"
+	ListAuditLogsResponseEventsItemEventTypeFilePurged                      ListAuditLogsResponseEventsItemEventType = "file.purged"
+	ListAuditLogsResponseEventsItemEventTypeFileSearchIndexDisabled         ListAuditLogsResponseEventsItemEventType = "file.search_index_disabled"
+	ListAuditLogsResponseEventsItemEventTypeFileSearchIndexEnabled          ListAuditLogsResponseEventsItemEventType = "file.search_index_enabled"
+	ListAuditLogsResponseEventsItemEventTypeAdminContentRead                ListAuditLogsResponseEventsItemEventType = "admin.content.read"
+	ListAuditLogsResponseEventsItemEventTypeAdminIngestionJobRetried        ListAuditLogsResponseEventsItemEventType = "admin.ingestion.job.retried"
+	ListAuditLogsResponseEventsItemEventTypeAdminIngestionBackfillTriggered ListAuditLogsResponseEventsItemEventType = "admin.ingestion.backfill.triggered"
+	ListAuditLogsResponseEventsItemEventTypeAdminCrawlerSourceCreated       ListAuditLogsResponseEventsItemEventType = "admin.crawler.source.created"
+	ListAuditLogsResponseEventsItemEventTypeAdminCrawlerSourceUpdated       ListAuditLogsResponseEventsItemEventType = "admin.crawler.source.updated"
+	ListAuditLogsResponseEventsItemEventTypeAdminCrawlerSourceDeleted       ListAuditLogsResponseEventsItemEventType = "admin.crawler.source.deleted"
+	ListAuditLogsResponseEventsItemEventTypeAdminCrawlerRunTriggered        ListAuditLogsResponseEventsItemEventType = "admin.crawler.run.triggered"
+	ListAuditLogsResponseEventsItemEventTypeAdminCrawlerRunCancelled        ListAuditLogsResponseEventsItemEventType = "admin.crawler.run.cancelled"
+	ListAuditLogsResponseEventsItemEventTypeAdminCrawlerItemApproved        ListAuditLogsResponseEventsItemEventType = "admin.crawler.item.approved"
+	ListAuditLogsResponseEventsItemEventTypeAdminInternalMemberInvited      ListAuditLogsResponseEventsItemEventType = "admin.internal.member.invited"
+	ListAuditLogsResponseEventsItemEventTypeAdminInternalMemberRoleChanged  ListAuditLogsResponseEventsItemEventType = "admin.internal.member.role_changed"
+	ListAuditLogsResponseEventsItemEventTypeAdminInternalGrantCreated       ListAuditLogsResponseEventsItemEventType = "admin.internal.grant.created"
 )
 
 func NewListAuditLogsResponseEventsItemEventTypeFromString(s string) (ListAuditLogsResponseEventsItemEventType, error) {
@@ -3095,6 +3187,36 @@ func NewListAuditLogsResponseEventsItemEventTypeFromString(s string) (ListAuditL
 		return ListAuditLogsResponseEventsItemEventTypeOrgDeleted, nil
 	case "account.deleted":
 		return ListAuditLogsResponseEventsItemEventTypeAccountDeleted, nil
+	case "file.purged":
+		return ListAuditLogsResponseEventsItemEventTypeFilePurged, nil
+	case "file.search_index_disabled":
+		return ListAuditLogsResponseEventsItemEventTypeFileSearchIndexDisabled, nil
+	case "file.search_index_enabled":
+		return ListAuditLogsResponseEventsItemEventTypeFileSearchIndexEnabled, nil
+	case "admin.content.read":
+		return ListAuditLogsResponseEventsItemEventTypeAdminContentRead, nil
+	case "admin.ingestion.job.retried":
+		return ListAuditLogsResponseEventsItemEventTypeAdminIngestionJobRetried, nil
+	case "admin.ingestion.backfill.triggered":
+		return ListAuditLogsResponseEventsItemEventTypeAdminIngestionBackfillTriggered, nil
+	case "admin.crawler.source.created":
+		return ListAuditLogsResponseEventsItemEventTypeAdminCrawlerSourceCreated, nil
+	case "admin.crawler.source.updated":
+		return ListAuditLogsResponseEventsItemEventTypeAdminCrawlerSourceUpdated, nil
+	case "admin.crawler.source.deleted":
+		return ListAuditLogsResponseEventsItemEventTypeAdminCrawlerSourceDeleted, nil
+	case "admin.crawler.run.triggered":
+		return ListAuditLogsResponseEventsItemEventTypeAdminCrawlerRunTriggered, nil
+	case "admin.crawler.run.cancelled":
+		return ListAuditLogsResponseEventsItemEventTypeAdminCrawlerRunCancelled, nil
+	case "admin.crawler.item.approved":
+		return ListAuditLogsResponseEventsItemEventTypeAdminCrawlerItemApproved, nil
+	case "admin.internal.member.invited":
+		return ListAuditLogsResponseEventsItemEventTypeAdminInternalMemberInvited, nil
+	case "admin.internal.member.role_changed":
+		return ListAuditLogsResponseEventsItemEventTypeAdminInternalMemberRoleChanged, nil
+	case "admin.internal.grant.created":
+		return ListAuditLogsResponseEventsItemEventTypeAdminInternalGrantCreated, nil
 	}
 	var t ListAuditLogsResponseEventsItemEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
