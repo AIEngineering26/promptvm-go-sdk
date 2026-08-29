@@ -4,11 +4,11 @@ package settings
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetSettingsOverview(
 	ctx context.Context,
-	request *promptvmgosdk.GetSettingsOverviewRequest,
+	request *sdk.GetSettingsOverviewRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetSettingsOverviewResponse], error) {
+) (*core.Response[*sdk.GetSettingsOverviewResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -50,7 +50,7 @@ func (r *RawClient) GetSettingsOverview(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.GetSettingsOverviewResponse
+	var response *sdk.GetSettingsOverviewResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -67,7 +67,7 @@ func (r *RawClient) GetSettingsOverview(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetSettingsOverviewResponse]{
+	return &core.Response[*sdk.GetSettingsOverviewResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -76,9 +76,9 @@ func (r *RawClient) GetSettingsOverview(
 
 func (r *RawClient) GetAdminTasks(
 	ctx context.Context,
-	request *promptvmgosdk.GetAdminTasksRequest,
+	request *sdk.GetAdminTasksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetAdminTasksResponse], error) {
+) (*core.Response[*sdk.GetAdminTasksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -94,7 +94,7 @@ func (r *RawClient) GetAdminTasks(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.GetAdminTasksResponse
+	var response *sdk.GetAdminTasksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -111,7 +111,7 @@ func (r *RawClient) GetAdminTasks(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetAdminTasksResponse]{
+	return &core.Response[*sdk.GetAdminTasksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -120,9 +120,9 @@ func (r *RawClient) GetAdminTasks(
 
 func (r *RawClient) ListAuditLogs(
 	ctx context.Context,
-	request *promptvmgosdk.ListAuditLogsRequest,
+	request *sdk.ListAuditLogsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListAuditLogsResponse], error) {
+) (*core.Response[*sdk.ListAuditLogsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -145,7 +145,7 @@ func (r *RawClient) ListAuditLogs(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.ListAuditLogsResponse
+	var response *sdk.ListAuditLogsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -162,7 +162,7 @@ func (r *RawClient) ListAuditLogs(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListAuditLogsResponse]{
+	return &core.Response[*sdk.ListAuditLogsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -171,9 +171,9 @@ func (r *RawClient) ListAuditLogs(
 
 func (r *RawClient) ListOrgTags(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrgTagsRequest,
+	request *sdk.ListOrgTagsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListOrgTagsResponse], error) {
+) (*core.Response[*sdk.ListOrgTagsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -189,7 +189,7 @@ func (r *RawClient) ListOrgTags(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.ListOrgTagsResponse
+	var response *sdk.ListOrgTagsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -206,7 +206,7 @@ func (r *RawClient) ListOrgTags(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListOrgTagsResponse]{
+	return &core.Response[*sdk.ListOrgTagsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -215,9 +215,9 @@ func (r *RawClient) ListOrgTags(
 
 func (r *RawClient) CreateOrgTag(
 	ctx context.Context,
-	request *promptvmgosdk.CreateOrgTagRequest,
+	request *sdk.CreateOrgTagRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CreateOrgTagResponse], error) {
+) (*core.Response[*sdk.CreateOrgTagResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -233,7 +233,7 @@ func (r *RawClient) CreateOrgTag(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CreateOrgTagResponse
+	var response *sdk.CreateOrgTagResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -251,7 +251,7 @@ func (r *RawClient) CreateOrgTag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CreateOrgTagResponse]{
+	return &core.Response[*sdk.CreateOrgTagResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -260,7 +260,7 @@ func (r *RawClient) CreateOrgTag(
 
 func (r *RawClient) DeleteOrgTag(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteOrgTagRequest,
+	request *sdk.DeleteOrgTagRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -305,9 +305,9 @@ func (r *RawClient) DeleteOrgTag(
 
 func (r *RawClient) UpdateOrgTag(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrgTagRequest,
+	request *sdk.UpdateOrgTagRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateOrgTagResponse], error) {
+) (*core.Response[*sdk.UpdateOrgTagResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -326,7 +326,7 @@ func (r *RawClient) UpdateOrgTag(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateOrgTagResponse
+	var response *sdk.UpdateOrgTagResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -344,7 +344,7 @@ func (r *RawClient) UpdateOrgTag(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateOrgTagResponse]{
+	return &core.Response[*sdk.UpdateOrgTagResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -353,9 +353,9 @@ func (r *RawClient) UpdateOrgTag(
 
 func (r *RawClient) GetSecurityStatus(
 	ctx context.Context,
-	request *promptvmgosdk.GetSecurityStatusRequest,
+	request *sdk.GetSecurityStatusRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetSecurityStatusResponse], error) {
+) (*core.Response[*sdk.GetSecurityStatusResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -371,7 +371,7 @@ func (r *RawClient) GetSecurityStatus(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.GetSecurityStatusResponse
+	var response *sdk.GetSecurityStatusResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -388,7 +388,7 @@ func (r *RawClient) GetSecurityStatus(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetSecurityStatusResponse]{
+	return &core.Response[*sdk.GetSecurityStatusResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -398,7 +398,7 @@ func (r *RawClient) GetSecurityStatus(
 func (r *RawClient) SetupTotp(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.SetupTotpResponse], error) {
+) (*core.Response[*sdk.SetupTotpResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -410,7 +410,7 @@ func (r *RawClient) SetupTotp(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.SetupTotpResponse
+	var response *sdk.SetupTotpResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -427,7 +427,7 @@ func (r *RawClient) SetupTotp(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.SetupTotpResponse]{
+	return &core.Response[*sdk.SetupTotpResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -436,9 +436,9 @@ func (r *RawClient) SetupTotp(
 
 func (r *RawClient) VerifyTotp(
 	ctx context.Context,
-	request *promptvmgosdk.VerifyTotpRequest,
+	request *sdk.VerifyTotpRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.VerifyTotpResponse], error) {
+) (*core.Response[*sdk.VerifyTotpResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -451,7 +451,7 @@ func (r *RawClient) VerifyTotp(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.VerifyTotpResponse
+	var response *sdk.VerifyTotpResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -469,7 +469,7 @@ func (r *RawClient) VerifyTotp(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.VerifyTotpResponse]{
+	return &core.Response[*sdk.VerifyTotpResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -478,9 +478,9 @@ func (r *RawClient) VerifyTotp(
 
 func (r *RawClient) DisableTotp(
 	ctx context.Context,
-	request *promptvmgosdk.DisableTotpRequest,
+	request *sdk.DisableTotpRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.DisableTotpResponse], error) {
+) (*core.Response[*sdk.DisableTotpResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -493,7 +493,7 @@ func (r *RawClient) DisableTotp(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.DisableTotpResponse
+	var response *sdk.DisableTotpResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -511,7 +511,7 @@ func (r *RawClient) DisableTotp(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.DisableTotpResponse]{
+	return &core.Response[*sdk.DisableTotpResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -520,9 +520,9 @@ func (r *RawClient) DisableTotp(
 
 func (r *RawClient) RegenerateRecoveryCodes(
 	ctx context.Context,
-	request *promptvmgosdk.RegenerateRecoveryCodesRequest,
+	request *sdk.RegenerateRecoveryCodesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.RegenerateRecoveryCodesResponse], error) {
+) (*core.Response[*sdk.RegenerateRecoveryCodesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -535,7 +535,7 @@ func (r *RawClient) RegenerateRecoveryCodes(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.RegenerateRecoveryCodesResponse
+	var response *sdk.RegenerateRecoveryCodesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -553,7 +553,7 @@ func (r *RawClient) RegenerateRecoveryCodes(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.RegenerateRecoveryCodesResponse]{
+	return &core.Response[*sdk.RegenerateRecoveryCodesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -562,9 +562,9 @@ func (r *RawClient) RegenerateRecoveryCodes(
 
 func (r *RawClient) ChangePassword(
 	ctx context.Context,
-	request *promptvmgosdk.ChangePasswordRequest,
+	request *sdk.ChangePasswordRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ChangePasswordResponse], error) {
+) (*core.Response[*sdk.ChangePasswordResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -577,7 +577,7 @@ func (r *RawClient) ChangePassword(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.ChangePasswordResponse
+	var response *sdk.ChangePasswordResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -595,7 +595,7 @@ func (r *RawClient) ChangePassword(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ChangePasswordResponse]{
+	return &core.Response[*sdk.ChangePasswordResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -604,9 +604,9 @@ func (r *RawClient) ChangePassword(
 
 func (r *RawClient) UpdateOrgMfaPolicy(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrgMfaPolicyRequest,
+	request *sdk.UpdateOrgMfaPolicyRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateOrgMfaPolicyResponse], error) {
+) (*core.Response[*sdk.UpdateOrgMfaPolicyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -622,7 +622,7 @@ func (r *RawClient) UpdateOrgMfaPolicy(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateOrgMfaPolicyResponse
+	var response *sdk.UpdateOrgMfaPolicyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -640,7 +640,7 @@ func (r *RawClient) UpdateOrgMfaPolicy(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateOrgMfaPolicyResponse]{
+	return &core.Response[*sdk.UpdateOrgMfaPolicyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -650,7 +650,7 @@ func (r *RawClient) UpdateOrgMfaPolicy(
 func (r *RawClient) SendEmailOtp(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.SendEmailOtpResponse], error) {
+) (*core.Response[*sdk.SendEmailOtpResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -662,7 +662,7 @@ func (r *RawClient) SendEmailOtp(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.SendEmailOtpResponse
+	var response *sdk.SendEmailOtpResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -679,7 +679,7 @@ func (r *RawClient) SendEmailOtp(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.SendEmailOtpResponse]{
+	return &core.Response[*sdk.SendEmailOtpResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -688,9 +688,9 @@ func (r *RawClient) SendEmailOtp(
 
 func (r *RawClient) VerifyEmailOtp(
 	ctx context.Context,
-	request *promptvmgosdk.VerifyEmailOtpRequest,
+	request *sdk.VerifyEmailOtpRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.VerifyEmailOtpResponse], error) {
+) (*core.Response[*sdk.VerifyEmailOtpResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -703,7 +703,7 @@ func (r *RawClient) VerifyEmailOtp(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.VerifyEmailOtpResponse
+	var response *sdk.VerifyEmailOtpResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -721,7 +721,7 @@ func (r *RawClient) VerifyEmailOtp(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.VerifyEmailOtpResponse]{
+	return &core.Response[*sdk.VerifyEmailOtpResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -730,9 +730,9 @@ func (r *RawClient) VerifyEmailOtp(
 
 func (r *RawClient) DisableEmailOtp(
 	ctx context.Context,
-	request *promptvmgosdk.DisableEmailOtpRequest,
+	request *sdk.DisableEmailOtpRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.DisableEmailOtpResponse], error) {
+) (*core.Response[*sdk.DisableEmailOtpResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -745,7 +745,7 @@ func (r *RawClient) DisableEmailOtp(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.DisableEmailOtpResponse
+	var response *sdk.DisableEmailOtpResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -763,7 +763,7 @@ func (r *RawClient) DisableEmailOtp(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.DisableEmailOtpResponse]{
+	return &core.Response[*sdk.DisableEmailOtpResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

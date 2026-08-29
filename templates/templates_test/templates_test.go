@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestTemplatesConvertPromptToTemplateWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ConvertPromptToTemplateRequest{
+	request := &sdk.ConvertPromptToTemplateRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Templates.ConvertPromptToTemplate(
@@ -99,7 +99,7 @@ func TestTemplatesListTemplatesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListTemplatesRequest{
+	request := &sdk.ListTemplatesRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Templates.ListTemplates(
@@ -125,7 +125,7 @@ func TestTemplatesCreatePromptFromTemplateWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreatePromptFromTemplateRequest{
+	request := &sdk.CreatePromptFromTemplateRequest{
 		TemplateID:  "templateId",
 		Name:        "name",
 		WorkspaceID: "workspaceId",

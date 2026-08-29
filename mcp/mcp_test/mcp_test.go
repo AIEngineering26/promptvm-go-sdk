@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -95,7 +95,7 @@ func TestMcpMintMcpSessionTokenWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.MintMcpSessionTokenRequest{}
+	request := &sdk.MintMcpSessionTokenRequest{}
 	_, invocationErr := client.Mcp.MintMcpSessionToken(
 		context.TODO(),
 		request,
@@ -119,7 +119,7 @@ func TestMcpRevokeMcpSessionTokenWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.RevokeMcpSessionTokenRequest{
+	request := &sdk.RevokeMcpSessionTokenRequest{
 		TokenID: "tokenId",
 	}
 	invocationErr := client.Mcp.RevokeMcpSessionToken(

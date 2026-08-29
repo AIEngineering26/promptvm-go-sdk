@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceSocialFollowACreatorWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
+	request := &sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
 		CreatorUserID: "creatorUserId",
 	}
 	_, invocationErr := client.MarketplaceSocial.FollowACreator(
@@ -99,7 +99,7 @@ func TestMarketplaceSocialUnfollowACreatorWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
+	request := &sdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
 		CreatorUserID: "creatorUserId",
 	}
 	invocationErr := client.MarketplaceSocial.UnfollowACreator(
@@ -125,7 +125,7 @@ func TestMarketplaceSocialListCreatorsIFollowWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingRequest{}
+	request := &sdk.GetAPIV1MarketplaceCreatorMeFollowingRequest{}
 	_, invocationErr := client.MarketplaceSocial.ListCreatorsIFollow(
 		context.TODO(),
 		request,
@@ -149,7 +149,7 @@ func TestMarketplaceSocialFollowedCreatorListingFeedWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedRequest{}
+	request := &sdk.GetAPIV1MarketplaceCreatorMeFeedRequest{}
 	_, invocationErr := client.MarketplaceSocial.FollowedCreatorListingFeed(
 		context.TODO(),
 		request,
@@ -173,7 +173,7 @@ func TestMarketplaceSocialListACreatorsFollowersWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest{
+	request := &sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest{
 		CreatorUserID: "creatorUserId",
 	}
 	_, invocationErr := client.MarketplaceSocial.ListACreatorsFollowers(

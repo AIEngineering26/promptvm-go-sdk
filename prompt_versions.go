@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
 
@@ -18,7 +18,8 @@ var (
 	createPromptVersionRequestFieldChangeNote      = big.NewInt(1 << 4)
 	createPromptVersionRequestFieldVersionLabel    = big.NewInt(1 << 5)
 	createPromptVersionRequestFieldVariablesSchema = big.NewInt(1 << 6)
-	createPromptVersionRequestFieldBaseVersion     = big.NewInt(1 << 7)
+	createPromptVersionRequestFieldModelIDs        = big.NewInt(1 << 7)
+	createPromptVersionRequestFieldBaseVersion     = big.NewInt(1 << 8)
 )
 
 type CreatePromptVersionRequest struct {
@@ -30,6 +31,7 @@ type CreatePromptVersionRequest struct {
 	ChangeNote      *string                                                    `json:"changeNote,omitempty" url:"-"`
 	VersionLabel    *string                                                    `json:"versionLabel,omitempty" url:"-"`
 	VariablesSchema map[string]*CreatePromptVersionRequestVariablesSchemaValue `json:"variablesSchema,omitempty" url:"-"`
+	ModelIDs        []string                                                   `json:"modelIds,omitempty" url:"-"`
 	// Optional optimistic-concurrency guard. Must equal the current head versionNumber (0 for a prompt with no versions). A stale value yields 409 version_conflict with no mutation; omit for append-only (last writer wins).
 	BaseVersion *int `json:"base_version,omitempty" url:"-"`
 
@@ -91,6 +93,13 @@ func (c *CreatePromptVersionRequest) SetVersionLabel(versionLabel *string) {
 func (c *CreatePromptVersionRequest) SetVariablesSchema(variablesSchema map[string]*CreatePromptVersionRequestVariablesSchemaValue) {
 	c.VariablesSchema = variablesSchema
 	c.require(createPromptVersionRequestFieldVariablesSchema)
+}
+
+// SetModelIDs sets the ModelIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionRequest) SetModelIDs(modelIDs []string) {
+	c.ModelIDs = modelIDs
+	c.require(createPromptVersionRequestFieldModelIDs)
 }
 
 // SetBaseVersion sets the BaseVersion field and marks it as non-optional;
@@ -178,6 +187,40 @@ func (g *GetPromptVersionRequest) SetVersionID(versionID string) {
 }
 
 var (
+	getVersionRecommendedModelsRequestFieldPromptID  = big.NewInt(1 << 0)
+	getVersionRecommendedModelsRequestFieldVersionID = big.NewInt(1 << 1)
+)
+
+type GetVersionRecommendedModelsRequest struct {
+	PromptID  string `json:"-" url:"-"`
+	VersionID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetVersionRecommendedModelsRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetPromptID sets the PromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsRequest) SetPromptID(promptID string) {
+	g.PromptID = promptID
+	g.require(getVersionRecommendedModelsRequestFieldPromptID)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsRequest) SetVersionID(versionID string) {
+	g.VersionID = versionID
+	g.require(getVersionRecommendedModelsRequestFieldVersionID)
+}
+
+var (
 	listPromptVersionsRequestFieldPromptID = big.NewInt(1 << 0)
 	listPromptVersionsRequestFieldCursor   = big.NewInt(1 << 1)
 	listPromptVersionsRequestFieldLimit    = big.NewInt(1 << 2)
@@ -262,6 +305,49 @@ func (r *RollbackPromptRequest) SetPromptID(promptID string) {
 func (r *RollbackPromptRequest) SetTargetVersion(targetVersion int) {
 	r.TargetVersion = targetVersion
 	r.require(rollbackPromptRequestFieldTargetVersion)
+}
+
+var (
+	setVersionRecommendedModelsRequestFieldPromptID  = big.NewInt(1 << 0)
+	setVersionRecommendedModelsRequestFieldVersionID = big.NewInt(1 << 1)
+	setVersionRecommendedModelsRequestFieldModelIDs  = big.NewInt(1 << 2)
+)
+
+type SetVersionRecommendedModelsRequest struct {
+	PromptID  string   `json:"-" url:"-"`
+	VersionID string   `json:"-" url:"-"`
+	ModelIDs  []string `json:"modelIds" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SetVersionRecommendedModelsRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetPromptID sets the PromptID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsRequest) SetPromptID(promptID string) {
+	s.PromptID = promptID
+	s.require(setVersionRecommendedModelsRequestFieldPromptID)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsRequest) SetVersionID(versionID string) {
+	s.VersionID = versionID
+	s.require(setVersionRecommendedModelsRequestFieldVersionID)
+}
+
+// SetModelIDs sets the ModelIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsRequest) SetModelIDs(modelIDs []string) {
+	s.ModelIDs = modelIDs
+	s.require(setVersionRecommendedModelsRequestFieldModelIDs)
 }
 
 var (
@@ -437,6 +523,7 @@ var (
 	createPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
 	createPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
 	createPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
+	createPromptVersionResponseDataFieldRecommendedModels       = big.NewInt(1 << 15)
 )
 
 type CreatePromptVersionResponseData struct {
@@ -455,6 +542,7 @@ type CreatePromptVersionResponseData struct {
 	CreatedAt               time.Time                                                       `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                                                           `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                                                           `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	RecommendedModels       []*CreatePromptVersionResponseDataRecommendedModelsItem         `json:"recommendedModels,omitempty" url:"recommendedModels,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -566,6 +654,13 @@ func (c *CreatePromptVersionResponseData) GetIsDeployedToProduction() *bool {
 		return nil
 	}
 	return c.IsDeployedToProduction
+}
+
+func (c *CreatePromptVersionResponseData) GetRecommendedModels() []*CreatePromptVersionResponseDataRecommendedModelsItem {
+	if c == nil {
+		return nil
+	}
+	return c.RecommendedModels
 }
 
 func (c *CreatePromptVersionResponseData) GetExtraProperties() map[string]interface{} {
@@ -684,6 +779,13 @@ func (c *CreatePromptVersionResponseData) SetIsDeployedToProduction(isDeployedTo
 	c.require(createPromptVersionResponseDataFieldIsDeployedToProduction)
 }
 
+// SetRecommendedModels sets the RecommendedModels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseData) SetRecommendedModels(recommendedModels []*CreatePromptVersionResponseDataRecommendedModelsItem) {
+	c.RecommendedModels = recommendedModels
+	c.require(createPromptVersionResponseDataFieldRecommendedModels)
+}
+
 func (c *CreatePromptVersionResponseData) UnmarshalJSON(data []byte) error {
 	type embed CreatePromptVersionResponseData
 	var unmarshaler = struct {
@@ -720,6 +822,229 @@ func (c *CreatePromptVersionResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatePromptVersionResponseData) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createPromptVersionResponseDataRecommendedModelsItemFieldID           = big.NewInt(1 << 0)
+	createPromptVersionResponseDataRecommendedModelsItemFieldSlug         = big.NewInt(1 << 1)
+	createPromptVersionResponseDataRecommendedModelsItemFieldName         = big.NewInt(1 << 2)
+	createPromptVersionResponseDataRecommendedModelsItemFieldLogoURL      = big.NewInt(1 << 3)
+	createPromptVersionResponseDataRecommendedModelsItemFieldIsActive     = big.NewInt(1 << 4)
+	createPromptVersionResponseDataRecommendedModelsItemFieldModality     = big.NewInt(1 << 5)
+	createPromptVersionResponseDataRecommendedModelsItemFieldProviderID   = big.NewInt(1 << 6)
+	createPromptVersionResponseDataRecommendedModelsItemFieldProviderSlug = big.NewInt(1 << 7)
+	createPromptVersionResponseDataRecommendedModelsItemFieldProviderName = big.NewInt(1 << 8)
+	createPromptVersionResponseDataRecommendedModelsItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type CreatePromptVersionResponseDataRecommendedModelsItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetSlug() string {
+	if c == nil {
+		return ""
+	}
+	return c.Slug
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetLogoURL() *string {
+	if c == nil {
+		return nil
+	}
+	return c.LogoURL
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetIsActive() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsActive
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetModality() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Modality
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetProviderID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ProviderID
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetProviderSlug() string {
+	if c == nil {
+		return ""
+	}
+	return c.ProviderSlug
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetProviderName() string {
+	if c == nil {
+		return ""
+	}
+	return c.ProviderName
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetPosition() *int {
+	if c == nil {
+		return nil
+	}
+	return c.Position
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetID(id string) {
+	c.ID = id
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetSlug(slug string) {
+	c.Slug = slug
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetName(name string) {
+	c.Name = name
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetLogoURL(logoURL *string) {
+	c.LogoURL = logoURL
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetIsActive(isActive *bool) {
+	c.IsActive = isActive
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetModality(modality *string) {
+	c.Modality = modality
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetProviderID(providerID string) {
+	c.ProviderID = providerID
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetProviderSlug(providerSlug string) {
+	c.ProviderSlug = providerSlug
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetProviderName(providerName string) {
+	c.ProviderName = providerName
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) SetPosition(position *int) {
+	c.Position = position
+	c.require(createPromptVersionResponseDataRecommendedModelsItemFieldPosition)
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePromptVersionResponseDataRecommendedModelsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreatePromptVersionResponseDataRecommendedModelsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) MarshalJSON() ([]byte, error) {
+	type embed CreatePromptVersionResponseDataRecommendedModelsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreatePromptVersionResponseDataRecommendedModelsItem) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1219,6 +1544,7 @@ var (
 	getPromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
 	getPromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
 	getPromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
+	getPromptVersionResponseDataFieldRecommendedModels       = big.NewInt(1 << 15)
 )
 
 type GetPromptVersionResponseData struct {
@@ -1237,6 +1563,7 @@ type GetPromptVersionResponseData struct {
 	CreatedAt               time.Time                                                    `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                                                        `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                                                        `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	RecommendedModels       []*GetPromptVersionResponseDataRecommendedModelsItem         `json:"recommendedModels,omitempty" url:"recommendedModels,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1348,6 +1675,13 @@ func (g *GetPromptVersionResponseData) GetIsDeployedToProduction() *bool {
 		return nil
 	}
 	return g.IsDeployedToProduction
+}
+
+func (g *GetPromptVersionResponseData) GetRecommendedModels() []*GetPromptVersionResponseDataRecommendedModelsItem {
+	if g == nil {
+		return nil
+	}
+	return g.RecommendedModels
 }
 
 func (g *GetPromptVersionResponseData) GetExtraProperties() map[string]interface{} {
@@ -1466,6 +1800,13 @@ func (g *GetPromptVersionResponseData) SetIsDeployedToProduction(isDeployedToPro
 	g.require(getPromptVersionResponseDataFieldIsDeployedToProduction)
 }
 
+// SetRecommendedModels sets the RecommendedModels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseData) SetRecommendedModels(recommendedModels []*GetPromptVersionResponseDataRecommendedModelsItem) {
+	g.RecommendedModels = recommendedModels
+	g.require(getPromptVersionResponseDataFieldRecommendedModels)
+}
+
 func (g *GetPromptVersionResponseData) UnmarshalJSON(data []byte) error {
 	type embed GetPromptVersionResponseData
 	var unmarshaler = struct {
@@ -1502,6 +1843,229 @@ func (g *GetPromptVersionResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetPromptVersionResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getPromptVersionResponseDataRecommendedModelsItemFieldID           = big.NewInt(1 << 0)
+	getPromptVersionResponseDataRecommendedModelsItemFieldSlug         = big.NewInt(1 << 1)
+	getPromptVersionResponseDataRecommendedModelsItemFieldName         = big.NewInt(1 << 2)
+	getPromptVersionResponseDataRecommendedModelsItemFieldLogoURL      = big.NewInt(1 << 3)
+	getPromptVersionResponseDataRecommendedModelsItemFieldIsActive     = big.NewInt(1 << 4)
+	getPromptVersionResponseDataRecommendedModelsItemFieldModality     = big.NewInt(1 << 5)
+	getPromptVersionResponseDataRecommendedModelsItemFieldProviderID   = big.NewInt(1 << 6)
+	getPromptVersionResponseDataRecommendedModelsItemFieldProviderSlug = big.NewInt(1 << 7)
+	getPromptVersionResponseDataRecommendedModelsItemFieldProviderName = big.NewInt(1 << 8)
+	getPromptVersionResponseDataRecommendedModelsItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type GetPromptVersionResponseDataRecommendedModelsItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetID() string {
+	if g == nil {
+		return ""
+	}
+	return g.ID
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetSlug() string {
+	if g == nil {
+		return ""
+	}
+	return g.Slug
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetName() string {
+	if g == nil {
+		return ""
+	}
+	return g.Name
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetLogoURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.LogoURL
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetIsActive() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsActive
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetModality() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Modality
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetProviderID() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderID
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetProviderSlug() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderSlug
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetProviderName() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderName
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetPosition() *int {
+	if g == nil {
+		return nil
+	}
+	return g.Position
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetID(id string) {
+	g.ID = id
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetSlug(slug string) {
+	g.Slug = slug
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetName(name string) {
+	g.Name = name
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetLogoURL(logoURL *string) {
+	g.LogoURL = logoURL
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetIsActive(isActive *bool) {
+	g.IsActive = isActive
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetModality(modality *string) {
+	g.Modality = modality
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetProviderID(providerID string) {
+	g.ProviderID = providerID
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetProviderSlug(providerSlug string) {
+	g.ProviderSlug = providerSlug
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetProviderName(providerName string) {
+	g.ProviderName = providerName
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) SetPosition(position *int) {
+	g.Position = position
+	g.require(getPromptVersionResponseDataRecommendedModelsItemFieldPosition)
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetPromptVersionResponseDataRecommendedModelsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetPromptVersionResponseDataRecommendedModelsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) MarshalJSON() ([]byte, error) {
+	type embed GetPromptVersionResponseDataRecommendedModelsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetPromptVersionResponseDataRecommendedModelsItem) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1580,6 +2144,308 @@ func (g *GetPromptVersionResponseDataVariablesSchemaValue) MarshalJSON() ([]byte
 }
 
 func (g *GetPromptVersionResponseDataVariablesSchemaValue) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// Recommended models
+var (
+	getVersionRecommendedModelsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type GetVersionRecommendedModelsResponse struct {
+	Data []*GetVersionRecommendedModelsResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetVersionRecommendedModelsResponse) GetData() []*GetVersionRecommendedModelsResponseDataItem {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetVersionRecommendedModelsResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetVersionRecommendedModelsResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponse) SetData(data []*GetVersionRecommendedModelsResponseDataItem) {
+	g.Data = data
+	g.require(getVersionRecommendedModelsResponseFieldData)
+}
+
+func (g *GetVersionRecommendedModelsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetVersionRecommendedModelsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetVersionRecommendedModelsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetVersionRecommendedModelsResponse) MarshalJSON() ([]byte, error) {
+	type embed GetVersionRecommendedModelsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetVersionRecommendedModelsResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getVersionRecommendedModelsResponseDataItemFieldID           = big.NewInt(1 << 0)
+	getVersionRecommendedModelsResponseDataItemFieldSlug         = big.NewInt(1 << 1)
+	getVersionRecommendedModelsResponseDataItemFieldName         = big.NewInt(1 << 2)
+	getVersionRecommendedModelsResponseDataItemFieldLogoURL      = big.NewInt(1 << 3)
+	getVersionRecommendedModelsResponseDataItemFieldIsActive     = big.NewInt(1 << 4)
+	getVersionRecommendedModelsResponseDataItemFieldModality     = big.NewInt(1 << 5)
+	getVersionRecommendedModelsResponseDataItemFieldProviderID   = big.NewInt(1 << 6)
+	getVersionRecommendedModelsResponseDataItemFieldProviderSlug = big.NewInt(1 << 7)
+	getVersionRecommendedModelsResponseDataItemFieldProviderName = big.NewInt(1 << 8)
+	getVersionRecommendedModelsResponseDataItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type GetVersionRecommendedModelsResponseDataItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetID() string {
+	if g == nil {
+		return ""
+	}
+	return g.ID
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetSlug() string {
+	if g == nil {
+		return ""
+	}
+	return g.Slug
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetName() string {
+	if g == nil {
+		return ""
+	}
+	return g.Name
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetLogoURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.LogoURL
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetIsActive() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsActive
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetModality() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Modality
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetProviderID() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderID
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetProviderSlug() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderSlug
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetProviderName() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderName
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetPosition() *int {
+	if g == nil {
+		return nil
+	}
+	return g.Position
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetID(id string) {
+	g.ID = id
+	g.require(getVersionRecommendedModelsResponseDataItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetSlug(slug string) {
+	g.Slug = slug
+	g.require(getVersionRecommendedModelsResponseDataItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetName(name string) {
+	g.Name = name
+	g.require(getVersionRecommendedModelsResponseDataItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetLogoURL(logoURL *string) {
+	g.LogoURL = logoURL
+	g.require(getVersionRecommendedModelsResponseDataItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetIsActive(isActive *bool) {
+	g.IsActive = isActive
+	g.require(getVersionRecommendedModelsResponseDataItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetModality(modality *string) {
+	g.Modality = modality
+	g.require(getVersionRecommendedModelsResponseDataItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetProviderID(providerID string) {
+	g.ProviderID = providerID
+	g.require(getVersionRecommendedModelsResponseDataItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetProviderSlug(providerSlug string) {
+	g.ProviderSlug = providerSlug
+	g.require(getVersionRecommendedModelsResponseDataItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetProviderName(providerName string) {
+	g.ProviderName = providerName
+	g.require(getVersionRecommendedModelsResponseDataItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetVersionRecommendedModelsResponseDataItem) SetPosition(position *int) {
+	g.Position = position
+	g.require(getVersionRecommendedModelsResponseDataItemFieldPosition)
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetVersionRecommendedModelsResponseDataItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetVersionRecommendedModelsResponseDataItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed GetVersionRecommendedModelsResponseDataItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetVersionRecommendedModelsResponseDataItem) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1702,6 +2568,7 @@ var (
 	listPromptVersionsResponseDataItemFieldCreatedAt               = big.NewInt(1 << 12)
 	listPromptVersionsResponseDataItemFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
 	listPromptVersionsResponseDataItemFieldIsDeployedToProduction  = big.NewInt(1 << 14)
+	listPromptVersionsResponseDataItemFieldRecommendedModels       = big.NewInt(1 << 15)
 )
 
 type ListPromptVersionsResponseDataItem struct {
@@ -1720,6 +2587,7 @@ type ListPromptVersionsResponseDataItem struct {
 	CreatedAt               time.Time                                                          `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                                                              `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                                                              `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	RecommendedModels       []*ListPromptVersionsResponseDataItemRecommendedModelsItem         `json:"recommendedModels,omitempty" url:"recommendedModels,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1831,6 +2699,13 @@ func (l *ListPromptVersionsResponseDataItem) GetIsDeployedToProduction() *bool {
 		return nil
 	}
 	return l.IsDeployedToProduction
+}
+
+func (l *ListPromptVersionsResponseDataItem) GetRecommendedModels() []*ListPromptVersionsResponseDataItemRecommendedModelsItem {
+	if l == nil {
+		return nil
+	}
+	return l.RecommendedModels
 }
 
 func (l *ListPromptVersionsResponseDataItem) GetExtraProperties() map[string]interface{} {
@@ -1949,6 +2824,13 @@ func (l *ListPromptVersionsResponseDataItem) SetIsDeployedToProduction(isDeploye
 	l.require(listPromptVersionsResponseDataItemFieldIsDeployedToProduction)
 }
 
+// SetRecommendedModels sets the RecommendedModels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItem) SetRecommendedModels(recommendedModels []*ListPromptVersionsResponseDataItemRecommendedModelsItem) {
+	l.RecommendedModels = recommendedModels
+	l.require(listPromptVersionsResponseDataItemFieldRecommendedModels)
+}
+
 func (l *ListPromptVersionsResponseDataItem) UnmarshalJSON(data []byte) error {
 	type embed ListPromptVersionsResponseDataItem
 	var unmarshaler = struct {
@@ -1985,6 +2867,229 @@ func (l *ListPromptVersionsResponseDataItem) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListPromptVersionsResponseDataItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldID           = big.NewInt(1 << 0)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldSlug         = big.NewInt(1 << 1)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldName         = big.NewInt(1 << 2)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldLogoURL      = big.NewInt(1 << 3)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldIsActive     = big.NewInt(1 << 4)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldModality     = big.NewInt(1 << 5)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldProviderID   = big.NewInt(1 << 6)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldProviderSlug = big.NewInt(1 << 7)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldProviderName = big.NewInt(1 << 8)
+	listPromptVersionsResponseDataItemRecommendedModelsItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type ListPromptVersionsResponseDataItemRecommendedModelsItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.Slug
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetName() string {
+	if l == nil {
+		return ""
+	}
+	return l.Name
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetLogoURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.LogoURL
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetIsActive() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.IsActive
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetModality() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Modality
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetProviderID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ProviderID
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetProviderSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.ProviderSlug
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetProviderName() string {
+	if l == nil {
+		return ""
+	}
+	return l.ProviderName
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetPosition() *int {
+	if l == nil {
+		return nil
+	}
+	return l.Position
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetID(id string) {
+	l.ID = id
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetSlug(slug string) {
+	l.Slug = slug
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetName(name string) {
+	l.Name = name
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetLogoURL(logoURL *string) {
+	l.LogoURL = logoURL
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetIsActive(isActive *bool) {
+	l.IsActive = isActive
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetModality(modality *string) {
+	l.Modality = modality
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetProviderID(providerID string) {
+	l.ProviderID = providerID
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetProviderSlug(providerSlug string) {
+	l.ProviderSlug = providerSlug
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetProviderName(providerName string) {
+	l.ProviderName = providerName
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) SetPosition(position *int) {
+	l.Position = position
+	l.require(listPromptVersionsResponseDataItemRecommendedModelsItemFieldPosition)
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPromptVersionsResponseDataItemRecommendedModelsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPromptVersionsResponseDataItemRecommendedModelsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) MarshalJSON() ([]byte, error) {
+	type embed ListPromptVersionsResponseDataItemRecommendedModelsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPromptVersionsResponseDataItemRecommendedModelsItem) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -2263,6 +3368,7 @@ var (
 	rollbackPromptResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
 	rollbackPromptResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
 	rollbackPromptResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
+	rollbackPromptResponseDataFieldRecommendedModels       = big.NewInt(1 << 15)
 )
 
 type RollbackPromptResponseData struct {
@@ -2281,6 +3387,7 @@ type RollbackPromptResponseData struct {
 	CreatedAt               time.Time                                                  `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                                                      `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                                                      `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	RecommendedModels       []*RollbackPromptResponseDataRecommendedModelsItem         `json:"recommendedModels,omitempty" url:"recommendedModels,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2392,6 +3499,13 @@ func (r *RollbackPromptResponseData) GetIsDeployedToProduction() *bool {
 		return nil
 	}
 	return r.IsDeployedToProduction
+}
+
+func (r *RollbackPromptResponseData) GetRecommendedModels() []*RollbackPromptResponseDataRecommendedModelsItem {
+	if r == nil {
+		return nil
+	}
+	return r.RecommendedModels
 }
 
 func (r *RollbackPromptResponseData) GetExtraProperties() map[string]interface{} {
@@ -2510,6 +3624,13 @@ func (r *RollbackPromptResponseData) SetIsDeployedToProduction(isDeployedToProdu
 	r.require(rollbackPromptResponseDataFieldIsDeployedToProduction)
 }
 
+// SetRecommendedModels sets the RecommendedModels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseData) SetRecommendedModels(recommendedModels []*RollbackPromptResponseDataRecommendedModelsItem) {
+	r.RecommendedModels = recommendedModels
+	r.require(rollbackPromptResponseDataFieldRecommendedModels)
+}
+
 func (r *RollbackPromptResponseData) UnmarshalJSON(data []byte) error {
 	type embed RollbackPromptResponseData
 	var unmarshaler = struct {
@@ -2546,6 +3667,229 @@ func (r *RollbackPromptResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RollbackPromptResponseData) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	rollbackPromptResponseDataRecommendedModelsItemFieldID           = big.NewInt(1 << 0)
+	rollbackPromptResponseDataRecommendedModelsItemFieldSlug         = big.NewInt(1 << 1)
+	rollbackPromptResponseDataRecommendedModelsItemFieldName         = big.NewInt(1 << 2)
+	rollbackPromptResponseDataRecommendedModelsItemFieldLogoURL      = big.NewInt(1 << 3)
+	rollbackPromptResponseDataRecommendedModelsItemFieldIsActive     = big.NewInt(1 << 4)
+	rollbackPromptResponseDataRecommendedModelsItemFieldModality     = big.NewInt(1 << 5)
+	rollbackPromptResponseDataRecommendedModelsItemFieldProviderID   = big.NewInt(1 << 6)
+	rollbackPromptResponseDataRecommendedModelsItemFieldProviderSlug = big.NewInt(1 << 7)
+	rollbackPromptResponseDataRecommendedModelsItemFieldProviderName = big.NewInt(1 << 8)
+	rollbackPromptResponseDataRecommendedModelsItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type RollbackPromptResponseDataRecommendedModelsItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ID
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetSlug() string {
+	if r == nil {
+		return ""
+	}
+	return r.Slug
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetName() string {
+	if r == nil {
+		return ""
+	}
+	return r.Name
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetLogoURL() *string {
+	if r == nil {
+		return nil
+	}
+	return r.LogoURL
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetIsActive() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.IsActive
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetModality() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Modality
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetProviderID() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderID
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetProviderSlug() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderSlug
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetProviderName() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderName
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetPosition() *int {
+	if r == nil {
+		return nil
+	}
+	return r.Position
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetID(id string) {
+	r.ID = id
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetSlug(slug string) {
+	r.Slug = slug
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetName(name string) {
+	r.Name = name
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetLogoURL(logoURL *string) {
+	r.LogoURL = logoURL
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetIsActive(isActive *bool) {
+	r.IsActive = isActive
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetModality(modality *string) {
+	r.Modality = modality
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetProviderID(providerID string) {
+	r.ProviderID = providerID
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetProviderSlug(providerSlug string) {
+	r.ProviderSlug = providerSlug
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetProviderName(providerName string) {
+	r.ProviderName = providerName
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RollbackPromptResponseDataRecommendedModelsItem) SetPosition(position *int) {
+	r.Position = position
+	r.require(rollbackPromptResponseDataRecommendedModelsItemFieldPosition)
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler RollbackPromptResponseDataRecommendedModelsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RollbackPromptResponseDataRecommendedModelsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) MarshalJSON() ([]byte, error) {
+	type embed RollbackPromptResponseDataRecommendedModelsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RollbackPromptResponseDataRecommendedModelsItem) String() string {
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -2633,6 +3977,308 @@ func (r *RollbackPromptResponseDataVariablesSchemaValue) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
+}
+
+// Recommended models
+var (
+	setVersionRecommendedModelsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type SetVersionRecommendedModelsResponse struct {
+	Data []*SetVersionRecommendedModelsResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetVersionRecommendedModelsResponse) GetData() []*SetVersionRecommendedModelsResponseDataItem {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SetVersionRecommendedModelsResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetVersionRecommendedModelsResponse) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponse) SetData(data []*SetVersionRecommendedModelsResponseDataItem) {
+	s.Data = data
+	s.require(setVersionRecommendedModelsResponseFieldData)
+}
+
+func (s *SetVersionRecommendedModelsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SetVersionRecommendedModelsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SetVersionRecommendedModelsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetVersionRecommendedModelsResponse) MarshalJSON() ([]byte, error) {
+	type embed SetVersionRecommendedModelsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetVersionRecommendedModelsResponse) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	setVersionRecommendedModelsResponseDataItemFieldID           = big.NewInt(1 << 0)
+	setVersionRecommendedModelsResponseDataItemFieldSlug         = big.NewInt(1 << 1)
+	setVersionRecommendedModelsResponseDataItemFieldName         = big.NewInt(1 << 2)
+	setVersionRecommendedModelsResponseDataItemFieldLogoURL      = big.NewInt(1 << 3)
+	setVersionRecommendedModelsResponseDataItemFieldIsActive     = big.NewInt(1 << 4)
+	setVersionRecommendedModelsResponseDataItemFieldModality     = big.NewInt(1 << 5)
+	setVersionRecommendedModelsResponseDataItemFieldProviderID   = big.NewInt(1 << 6)
+	setVersionRecommendedModelsResponseDataItemFieldProviderSlug = big.NewInt(1 << 7)
+	setVersionRecommendedModelsResponseDataItemFieldProviderName = big.NewInt(1 << 8)
+	setVersionRecommendedModelsResponseDataItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type SetVersionRecommendedModelsResponseDataItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetID() string {
+	if s == nil {
+		return ""
+	}
+	return s.ID
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetSlug() string {
+	if s == nil {
+		return ""
+	}
+	return s.Slug
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetName() string {
+	if s == nil {
+		return ""
+	}
+	return s.Name
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetLogoURL() *string {
+	if s == nil {
+		return nil
+	}
+	return s.LogoURL
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetIsActive() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.IsActive
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetModality() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Modality
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetProviderID() string {
+	if s == nil {
+		return ""
+	}
+	return s.ProviderID
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetProviderSlug() string {
+	if s == nil {
+		return ""
+	}
+	return s.ProviderSlug
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetProviderName() string {
+	if s == nil {
+		return ""
+	}
+	return s.ProviderName
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetPosition() *int {
+	if s == nil {
+		return nil
+	}
+	return s.Position
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetID(id string) {
+	s.ID = id
+	s.require(setVersionRecommendedModelsResponseDataItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetSlug(slug string) {
+	s.Slug = slug
+	s.require(setVersionRecommendedModelsResponseDataItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetName(name string) {
+	s.Name = name
+	s.require(setVersionRecommendedModelsResponseDataItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetLogoURL(logoURL *string) {
+	s.LogoURL = logoURL
+	s.require(setVersionRecommendedModelsResponseDataItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetIsActive(isActive *bool) {
+	s.IsActive = isActive
+	s.require(setVersionRecommendedModelsResponseDataItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetModality(modality *string) {
+	s.Modality = modality
+	s.require(setVersionRecommendedModelsResponseDataItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetProviderID(providerID string) {
+	s.ProviderID = providerID
+	s.require(setVersionRecommendedModelsResponseDataItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetProviderSlug(providerSlug string) {
+	s.ProviderSlug = providerSlug
+	s.require(setVersionRecommendedModelsResponseDataItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetProviderName(providerName string) {
+	s.ProviderName = providerName
+	s.require(setVersionRecommendedModelsResponseDataItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetVersionRecommendedModelsResponseDataItem) SetPosition(position *int) {
+	s.Position = position
+	s.require(setVersionRecommendedModelsResponseDataItemFieldPosition)
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler SetVersionRecommendedModelsResponseDataItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SetVersionRecommendedModelsResponseDataItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed SetVersionRecommendedModelsResponseDataItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetVersionRecommendedModelsResponseDataItem) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 var (
@@ -2808,6 +4454,7 @@ var (
 	updatePromptVersionResponseDataFieldCreatedAt               = big.NewInt(1 << 12)
 	updatePromptVersionResponseDataFieldIsDeployedToDevelopment = big.NewInt(1 << 13)
 	updatePromptVersionResponseDataFieldIsDeployedToProduction  = big.NewInt(1 << 14)
+	updatePromptVersionResponseDataFieldRecommendedModels       = big.NewInt(1 << 15)
 )
 
 type UpdatePromptVersionResponseData struct {
@@ -2826,6 +4473,7 @@ type UpdatePromptVersionResponseData struct {
 	CreatedAt               time.Time                                                       `json:"createdAt" url:"createdAt"`
 	IsDeployedToDevelopment *bool                                                           `json:"isDeployedToDevelopment,omitempty" url:"isDeployedToDevelopment,omitempty"`
 	IsDeployedToProduction  *bool                                                           `json:"isDeployedToProduction,omitempty" url:"isDeployedToProduction,omitempty"`
+	RecommendedModels       []*UpdatePromptVersionResponseDataRecommendedModelsItem         `json:"recommendedModels,omitempty" url:"recommendedModels,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2937,6 +4585,13 @@ func (u *UpdatePromptVersionResponseData) GetIsDeployedToProduction() *bool {
 		return nil
 	}
 	return u.IsDeployedToProduction
+}
+
+func (u *UpdatePromptVersionResponseData) GetRecommendedModels() []*UpdatePromptVersionResponseDataRecommendedModelsItem {
+	if u == nil {
+		return nil
+	}
+	return u.RecommendedModels
 }
 
 func (u *UpdatePromptVersionResponseData) GetExtraProperties() map[string]interface{} {
@@ -3055,6 +4710,13 @@ func (u *UpdatePromptVersionResponseData) SetIsDeployedToProduction(isDeployedTo
 	u.require(updatePromptVersionResponseDataFieldIsDeployedToProduction)
 }
 
+// SetRecommendedModels sets the RecommendedModels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseData) SetRecommendedModels(recommendedModels []*UpdatePromptVersionResponseDataRecommendedModelsItem) {
+	u.RecommendedModels = recommendedModels
+	u.require(updatePromptVersionResponseDataFieldRecommendedModels)
+}
+
 func (u *UpdatePromptVersionResponseData) UnmarshalJSON(data []byte) error {
 	type embed UpdatePromptVersionResponseData
 	var unmarshaler = struct {
@@ -3091,6 +4753,229 @@ func (u *UpdatePromptVersionResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdatePromptVersionResponseData) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updatePromptVersionResponseDataRecommendedModelsItemFieldID           = big.NewInt(1 << 0)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldSlug         = big.NewInt(1 << 1)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldName         = big.NewInt(1 << 2)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldLogoURL      = big.NewInt(1 << 3)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldIsActive     = big.NewInt(1 << 4)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldModality     = big.NewInt(1 << 5)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldProviderID   = big.NewInt(1 << 6)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldProviderSlug = big.NewInt(1 << 7)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldProviderName = big.NewInt(1 << 8)
+	updatePromptVersionResponseDataRecommendedModelsItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type UpdatePromptVersionResponseDataRecommendedModelsItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetID() string {
+	if u == nil {
+		return ""
+	}
+	return u.ID
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetSlug() string {
+	if u == nil {
+		return ""
+	}
+	return u.Slug
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetName() string {
+	if u == nil {
+		return ""
+	}
+	return u.Name
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetLogoURL() *string {
+	if u == nil {
+		return nil
+	}
+	return u.LogoURL
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetIsActive() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.IsActive
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetModality() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Modality
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetProviderID() string {
+	if u == nil {
+		return ""
+	}
+	return u.ProviderID
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetProviderSlug() string {
+	if u == nil {
+		return ""
+	}
+	return u.ProviderSlug
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetProviderName() string {
+	if u == nil {
+		return ""
+	}
+	return u.ProviderName
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetPosition() *int {
+	if u == nil {
+		return nil
+	}
+	return u.Position
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetID(id string) {
+	u.ID = id
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetSlug(slug string) {
+	u.Slug = slug
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetName(name string) {
+	u.Name = name
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetLogoURL(logoURL *string) {
+	u.LogoURL = logoURL
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetIsActive(isActive *bool) {
+	u.IsActive = isActive
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetModality(modality *string) {
+	u.Modality = modality
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetProviderID(providerID string) {
+	u.ProviderID = providerID
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetProviderSlug(providerSlug string) {
+	u.ProviderSlug = providerSlug
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetProviderName(providerName string) {
+	u.ProviderName = providerName
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) SetPosition(position *int) {
+	u.Position = position
+	u.require(updatePromptVersionResponseDataRecommendedModelsItemFieldPosition)
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdatePromptVersionResponseDataRecommendedModelsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdatePromptVersionResponseDataRecommendedModelsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) MarshalJSON() ([]byte, error) {
+	type embed UpdatePromptVersionResponseDataRecommendedModelsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdatePromptVersionResponseDataRecommendedModelsItem) String() string {
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value

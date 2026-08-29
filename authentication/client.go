@@ -4,7 +4,7 @@ package authentication
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Browser-facing endpoint used by the MCP server to authenticate users via the backend session. If the user has a valid session, issues a one-time auth code and redirects back to the MCP callback URL.
 func (c *Client) McpAuthorize(
 	ctx context.Context,
-	request *promptvmgosdk.McpAuthorizeRequest,
+	request *sdk.McpAuthorizeRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.McpAuthorize(
@@ -52,9 +52,9 @@ func (c *Client) McpAuthorize(
 // Merges the provided UI preferences (panel collapse state, widths, etc.) with the user's existing preferences. Cached in Redis with a 1-hour TTL using a write-through strategy so subsequent reads hit cache.
 func (c *Client) UpdateUIPreferences(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateUIPreferencesRequest,
+	request *sdk.UpdateUIPreferencesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateUIPreferencesResponse, error) {
+) (*sdk.UpdateUIPreferencesResponse, error) {
 	response, err := c.WithRawResponse.UpdateUIPreferences(
 		ctx,
 		request,

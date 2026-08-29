@@ -4,11 +4,11 @@ package apikeys
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListAPIKeys(
 	ctx context.Context,
-	request *promptvmgosdk.ListAPIKeysRequest,
+	request *sdk.ListAPIKeysRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListAPIKeysResponse], error) {
+) (*core.Response[*sdk.ListAPIKeysResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,7 +57,7 @@ func (r *RawClient) ListAPIKeys(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.ListAPIKeysResponse
+	var response *sdk.ListAPIKeysResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -69,13 +69,13 @@ func (r *RawClient) ListAPIKeys(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListAPIKeysResponse]{
+	return &core.Response[*sdk.ListAPIKeysResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -84,9 +84,9 @@ func (r *RawClient) ListAPIKeys(
 
 func (r *RawClient) CreateAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.CreateAPIKeyRequest,
+	request *sdk.CreateAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CreateAPIKeyResponse], error) {
+) (*core.Response[*sdk.CreateAPIKeyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -102,7 +102,7 @@ func (r *RawClient) CreateAPIKey(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CreateAPIKeyResponse
+	var response *sdk.CreateAPIKeyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -115,13 +115,13 @@ func (r *RawClient) CreateAPIKey(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CreateAPIKeyResponse]{
+	return &core.Response[*sdk.CreateAPIKeyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -130,9 +130,9 @@ func (r *RawClient) CreateAPIKey(
 
 func (r *RawClient) GetAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIKeyRequest,
+	request *sdk.GetAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetAPIKeyResponse], error) {
+) (*core.Response[*sdk.GetAPIKeyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -151,7 +151,7 @@ func (r *RawClient) GetAPIKey(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.GetAPIKeyResponse
+	var response *sdk.GetAPIKeyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -163,13 +163,13 @@ func (r *RawClient) GetAPIKey(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetAPIKeyResponse]{
+	return &core.Response[*sdk.GetAPIKeyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -178,9 +178,9 @@ func (r *RawClient) GetAPIKey(
 
 func (r *RawClient) RevokeAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.RevokeAPIKeyRequest,
+	request *sdk.RevokeAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.RevokeAPIKeyResponse], error) {
+) (*core.Response[*sdk.RevokeAPIKeyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -199,7 +199,7 @@ func (r *RawClient) RevokeAPIKey(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.RevokeAPIKeyResponse
+	var response *sdk.RevokeAPIKeyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -212,13 +212,13 @@ func (r *RawClient) RevokeAPIKey(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.RevokeAPIKeyResponse]{
+	return &core.Response[*sdk.RevokeAPIKeyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -227,9 +227,9 @@ func (r *RawClient) RevokeAPIKey(
 
 func (r *RawClient) UpdateAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateAPIKeyRequest,
+	request *sdk.UpdateAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateAPIKeyResponse], error) {
+) (*core.Response[*sdk.UpdateAPIKeyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -248,7 +248,7 @@ func (r *RawClient) UpdateAPIKey(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateAPIKeyResponse
+	var response *sdk.UpdateAPIKeyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -261,13 +261,13 @@ func (r *RawClient) UpdateAPIKey(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateAPIKeyResponse]{
+	return &core.Response[*sdk.UpdateAPIKeyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -276,9 +276,9 @@ func (r *RawClient) UpdateAPIKey(
 
 func (r *RawClient) GetAPIKeyUsage(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIKeyUsageRequest,
+	request *sdk.GetAPIKeyUsageRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetAPIKeyUsageResponse], error) {
+) (*core.Response[*sdk.GetAPIKeyUsageResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -304,7 +304,7 @@ func (r *RawClient) GetAPIKeyUsage(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *promptvmgosdk.GetAPIKeyUsageResponse
+	var response *sdk.GetAPIKeyUsageResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -316,13 +316,13 @@ func (r *RawClient) GetAPIKeyUsage(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetAPIKeyUsageResponse]{
+	return &core.Response[*sdk.GetAPIKeyUsageResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -331,9 +331,9 @@ func (r *RawClient) GetAPIKeyUsage(
 
 func (r *RawClient) RotateAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.RotateAPIKeyRequest,
+	request *sdk.RotateAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.RotateAPIKeyResponse], error) {
+) (*core.Response[*sdk.RotateAPIKeyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -352,7 +352,7 @@ func (r *RawClient) RotateAPIKey(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.RotateAPIKeyResponse
+	var response *sdk.RotateAPIKeyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -365,13 +365,13 @@ func (r *RawClient) RotateAPIKey(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.RotateAPIKeyResponse]{
+	return &core.Response[*sdk.RotateAPIKeyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

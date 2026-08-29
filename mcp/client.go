@@ -4,7 +4,7 @@ package mcp
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) ListMcpSessionTokens(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListMcpSessionTokensResponse, error) {
+) (*sdk.ListMcpSessionTokensResponse, error) {
 	response, err := c.WithRawResponse.ListMcpSessionTokens(
 		ctx,
 		opts...,
@@ -49,9 +49,9 @@ func (c *Client) ListMcpSessionTokens(
 // Creates a short-lived opaque session token bound to the caller. The plaintext token is returned exactly once. See contracts/session-token.md.
 func (c *Client) MintMcpSessionToken(
 	ctx context.Context,
-	request *promptvmgosdk.MintMcpSessionTokenRequest,
+	request *sdk.MintMcpSessionTokenRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.MintMcpSessionTokenResponse, error) {
+) (*sdk.MintMcpSessionTokenResponse, error) {
 	response, err := c.WithRawResponse.MintMcpSessionToken(
 		ctx,
 		request,
@@ -65,7 +65,7 @@ func (c *Client) MintMcpSessionToken(
 
 func (c *Client) RevokeMcpSessionToken(
 	ctx context.Context,
-	request *promptvmgosdk.RevokeMcpSessionTokenRequest,
+	request *sdk.RevokeMcpSessionTokenRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.RevokeMcpSessionToken(

@@ -4,7 +4,7 @@ package ai
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Rewrites the submitted prompt to follow good prompting practices. Backed by the platform-internal AI middleware; the OpenRouter API key never leaves the backend. Accepts either JWT session or org-scoped pk:sk (write scope required for the pk:sk path).
 func (c *Client) EnhancePrompt(
 	ctx context.Context,
-	request *promptvmgosdk.EnhancePromptRequest,
+	request *sdk.EnhancePromptRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.EnhancePromptResponse, error) {
+) (*sdk.EnhancePromptResponse, error) {
 	response, err := c.WithRawResponse.EnhancePrompt(
 		ctx,
 		request,

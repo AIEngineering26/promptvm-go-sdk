@@ -4,7 +4,7 @@ package templates
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ConvertPromptToTemplate(
 	ctx context.Context,
-	request *promptvmgosdk.ConvertPromptToTemplateRequest,
+	request *sdk.ConvertPromptToTemplateRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ConvertPromptToTemplateResponse, error) {
+) (*sdk.ConvertPromptToTemplateResponse, error) {
 	response, err := c.WithRawResponse.ConvertPromptToTemplate(
 		ctx,
 		request,
@@ -51,9 +51,9 @@ func (c *Client) ConvertPromptToTemplate(
 // Lists templates visible org-wide.
 func (c *Client) ListTemplates(
 	ctx context.Context,
-	request *promptvmgosdk.ListTemplatesRequest,
+	request *sdk.ListTemplatesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListTemplatesResponse, error) {
+) (*sdk.ListTemplatesResponse, error) {
 	response, err := c.WithRawResponse.ListTemplates(
 		ctx,
 		request,
@@ -67,9 +67,9 @@ func (c *Client) ListTemplates(
 
 func (c *Client) CreatePromptFromTemplate(
 	ctx context.Context,
-	request *promptvmgosdk.CreatePromptFromTemplateRequest,
+	request *sdk.CreatePromptFromTemplateRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreatePromptFromTemplateResponse, error) {
+) (*sdk.CreatePromptFromTemplateResponse, error) {
 	response, err := c.WithRawResponse.CreatePromptFromTemplate(
 		ctx,
 		request,

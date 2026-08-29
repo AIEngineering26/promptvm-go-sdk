@@ -4,11 +4,11 @@ package marketplaceresolve
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ResolveInstallRef(
 	ctx context.Context,
-	request *promptvmgosdk.ResolveInstallRefRequest,
+	request *sdk.ResolveInstallRefRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ResolveInstallRefResponse], error) {
+) (*core.Response[*sdk.ResolveInstallRefResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ResolveInstallRef(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ResolveInstallRefResponse
+	var response *sdk.ResolveInstallRefResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ResolveInstallRef(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ResolveInstallRefResponse]{
+	return &core.Response[*sdk.ResolveInstallRefResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,7 +80,7 @@ func (r *RawClient) ResolveInstallRef(
 
 func (r *RawClient) RecordResolveInstall(
 	ctx context.Context,
-	request *promptvmgosdk.RecordResolveInstallRequest,
+	request *sdk.RecordResolveInstallRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -111,7 +111,7 @@ func (r *RawClient) RecordResolveInstall(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {

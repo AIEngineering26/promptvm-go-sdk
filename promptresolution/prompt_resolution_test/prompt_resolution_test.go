@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestPromptResolutionResolvePromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ResolvePromptRequest{
+	request := &sdk.ResolvePromptRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.PromptResolution.ResolvePrompt(
@@ -99,7 +99,7 @@ func TestPromptResolutionResolvePromptPostWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ResolvePromptPostRequest{
+	request := &sdk.ResolvePromptPostRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.PromptResolution.ResolvePromptPost(
@@ -125,7 +125,7 @@ func TestPromptResolutionResolvePromptStreamWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ResolvePromptStreamRequest{
+	request := &sdk.ResolvePromptStreamRequest{
 		PromptID: "promptId",
 	}
 	invocationErr := client.PromptResolution.ResolvePromptStream(

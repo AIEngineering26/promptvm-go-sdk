@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
 
@@ -496,6 +496,7 @@ var (
 	createSkillResponseDataFieldCreatedByName          = big.NewInt(1 << 29)
 	createSkillResponseDataFieldCreatedAt              = big.NewInt(1 << 30)
 	createSkillResponseDataFieldUpdatedAt              = big.NewInt(1 << 31)
+	createSkillResponseDataFieldVersionID              = big.NewInt(1 << 32)
 )
 
 type CreateSkillResponseData struct {
@@ -531,6 +532,7 @@ type CreateSkillResponseData struct {
 	CreatedByName          *string                              `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt              *time.Time                           `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt              *time.Time                           `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	VersionID              *string                              `json:"versionId,omitempty" url:"versionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -761,6 +763,13 @@ func (c *CreateSkillResponseData) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return c.UpdatedAt
+}
+
+func (c *CreateSkillResponseData) GetVersionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.VersionID
 }
 
 func (c *CreateSkillResponseData) GetExtraProperties() map[string]interface{} {
@@ -996,6 +1005,13 @@ func (c *CreateSkillResponseData) SetCreatedAt(createdAt *time.Time) {
 func (c *CreateSkillResponseData) SetUpdatedAt(updatedAt *time.Time) {
 	c.UpdatedAt = updatedAt
 	c.require(createSkillResponseDataFieldUpdatedAt)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateSkillResponseData) SetVersionID(versionID *string) {
+	c.VersionID = versionID
+	c.require(createSkillResponseDataFieldVersionID)
 }
 
 func (c *CreateSkillResponseData) UnmarshalJSON(data []byte) error {
@@ -1856,6 +1872,7 @@ var (
 	getSkillResponseDataFieldCreatedByName          = big.NewInt(1 << 29)
 	getSkillResponseDataFieldCreatedAt              = big.NewInt(1 << 30)
 	getSkillResponseDataFieldUpdatedAt              = big.NewInt(1 << 31)
+	getSkillResponseDataFieldVersionID              = big.NewInt(1 << 32)
 )
 
 type GetSkillResponseData struct {
@@ -1891,6 +1908,7 @@ type GetSkillResponseData struct {
 	CreatedByName          *string                           `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt              *time.Time                        `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt              *time.Time                        `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	VersionID              *string                           `json:"versionId,omitempty" url:"versionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2121,6 +2139,13 @@ func (g *GetSkillResponseData) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return g.UpdatedAt
+}
+
+func (g *GetSkillResponseData) GetVersionID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.VersionID
 }
 
 func (g *GetSkillResponseData) GetExtraProperties() map[string]interface{} {
@@ -2356,6 +2381,13 @@ func (g *GetSkillResponseData) SetCreatedAt(createdAt *time.Time) {
 func (g *GetSkillResponseData) SetUpdatedAt(updatedAt *time.Time) {
 	g.UpdatedAt = updatedAt
 	g.require(getSkillResponseDataFieldUpdatedAt)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetSkillResponseData) SetVersionID(versionID *string) {
+	g.VersionID = versionID
+	g.require(getSkillResponseDataFieldVersionID)
 }
 
 func (g *GetSkillResponseData) UnmarshalJSON(data []byte) error {
@@ -3824,6 +3856,7 @@ var (
 	updateSkillResponseDataFieldCreatedByName          = big.NewInt(1 << 29)
 	updateSkillResponseDataFieldCreatedAt              = big.NewInt(1 << 30)
 	updateSkillResponseDataFieldUpdatedAt              = big.NewInt(1 << 31)
+	updateSkillResponseDataFieldVersionID              = big.NewInt(1 << 32)
 )
 
 type UpdateSkillResponseData struct {
@@ -3859,6 +3892,7 @@ type UpdateSkillResponseData struct {
 	CreatedByName          *string                              `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt              *time.Time                           `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt              *time.Time                           `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	VersionID              *string                              `json:"versionId,omitempty" url:"versionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4089,6 +4123,13 @@ func (u *UpdateSkillResponseData) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return u.UpdatedAt
+}
+
+func (u *UpdateSkillResponseData) GetVersionID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.VersionID
 }
 
 func (u *UpdateSkillResponseData) GetExtraProperties() map[string]interface{} {
@@ -4324,6 +4365,13 @@ func (u *UpdateSkillResponseData) SetCreatedAt(createdAt *time.Time) {
 func (u *UpdateSkillResponseData) SetUpdatedAt(updatedAt *time.Time) {
 	u.UpdatedAt = updatedAt
 	u.require(updateSkillResponseDataFieldUpdatedAt)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateSkillResponseData) SetVersionID(versionID *string) {
+	u.VersionID = versionID
+	u.require(updateSkillResponseDataFieldVersionID)
 }
 
 func (u *UpdateSkillResponseData) UnmarshalJSON(data []byte) error {

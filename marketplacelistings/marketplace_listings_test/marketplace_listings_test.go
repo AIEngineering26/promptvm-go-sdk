@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceListingsCreateMarketplaceListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateMarketplaceListingRequest{
+	request := &sdk.CreateMarketplaceListingRequest{
 		Title:       "title",
 		Description: "description",
 	}
@@ -100,7 +100,7 @@ func TestMarketplaceListingsArchiveMarketplaceListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ArchiveMarketplaceListingRequest{
+	request := &sdk.ArchiveMarketplaceListingRequest{
 		ListingID: "listingId",
 	}
 	invocationErr := client.MarketplaceListings.ArchiveMarketplaceListing(
@@ -126,7 +126,7 @@ func TestMarketplaceListingsUpdateMarketplaceListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateMarketplaceListingRequest{
+	request := &sdk.UpdateMarketplaceListingRequest{
 		ListingID: "listingId",
 	}
 	_, invocationErr := client.MarketplaceListings.UpdateMarketplaceListing(
@@ -152,9 +152,9 @@ func TestMarketplaceListingsInitiateListingMediaUploadWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.InitiateListingMediaUploadRequest{
+	request := &sdk.InitiateListingMediaUploadRequest{
 		ListingID:   "listingId",
-		Kind:        promptvmgosdk.InitiateListingMediaUploadRequestKindImage,
+		Kind:        sdk.InitiateListingMediaUploadRequestKindImage,
 		ContentType: "contentType",
 		SizeBytes:   1,
 	}
@@ -181,9 +181,9 @@ func TestMarketplaceListingsConfirmListingMediaUploadWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ConfirmListingMediaUploadRequest{
+	request := &sdk.ConfirmListingMediaUploadRequest{
 		ListingID: "listingId",
-		Kind:      promptvmgosdk.ConfirmListingMediaUploadRequestKindImage,
+		Kind:      sdk.ConfirmListingMediaUploadRequestKindImage,
 		Key:       "key",
 	}
 	_, invocationErr := client.MarketplaceListings.ConfirmListingMediaUpload(
@@ -209,9 +209,9 @@ func TestMarketplaceListingsDeleteListingMediaWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteListingMediaRequest{
+	request := &sdk.DeleteListingMediaRequest{
 		ListingID: "listingId",
-		Kind:      promptvmgosdk.DeleteListingMediaRequestKindImage.Ptr(),
+		Kind:      sdk.DeleteListingMediaRequestKindImage.Ptr(),
 	}
 	invocationErr := client.MarketplaceListings.DeleteListingMedia(
 		context.TODO(),
@@ -236,7 +236,7 @@ func TestMarketplaceListingsClaimMarketplaceListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ClaimMarketplaceListingRequest{
+	request := &sdk.ClaimMarketplaceListingRequest{
 		ListingID:   "listingId",
 		WorkspaceID: "workspaceId",
 	}

@@ -5,10 +5,238 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
+
+var (
+	adminCreateAiModelRequestFieldProviderID  = big.NewInt(1 << 0)
+	adminCreateAiModelRequestFieldSlug        = big.NewInt(1 << 1)
+	adminCreateAiModelRequestFieldName        = big.NewInt(1 << 2)
+	adminCreateAiModelRequestFieldLogoURL     = big.NewInt(1 << 3)
+	adminCreateAiModelRequestFieldDescription = big.NewInt(1 << 4)
+	adminCreateAiModelRequestFieldModality    = big.NewInt(1 << 5)
+	adminCreateAiModelRequestFieldSortOrder   = big.NewInt(1 << 6)
+	adminCreateAiModelRequestFieldIsActive    = big.NewInt(1 << 7)
+)
+
+type AdminCreateAiModelRequest struct {
+	ProviderID  string                             `json:"providerId" url:"-"`
+	Slug        string                             `json:"slug" url:"-"`
+	Name        string                             `json:"name" url:"-"`
+	LogoURL     *string                            `json:"logoUrl,omitempty" url:"-"`
+	Description *string                            `json:"description,omitempty" url:"-"`
+	Modality    *AdminCreateAiModelRequestModality `json:"modality,omitempty" url:"-"`
+	SortOrder   *int                               `json:"sortOrder,omitempty" url:"-"`
+	IsActive    *bool                              `json:"isActive,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminCreateAiModelRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetProviderID(providerID string) {
+	a.ProviderID = providerID
+	a.require(adminCreateAiModelRequestFieldProviderID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminCreateAiModelRequestFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetName(name string) {
+	a.Name = name
+	a.require(adminCreateAiModelRequestFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetLogoURL(logoURL *string) {
+	a.LogoURL = logoURL
+	a.require(adminCreateAiModelRequestFieldLogoURL)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetDescription(description *string) {
+	a.Description = description
+	a.require(adminCreateAiModelRequestFieldDescription)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetModality(modality *AdminCreateAiModelRequestModality) {
+	a.Modality = modality
+	a.require(adminCreateAiModelRequestFieldModality)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetSortOrder(sortOrder *int) {
+	a.SortOrder = sortOrder
+	a.require(adminCreateAiModelRequestFieldSortOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelRequest) SetIsActive(isActive *bool) {
+	a.IsActive = isActive
+	a.require(adminCreateAiModelRequestFieldIsActive)
+}
+
+var (
+	adminCreateAiModelProviderRequestFieldSlug       = big.NewInt(1 << 0)
+	adminCreateAiModelProviderRequestFieldName       = big.NewInt(1 << 1)
+	adminCreateAiModelProviderRequestFieldLogoURL    = big.NewInt(1 << 2)
+	adminCreateAiModelProviderRequestFieldWebsiteURL = big.NewInt(1 << 3)
+	adminCreateAiModelProviderRequestFieldSortOrder  = big.NewInt(1 << 4)
+	adminCreateAiModelProviderRequestFieldIsActive   = big.NewInt(1 << 5)
+)
+
+type AdminCreateAiModelProviderRequest struct {
+	Slug       string  `json:"slug" url:"-"`
+	Name       string  `json:"name" url:"-"`
+	LogoURL    *string `json:"logoUrl,omitempty" url:"-"`
+	WebsiteURL *string `json:"websiteUrl,omitempty" url:"-"`
+	SortOrder  *int    `json:"sortOrder,omitempty" url:"-"`
+	IsActive   *bool   `json:"isActive,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminCreateAiModelProviderRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelProviderRequest) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminCreateAiModelProviderRequestFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelProviderRequest) SetName(name string) {
+	a.Name = name
+	a.require(adminCreateAiModelProviderRequestFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelProviderRequest) SetLogoURL(logoURL *string) {
+	a.LogoURL = logoURL
+	a.require(adminCreateAiModelProviderRequestFieldLogoURL)
+}
+
+// SetWebsiteURL sets the WebsiteURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelProviderRequest) SetWebsiteURL(websiteURL *string) {
+	a.WebsiteURL = websiteURL
+	a.require(adminCreateAiModelProviderRequestFieldWebsiteURL)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelProviderRequest) SetSortOrder(sortOrder *int) {
+	a.SortOrder = sortOrder
+	a.require(adminCreateAiModelProviderRequestFieldSortOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelProviderRequest) SetIsActive(isActive *bool) {
+	a.IsActive = isActive
+	a.require(adminCreateAiModelProviderRequestFieldIsActive)
+}
+
+var (
+	adminCreateCategoryRequestFieldName         = big.NewInt(1 << 0)
+	adminCreateCategoryRequestFieldSlug         = big.NewInt(1 << 1)
+	adminCreateCategoryRequestFieldParentID     = big.NewInt(1 << 2)
+	adminCreateCategoryRequestFieldIcon         = big.NewInt(1 << 3)
+	adminCreateCategoryRequestFieldDisplayOrder = big.NewInt(1 << 4)
+	adminCreateCategoryRequestFieldIsActive     = big.NewInt(1 << 5)
+)
+
+type AdminCreateCategoryRequest struct {
+	Name         string  `json:"name" url:"-"`
+	Slug         string  `json:"slug" url:"-"`
+	ParentID     *string `json:"parentId,omitempty" url:"-"`
+	Icon         *string `json:"icon,omitempty" url:"-"`
+	DisplayOrder *int    `json:"displayOrder,omitempty" url:"-"`
+	IsActive     *bool   `json:"isActive,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminCreateCategoryRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryRequest) SetName(name string) {
+	a.Name = name
+	a.require(adminCreateCategoryRequestFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryRequest) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminCreateCategoryRequestFieldSlug)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryRequest) SetParentID(parentID *string) {
+	a.ParentID = parentID
+	a.require(adminCreateCategoryRequestFieldParentID)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryRequest) SetIcon(icon *string) {
+	a.Icon = icon
+	a.require(adminCreateCategoryRequestFieldIcon)
+}
+
+// SetDisplayOrder sets the DisplayOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryRequest) SetDisplayOrder(displayOrder *int) {
+	a.DisplayOrder = displayOrder
+	a.require(adminCreateCategoryRequestFieldDisplayOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryRequest) SetIsActive(isActive *bool) {
+	a.IsActive = isActive
+	a.require(adminCreateCategoryRequestFieldIsActive)
+}
 
 var (
 	adminCreateContentTypeRequestFieldSlug                = big.NewInt(1 << 0)
@@ -127,6 +355,81 @@ func (a *AdminCreateContentTypeRequest) SetSettingsSchema(settingsSchema map[str
 }
 
 var (
+	adminDeleteAiModelRequestFieldID = big.NewInt(1 << 0)
+)
+
+type AdminDeleteAiModelRequest struct {
+	ID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminDeleteAiModelRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminDeleteAiModelRequest) SetID(id string) {
+	a.ID = id
+	a.require(adminDeleteAiModelRequestFieldID)
+}
+
+var (
+	adminDeleteAiModelProviderRequestFieldSlug = big.NewInt(1 << 0)
+)
+
+type AdminDeleteAiModelProviderRequest struct {
+	Slug string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminDeleteAiModelProviderRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminDeleteAiModelProviderRequest) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminDeleteAiModelProviderRequestFieldSlug)
+}
+
+var (
+	adminDeleteCategoryRequestFieldID = big.NewInt(1 << 0)
+)
+
+type AdminDeleteCategoryRequest struct {
+	ID string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminDeleteCategoryRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminDeleteCategoryRequest) SetID(id string) {
+	a.ID = id
+	a.require(adminDeleteCategoryRequestFieldID)
+}
+
+var (
 	adminDeleteContentTypeRequestFieldSlug = big.NewInt(1 << 0)
 )
 
@@ -152,6 +455,106 @@ func (a *AdminDeleteContentTypeRequest) SetSlug(slug string) {
 }
 
 var (
+	adminListAiModelsRequestFieldProviderID = big.NewInt(1 << 0)
+)
+
+type AdminListAiModelsRequest struct {
+	ProviderID *string `json:"-" url:"providerId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminListAiModelsRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListAiModelsRequest) SetProviderID(providerID *string) {
+	a.ProviderID = providerID
+	a.require(adminListAiModelsRequestFieldProviderID)
+}
+
+var (
+	adminReorderAiModelProvidersRequestFieldItems = big.NewInt(1 << 0)
+)
+
+type AdminReorderAiModelProvidersRequest struct {
+	Items []*AdminReorderAiModelProvidersRequestItemsItem `json:"items" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminReorderAiModelProvidersRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelProvidersRequest) SetItems(items []*AdminReorderAiModelProvidersRequestItemsItem) {
+	a.Items = items
+	a.require(adminReorderAiModelProvidersRequestFieldItems)
+}
+
+var (
+	adminReorderAiModelsRequestFieldItems = big.NewInt(1 << 0)
+)
+
+type AdminReorderAiModelsRequest struct {
+	Items []*AdminReorderAiModelsRequestItemsItem `json:"items" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminReorderAiModelsRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelsRequest) SetItems(items []*AdminReorderAiModelsRequestItemsItem) {
+	a.Items = items
+	a.require(adminReorderAiModelsRequestFieldItems)
+}
+
+var (
+	adminReorderCategoriesRequestFieldItems = big.NewInt(1 << 0)
+)
+
+type AdminReorderCategoriesRequest struct {
+	Items []*AdminReorderCategoriesRequestItemsItem `json:"items" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminReorderCategoriesRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesRequest) SetItems(items []*AdminReorderCategoriesRequestItemsItem) {
+	a.Items = items
+	a.require(adminReorderCategoriesRequestFieldItems)
+}
+
+var (
 	adminReorderContentTypesRequestFieldItems = big.NewInt(1 << 0)
 )
 
@@ -174,6 +577,234 @@ func (a *AdminReorderContentTypesRequest) require(field *big.Int) {
 func (a *AdminReorderContentTypesRequest) SetItems(items []*AdminReorderContentTypesRequestItemsItem) {
 	a.Items = items
 	a.require(adminReorderContentTypesRequestFieldItems)
+}
+
+var (
+	adminUpdateAiModelRequestFieldID          = big.NewInt(1 << 0)
+	adminUpdateAiModelRequestFieldProviderID  = big.NewInt(1 << 1)
+	adminUpdateAiModelRequestFieldName        = big.NewInt(1 << 2)
+	adminUpdateAiModelRequestFieldLogoURL     = big.NewInt(1 << 3)
+	adminUpdateAiModelRequestFieldDescription = big.NewInt(1 << 4)
+	adminUpdateAiModelRequestFieldModality    = big.NewInt(1 << 5)
+	adminUpdateAiModelRequestFieldSortOrder   = big.NewInt(1 << 6)
+	adminUpdateAiModelRequestFieldIsActive    = big.NewInt(1 << 7)
+)
+
+type AdminUpdateAiModelRequest struct {
+	ID          string                             `json:"-" url:"-"`
+	ProviderID  *string                            `json:"providerId,omitempty" url:"-"`
+	Name        *string                            `json:"name,omitempty" url:"-"`
+	LogoURL     *string                            `json:"logoUrl,omitempty" url:"-"`
+	Description *string                            `json:"description,omitempty" url:"-"`
+	Modality    *AdminUpdateAiModelRequestModality `json:"modality,omitempty" url:"-"`
+	SortOrder   *int                               `json:"sortOrder,omitempty" url:"-"`
+	IsActive    *bool                              `json:"isActive,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminUpdateAiModelRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetID(id string) {
+	a.ID = id
+	a.require(adminUpdateAiModelRequestFieldID)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetProviderID(providerID *string) {
+	a.ProviderID = providerID
+	a.require(adminUpdateAiModelRequestFieldProviderID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetName(name *string) {
+	a.Name = name
+	a.require(adminUpdateAiModelRequestFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetLogoURL(logoURL *string) {
+	a.LogoURL = logoURL
+	a.require(adminUpdateAiModelRequestFieldLogoURL)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetDescription(description *string) {
+	a.Description = description
+	a.require(adminUpdateAiModelRequestFieldDescription)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetModality(modality *AdminUpdateAiModelRequestModality) {
+	a.Modality = modality
+	a.require(adminUpdateAiModelRequestFieldModality)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetSortOrder(sortOrder *int) {
+	a.SortOrder = sortOrder
+	a.require(adminUpdateAiModelRequestFieldSortOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelRequest) SetIsActive(isActive *bool) {
+	a.IsActive = isActive
+	a.require(adminUpdateAiModelRequestFieldIsActive)
+}
+
+var (
+	adminUpdateAiModelProviderRequestFieldSlug       = big.NewInt(1 << 0)
+	adminUpdateAiModelProviderRequestFieldName       = big.NewInt(1 << 1)
+	adminUpdateAiModelProviderRequestFieldLogoURL    = big.NewInt(1 << 2)
+	adminUpdateAiModelProviderRequestFieldWebsiteURL = big.NewInt(1 << 3)
+	adminUpdateAiModelProviderRequestFieldSortOrder  = big.NewInt(1 << 4)
+	adminUpdateAiModelProviderRequestFieldIsActive   = big.NewInt(1 << 5)
+)
+
+type AdminUpdateAiModelProviderRequest struct {
+	Slug       string  `json:"-" url:"-"`
+	Name       *string `json:"name,omitempty" url:"-"`
+	LogoURL    *string `json:"logoUrl,omitempty" url:"-"`
+	WebsiteURL *string `json:"websiteUrl,omitempty" url:"-"`
+	SortOrder  *int    `json:"sortOrder,omitempty" url:"-"`
+	IsActive   *bool   `json:"isActive,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminUpdateAiModelProviderRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelProviderRequest) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminUpdateAiModelProviderRequestFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelProviderRequest) SetName(name *string) {
+	a.Name = name
+	a.require(adminUpdateAiModelProviderRequestFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelProviderRequest) SetLogoURL(logoURL *string) {
+	a.LogoURL = logoURL
+	a.require(adminUpdateAiModelProviderRequestFieldLogoURL)
+}
+
+// SetWebsiteURL sets the WebsiteURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelProviderRequest) SetWebsiteURL(websiteURL *string) {
+	a.WebsiteURL = websiteURL
+	a.require(adminUpdateAiModelProviderRequestFieldWebsiteURL)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelProviderRequest) SetSortOrder(sortOrder *int) {
+	a.SortOrder = sortOrder
+	a.require(adminUpdateAiModelProviderRequestFieldSortOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelProviderRequest) SetIsActive(isActive *bool) {
+	a.IsActive = isActive
+	a.require(adminUpdateAiModelProviderRequestFieldIsActive)
+}
+
+var (
+	adminUpdateCategoryRequestFieldID           = big.NewInt(1 << 0)
+	adminUpdateCategoryRequestFieldName         = big.NewInt(1 << 1)
+	adminUpdateCategoryRequestFieldParentID     = big.NewInt(1 << 2)
+	adminUpdateCategoryRequestFieldIcon         = big.NewInt(1 << 3)
+	adminUpdateCategoryRequestFieldDisplayOrder = big.NewInt(1 << 4)
+	adminUpdateCategoryRequestFieldIsActive     = big.NewInt(1 << 5)
+)
+
+type AdminUpdateCategoryRequest struct {
+	ID           string  `json:"-" url:"-"`
+	Name         *string `json:"name,omitempty" url:"-"`
+	ParentID     *string `json:"parentId,omitempty" url:"-"`
+	Icon         *string `json:"icon,omitempty" url:"-"`
+	DisplayOrder *int    `json:"displayOrder,omitempty" url:"-"`
+	IsActive     *bool   `json:"isActive,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AdminUpdateCategoryRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryRequest) SetID(id string) {
+	a.ID = id
+	a.require(adminUpdateCategoryRequestFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryRequest) SetName(name *string) {
+	a.Name = name
+	a.require(adminUpdateCategoryRequestFieldName)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryRequest) SetParentID(parentID *string) {
+	a.ParentID = parentID
+	a.require(adminUpdateCategoryRequestFieldParentID)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryRequest) SetIcon(icon *string) {
+	a.Icon = icon
+	a.require(adminUpdateCategoryRequestFieldIcon)
+}
+
+// SetDisplayOrder sets the DisplayOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryRequest) SetDisplayOrder(displayOrder *int) {
+	a.DisplayOrder = displayOrder
+	a.require(adminUpdateCategoryRequestFieldDisplayOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryRequest) SetIsActive(isActive *bool) {
+	a.IsActive = isActive
+	a.require(adminUpdateCategoryRequestFieldIsActive)
 }
 
 var (
@@ -289,6 +920,479 @@ func (a *AdminUpdateContentTypeRequest) SetDescriptionOneLiner(descriptionOneLin
 func (a *AdminUpdateContentTypeRequest) SetSettingsSchema(settingsSchema map[string]interface{}) {
 	a.SettingsSchema = settingsSchema
 	a.require(adminUpdateContentTypeRequestFieldSettingsSchema)
+}
+
+var (
+	setListingRecommendedModelsRequestFieldListingID = big.NewInt(1 << 0)
+	setListingRecommendedModelsRequestFieldModelIDs  = big.NewInt(1 << 1)
+)
+
+type SetListingRecommendedModelsRequest struct {
+	ListingID string   `json:"-" url:"-"`
+	ModelIDs  []string `json:"modelIds" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SetListingRecommendedModelsRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetListingID sets the ListingID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsRequest) SetListingID(listingID string) {
+	s.ListingID = listingID
+	s.require(setListingRecommendedModelsRequestFieldListingID)
+}
+
+// SetModelIDs sets the ModelIDs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsRequest) SetModelIDs(modelIDs []string) {
+	s.ModelIDs = modelIDs
+	s.require(setListingRecommendedModelsRequestFieldModelIDs)
+}
+
+// Created
+var (
+	adminCreateAiModelProviderResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminCreateAiModelProviderResponse struct {
+	Data *AiModelProvider `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminCreateAiModelProviderResponse) GetData() *AiModelProvider {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminCreateAiModelProviderResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminCreateAiModelProviderResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelProviderResponse) SetData(data *AiModelProvider) {
+	a.Data = data
+	a.require(adminCreateAiModelProviderResponseFieldData)
+}
+
+func (a *AdminCreateAiModelProviderResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminCreateAiModelProviderResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminCreateAiModelProviderResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminCreateAiModelProviderResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminCreateAiModelProviderResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminCreateAiModelProviderResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AdminCreateAiModelRequestModality string
+
+const (
+	AdminCreateAiModelRequestModalityText  AdminCreateAiModelRequestModality = "text"
+	AdminCreateAiModelRequestModalityImage AdminCreateAiModelRequestModality = "image"
+	AdminCreateAiModelRequestModalityVideo AdminCreateAiModelRequestModality = "video"
+	AdminCreateAiModelRequestModalityAudio AdminCreateAiModelRequestModality = "audio"
+)
+
+func NewAdminCreateAiModelRequestModalityFromString(s string) (AdminCreateAiModelRequestModality, error) {
+	switch s {
+	case "text":
+		return AdminCreateAiModelRequestModalityText, nil
+	case "image":
+		return AdminCreateAiModelRequestModalityImage, nil
+	case "video":
+		return AdminCreateAiModelRequestModalityVideo, nil
+	case "audio":
+		return AdminCreateAiModelRequestModalityAudio, nil
+	}
+	var t AdminCreateAiModelRequestModality
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AdminCreateAiModelRequestModality) Ptr() *AdminCreateAiModelRequestModality {
+	return &a
+}
+
+// Created
+var (
+	adminCreateAiModelResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminCreateAiModelResponse struct {
+	Data *AiModel `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminCreateAiModelResponse) GetData() *AiModel {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminCreateAiModelResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminCreateAiModelResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateAiModelResponse) SetData(data *AiModel) {
+	a.Data = data
+	a.require(adminCreateAiModelResponseFieldData)
+}
+
+func (a *AdminCreateAiModelResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminCreateAiModelResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminCreateAiModelResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminCreateAiModelResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminCreateAiModelResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminCreateAiModelResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Created
+var (
+	adminCreateCategoryResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminCreateCategoryResponse struct {
+	Data *AdminCreateCategoryResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminCreateCategoryResponse) GetData() *AdminCreateCategoryResponseData {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminCreateCategoryResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminCreateCategoryResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponse) SetData(data *AdminCreateCategoryResponseData) {
+	a.Data = data
+	a.require(adminCreateCategoryResponseFieldData)
+}
+
+func (a *AdminCreateCategoryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminCreateCategoryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminCreateCategoryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminCreateCategoryResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminCreateCategoryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminCreateCategoryResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	adminCreateCategoryResponseDataFieldID           = big.NewInt(1 << 0)
+	adminCreateCategoryResponseDataFieldName         = big.NewInt(1 << 1)
+	adminCreateCategoryResponseDataFieldSlug         = big.NewInt(1 << 2)
+	adminCreateCategoryResponseDataFieldParentID     = big.NewInt(1 << 3)
+	adminCreateCategoryResponseDataFieldIcon         = big.NewInt(1 << 4)
+	adminCreateCategoryResponseDataFieldDisplayOrder = big.NewInt(1 << 5)
+	adminCreateCategoryResponseDataFieldIsActive     = big.NewInt(1 << 6)
+)
+
+type AdminCreateCategoryResponseData struct {
+	ID           string  `json:"id" url:"id"`
+	Name         string  `json:"name" url:"name"`
+	Slug         string  `json:"slug" url:"slug"`
+	ParentID     *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	Icon         *string `json:"icon,omitempty" url:"icon,omitempty"`
+	DisplayOrder int     `json:"displayOrder" url:"displayOrder"`
+	IsActive     bool    `json:"isActive" url:"isActive"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminCreateCategoryResponseData) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AdminCreateCategoryResponseData) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AdminCreateCategoryResponseData) GetSlug() string {
+	if a == nil {
+		return ""
+	}
+	return a.Slug
+}
+
+func (a *AdminCreateCategoryResponseData) GetParentID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ParentID
+}
+
+func (a *AdminCreateCategoryResponseData) GetIcon() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Icon
+}
+
+func (a *AdminCreateCategoryResponseData) GetDisplayOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.DisplayOrder
+}
+
+func (a *AdminCreateCategoryResponseData) GetIsActive() bool {
+	if a == nil {
+		return false
+	}
+	return a.IsActive
+}
+
+func (a *AdminCreateCategoryResponseData) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminCreateCategoryResponseData) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponseData) SetID(id string) {
+	a.ID = id
+	a.require(adminCreateCategoryResponseDataFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponseData) SetName(name string) {
+	a.Name = name
+	a.require(adminCreateCategoryResponseDataFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponseData) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminCreateCategoryResponseDataFieldSlug)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponseData) SetParentID(parentID *string) {
+	a.ParentID = parentID
+	a.require(adminCreateCategoryResponseDataFieldParentID)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponseData) SetIcon(icon *string) {
+	a.Icon = icon
+	a.require(adminCreateCategoryResponseDataFieldIcon)
+}
+
+// SetDisplayOrder sets the DisplayOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponseData) SetDisplayOrder(displayOrder int) {
+	a.DisplayOrder = displayOrder
+	a.require(adminCreateCategoryResponseDataFieldDisplayOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminCreateCategoryResponseData) SetIsActive(isActive bool) {
+	a.IsActive = isActive
+	a.require(adminCreateCategoryResponseDataFieldIsActive)
+}
+
+func (a *AdminCreateCategoryResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminCreateCategoryResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminCreateCategoryResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminCreateCategoryResponseData) MarshalJSON() ([]byte, error) {
+	type embed AdminCreateCategoryResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminCreateCategoryResponseData) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
 }
 
 // Created
@@ -652,6 +1756,417 @@ func (a *AdminCreateContentTypeResponseData) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// Providers
+var (
+	adminListAiModelProvidersResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminListAiModelProvidersResponse struct {
+	Data []*AiModelProvider `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminListAiModelProvidersResponse) GetData() []*AiModelProvider {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminListAiModelProvidersResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminListAiModelProvidersResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListAiModelProvidersResponse) SetData(data []*AiModelProvider) {
+	a.Data = data
+	a.require(adminListAiModelProvidersResponseFieldData)
+}
+
+func (a *AdminListAiModelProvidersResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminListAiModelProvidersResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminListAiModelProvidersResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminListAiModelProvidersResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminListAiModelProvidersResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminListAiModelProvidersResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Models
+var (
+	adminListAiModelsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminListAiModelsResponse struct {
+	Data []*AiModel `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminListAiModelsResponse) GetData() []*AiModel {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminListAiModelsResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminListAiModelsResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListAiModelsResponse) SetData(data []*AiModel) {
+	a.Data = data
+	a.require(adminListAiModelsResponseFieldData)
+}
+
+func (a *AdminListAiModelsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminListAiModelsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminListAiModelsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminListAiModelsResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminListAiModelsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminListAiModelsResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Categories
+var (
+	adminListCategoriesResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminListCategoriesResponse struct {
+	Data []*AdminListCategoriesResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminListCategoriesResponse) GetData() []*AdminListCategoriesResponseDataItem {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminListCategoriesResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminListCategoriesResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponse) SetData(data []*AdminListCategoriesResponseDataItem) {
+	a.Data = data
+	a.require(adminListCategoriesResponseFieldData)
+}
+
+func (a *AdminListCategoriesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminListCategoriesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminListCategoriesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminListCategoriesResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminListCategoriesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminListCategoriesResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	adminListCategoriesResponseDataItemFieldID           = big.NewInt(1 << 0)
+	adminListCategoriesResponseDataItemFieldName         = big.NewInt(1 << 1)
+	adminListCategoriesResponseDataItemFieldSlug         = big.NewInt(1 << 2)
+	adminListCategoriesResponseDataItemFieldParentID     = big.NewInt(1 << 3)
+	adminListCategoriesResponseDataItemFieldIcon         = big.NewInt(1 << 4)
+	adminListCategoriesResponseDataItemFieldDisplayOrder = big.NewInt(1 << 5)
+	adminListCategoriesResponseDataItemFieldIsActive     = big.NewInt(1 << 6)
+)
+
+type AdminListCategoriesResponseDataItem struct {
+	ID           string  `json:"id" url:"id"`
+	Name         string  `json:"name" url:"name"`
+	Slug         string  `json:"slug" url:"slug"`
+	ParentID     *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	Icon         *string `json:"icon,omitempty" url:"icon,omitempty"`
+	DisplayOrder int     `json:"displayOrder" url:"displayOrder"`
+	IsActive     bool    `json:"isActive" url:"isActive"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetSlug() string {
+	if a == nil {
+		return ""
+	}
+	return a.Slug
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetParentID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ParentID
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetIcon() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Icon
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetDisplayOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.DisplayOrder
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetIsActive() bool {
+	if a == nil {
+		return false
+	}
+	return a.IsActive
+}
+
+func (a *AdminListCategoriesResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminListCategoriesResponseDataItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponseDataItem) SetID(id string) {
+	a.ID = id
+	a.require(adminListCategoriesResponseDataItemFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponseDataItem) SetName(name string) {
+	a.Name = name
+	a.require(adminListCategoriesResponseDataItemFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponseDataItem) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminListCategoriesResponseDataItemFieldSlug)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponseDataItem) SetParentID(parentID *string) {
+	a.ParentID = parentID
+	a.require(adminListCategoriesResponseDataItemFieldParentID)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponseDataItem) SetIcon(icon *string) {
+	a.Icon = icon
+	a.require(adminListCategoriesResponseDataItemFieldIcon)
+}
+
+// SetDisplayOrder sets the DisplayOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponseDataItem) SetDisplayOrder(displayOrder int) {
+	a.DisplayOrder = displayOrder
+	a.require(adminListCategoriesResponseDataItemFieldDisplayOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminListCategoriesResponseDataItem) SetIsActive(isActive bool) {
+	a.IsActive = isActive
+	a.require(adminListCategoriesResponseDataItemFieldIsActive)
+}
+
+func (a *AdminListCategoriesResponseDataItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminListCategoriesResponseDataItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminListCategoriesResponseDataItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminListCategoriesResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed AdminListCategoriesResponseDataItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminListCategoriesResponseDataItem) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 // Content types
 var (
 	adminListContentTypesResponseFieldData = big.NewInt(1 << 0)
@@ -1002,6 +2517,699 @@ func (a *AdminListContentTypesResponseDataItem) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AdminListContentTypesResponseDataItem) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	adminReorderAiModelProvidersRequestItemsItemFieldID        = big.NewInt(1 << 0)
+	adminReorderAiModelProvidersRequestItemsItemFieldSortOrder = big.NewInt(1 << 1)
+)
+
+type AdminReorderAiModelProvidersRequestItemsItem struct {
+	ID        string `json:"id" url:"id"`
+	SortOrder int    `json:"sortOrder" url:"sortOrder"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminReorderAiModelProvidersRequestItemsItem) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AdminReorderAiModelProvidersRequestItemsItem) GetSortOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.SortOrder
+}
+
+func (a *AdminReorderAiModelProvidersRequestItemsItem) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminReorderAiModelProvidersRequestItemsItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelProvidersRequestItemsItem) SetID(id string) {
+	a.ID = id
+	a.require(adminReorderAiModelProvidersRequestItemsItemFieldID)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelProvidersRequestItemsItem) SetSortOrder(sortOrder int) {
+	a.SortOrder = sortOrder
+	a.require(adminReorderAiModelProvidersRequestItemsItemFieldSortOrder)
+}
+
+func (a *AdminReorderAiModelProvidersRequestItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminReorderAiModelProvidersRequestItemsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminReorderAiModelProvidersRequestItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminReorderAiModelProvidersRequestItemsItem) MarshalJSON() ([]byte, error) {
+	type embed AdminReorderAiModelProvidersRequestItemsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminReorderAiModelProvidersRequestItemsItem) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Providers
+var (
+	adminReorderAiModelProvidersResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminReorderAiModelProvidersResponse struct {
+	Data []*AiModelProvider `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminReorderAiModelProvidersResponse) GetData() []*AiModelProvider {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminReorderAiModelProvidersResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminReorderAiModelProvidersResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelProvidersResponse) SetData(data []*AiModelProvider) {
+	a.Data = data
+	a.require(adminReorderAiModelProvidersResponseFieldData)
+}
+
+func (a *AdminReorderAiModelProvidersResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminReorderAiModelProvidersResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminReorderAiModelProvidersResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminReorderAiModelProvidersResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminReorderAiModelProvidersResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminReorderAiModelProvidersResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	adminReorderAiModelsRequestItemsItemFieldID        = big.NewInt(1 << 0)
+	adminReorderAiModelsRequestItemsItemFieldSortOrder = big.NewInt(1 << 1)
+)
+
+type AdminReorderAiModelsRequestItemsItem struct {
+	ID        string `json:"id" url:"id"`
+	SortOrder int    `json:"sortOrder" url:"sortOrder"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminReorderAiModelsRequestItemsItem) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AdminReorderAiModelsRequestItemsItem) GetSortOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.SortOrder
+}
+
+func (a *AdminReorderAiModelsRequestItemsItem) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminReorderAiModelsRequestItemsItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelsRequestItemsItem) SetID(id string) {
+	a.ID = id
+	a.require(adminReorderAiModelsRequestItemsItemFieldID)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelsRequestItemsItem) SetSortOrder(sortOrder int) {
+	a.SortOrder = sortOrder
+	a.require(adminReorderAiModelsRequestItemsItemFieldSortOrder)
+}
+
+func (a *AdminReorderAiModelsRequestItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminReorderAiModelsRequestItemsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminReorderAiModelsRequestItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminReorderAiModelsRequestItemsItem) MarshalJSON() ([]byte, error) {
+	type embed AdminReorderAiModelsRequestItemsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminReorderAiModelsRequestItemsItem) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Models
+var (
+	adminReorderAiModelsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminReorderAiModelsResponse struct {
+	Data []*AiModel `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminReorderAiModelsResponse) GetData() []*AiModel {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminReorderAiModelsResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminReorderAiModelsResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderAiModelsResponse) SetData(data []*AiModel) {
+	a.Data = data
+	a.require(adminReorderAiModelsResponseFieldData)
+}
+
+func (a *AdminReorderAiModelsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminReorderAiModelsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminReorderAiModelsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminReorderAiModelsResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminReorderAiModelsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminReorderAiModelsResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	adminReorderCategoriesRequestItemsItemFieldID           = big.NewInt(1 << 0)
+	adminReorderCategoriesRequestItemsItemFieldDisplayOrder = big.NewInt(1 << 1)
+)
+
+type AdminReorderCategoriesRequestItemsItem struct {
+	ID           string `json:"id" url:"id"`
+	DisplayOrder int    `json:"displayOrder" url:"displayOrder"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminReorderCategoriesRequestItemsItem) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AdminReorderCategoriesRequestItemsItem) GetDisplayOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.DisplayOrder
+}
+
+func (a *AdminReorderCategoriesRequestItemsItem) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminReorderCategoriesRequestItemsItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesRequestItemsItem) SetID(id string) {
+	a.ID = id
+	a.require(adminReorderCategoriesRequestItemsItemFieldID)
+}
+
+// SetDisplayOrder sets the DisplayOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesRequestItemsItem) SetDisplayOrder(displayOrder int) {
+	a.DisplayOrder = displayOrder
+	a.require(adminReorderCategoriesRequestItemsItemFieldDisplayOrder)
+}
+
+func (a *AdminReorderCategoriesRequestItemsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminReorderCategoriesRequestItemsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminReorderCategoriesRequestItemsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminReorderCategoriesRequestItemsItem) MarshalJSON() ([]byte, error) {
+	type embed AdminReorderCategoriesRequestItemsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminReorderCategoriesRequestItemsItem) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Categories
+var (
+	adminReorderCategoriesResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminReorderCategoriesResponse struct {
+	Data []*AdminReorderCategoriesResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminReorderCategoriesResponse) GetData() []*AdminReorderCategoriesResponseDataItem {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminReorderCategoriesResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminReorderCategoriesResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponse) SetData(data []*AdminReorderCategoriesResponseDataItem) {
+	a.Data = data
+	a.require(adminReorderCategoriesResponseFieldData)
+}
+
+func (a *AdminReorderCategoriesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminReorderCategoriesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminReorderCategoriesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminReorderCategoriesResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminReorderCategoriesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminReorderCategoriesResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	adminReorderCategoriesResponseDataItemFieldID           = big.NewInt(1 << 0)
+	adminReorderCategoriesResponseDataItemFieldName         = big.NewInt(1 << 1)
+	adminReorderCategoriesResponseDataItemFieldSlug         = big.NewInt(1 << 2)
+	adminReorderCategoriesResponseDataItemFieldParentID     = big.NewInt(1 << 3)
+	adminReorderCategoriesResponseDataItemFieldIcon         = big.NewInt(1 << 4)
+	adminReorderCategoriesResponseDataItemFieldDisplayOrder = big.NewInt(1 << 5)
+	adminReorderCategoriesResponseDataItemFieldIsActive     = big.NewInt(1 << 6)
+)
+
+type AdminReorderCategoriesResponseDataItem struct {
+	ID           string  `json:"id" url:"id"`
+	Name         string  `json:"name" url:"name"`
+	Slug         string  `json:"slug" url:"slug"`
+	ParentID     *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	Icon         *string `json:"icon,omitempty" url:"icon,omitempty"`
+	DisplayOrder int     `json:"displayOrder" url:"displayOrder"`
+	IsActive     bool    `json:"isActive" url:"isActive"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetSlug() string {
+	if a == nil {
+		return ""
+	}
+	return a.Slug
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetParentID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ParentID
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetIcon() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Icon
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetDisplayOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.DisplayOrder
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetIsActive() bool {
+	if a == nil {
+		return false
+	}
+	return a.IsActive
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponseDataItem) SetID(id string) {
+	a.ID = id
+	a.require(adminReorderCategoriesResponseDataItemFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponseDataItem) SetName(name string) {
+	a.Name = name
+	a.require(adminReorderCategoriesResponseDataItemFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponseDataItem) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminReorderCategoriesResponseDataItemFieldSlug)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponseDataItem) SetParentID(parentID *string) {
+	a.ParentID = parentID
+	a.require(adminReorderCategoriesResponseDataItemFieldParentID)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponseDataItem) SetIcon(icon *string) {
+	a.Icon = icon
+	a.require(adminReorderCategoriesResponseDataItemFieldIcon)
+}
+
+// SetDisplayOrder sets the DisplayOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponseDataItem) SetDisplayOrder(displayOrder int) {
+	a.DisplayOrder = displayOrder
+	a.require(adminReorderCategoriesResponseDataItemFieldDisplayOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminReorderCategoriesResponseDataItem) SetIsActive(isActive bool) {
+	a.IsActive = isActive
+	a.require(adminReorderCategoriesResponseDataItemFieldIsActive)
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminReorderCategoriesResponseDataItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminReorderCategoriesResponseDataItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed AdminReorderCategoriesResponseDataItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminReorderCategoriesResponseDataItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1471,6 +3679,445 @@ func (a *AdminReorderContentTypesResponseDataItem) String() string {
 
 // Updated
 var (
+	adminUpdateAiModelProviderResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminUpdateAiModelProviderResponse struct {
+	Data *AiModelProvider `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminUpdateAiModelProviderResponse) GetData() *AiModelProvider {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminUpdateAiModelProviderResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminUpdateAiModelProviderResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelProviderResponse) SetData(data *AiModelProvider) {
+	a.Data = data
+	a.require(adminUpdateAiModelProviderResponseFieldData)
+}
+
+func (a *AdminUpdateAiModelProviderResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminUpdateAiModelProviderResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminUpdateAiModelProviderResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminUpdateAiModelProviderResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminUpdateAiModelProviderResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminUpdateAiModelProviderResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AdminUpdateAiModelRequestModality string
+
+const (
+	AdminUpdateAiModelRequestModalityText  AdminUpdateAiModelRequestModality = "text"
+	AdminUpdateAiModelRequestModalityImage AdminUpdateAiModelRequestModality = "image"
+	AdminUpdateAiModelRequestModalityVideo AdminUpdateAiModelRequestModality = "video"
+	AdminUpdateAiModelRequestModalityAudio AdminUpdateAiModelRequestModality = "audio"
+)
+
+func NewAdminUpdateAiModelRequestModalityFromString(s string) (AdminUpdateAiModelRequestModality, error) {
+	switch s {
+	case "text":
+		return AdminUpdateAiModelRequestModalityText, nil
+	case "image":
+		return AdminUpdateAiModelRequestModalityImage, nil
+	case "video":
+		return AdminUpdateAiModelRequestModalityVideo, nil
+	case "audio":
+		return AdminUpdateAiModelRequestModalityAudio, nil
+	}
+	var t AdminUpdateAiModelRequestModality
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AdminUpdateAiModelRequestModality) Ptr() *AdminUpdateAiModelRequestModality {
+	return &a
+}
+
+// Updated
+var (
+	adminUpdateAiModelResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminUpdateAiModelResponse struct {
+	Data *AiModel `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminUpdateAiModelResponse) GetData() *AiModel {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminUpdateAiModelResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminUpdateAiModelResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateAiModelResponse) SetData(data *AiModel) {
+	a.Data = data
+	a.require(adminUpdateAiModelResponseFieldData)
+}
+
+func (a *AdminUpdateAiModelResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminUpdateAiModelResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminUpdateAiModelResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminUpdateAiModelResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminUpdateAiModelResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminUpdateAiModelResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Updated
+var (
+	adminUpdateCategoryResponseFieldData = big.NewInt(1 << 0)
+)
+
+type AdminUpdateCategoryResponse struct {
+	Data *AdminUpdateCategoryResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminUpdateCategoryResponse) GetData() *AdminUpdateCategoryResponseData {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+func (a *AdminUpdateCategoryResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminUpdateCategoryResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponse) SetData(data *AdminUpdateCategoryResponseData) {
+	a.Data = data
+	a.require(adminUpdateCategoryResponseFieldData)
+}
+
+func (a *AdminUpdateCategoryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminUpdateCategoryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminUpdateCategoryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminUpdateCategoryResponse) MarshalJSON() ([]byte, error) {
+	type embed AdminUpdateCategoryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminUpdateCategoryResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	adminUpdateCategoryResponseDataFieldID           = big.NewInt(1 << 0)
+	adminUpdateCategoryResponseDataFieldName         = big.NewInt(1 << 1)
+	adminUpdateCategoryResponseDataFieldSlug         = big.NewInt(1 << 2)
+	adminUpdateCategoryResponseDataFieldParentID     = big.NewInt(1 << 3)
+	adminUpdateCategoryResponseDataFieldIcon         = big.NewInt(1 << 4)
+	adminUpdateCategoryResponseDataFieldDisplayOrder = big.NewInt(1 << 5)
+	adminUpdateCategoryResponseDataFieldIsActive     = big.NewInt(1 << 6)
+)
+
+type AdminUpdateCategoryResponseData struct {
+	ID           string  `json:"id" url:"id"`
+	Name         string  `json:"name" url:"name"`
+	Slug         string  `json:"slug" url:"slug"`
+	ParentID     *string `json:"parentId,omitempty" url:"parentId,omitempty"`
+	Icon         *string `json:"icon,omitempty" url:"icon,omitempty"`
+	DisplayOrder int     `json:"displayOrder" url:"displayOrder"`
+	IsActive     bool    `json:"isActive" url:"isActive"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AdminUpdateCategoryResponseData) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AdminUpdateCategoryResponseData) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AdminUpdateCategoryResponseData) GetSlug() string {
+	if a == nil {
+		return ""
+	}
+	return a.Slug
+}
+
+func (a *AdminUpdateCategoryResponseData) GetParentID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ParentID
+}
+
+func (a *AdminUpdateCategoryResponseData) GetIcon() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Icon
+}
+
+func (a *AdminUpdateCategoryResponseData) GetDisplayOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.DisplayOrder
+}
+
+func (a *AdminUpdateCategoryResponseData) GetIsActive() bool {
+	if a == nil {
+		return false
+	}
+	return a.IsActive
+}
+
+func (a *AdminUpdateCategoryResponseData) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AdminUpdateCategoryResponseData) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponseData) SetID(id string) {
+	a.ID = id
+	a.require(adminUpdateCategoryResponseDataFieldID)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponseData) SetName(name string) {
+	a.Name = name
+	a.require(adminUpdateCategoryResponseDataFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponseData) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(adminUpdateCategoryResponseDataFieldSlug)
+}
+
+// SetParentID sets the ParentID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponseData) SetParentID(parentID *string) {
+	a.ParentID = parentID
+	a.require(adminUpdateCategoryResponseDataFieldParentID)
+}
+
+// SetIcon sets the Icon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponseData) SetIcon(icon *string) {
+	a.Icon = icon
+	a.require(adminUpdateCategoryResponseDataFieldIcon)
+}
+
+// SetDisplayOrder sets the DisplayOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponseData) SetDisplayOrder(displayOrder int) {
+	a.DisplayOrder = displayOrder
+	a.require(adminUpdateCategoryResponseDataFieldDisplayOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AdminUpdateCategoryResponseData) SetIsActive(isActive bool) {
+	a.IsActive = isActive
+	a.require(adminUpdateCategoryResponseDataFieldIsActive)
+}
+
+func (a *AdminUpdateCategoryResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler AdminUpdateCategoryResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AdminUpdateCategoryResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AdminUpdateCategoryResponseData) MarshalJSON() ([]byte, error) {
+	type embed AdminUpdateCategoryResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AdminUpdateCategoryResponseData) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Updated
+var (
 	adminUpdateContentTypeResponseFieldData = big.NewInt(1 << 0)
 )
 
@@ -1828,4 +4475,687 @@ func (a *AdminUpdateContentTypeResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	aiModelFieldID          = big.NewInt(1 << 0)
+	aiModelFieldProviderID  = big.NewInt(1 << 1)
+	aiModelFieldSlug        = big.NewInt(1 << 2)
+	aiModelFieldName        = big.NewInt(1 << 3)
+	aiModelFieldLogoURL     = big.NewInt(1 << 4)
+	aiModelFieldDescription = big.NewInt(1 << 5)
+	aiModelFieldModality    = big.NewInt(1 << 6)
+	aiModelFieldSortOrder   = big.NewInt(1 << 7)
+	aiModelFieldIsActive    = big.NewInt(1 << 8)
+)
+
+type AiModel struct {
+	ID          string  `json:"id" url:"id"`
+	ProviderID  string  `json:"providerId" url:"providerId"`
+	Slug        string  `json:"slug" url:"slug"`
+	Name        string  `json:"name" url:"name"`
+	LogoURL     *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// text | image | video | audio
+	Modality  *string `json:"modality,omitempty" url:"modality,omitempty"`
+	SortOrder int     `json:"sortOrder" url:"sortOrder"`
+	IsActive  bool    `json:"isActive" url:"isActive"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AiModel) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AiModel) GetProviderID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ProviderID
+}
+
+func (a *AiModel) GetSlug() string {
+	if a == nil {
+		return ""
+	}
+	return a.Slug
+}
+
+func (a *AiModel) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AiModel) GetLogoURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.LogoURL
+}
+
+func (a *AiModel) GetDescription() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Description
+}
+
+func (a *AiModel) GetModality() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Modality
+}
+
+func (a *AiModel) GetSortOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.SortOrder
+}
+
+func (a *AiModel) GetIsActive() bool {
+	if a == nil {
+		return false
+	}
+	return a.IsActive
+}
+
+func (a *AiModel) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AiModel) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetID(id string) {
+	a.ID = id
+	a.require(aiModelFieldID)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetProviderID(providerID string) {
+	a.ProviderID = providerID
+	a.require(aiModelFieldProviderID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(aiModelFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetName(name string) {
+	a.Name = name
+	a.require(aiModelFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetLogoURL(logoURL *string) {
+	a.LogoURL = logoURL
+	a.require(aiModelFieldLogoURL)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetDescription(description *string) {
+	a.Description = description
+	a.require(aiModelFieldDescription)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetModality(modality *string) {
+	a.Modality = modality
+	a.require(aiModelFieldModality)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetSortOrder(sortOrder int) {
+	a.SortOrder = sortOrder
+	a.require(aiModelFieldSortOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModel) SetIsActive(isActive bool) {
+	a.IsActive = isActive
+	a.require(aiModelFieldIsActive)
+}
+
+func (a *AiModel) UnmarshalJSON(data []byte) error {
+	type unmarshaler AiModel
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AiModel(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AiModel) MarshalJSON() ([]byte, error) {
+	type embed AiModel
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AiModel) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	aiModelProviderFieldID         = big.NewInt(1 << 0)
+	aiModelProviderFieldSlug       = big.NewInt(1 << 1)
+	aiModelProviderFieldName       = big.NewInt(1 << 2)
+	aiModelProviderFieldLogoURL    = big.NewInt(1 << 3)
+	aiModelProviderFieldWebsiteURL = big.NewInt(1 << 4)
+	aiModelProviderFieldSortOrder  = big.NewInt(1 << 5)
+	aiModelProviderFieldIsActive   = big.NewInt(1 << 6)
+)
+
+type AiModelProvider struct {
+	ID         string  `json:"id" url:"id"`
+	Slug       string  `json:"slug" url:"slug"`
+	Name       string  `json:"name" url:"name"`
+	LogoURL    *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	WebsiteURL *string `json:"websiteUrl,omitempty" url:"websiteUrl,omitempty"`
+	SortOrder  int     `json:"sortOrder" url:"sortOrder"`
+	IsActive   bool    `json:"isActive" url:"isActive"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AiModelProvider) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AiModelProvider) GetSlug() string {
+	if a == nil {
+		return ""
+	}
+	return a.Slug
+}
+
+func (a *AiModelProvider) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AiModelProvider) GetLogoURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.LogoURL
+}
+
+func (a *AiModelProvider) GetWebsiteURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.WebsiteURL
+}
+
+func (a *AiModelProvider) GetSortOrder() int {
+	if a == nil {
+		return 0
+	}
+	return a.SortOrder
+}
+
+func (a *AiModelProvider) GetIsActive() bool {
+	if a == nil {
+		return false
+	}
+	return a.IsActive
+}
+
+func (a *AiModelProvider) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AiModelProvider) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModelProvider) SetID(id string) {
+	a.ID = id
+	a.require(aiModelProviderFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModelProvider) SetSlug(slug string) {
+	a.Slug = slug
+	a.require(aiModelProviderFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModelProvider) SetName(name string) {
+	a.Name = name
+	a.require(aiModelProviderFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModelProvider) SetLogoURL(logoURL *string) {
+	a.LogoURL = logoURL
+	a.require(aiModelProviderFieldLogoURL)
+}
+
+// SetWebsiteURL sets the WebsiteURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModelProvider) SetWebsiteURL(websiteURL *string) {
+	a.WebsiteURL = websiteURL
+	a.require(aiModelProviderFieldWebsiteURL)
+}
+
+// SetSortOrder sets the SortOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModelProvider) SetSortOrder(sortOrder int) {
+	a.SortOrder = sortOrder
+	a.require(aiModelProviderFieldSortOrder)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AiModelProvider) SetIsActive(isActive bool) {
+	a.IsActive = isActive
+	a.require(aiModelProviderFieldIsActive)
+}
+
+func (a *AiModelProvider) UnmarshalJSON(data []byte) error {
+	type unmarshaler AiModelProvider
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AiModelProvider(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AiModelProvider) MarshalJSON() ([]byte, error) {
+	type embed AiModelProvider
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AiModelProvider) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Recommended models
+var (
+	setListingRecommendedModelsResponseFieldData = big.NewInt(1 << 0)
+)
+
+type SetListingRecommendedModelsResponse struct {
+	Data []*SetListingRecommendedModelsResponseDataItem `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetListingRecommendedModelsResponse) GetData() []*SetListingRecommendedModelsResponseDataItem {
+	if s == nil {
+		return nil
+	}
+	return s.Data
+}
+
+func (s *SetListingRecommendedModelsResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetListingRecommendedModelsResponse) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponse) SetData(data []*SetListingRecommendedModelsResponseDataItem) {
+	s.Data = data
+	s.require(setListingRecommendedModelsResponseFieldData)
+}
+
+func (s *SetListingRecommendedModelsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SetListingRecommendedModelsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SetListingRecommendedModelsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetListingRecommendedModelsResponse) MarshalJSON() ([]byte, error) {
+	type embed SetListingRecommendedModelsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetListingRecommendedModelsResponse) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	setListingRecommendedModelsResponseDataItemFieldID           = big.NewInt(1 << 0)
+	setListingRecommendedModelsResponseDataItemFieldSlug         = big.NewInt(1 << 1)
+	setListingRecommendedModelsResponseDataItemFieldName         = big.NewInt(1 << 2)
+	setListingRecommendedModelsResponseDataItemFieldLogoURL      = big.NewInt(1 << 3)
+	setListingRecommendedModelsResponseDataItemFieldIsActive     = big.NewInt(1 << 4)
+	setListingRecommendedModelsResponseDataItemFieldModality     = big.NewInt(1 << 5)
+	setListingRecommendedModelsResponseDataItemFieldProviderID   = big.NewInt(1 << 6)
+	setListingRecommendedModelsResponseDataItemFieldProviderSlug = big.NewInt(1 << 7)
+	setListingRecommendedModelsResponseDataItemFieldProviderName = big.NewInt(1 << 8)
+	setListingRecommendedModelsResponseDataItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type SetListingRecommendedModelsResponseDataItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetID() string {
+	if s == nil {
+		return ""
+	}
+	return s.ID
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetSlug() string {
+	if s == nil {
+		return ""
+	}
+	return s.Slug
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetName() string {
+	if s == nil {
+		return ""
+	}
+	return s.Name
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetLogoURL() *string {
+	if s == nil {
+		return nil
+	}
+	return s.LogoURL
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetIsActive() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.IsActive
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetModality() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Modality
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetProviderID() string {
+	if s == nil {
+		return ""
+	}
+	return s.ProviderID
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetProviderSlug() string {
+	if s == nil {
+		return ""
+	}
+	return s.ProviderSlug
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetProviderName() string {
+	if s == nil {
+		return ""
+	}
+	return s.ProviderName
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetPosition() *int {
+	if s == nil {
+		return nil
+	}
+	return s.Position
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetID(id string) {
+	s.ID = id
+	s.require(setListingRecommendedModelsResponseDataItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetSlug(slug string) {
+	s.Slug = slug
+	s.require(setListingRecommendedModelsResponseDataItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetName(name string) {
+	s.Name = name
+	s.require(setListingRecommendedModelsResponseDataItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetLogoURL(logoURL *string) {
+	s.LogoURL = logoURL
+	s.require(setListingRecommendedModelsResponseDataItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetIsActive(isActive *bool) {
+	s.IsActive = isActive
+	s.require(setListingRecommendedModelsResponseDataItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetModality(modality *string) {
+	s.Modality = modality
+	s.require(setListingRecommendedModelsResponseDataItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetProviderID(providerID string) {
+	s.ProviderID = providerID
+	s.require(setListingRecommendedModelsResponseDataItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetProviderSlug(providerSlug string) {
+	s.ProviderSlug = providerSlug
+	s.require(setListingRecommendedModelsResponseDataItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetProviderName(providerName string) {
+	s.ProviderName = providerName
+	s.require(setListingRecommendedModelsResponseDataItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetListingRecommendedModelsResponseDataItem) SetPosition(position *int) {
+	s.Position = position
+	s.require(setListingRecommendedModelsResponseDataItemFieldPosition)
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler SetListingRecommendedModelsResponseDataItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SetListingRecommendedModelsResponseDataItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) MarshalJSON() ([]byte, error) {
+	type embed SetListingRecommendedModelsResponseDataItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SetListingRecommendedModelsResponseDataItem) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }

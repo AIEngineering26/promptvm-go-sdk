@@ -4,7 +4,7 @@ package marketplaceskillsfeed
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Unauthenticated, paginated feed of all public skills. Use ?since=<ISO> to fetch only skills updated after a timestamp; use ?cursor= for continuation.
 func (c *Client) GetMarketplaceSkillsFeed(
 	ctx context.Context,
-	request *promptvmgosdk.GetMarketplaceSkillsFeedRequest,
+	request *sdk.GetMarketplaceSkillsFeedRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMarketplaceSkillsFeedResponse, error) {
+) (*sdk.GetMarketplaceSkillsFeedResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceSkillsFeed(
 		ctx,
 		request,

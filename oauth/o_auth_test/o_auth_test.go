@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -95,7 +95,7 @@ func TestOAuthDynamicClientRegistrationRfc7591WithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.PostAPIV1OauthRegisterRequest{
+	request := &sdk.PostAPIV1OauthRegisterRequest{
 		ClientName: "client_name",
 		RedirectURIs: []string{
 			"redirect_uris",
@@ -124,7 +124,7 @@ func TestOAuthOAuth21AuthorizationEndpointWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetAPIV1OauthAuthorizeRequest{
+	request := &sdk.GetAPIV1OauthAuthorizeRequest{
 		ResponseType:        "response_type",
 		ClientID:            "client_id",
 		RedirectURI:         "redirect_uri",

@@ -4,7 +4,7 @@ package oauth
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -48,7 +48,7 @@ func (c *Client) OAuth21AuthorizationServerMetadata(
 
 func (c *Client) DynamicClientRegistrationRfc7591(
 	ctx context.Context,
-	request *promptvmgosdk.PostAPIV1OauthRegisterRequest,
+	request *sdk.PostAPIV1OauthRegisterRequest,
 	opts ...option.RequestOption,
 ) (map[string]any, error) {
 	response, err := c.WithRawResponse.DynamicClientRegistrationRfc7591(
@@ -64,7 +64,7 @@ func (c *Client) DynamicClientRegistrationRfc7591(
 
 func (c *Client) OAuth21AuthorizationEndpoint(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIV1OauthAuthorizeRequest,
+	request *sdk.GetAPIV1OauthAuthorizeRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.OAuth21AuthorizationEndpoint(

@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
 
@@ -233,52 +233,57 @@ var (
 	listMarketplaceCreatorListingsResponseDataItemFieldTags                   = big.NewInt(1 << 16)
 	listMarketplaceCreatorListingsResponseDataItemFieldIsFeatured             = big.NewInt(1 << 17)
 	listMarketplaceCreatorListingsResponseDataItemFieldCategories             = big.NewInt(1 << 18)
-	listMarketplaceCreatorListingsResponseDataItemFieldSeller                 = big.NewInt(1 << 19)
-	listMarketplaceCreatorListingsResponseDataItemFieldContentKind            = big.NewInt(1 << 20)
-	listMarketplaceCreatorListingsResponseDataItemFieldFeaturedImageURL       = big.NewInt(1 << 21)
-	listMarketplaceCreatorListingsResponseDataItemFieldFeaturedVideoURL       = big.NewInt(1 << 22)
-	listMarketplaceCreatorListingsResponseDataItemFieldFeaturedMediaPosterURL = big.NewInt(1 << 23)
-	listMarketplaceCreatorListingsResponseDataItemFieldPromptSlug             = big.NewInt(1 << 24)
-	listMarketplaceCreatorListingsResponseDataItemFieldInstallRef             = big.NewInt(1 << 25)
-	listMarketplaceCreatorListingsResponseDataItemFieldCollectionItemCount    = big.NewInt(1 << 26)
-	listMarketplaceCreatorListingsResponseDataItemFieldSkill                  = big.NewInt(1 << 27)
-	listMarketplaceCreatorListingsResponseDataItemFieldPublishedAt            = big.NewInt(1 << 28)
-	listMarketplaceCreatorListingsResponseDataItemFieldCreatedAt              = big.NewInt(1 << 29)
-	listMarketplaceCreatorListingsResponseDataItemFieldUpdatedAt              = big.NewInt(1 << 30)
+	listMarketplaceCreatorListingsResponseDataItemFieldRecommendedModels      = big.NewInt(1 << 19)
+	listMarketplaceCreatorListingsResponseDataItemFieldSeller                 = big.NewInt(1 << 20)
+	listMarketplaceCreatorListingsResponseDataItemFieldContentKind            = big.NewInt(1 << 21)
+	listMarketplaceCreatorListingsResponseDataItemFieldFeaturedImageURL       = big.NewInt(1 << 22)
+	listMarketplaceCreatorListingsResponseDataItemFieldFeaturedVideoURL       = big.NewInt(1 << 23)
+	listMarketplaceCreatorListingsResponseDataItemFieldFeaturedMediaPosterURL = big.NewInt(1 << 24)
+	listMarketplaceCreatorListingsResponseDataItemFieldPromptSlug             = big.NewInt(1 << 25)
+	listMarketplaceCreatorListingsResponseDataItemFieldInstallRef             = big.NewInt(1 << 26)
+	listMarketplaceCreatorListingsResponseDataItemFieldCollectionItemCount    = big.NewInt(1 << 27)
+	listMarketplaceCreatorListingsResponseDataItemFieldSkill                  = big.NewInt(1 << 28)
+	listMarketplaceCreatorListingsResponseDataItemFieldPublishedAt            = big.NewInt(1 << 29)
+	listMarketplaceCreatorListingsResponseDataItemFieldCreatedAt              = big.NewInt(1 << 30)
+	listMarketplaceCreatorListingsResponseDataItemFieldUpdatedAt              = big.NewInt(1 << 31)
+	listMarketplaceCreatorListingsResponseDataItemFieldMatchSnippet           = big.NewInt(1 << 32)
 )
 
 type ListMarketplaceCreatorListingsResponseDataItem struct {
-	ID                     string                                                          `json:"id" url:"id"`
-	PromptID               *string                                                         `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID           *string                                                         `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID            *string                                                         `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID               string                                                          `json:"sellerId" url:"sellerId"`
-	Title                  string                                                          `json:"title" url:"title"`
-	Description            *string                                                         `json:"description,omitempty" url:"description,omitempty"`
-	Status                 ListMarketplaceCreatorListingsResponseDataItemStatus            `json:"status" url:"status"`
-	PriceCents             int                                                             `json:"priceCents" url:"priceCents"`
-	Currency               string                                                          `json:"currency" url:"currency"`
-	AccessType             *ListMarketplaceCreatorListingsResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating              *string                                                         `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount            *int                                                            `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount              *int                                                            `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount          *int                                                            `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount            *int                                                            `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags                   []string                                                        `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured             *bool                                                           `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories             []*ListMarketplaceCreatorListingsResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller                 *ListMarketplaceCreatorListingsResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind            *ListMarketplaceCreatorListingsResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	FeaturedImageURL       *string                                                         `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
-	FeaturedVideoURL       *string                                                         `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
-	FeaturedMediaPosterURL *string                                                         `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
-	PromptSlug             *string                                                         `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	InstallRef             *string                                                         `json:"installRef,omitempty" url:"installRef,omitempty"`
-	CollectionItemCount    *int                                                            `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
-	Skill                  *ListMarketplaceCreatorListingsResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt            *time.Time                                                      `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt              time.Time                                                       `json:"createdAt" url:"createdAt"`
-	UpdatedAt              time.Time                                                       `json:"updatedAt" url:"updatedAt"`
+	ID                     string                                                                 `json:"id" url:"id"`
+	PromptID               *string                                                                `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID           *string                                                                `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID            *string                                                                `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID               string                                                                 `json:"sellerId" url:"sellerId"`
+	Title                  string                                                                 `json:"title" url:"title"`
+	Description            *string                                                                `json:"description,omitempty" url:"description,omitempty"`
+	Status                 ListMarketplaceCreatorListingsResponseDataItemStatus                   `json:"status" url:"status"`
+	PriceCents             int                                                                    `json:"priceCents" url:"priceCents"`
+	Currency               string                                                                 `json:"currency" url:"currency"`
+	AccessType             *ListMarketplaceCreatorListingsResponseDataItemAccessType              `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating              *string                                                                `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount            *int                                                                   `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount              *int                                                                   `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount          *int                                                                   `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount            *int                                                                   `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                   []string                                                               `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured             *bool                                                                  `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories             []*ListMarketplaceCreatorListingsResponseDataItemCategoriesItem        `json:"categories,omitempty" url:"categories,omitempty"`
+	RecommendedModels      []*ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem `json:"recommendedModels,omitempty" url:"recommendedModels,omitempty"`
+	Seller                 *ListMarketplaceCreatorListingsResponseDataItemSeller                  `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind            *ListMarketplaceCreatorListingsResponseDataItemContentKind             `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	FeaturedImageURL       *string                                                                `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
+	FeaturedVideoURL       *string                                                                `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
+	FeaturedMediaPosterURL *string                                                                `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
+	PromptSlug             *string                                                                `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	InstallRef             *string                                                                `json:"installRef,omitempty" url:"installRef,omitempty"`
+	CollectionItemCount    *int                                                                   `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill                  *ListMarketplaceCreatorListingsResponseDataItemSkill                   `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt            *time.Time                                                             `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt              time.Time                                                              `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time                                                              `json:"updatedAt" url:"updatedAt"`
+	// Why this listing matched. Present only on ranking=semantic|hybrid, and only when the matched source is already publicly readable.
+	MatchSnippet *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet `json:"matchSnippet,omitempty" url:"matchSnippet,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -420,6 +425,13 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) GetCategories() []*List
 	return l.Categories
 }
 
+func (l *ListMarketplaceCreatorListingsResponseDataItem) GetRecommendedModels() []*ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem {
+	if l == nil {
+		return nil
+	}
+	return l.RecommendedModels
+}
+
 func (l *ListMarketplaceCreatorListingsResponseDataItem) GetSeller() *ListMarketplaceCreatorListingsResponseDataItemSeller {
 	if l == nil {
 		return nil
@@ -502,6 +514,13 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) GetUpdatedAt() time.Tim
 		return time.Time{}
 	}
 	return l.UpdatedAt
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItem) GetMatchSnippet() *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet {
+	if l == nil {
+		return nil
+	}
+	return l.MatchSnippet
 }
 
 func (l *ListMarketplaceCreatorListingsResponseDataItem) GetExtraProperties() map[string]interface{} {
@@ -648,6 +667,13 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) SetCategories(categorie
 	l.require(listMarketplaceCreatorListingsResponseDataItemFieldCategories)
 }
 
+// SetRecommendedModels sets the RecommendedModels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItem) SetRecommendedModels(recommendedModels []*ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) {
+	l.RecommendedModels = recommendedModels
+	l.require(listMarketplaceCreatorListingsResponseDataItemFieldRecommendedModels)
+}
+
 // SetSeller sets the Seller field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListMarketplaceCreatorListingsResponseDataItem) SetSeller(seller *ListMarketplaceCreatorListingsResponseDataItemSeller) {
@@ -730,6 +756,13 @@ func (l *ListMarketplaceCreatorListingsResponseDataItem) SetCreatedAt(createdAt 
 func (l *ListMarketplaceCreatorListingsResponseDataItem) SetUpdatedAt(updatedAt time.Time) {
 	l.UpdatedAt = updatedAt
 	l.require(listMarketplaceCreatorListingsResponseDataItemFieldUpdatedAt)
+}
+
+// SetMatchSnippet sets the MatchSnippet field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItem) SetMatchSnippet(matchSnippet *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) {
+	l.MatchSnippet = matchSnippet
+	l.require(listMarketplaceCreatorListingsResponseDataItemFieldMatchSnippet)
 }
 
 func (l *ListMarketplaceCreatorListingsResponseDataItem) UnmarshalJSON(data []byte) error {
@@ -1010,20 +1043,390 @@ func (l ListMarketplaceCreatorListingsResponseDataItemContentKind) Ptr() *ListMa
 	return &l
 }
 
+// Why this listing matched. Present only on ranking=semantic|hybrid, and only when the matched source is already publicly readable.
 var (
-	listMarketplaceCreatorListingsResponseDataItemSellerFieldUserID      = big.NewInt(1 << 0)
-	listMarketplaceCreatorListingsResponseDataItemSellerFieldBio         = big.NewInt(1 << 1)
-	listMarketplaceCreatorListingsResponseDataItemSellerFieldIsVerified  = big.NewInt(1 << 2)
-	listMarketplaceCreatorListingsResponseDataItemSellerFieldDisplayName = big.NewInt(1 << 3)
-	listMarketplaceCreatorListingsResponseDataItemSellerFieldAvatarURL   = big.NewInt(1 << 4)
+	listMarketplaceCreatorListingsResponseDataItemMatchSnippetFieldText   = big.NewInt(1 << 0)
+	listMarketplaceCreatorListingsResponseDataItemMatchSnippetFieldRole   = big.NewInt(1 << 1)
+	listMarketplaceCreatorListingsResponseDataItemMatchSnippetFieldSource = big.NewInt(1 << 2)
+)
+
+type ListMarketplaceCreatorListingsResponseDataItemMatchSnippet struct {
+	// Bounded excerpt of the matching passage.
+	Text *string `json:"text,omitempty" url:"text,omitempty"`
+	// How the matched file is reachable from the listing.
+	Role *ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole `json:"role,omitempty" url:"role,omitempty"`
+	// Display name of the matched file. Never a storage key or path.
+	Source *string `json:"source,omitempty" url:"source,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) GetText() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Text
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) GetRole() *ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole {
+	if l == nil {
+		return nil
+	}
+	return l.Role
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) GetSource() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Source
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetText sets the Text field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) SetText(text *string) {
+	l.Text = text
+	l.require(listMarketplaceCreatorListingsResponseDataItemMatchSnippetFieldText)
+}
+
+// SetRole sets the Role field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) SetRole(role *ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole) {
+	l.Role = role
+	l.require(listMarketplaceCreatorListingsResponseDataItemMatchSnippetFieldRole)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) SetSource(source *string) {
+	l.Source = source
+	l.require(listMarketplaceCreatorListingsResponseDataItemMatchSnippetFieldSource)
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListMarketplaceCreatorListingsResponseDataItemMatchSnippet
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListMarketplaceCreatorListingsResponseDataItemMatchSnippet(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) MarshalJSON() ([]byte, error) {
+	type embed ListMarketplaceCreatorListingsResponseDataItemMatchSnippet
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemMatchSnippet) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// How the matched file is reachable from the listing.
+type ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole string
+
+const (
+	ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRolePrimary          ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole = "primary"
+	ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRoleBundledResource  ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole = "bundled_resource"
+	ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRoleCollectionMember ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole = "collection_member"
+	ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRoleFolderMember     ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole = "folder_member"
+)
+
+func NewListMarketplaceCreatorListingsResponseDataItemMatchSnippetRoleFromString(s string) (ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole, error) {
+	switch s {
+	case "primary":
+		return ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRolePrimary, nil
+	case "bundled_resource":
+		return ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRoleBundledResource, nil
+	case "collection_member":
+		return ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRoleCollectionMember, nil
+	case "folder_member":
+		return ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRoleFolderMember, nil
+	}
+	var t ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole) Ptr() *ListMarketplaceCreatorListingsResponseDataItemMatchSnippetRole {
+	return &l
+}
+
+var (
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldID           = big.NewInt(1 << 0)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldSlug         = big.NewInt(1 << 1)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldName         = big.NewInt(1 << 2)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldLogoURL      = big.NewInt(1 << 3)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldIsActive     = big.NewInt(1 << 4)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldModality     = big.NewInt(1 << 5)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldProviderID   = big.NewInt(1 << 6)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldProviderSlug = big.NewInt(1 << 7)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldProviderName = big.NewInt(1 << 8)
+	listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ID
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.Slug
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetName() string {
+	if l == nil {
+		return ""
+	}
+	return l.Name
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetLogoURL() *string {
+	if l == nil {
+		return nil
+	}
+	return l.LogoURL
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetIsActive() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.IsActive
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetModality() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Modality
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetProviderID() string {
+	if l == nil {
+		return ""
+	}
+	return l.ProviderID
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetProviderSlug() string {
+	if l == nil {
+		return ""
+	}
+	return l.ProviderSlug
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetProviderName() string {
+	if l == nil {
+		return ""
+	}
+	return l.ProviderName
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetPosition() *int {
+	if l == nil {
+		return nil
+	}
+	return l.Position
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetID(id string) {
+	l.ID = id
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetSlug(slug string) {
+	l.Slug = slug
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetName(name string) {
+	l.Name = name
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetLogoURL(logoURL *string) {
+	l.LogoURL = logoURL
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetIsActive(isActive *bool) {
+	l.IsActive = isActive
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetModality(modality *string) {
+	l.Modality = modality
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetProviderID(providerID string) {
+	l.ProviderID = providerID
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetProviderSlug(providerSlug string) {
+	l.ProviderSlug = providerSlug
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetProviderName(providerName string) {
+	l.ProviderName = providerName
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) SetPosition(position *int) {
+	l.Position = position
+	l.require(listMarketplaceCreatorListingsResponseDataItemRecommendedModelsItemFieldPosition)
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) MarshalJSON() ([]byte, error) {
+	type embed ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemRecommendedModelsItem) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	listMarketplaceCreatorListingsResponseDataItemSellerFieldUserID        = big.NewInt(1 << 0)
+	listMarketplaceCreatorListingsResponseDataItemSellerFieldBio           = big.NewInt(1 << 1)
+	listMarketplaceCreatorListingsResponseDataItemSellerFieldIsVerified    = big.NewInt(1 << 2)
+	listMarketplaceCreatorListingsResponseDataItemSellerFieldDisplayName   = big.NewInt(1 << 3)
+	listMarketplaceCreatorListingsResponseDataItemSellerFieldAvatarURL     = big.NewInt(1 << 4)
+	listMarketplaceCreatorListingsResponseDataItemSellerFieldProfileHandle = big.NewInt(1 << 5)
+	listMarketplaceCreatorListingsResponseDataItemSellerFieldUsername      = big.NewInt(1 << 6)
 )
 
 type ListMarketplaceCreatorListingsResponseDataItemSeller struct {
-	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
-	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
-	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	UserID        *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio           *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified    *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName   *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL     *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	ProfileHandle *string `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
+	Username      *string `json:"username,omitempty" url:"username,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1065,6 +1468,20 @@ func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) GetAvatarURL() *s
 		return nil
 	}
 	return l.AvatarURL
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) GetProfileHandle() *string {
+	if l == nil {
+		return nil
+	}
+	return l.ProfileHandle
+}
+
+func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) GetUsername() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Username
 }
 
 func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) GetExtraProperties() map[string]interface{} {
@@ -1111,6 +1528,20 @@ func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) SetDisplayName(di
 func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) SetAvatarURL(avatarURL *string) {
 	l.AvatarURL = avatarURL
 	l.require(listMarketplaceCreatorListingsResponseDataItemSellerFieldAvatarURL)
+}
+
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) SetProfileHandle(profileHandle *string) {
+	l.ProfileHandle = profileHandle
+	l.require(listMarketplaceCreatorListingsResponseDataItemSellerFieldProfileHandle)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) SetUsername(username *string) {
+	l.Username = username
+	l.require(listMarketplaceCreatorListingsResponseDataItemSellerFieldUsername)
 }
 
 func (l *ListMarketplaceCreatorListingsResponseDataItemSeller) UnmarshalJSON(data []byte) error {

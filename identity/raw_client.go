@@ -4,11 +4,11 @@ package identity
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) GetMyIdentity(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetMyIdentityResponse], error) {
+) (*core.Response[*sdk.GetMyIdentityResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -45,7 +45,7 @@ func (r *RawClient) GetMyIdentity(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetMyIdentityResponse
+	var response *sdk.GetMyIdentityResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -57,13 +57,13 @@ func (r *RawClient) GetMyIdentity(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetMyIdentityResponse]{
+	return &core.Response[*sdk.GetMyIdentityResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -73,7 +73,7 @@ func (r *RawClient) GetMyIdentity(
 func (r *RawClient) GetMyWorkspaces(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetMyWorkspacesResponse], error) {
+) (*core.Response[*sdk.GetMyWorkspacesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -85,7 +85,7 @@ func (r *RawClient) GetMyWorkspaces(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetMyWorkspacesResponse
+	var response *sdk.GetMyWorkspacesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -97,13 +97,13 @@ func (r *RawClient) GetMyWorkspaces(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetMyWorkspacesResponse]{
+	return &core.Response[*sdk.GetMyWorkspacesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

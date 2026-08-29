@@ -4,11 +4,11 @@ package organizations
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) ListOrganizations(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListOrganizationsResponse], error) {
+) (*core.Response[*sdk.ListOrganizationsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -45,7 +45,7 @@ func (r *RawClient) ListOrganizations(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ListOrganizationsResponse
+	var response *sdk.ListOrganizationsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -62,7 +62,7 @@ func (r *RawClient) ListOrganizations(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListOrganizationsResponse]{
+	return &core.Response[*sdk.ListOrganizationsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -71,7 +71,7 @@ func (r *RawClient) ListOrganizations(
 
 func (r *RawClient) CreateOrganization(
 	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationRequest,
+	request *sdk.CreateOrganizationRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -111,7 +111,7 @@ func (r *RawClient) CreateOrganization(
 
 func (r *RawClient) DeleteOrganization(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteOrganizationRequest,
+	request *sdk.DeleteOrganizationRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -138,7 +138,7 @@ func (r *RawClient) DeleteOrganization(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -153,9 +153,9 @@ func (r *RawClient) DeleteOrganization(
 
 func (r *RawClient) AcceptOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.AcceptOrganizationInvitationRequest,
+	request *sdk.AcceptOrganizationInvitationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.AcceptOrganizationInvitationResponse], error) {
+) (*core.Response[*sdk.AcceptOrganizationInvitationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -170,7 +170,7 @@ func (r *RawClient) AcceptOrganizationInvitation(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.AcceptOrganizationInvitationResponse
+	var response *sdk.AcceptOrganizationInvitationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -187,7 +187,7 @@ func (r *RawClient) AcceptOrganizationInvitation(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.AcceptOrganizationInvitationResponse]{
+	return &core.Response[*sdk.AcceptOrganizationInvitationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -196,9 +196,9 @@ func (r *RawClient) AcceptOrganizationInvitation(
 
 func (r *RawClient) ListOrganizationWorkspaces(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationWorkspacesRequest,
+	request *sdk.ListOrganizationWorkspacesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListOrganizationWorkspacesResponse], error) {
+) (*core.Response[*sdk.ListOrganizationWorkspacesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -213,7 +213,7 @@ func (r *RawClient) ListOrganizationWorkspaces(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ListOrganizationWorkspacesResponse
+	var response *sdk.ListOrganizationWorkspacesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -230,7 +230,7 @@ func (r *RawClient) ListOrganizationWorkspaces(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListOrganizationWorkspacesResponse]{
+	return &core.Response[*sdk.ListOrganizationWorkspacesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -239,7 +239,7 @@ func (r *RawClient) ListOrganizationWorkspaces(
 
 func (r *RawClient) ListOrganizationMembers(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationMembersRequest,
+	request *sdk.ListOrganizationMembersRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -287,7 +287,7 @@ func (r *RawClient) ListOrganizationMembers(
 
 func (r *RawClient) GetOrganizationPermissions(
 	ctx context.Context,
-	request *promptvmgosdk.GetOrganizationPermissionsRequest,
+	request *sdk.GetOrganizationPermissionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -328,7 +328,7 @@ func (r *RawClient) GetOrganizationPermissions(
 
 func (r *RawClient) UpdateOrganizationPermissions(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationPermissionsRequest,
+	request *sdk.UpdateOrganizationPermissionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -371,7 +371,7 @@ func (r *RawClient) UpdateOrganizationPermissions(
 
 func (r *RawClient) ListOrganizationRoles(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationRolesRequest,
+	request *sdk.ListOrganizationRolesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -412,7 +412,7 @@ func (r *RawClient) ListOrganizationRoles(
 
 func (r *RawClient) CreateOrganizationRole(
 	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationRoleRequest,
+	request *sdk.CreateOrganizationRoleRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -455,7 +455,7 @@ func (r *RawClient) CreateOrganizationRole(
 
 func (r *RawClient) RemoveOrganizationMember(
 	ctx context.Context,
-	request *promptvmgosdk.RemoveOrganizationMemberRequest,
+	request *sdk.RemoveOrganizationMemberRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -497,7 +497,7 @@ func (r *RawClient) RemoveOrganizationMember(
 
 func (r *RawClient) UpdateOrganizationMemberRole(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationMemberRoleRequest,
+	request *sdk.UpdateOrganizationMemberRoleRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -541,7 +541,7 @@ func (r *RawClient) UpdateOrganizationMemberRole(
 
 func (r *RawClient) ListOrganizationInvitations(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationInvitationsRequest,
+	request *sdk.ListOrganizationInvitationsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -589,7 +589,7 @@ func (r *RawClient) ListOrganizationInvitations(
 
 func (r *RawClient) CreateOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationInvitationRequest,
+	request *sdk.CreateOrganizationInvitationRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -632,7 +632,7 @@ func (r *RawClient) CreateOrganizationInvitation(
 
 func (r *RawClient) RevokeOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.RevokeOrganizationInvitationRequest,
+	request *sdk.RevokeOrganizationInvitationRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -674,7 +674,7 @@ func (r *RawClient) RevokeOrganizationInvitation(
 
 func (r *RawClient) ResendOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.ResendOrganizationInvitationRequest,
+	request *sdk.ResendOrganizationInvitationRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -716,7 +716,7 @@ func (r *RawClient) ResendOrganizationInvitation(
 
 func (r *RawClient) DeleteOrganizationRole(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteOrganizationRoleRequest,
+	request *sdk.DeleteOrganizationRoleRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -758,7 +758,7 @@ func (r *RawClient) DeleteOrganizationRole(
 
 func (r *RawClient) UpdateOrganizationRole(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationRoleRequest,
+	request *sdk.UpdateOrganizationRoleRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)

@@ -4,7 +4,7 @@ package identity
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -36,7 +36,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetMyIdentity(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMyIdentityResponse, error) {
+) (*sdk.GetMyIdentityResponse, error) {
 	response, err := c.WithRawResponse.GetMyIdentity(
 		ctx,
 		opts...,
@@ -51,7 +51,7 @@ func (c *Client) GetMyIdentity(
 func (c *Client) GetMyWorkspaces(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMyWorkspacesResponse, error) {
+) (*sdk.GetMyWorkspacesResponse, error) {
 	response, err := c.WithRawResponse.GetMyWorkspaces(
 		ctx,
 		opts...,

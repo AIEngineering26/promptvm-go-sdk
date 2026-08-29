@@ -4,11 +4,11 @@ package marketplacelistings
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) CreateMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.CreateMarketplaceListingRequest,
+	request *sdk.CreateMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CreateMarketplaceListingResponse], error) {
+) (*core.Response[*sdk.CreateMarketplaceListingResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,7 +47,7 @@ func (r *RawClient) CreateMarketplaceListing(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CreateMarketplaceListingResponse
+	var response *sdk.CreateMarketplaceListingResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -60,13 +60,13 @@ func (r *RawClient) CreateMarketplaceListing(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CreateMarketplaceListingResponse]{
+	return &core.Response[*sdk.CreateMarketplaceListingResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -75,7 +75,7 @@ func (r *RawClient) CreateMarketplaceListing(
 
 func (r *RawClient) ArchiveMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.ArchiveMarketplaceListingRequest,
+	request *sdk.ArchiveMarketplaceListingRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -102,7 +102,7 @@ func (r *RawClient) ArchiveMarketplaceListing(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -117,9 +117,9 @@ func (r *RawClient) ArchiveMarketplaceListing(
 
 func (r *RawClient) UpdateMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateMarketplaceListingRequest,
+	request *sdk.UpdateMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateMarketplaceListingResponse], error) {
+) (*core.Response[*sdk.UpdateMarketplaceListingResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -135,7 +135,7 @@ func (r *RawClient) UpdateMarketplaceListing(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateMarketplaceListingResponse
+	var response *sdk.UpdateMarketplaceListingResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -148,13 +148,13 @@ func (r *RawClient) UpdateMarketplaceListing(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateMarketplaceListingResponse]{
+	return &core.Response[*sdk.UpdateMarketplaceListingResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -163,9 +163,9 @@ func (r *RawClient) UpdateMarketplaceListing(
 
 func (r *RawClient) InitiateListingMediaUpload(
 	ctx context.Context,
-	request *promptvmgosdk.InitiateListingMediaUploadRequest,
+	request *sdk.InitiateListingMediaUploadRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.InitiateListingMediaUploadResponse], error) {
+) (*core.Response[*sdk.InitiateListingMediaUploadResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -181,7 +181,7 @@ func (r *RawClient) InitiateListingMediaUpload(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.InitiateListingMediaUploadResponse
+	var response *sdk.InitiateListingMediaUploadResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -194,13 +194,13 @@ func (r *RawClient) InitiateListingMediaUpload(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.InitiateListingMediaUploadResponse]{
+	return &core.Response[*sdk.InitiateListingMediaUploadResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -209,9 +209,9 @@ func (r *RawClient) InitiateListingMediaUpload(
 
 func (r *RawClient) ConfirmListingMediaUpload(
 	ctx context.Context,
-	request *promptvmgosdk.ConfirmListingMediaUploadRequest,
+	request *sdk.ConfirmListingMediaUploadRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ConfirmListingMediaUploadResponse], error) {
+) (*core.Response[*sdk.ConfirmListingMediaUploadResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -227,7 +227,7 @@ func (r *RawClient) ConfirmListingMediaUpload(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.ConfirmListingMediaUploadResponse
+	var response *sdk.ConfirmListingMediaUploadResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -240,13 +240,13 @@ func (r *RawClient) ConfirmListingMediaUpload(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ConfirmListingMediaUploadResponse]{
+	return &core.Response[*sdk.ConfirmListingMediaUploadResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -255,7 +255,7 @@ func (r *RawClient) ConfirmListingMediaUpload(
 
 func (r *RawClient) DeleteListingMedia(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteListingMediaRequest,
+	request *sdk.DeleteListingMediaRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -283,7 +283,7 @@ func (r *RawClient) DeleteListingMedia(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -298,9 +298,9 @@ func (r *RawClient) DeleteListingMedia(
 
 func (r *RawClient) ClaimMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.ClaimMarketplaceListingRequest,
+	request *sdk.ClaimMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ClaimMarketplaceListingResponse], error) {
+) (*core.Response[*sdk.ClaimMarketplaceListingResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -316,7 +316,7 @@ func (r *RawClient) ClaimMarketplaceListing(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.ClaimMarketplaceListingResponse
+	var response *sdk.ClaimMarketplaceListingResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -329,13 +329,13 @@ func (r *RawClient) ClaimMarketplaceListing(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ClaimMarketplaceListingResponse]{
+	return &core.Response[*sdk.ClaimMarketplaceListingResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

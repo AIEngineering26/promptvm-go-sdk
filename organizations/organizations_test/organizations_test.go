@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -95,7 +95,7 @@ func TestOrganizationsCreateOrganizationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateOrganizationRequest{
+	request := &sdk.CreateOrganizationRequest{
 		Name: "name",
 	}
 	invocationErr := client.Organizations.CreateOrganization(
@@ -121,7 +121,7 @@ func TestOrganizationsDeleteOrganizationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteOrganizationRequest{
+	request := &sdk.DeleteOrganizationRequest{
 		OrgID: "orgId",
 	}
 	invocationErr := client.Organizations.DeleteOrganization(
@@ -147,7 +147,7 @@ func TestOrganizationsAcceptOrganizationInvitationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.AcceptOrganizationInvitationRequest{
+	request := &sdk.AcceptOrganizationInvitationRequest{
 		Token: "token",
 	}
 	_, invocationErr := client.Organizations.AcceptOrganizationInvitation(
@@ -173,7 +173,7 @@ func TestOrganizationsListOrganizationWorkspacesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListOrganizationWorkspacesRequest{
+	request := &sdk.ListOrganizationWorkspacesRequest{
 		OrgID: "orgId",
 	}
 	_, invocationErr := client.Organizations.ListOrganizationWorkspaces(
@@ -199,7 +199,7 @@ func TestOrganizationsListOrganizationMembersWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListOrganizationMembersRequest{
+	request := &sdk.ListOrganizationMembersRequest{
 		OrgID: "orgId",
 	}
 	invocationErr := client.Organizations.ListOrganizationMembers(
@@ -225,7 +225,7 @@ func TestOrganizationsGetOrganizationPermissionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetOrganizationPermissionsRequest{
+	request := &sdk.GetOrganizationPermissionsRequest{
 		OrgID: "orgId",
 	}
 	invocationErr := client.Organizations.GetOrganizationPermissions(
@@ -251,12 +251,12 @@ func TestOrganizationsUpdateOrganizationPermissionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateOrganizationPermissionsRequest{
+	request := &sdk.UpdateOrganizationPermissionsRequest{
 		OrgID: "orgId",
-		Updates: []*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
-			&promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+		Updates: []*sdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+			&sdk.UpdateOrganizationPermissionsRequestUpdatesItem{
 				Permission: "permission",
-				Role:       promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
+				Role:       sdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
 				Enabled:    true,
 			},
 		},
@@ -284,7 +284,7 @@ func TestOrganizationsListOrganizationRolesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListOrganizationRolesRequest{
+	request := &sdk.ListOrganizationRolesRequest{
 		OrgID: "orgId",
 	}
 	invocationErr := client.Organizations.ListOrganizationRoles(
@@ -310,10 +310,10 @@ func TestOrganizationsCreateOrganizationRoleWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateOrganizationRoleRequest{
+	request := &sdk.CreateOrganizationRoleRequest{
 		OrgID:    "orgId",
 		Name:     "name",
-		BaseRole: promptvmgosdk.CreateOrganizationRoleRequestBaseRoleOwner,
+		BaseRole: sdk.CreateOrganizationRoleRequestBaseRoleOwner,
 	}
 	invocationErr := client.Organizations.CreateOrganizationRole(
 		context.TODO(),
@@ -338,7 +338,7 @@ func TestOrganizationsRemoveOrganizationMemberWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.RemoveOrganizationMemberRequest{
+	request := &sdk.RemoveOrganizationMemberRequest{
 		OrgID:    "orgId",
 		MemberID: "memberId",
 	}
@@ -365,10 +365,10 @@ func TestOrganizationsUpdateOrganizationMemberRoleWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateOrganizationMemberRoleRequest{
+	request := &sdk.UpdateOrganizationMemberRoleRequest{
 		OrgID:    "orgId",
 		MemberID: "memberId",
-		Role:     promptvmgosdk.UpdateOrganizationMemberRoleRequestRoleOwner,
+		Role:     sdk.UpdateOrganizationMemberRoleRequestRoleOwner,
 	}
 	invocationErr := client.Organizations.UpdateOrganizationMemberRole(
 		context.TODO(),
@@ -393,7 +393,7 @@ func TestOrganizationsListOrganizationInvitationsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListOrganizationInvitationsRequest{
+	request := &sdk.ListOrganizationInvitationsRequest{
 		OrgID: "orgId",
 	}
 	invocationErr := client.Organizations.ListOrganizationInvitations(
@@ -419,10 +419,10 @@ func TestOrganizationsCreateOrganizationInvitationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateOrganizationInvitationRequest{
+	request := &sdk.CreateOrganizationInvitationRequest{
 		OrgID: "orgId",
 		Email: "email",
-		Role:  promptvmgosdk.CreateOrganizationInvitationRequestRoleOwner,
+		Role:  sdk.CreateOrganizationInvitationRequestRoleOwner,
 	}
 	invocationErr := client.Organizations.CreateOrganizationInvitation(
 		context.TODO(),
@@ -447,7 +447,7 @@ func TestOrganizationsRevokeOrganizationInvitationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.RevokeOrganizationInvitationRequest{
+	request := &sdk.RevokeOrganizationInvitationRequest{
 		OrgID:        "orgId",
 		InvitationID: "invitationId",
 	}
@@ -474,7 +474,7 @@ func TestOrganizationsResendOrganizationInvitationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ResendOrganizationInvitationRequest{
+	request := &sdk.ResendOrganizationInvitationRequest{
 		OrgID:        "orgId",
 		InvitationID: "invitationId",
 	}
@@ -501,7 +501,7 @@ func TestOrganizationsDeleteOrganizationRoleWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteOrganizationRoleRequest{
+	request := &sdk.DeleteOrganizationRoleRequest{
 		OrgID:  "orgId",
 		RoleID: "roleId",
 	}
@@ -528,7 +528,7 @@ func TestOrganizationsUpdateOrganizationRoleWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateOrganizationRoleRequest{
+	request := &sdk.UpdateOrganizationRoleRequest{
 		OrgID:  "orgId",
 		RoleID: "roleId",
 	}

@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestSkillsListSkillsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListSkillsRequest{
+	request := &sdk.ListSkillsRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Skills.ListSkills(
@@ -99,7 +99,7 @@ func TestSkillsCreateSkillWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateSkillRequest{
+	request := &sdk.CreateSkillRequest{
 		SkillMd:     "skill_md",
 		WorkspaceID: "workspaceId",
 	}
@@ -126,7 +126,7 @@ func TestSkillsGetSkillWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetSkillRequest{
+	request := &sdk.GetSkillRequest{
 		SkillID: "skillId",
 	}
 	_, invocationErr := client.Skills.GetSkill(
@@ -152,7 +152,7 @@ func TestSkillsDeleteSkillWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteSkillRequest{
+	request := &sdk.DeleteSkillRequest{
 		SkillID: "skillId",
 	}
 	_, invocationErr := client.Skills.DeleteSkill(
@@ -178,7 +178,7 @@ func TestSkillsUpdateSkillWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateSkillRequest{
+	request := &sdk.UpdateSkillRequest{
 		SkillID: "skillId",
 	}
 	_, invocationErr := client.Skills.UpdateSkill(
@@ -204,7 +204,7 @@ func TestSkillsListSkillFilesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListSkillFilesRequest{
+	request := &sdk.ListSkillFilesRequest{
 		SkillID: "skillId",
 	}
 	_, invocationErr := client.Skills.ListSkillFiles(
@@ -230,7 +230,7 @@ func TestSkillsGetSkillFileContentWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetSkillFileContentRequest{
+	request := &sdk.GetSkillFileContentRequest{
 		SkillID: "skillId",
 		Path:    "path",
 	}

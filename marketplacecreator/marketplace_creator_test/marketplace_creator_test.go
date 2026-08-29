@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetMarketplaceCreatorProfileRequest{
+	request := &sdk.GetMarketplaceCreatorProfileRequest{
 		UserID: "userId",
 	}
 	_, invocationErr := client.MarketplaceCreator.GetMarketplaceCreatorProfile(
@@ -88,6 +88,58 @@ func TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock(
 	VerifyRequestCount(t, "TestMarketplaceCreatorGetMarketplaceCreatorProfileWithWireMock", "GET", "/api/v1/marketplace/creator/userId", nil, 1)
 }
 
+func TestMarketplaceCreatorGetMarketplaceCreatorProfileByHandleWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.GetMarketplaceCreatorProfileByHandleRequest{
+		Handle: "handle",
+	}
+	_, invocationErr := client.MarketplaceCreator.GetMarketplaceCreatorProfileByHandle(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceCreatorGetMarketplaceCreatorProfileByHandleWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceCreatorGetMarketplaceCreatorProfileByHandleWithWireMock", "GET", "/api/v1/marketplace/creator/by-handle/handle", nil, 1)
+}
+
+func TestMarketplaceCreatorCheckMarketplaceCreatorHandleAvailabilityWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.CheckMarketplaceCreatorHandleAvailabilityRequest{
+		Handle: "handle",
+	}
+	_, invocationErr := client.MarketplaceCreator.CheckMarketplaceCreatorHandleAvailability(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceCreatorCheckMarketplaceCreatorHandleAvailabilityWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceCreatorCheckMarketplaceCreatorHandleAvailabilityWithWireMock", "GET", "/api/v1/marketplace/creator/handle-available", map[string]string{"handle": "handle"}, 1)
+}
+
 func TestMarketplaceCreatorBrowseMarketplaceCreatorsWithWireMock(
 	t *testing.T,
 ) {
@@ -99,7 +151,7 @@ func TestMarketplaceCreatorBrowseMarketplaceCreatorsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.BrowseMarketplaceCreatorsRequest{}
+	request := &sdk.BrowseMarketplaceCreatorsRequest{}
 	_, invocationErr := client.MarketplaceCreator.BrowseMarketplaceCreators(
 		context.TODO(),
 		request,
@@ -145,7 +197,7 @@ func TestMarketplaceCreatorUpdateMyMarketplaceCreatorProfileWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest{}
+	request := &sdk.UpdateMyMarketplaceCreatorProfileRequest{}
 	_, invocationErr := client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(
 		context.TODO(),
 		request,
@@ -169,7 +221,7 @@ func TestMarketplaceCreatorCreateMarketplaceCreatorProfileWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateMarketplaceCreatorProfileRequest{
+	request := &sdk.CreateMarketplaceCreatorProfileRequest{
 		Bio: "bio",
 	}
 	_, invocationErr := client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
@@ -195,7 +247,7 @@ func TestMarketplaceCreatorClaimMarketplaceCreatorProfileWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ClaimMarketplaceCreatorProfileRequest{
+	request := &sdk.ClaimMarketplaceCreatorProfileRequest{
 		CreatorUserID: "creatorUserId",
 		Reason:        "reason",
 		ProofURL:      "proofUrl",

@@ -4,11 +4,11 @@ package authentication
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) McpAuthorize(
 	ctx context.Context,
-	request *promptvmgosdk.McpAuthorizeRequest,
+	request *sdk.McpAuthorizeRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -63,7 +63,7 @@ func (r *RawClient) McpAuthorize(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -78,9 +78,9 @@ func (r *RawClient) McpAuthorize(
 
 func (r *RawClient) UpdateUIPreferences(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateUIPreferencesRequest,
+	request *sdk.UpdateUIPreferencesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateUIPreferencesResponse], error) {
+) (*core.Response[*sdk.UpdateUIPreferencesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -93,7 +93,7 @@ func (r *RawClient) UpdateUIPreferences(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateUIPreferencesResponse
+	var response *sdk.UpdateUIPreferencesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -106,13 +106,13 @@ func (r *RawClient) UpdateUIPreferences(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateUIPreferencesResponse]{
+	return &core.Response[*sdk.UpdateUIPreferencesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

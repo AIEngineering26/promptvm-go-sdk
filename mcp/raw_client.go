@@ -4,11 +4,11 @@ package mcp
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) ListMcpSessionTokens(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListMcpSessionTokensResponse], error) {
+) (*core.Response[*sdk.ListMcpSessionTokensResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -45,7 +45,7 @@ func (r *RawClient) ListMcpSessionTokens(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ListMcpSessionTokensResponse
+	var response *sdk.ListMcpSessionTokensResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -57,13 +57,13 @@ func (r *RawClient) ListMcpSessionTokens(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListMcpSessionTokensResponse]{
+	return &core.Response[*sdk.ListMcpSessionTokensResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -72,9 +72,9 @@ func (r *RawClient) ListMcpSessionTokens(
 
 func (r *RawClient) MintMcpSessionToken(
 	ctx context.Context,
-	request *promptvmgosdk.MintMcpSessionTokenRequest,
+	request *sdk.MintMcpSessionTokenRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.MintMcpSessionTokenResponse], error) {
+) (*core.Response[*sdk.MintMcpSessionTokenResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -87,7 +87,7 @@ func (r *RawClient) MintMcpSessionToken(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.MintMcpSessionTokenResponse
+	var response *sdk.MintMcpSessionTokenResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -100,13 +100,13 @@ func (r *RawClient) MintMcpSessionToken(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.MintMcpSessionTokenResponse]{
+	return &core.Response[*sdk.MintMcpSessionTokenResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -115,7 +115,7 @@ func (r *RawClient) MintMcpSessionToken(
 
 func (r *RawClient) RevokeMcpSessionToken(
 	ctx context.Context,
-	request *promptvmgosdk.RevokeMcpSessionTokenRequest,
+	request *sdk.RevokeMcpSessionTokenRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -142,7 +142,7 @@ func (r *RawClient) RevokeMcpSessionToken(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {

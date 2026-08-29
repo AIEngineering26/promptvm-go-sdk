@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
 
@@ -2494,6 +2494,15 @@ const (
 	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalMemberInvited      GetSettingsOverviewResponseRecentActivityItemEventType = "admin.internal.member.invited"
 	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalMemberRoleChanged  GetSettingsOverviewResponseRecentActivityItemEventType = "admin.internal.member.role_changed"
 	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalGrantCreated       GetSettingsOverviewResponseRecentActivityItemEventType = "admin.internal.grant.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogProviderCreated   GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ai_catalog.provider.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogProviderUpdated   GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ai_catalog.provider.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogProviderDeleted   GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ai_catalog.provider.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogModelCreated      GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ai_catalog.model.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogModelUpdated      GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ai_catalog.model.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogModelDeleted      GetSettingsOverviewResponseRecentActivityItemEventType = "admin.ai_catalog.model.deleted"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminMarketplaceCategoryCreated GetSettingsOverviewResponseRecentActivityItemEventType = "admin.marketplace_category.created"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminMarketplaceCategoryUpdated GetSettingsOverviewResponseRecentActivityItemEventType = "admin.marketplace_category.updated"
+	GetSettingsOverviewResponseRecentActivityItemEventTypeAdminMarketplaceCategoryDeleted GetSettingsOverviewResponseRecentActivityItemEventType = "admin.marketplace_category.deleted"
 )
 
 func NewGetSettingsOverviewResponseRecentActivityItemEventTypeFromString(s string) (GetSettingsOverviewResponseRecentActivityItemEventType, error) {
@@ -2588,6 +2597,24 @@ func NewGetSettingsOverviewResponseRecentActivityItemEventTypeFromString(s strin
 		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalMemberRoleChanged, nil
 	case "admin.internal.grant.created":
 		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminInternalGrantCreated, nil
+	case "admin.ai_catalog.provider.created":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogProviderCreated, nil
+	case "admin.ai_catalog.provider.updated":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogProviderUpdated, nil
+	case "admin.ai_catalog.provider.deleted":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogProviderDeleted, nil
+	case "admin.ai_catalog.model.created":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogModelCreated, nil
+	case "admin.ai_catalog.model.updated":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogModelUpdated, nil
+	case "admin.ai_catalog.model.deleted":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminAiCatalogModelDeleted, nil
+	case "admin.marketplace_category.created":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminMarketplaceCategoryCreated, nil
+	case "admin.marketplace_category.updated":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminMarketplaceCategoryUpdated, nil
+	case "admin.marketplace_category.deleted":
+		return GetSettingsOverviewResponseRecentActivityItemEventTypeAdminMarketplaceCategoryDeleted, nil
 	}
 	var t GetSettingsOverviewResponseRecentActivityItemEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -3123,6 +3150,15 @@ const (
 	ListAuditLogsResponseEventsItemEventTypeAdminInternalMemberInvited      ListAuditLogsResponseEventsItemEventType = "admin.internal.member.invited"
 	ListAuditLogsResponseEventsItemEventTypeAdminInternalMemberRoleChanged  ListAuditLogsResponseEventsItemEventType = "admin.internal.member.role_changed"
 	ListAuditLogsResponseEventsItemEventTypeAdminInternalGrantCreated       ListAuditLogsResponseEventsItemEventType = "admin.internal.grant.created"
+	ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogProviderCreated   ListAuditLogsResponseEventsItemEventType = "admin.ai_catalog.provider.created"
+	ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogProviderUpdated   ListAuditLogsResponseEventsItemEventType = "admin.ai_catalog.provider.updated"
+	ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogProviderDeleted   ListAuditLogsResponseEventsItemEventType = "admin.ai_catalog.provider.deleted"
+	ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogModelCreated      ListAuditLogsResponseEventsItemEventType = "admin.ai_catalog.model.created"
+	ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogModelUpdated      ListAuditLogsResponseEventsItemEventType = "admin.ai_catalog.model.updated"
+	ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogModelDeleted      ListAuditLogsResponseEventsItemEventType = "admin.ai_catalog.model.deleted"
+	ListAuditLogsResponseEventsItemEventTypeAdminMarketplaceCategoryCreated ListAuditLogsResponseEventsItemEventType = "admin.marketplace_category.created"
+	ListAuditLogsResponseEventsItemEventTypeAdminMarketplaceCategoryUpdated ListAuditLogsResponseEventsItemEventType = "admin.marketplace_category.updated"
+	ListAuditLogsResponseEventsItemEventTypeAdminMarketplaceCategoryDeleted ListAuditLogsResponseEventsItemEventType = "admin.marketplace_category.deleted"
 )
 
 func NewListAuditLogsResponseEventsItemEventTypeFromString(s string) (ListAuditLogsResponseEventsItemEventType, error) {
@@ -3217,6 +3253,24 @@ func NewListAuditLogsResponseEventsItemEventTypeFromString(s string) (ListAuditL
 		return ListAuditLogsResponseEventsItemEventTypeAdminInternalMemberRoleChanged, nil
 	case "admin.internal.grant.created":
 		return ListAuditLogsResponseEventsItemEventTypeAdminInternalGrantCreated, nil
+	case "admin.ai_catalog.provider.created":
+		return ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogProviderCreated, nil
+	case "admin.ai_catalog.provider.updated":
+		return ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogProviderUpdated, nil
+	case "admin.ai_catalog.provider.deleted":
+		return ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogProviderDeleted, nil
+	case "admin.ai_catalog.model.created":
+		return ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogModelCreated, nil
+	case "admin.ai_catalog.model.updated":
+		return ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogModelUpdated, nil
+	case "admin.ai_catalog.model.deleted":
+		return ListAuditLogsResponseEventsItemEventTypeAdminAiCatalogModelDeleted, nil
+	case "admin.marketplace_category.created":
+		return ListAuditLogsResponseEventsItemEventTypeAdminMarketplaceCategoryCreated, nil
+	case "admin.marketplace_category.updated":
+		return ListAuditLogsResponseEventsItemEventTypeAdminMarketplaceCategoryUpdated, nil
+	case "admin.marketplace_category.deleted":
+		return ListAuditLogsResponseEventsItemEventTypeAdminMarketplaceCategoryDeleted, nil
 	}
 	var t ListAuditLogsResponseEventsItemEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

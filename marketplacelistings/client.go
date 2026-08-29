@@ -4,7 +4,7 @@ package marketplacelistings
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Publishes a prompt, skill, hook, collection, or directory to the marketplace. Skills/hooks are sourced via promptId (or the skillId/hookId aliases). Listings are free-only — priceCents must be 0. Requires a creator profile.
 func (c *Client) CreateMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.CreateMarketplaceListingRequest,
+	request *sdk.CreateMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreateMarketplaceListingResponse, error) {
+) (*sdk.CreateMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.CreateMarketplaceListing(
 		ctx,
 		request,
@@ -51,7 +51,7 @@ func (c *Client) CreateMarketplaceListing(
 
 func (c *Client) ArchiveMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.ArchiveMarketplaceListingRequest,
+	request *sdk.ArchiveMarketplaceListingRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ArchiveMarketplaceListing(
@@ -67,9 +67,9 @@ func (c *Client) ArchiveMarketplaceListing(
 
 func (c *Client) UpdateMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateMarketplaceListingRequest,
+	request *sdk.UpdateMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateMarketplaceListingResponse, error) {
+) (*sdk.UpdateMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.UpdateMarketplaceListing(
 		ctx,
 		request,
@@ -84,9 +84,9 @@ func (c *Client) UpdateMarketplaceListing(
 // Owner-only. Validates the MIME type and size against the featured-media allowlist (images ≤ 5 MB: png/jpeg/webp/gif/svg; videos ≤ 50 MB: mp4/webm) and returns a presigned S3 PUT URL plus the deterministic storage key. Upload the bytes to the URL, then call the confirm endpoint.
 func (c *Client) InitiateListingMediaUpload(
 	ctx context.Context,
-	request *promptvmgosdk.InitiateListingMediaUploadRequest,
+	request *sdk.InitiateListingMediaUploadRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.InitiateListingMediaUploadResponse, error) {
+) (*sdk.InitiateListingMediaUploadResponse, error) {
 	response, err := c.WithRawResponse.InitiateListingMediaUpload(
 		ctx,
 		request,
@@ -101,9 +101,9 @@ func (c *Client) InitiateListingMediaUpload(
 // Owner-only. Verifies the uploaded object exists in S3 with a valid size/content-type, then persists the key to the listing. Idempotent — re-confirming the same key returns the updated listing.
 func (c *Client) ConfirmListingMediaUpload(
 	ctx context.Context,
-	request *promptvmgosdk.ConfirmListingMediaUploadRequest,
+	request *sdk.ConfirmListingMediaUploadRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ConfirmListingMediaUploadResponse, error) {
+) (*sdk.ConfirmListingMediaUploadResponse, error) {
 	response, err := c.WithRawResponse.ConfirmListingMediaUpload(
 		ctx,
 		request,
@@ -118,7 +118,7 @@ func (c *Client) ConfirmListingMediaUpload(
 // Owner-only. Clears the stored key for the given kind and best-effort deletes the S3 object. Deleting a video also clears its poster. Idempotent.
 func (c *Client) DeleteListingMedia(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteListingMediaRequest,
+	request *sdk.DeleteListingMediaRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DeleteListingMedia(
@@ -135,9 +135,9 @@ func (c *Client) DeleteListingMedia(
 // Claims a free listing and copies the prompt/collection into the user workspace.
 func (c *Client) ClaimMarketplaceListing(
 	ctx context.Context,
-	request *promptvmgosdk.ClaimMarketplaceListingRequest,
+	request *sdk.ClaimMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ClaimMarketplaceListingResponse, error) {
+) (*sdk.ClaimMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.ClaimMarketplaceListing(
 		ctx,
 		request,

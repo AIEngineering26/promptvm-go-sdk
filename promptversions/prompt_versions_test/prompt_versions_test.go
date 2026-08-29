@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestPromptVersionsListPromptVersionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListPromptVersionsRequest{
+	request := &sdk.ListPromptVersionsRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.PromptVersions.ListPromptVersions(
@@ -99,7 +99,7 @@ func TestPromptVersionsCreatePromptVersionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreatePromptVersionRequest{
+	request := &sdk.CreatePromptVersionRequest{
 		PromptID: "promptId",
 		Content:  "content",
 	}
@@ -126,7 +126,7 @@ func TestPromptVersionsRollbackPromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.RollbackPromptRequest{
+	request := &sdk.RollbackPromptRequest{
 		PromptID:      "promptId",
 		TargetVersion: 1,
 	}
@@ -153,7 +153,7 @@ func TestPromptVersionsGetPromptVersionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetPromptVersionRequest{
+	request := &sdk.GetPromptVersionRequest{
 		PromptID:  "promptId",
 		VersionID: "versionId",
 	}
@@ -180,7 +180,7 @@ func TestPromptVersionsUpdatePromptVersionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdatePromptVersionRequest{
+	request := &sdk.UpdatePromptVersionRequest{
 		PromptID:  "promptId",
 		VersionID: "versionId",
 	}
@@ -207,7 +207,7 @@ func TestPromptVersionsDiffPromptVersionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DiffPromptVersionsRequest{
+	request := &sdk.DiffPromptVersionsRequest{
 		PromptID: "promptId",
 		From:     "from",
 		To:       "to",
@@ -222,4 +222,61 @@ func TestPromptVersionsDiffPromptVersionsWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestPromptVersionsDiffPromptVersionsWithWireMock", "GET", "/api/v1/prompts/promptId/diff", map[string]string{"from": "from", "to": "to"}, 1)
+}
+
+func TestPromptVersionsGetVersionRecommendedModelsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.GetVersionRecommendedModelsRequest{
+		PromptID:  "promptId",
+		VersionID: "versionId",
+	}
+	_, invocationErr := client.PromptVersions.GetVersionRecommendedModels(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPromptVersionsGetVersionRecommendedModelsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPromptVersionsGetVersionRecommendedModelsWithWireMock", "GET", "/api/v1/prompts/promptId/versions/versionId/recommended-models", nil, 1)
+}
+
+func TestPromptVersionsSetVersionRecommendedModelsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.SetVersionRecommendedModelsRequest{
+		PromptID:  "promptId",
+		VersionID: "versionId",
+		ModelIDs: []string{
+			"modelIds",
+		},
+	}
+	_, invocationErr := client.PromptVersions.SetVersionRecommendedModels(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPromptVersionsSetVersionRecommendedModelsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPromptVersionsSetVersionRecommendedModelsWithWireMock", "PUT", "/api/v1/prompts/promptId/versions/versionId/recommended-models", nil, 1)
 }
