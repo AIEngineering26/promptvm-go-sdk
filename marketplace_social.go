@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
 
@@ -616,52 +616,57 @@ var (
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldTags                   = big.NewInt(1 << 16)
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldIsFeatured             = big.NewInt(1 << 17)
 	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCategories             = big.NewInt(1 << 18)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller                 = big.NewInt(1 << 19)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind            = big.NewInt(1 << 20)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedImageURL       = big.NewInt(1 << 21)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedVideoURL       = big.NewInt(1 << 22)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedMediaPosterURL = big.NewInt(1 << 23)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug             = big.NewInt(1 << 24)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldInstallRef             = big.NewInt(1 << 25)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionItemCount    = big.NewInt(1 << 26)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill                  = big.NewInt(1 << 27)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt            = big.NewInt(1 << 28)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt              = big.NewInt(1 << 29)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt              = big.NewInt(1 << 30)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldRecommendedModels      = big.NewInt(1 << 19)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSeller                 = big.NewInt(1 << 20)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldContentKind            = big.NewInt(1 << 21)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedImageURL       = big.NewInt(1 << 22)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedVideoURL       = big.NewInt(1 << 23)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldFeaturedMediaPosterURL = big.NewInt(1 << 24)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPromptSlug             = big.NewInt(1 << 25)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldInstallRef             = big.NewInt(1 << 26)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCollectionItemCount    = big.NewInt(1 << 27)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldSkill                  = big.NewInt(1 << 28)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldPublishedAt            = big.NewInt(1 << 29)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCreatedAt              = big.NewInt(1 << 30)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt              = big.NewInt(1 << 31)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldMatchSnippet           = big.NewInt(1 << 32)
 )
 
 type GetAPIV1MarketplaceCreatorMeFeedResponseDataItem struct {
-	ID                     string                                                            `json:"id" url:"id"`
-	PromptID               *string                                                           `json:"promptId,omitempty" url:"promptId,omitempty"`
-	CollectionID           *string                                                           `json:"collectionId,omitempty" url:"collectionId,omitempty"`
-	DirectoryID            *string                                                           `json:"directoryId,omitempty" url:"directoryId,omitempty"`
-	SellerID               string                                                            `json:"sellerId" url:"sellerId"`
-	Title                  string                                                            `json:"title" url:"title"`
-	Description            *string                                                           `json:"description,omitempty" url:"description,omitempty"`
-	Status                 GetAPIV1MarketplaceCreatorMeFeedResponseDataItemStatus            `json:"status" url:"status"`
-	PriceCents             int                                                               `json:"priceCents" url:"priceCents"`
-	Currency               string                                                            `json:"currency" url:"currency"`
-	AccessType             *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemAccessType       `json:"accessType,omitempty" url:"accessType,omitempty"`
-	AvgRating              *string                                                           `json:"avgRating,omitempty" url:"avgRating,omitempty"`
-	RatingCount            *int                                                              `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
-	ViewCount              *int                                                              `json:"viewCount,omitempty" url:"viewCount,omitempty"`
-	PurchaseCount          *int                                                              `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
-	ImportCount            *int                                                              `json:"importCount,omitempty" url:"importCount,omitempty"`
-	Tags                   []string                                                          `json:"tags,omitempty" url:"tags,omitempty"`
-	IsFeatured             *bool                                                             `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
-	Categories             []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemCategoriesItem `json:"categories,omitempty" url:"categories,omitempty"`
-	Seller                 *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller           `json:"seller,omitempty" url:"seller,omitempty"`
-	ContentKind            *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind      `json:"contentKind,omitempty" url:"contentKind,omitempty"`
-	FeaturedImageURL       *string                                                           `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
-	FeaturedVideoURL       *string                                                           `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
-	FeaturedMediaPosterURL *string                                                           `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
-	PromptSlug             *string                                                           `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
-	InstallRef             *string                                                           `json:"installRef,omitempty" url:"installRef,omitempty"`
-	CollectionItemCount    *int                                                              `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
-	Skill                  *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill            `json:"skill,omitempty" url:"skill,omitempty"`
-	PublishedAt            *time.Time                                                        `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
-	CreatedAt              time.Time                                                         `json:"createdAt" url:"createdAt"`
-	UpdatedAt              time.Time                                                         `json:"updatedAt" url:"updatedAt"`
+	ID                     string                                                                   `json:"id" url:"id"`
+	PromptID               *string                                                                  `json:"promptId,omitempty" url:"promptId,omitempty"`
+	CollectionID           *string                                                                  `json:"collectionId,omitempty" url:"collectionId,omitempty"`
+	DirectoryID            *string                                                                  `json:"directoryId,omitempty" url:"directoryId,omitempty"`
+	SellerID               string                                                                   `json:"sellerId" url:"sellerId"`
+	Title                  string                                                                   `json:"title" url:"title"`
+	Description            *string                                                                  `json:"description,omitempty" url:"description,omitempty"`
+	Status                 GetAPIV1MarketplaceCreatorMeFeedResponseDataItemStatus                   `json:"status" url:"status"`
+	PriceCents             int                                                                      `json:"priceCents" url:"priceCents"`
+	Currency               string                                                                   `json:"currency" url:"currency"`
+	AccessType             *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemAccessType              `json:"accessType,omitempty" url:"accessType,omitempty"`
+	AvgRating              *string                                                                  `json:"avgRating,omitempty" url:"avgRating,omitempty"`
+	RatingCount            *int                                                                     `json:"ratingCount,omitempty" url:"ratingCount,omitempty"`
+	ViewCount              *int                                                                     `json:"viewCount,omitempty" url:"viewCount,omitempty"`
+	PurchaseCount          *int                                                                     `json:"purchaseCount,omitempty" url:"purchaseCount,omitempty"`
+	ImportCount            *int                                                                     `json:"importCount,omitempty" url:"importCount,omitempty"`
+	Tags                   []string                                                                 `json:"tags,omitempty" url:"tags,omitempty"`
+	IsFeatured             *bool                                                                    `json:"isFeatured,omitempty" url:"isFeatured,omitempty"`
+	Categories             []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemCategoriesItem        `json:"categories,omitempty" url:"categories,omitempty"`
+	RecommendedModels      []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem `json:"recommendedModels,omitempty" url:"recommendedModels,omitempty"`
+	Seller                 *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller                  `json:"seller,omitempty" url:"seller,omitempty"`
+	ContentKind            *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind             `json:"contentKind,omitempty" url:"contentKind,omitempty"`
+	FeaturedImageURL       *string                                                                  `json:"featuredImageUrl,omitempty" url:"featuredImageUrl,omitempty"`
+	FeaturedVideoURL       *string                                                                  `json:"featuredVideoUrl,omitempty" url:"featuredVideoUrl,omitempty"`
+	FeaturedMediaPosterURL *string                                                                  `json:"featuredMediaPosterUrl,omitempty" url:"featuredMediaPosterUrl,omitempty"`
+	PromptSlug             *string                                                                  `json:"promptSlug,omitempty" url:"promptSlug,omitempty"`
+	InstallRef             *string                                                                  `json:"installRef,omitempty" url:"installRef,omitempty"`
+	CollectionItemCount    *int                                                                     `json:"collectionItemCount,omitempty" url:"collectionItemCount,omitempty"`
+	Skill                  *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSkill                   `json:"skill,omitempty" url:"skill,omitempty"`
+	PublishedAt            *time.Time                                                               `json:"publishedAt,omitempty" url:"publishedAt,omitempty"`
+	CreatedAt              time.Time                                                                `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time                                                                `json:"updatedAt" url:"updatedAt"`
+	// Why this listing matched. Present only on ranking=semantic|hybrid, and only when the matched source is already publicly readable.
+	MatchSnippet *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet `json:"matchSnippet,omitempty" url:"matchSnippet,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -803,6 +808,13 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetCategories() []*Ge
 	return g.Categories
 }
 
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetRecommendedModels() []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem {
+	if g == nil {
+		return nil
+	}
+	return g.RecommendedModels
+}
+
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetSeller() *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller {
 	if g == nil {
 		return nil
@@ -885,6 +897,13 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetUpdatedAt() time.T
 		return time.Time{}
 	}
 	return g.UpdatedAt
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetMatchSnippet() *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet {
+	if g == nil {
+		return nil
+	}
+	return g.MatchSnippet
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) GetExtraProperties() map[string]interface{} {
@@ -1031,6 +1050,13 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetCategories(categor
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldCategories)
 }
 
+// SetRecommendedModels sets the RecommendedModels field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetRecommendedModels(recommendedModels []*GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) {
+	g.RecommendedModels = recommendedModels
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldRecommendedModels)
+}
+
 // SetSeller sets the Seller field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetSeller(seller *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) {
@@ -1113,6 +1139,13 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetCreatedAt(createdA
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetUpdatedAt(updatedAt time.Time) {
 	g.UpdatedAt = updatedAt
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldUpdatedAt)
+}
+
+// SetMatchSnippet sets the MatchSnippet field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) SetMatchSnippet(matchSnippet *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) {
+	g.MatchSnippet = matchSnippet
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemFieldMatchSnippet)
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItem) UnmarshalJSON(data []byte) error {
@@ -1393,20 +1426,390 @@ func (g GetAPIV1MarketplaceCreatorMeFeedResponseDataItemContentKind) Ptr() *GetA
 	return &g
 }
 
+// Why this listing matched. Present only on ranking=semantic|hybrid, and only when the matched source is already publicly readable.
 var (
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldUserID      = big.NewInt(1 << 0)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldBio         = big.NewInt(1 << 1)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldIsVerified  = big.NewInt(1 << 2)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldDisplayName = big.NewInt(1 << 3)
-	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldAvatarURL   = big.NewInt(1 << 4)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetFieldText   = big.NewInt(1 << 0)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetFieldRole   = big.NewInt(1 << 1)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetFieldSource = big.NewInt(1 << 2)
+)
+
+type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet struct {
+	// Bounded excerpt of the matching passage.
+	Text *string `json:"text,omitempty" url:"text,omitempty"`
+	// How the matched file is reachable from the listing.
+	Role *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole `json:"role,omitempty" url:"role,omitempty"`
+	// Display name of the matched file. Never a storage key or path.
+	Source *string `json:"source,omitempty" url:"source,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) GetText() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Text
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) GetRole() *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole {
+	if g == nil {
+		return nil
+	}
+	return g.Role
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) GetSource() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Source
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetText sets the Text field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) SetText(text *string) {
+	g.Text = text
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetFieldText)
+}
+
+// SetRole sets the Role field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) SetRole(role *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole) {
+	g.Role = role
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetFieldRole)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) SetSource(source *string) {
+	g.Source = source
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetFieldSource)
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) MarshalJSON() ([]byte, error) {
+	type embed GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippet) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+// How the matched file is reachable from the listing.
+type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole string
+
+const (
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRolePrimary          GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole = "primary"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRoleBundledResource  GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole = "bundled_resource"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRoleCollectionMember GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole = "collection_member"
+	GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRoleFolderMember     GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole = "folder_member"
+)
+
+func NewGetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRoleFromString(s string) (GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole, error) {
+	switch s {
+	case "primary":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRolePrimary, nil
+	case "bundled_resource":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRoleBundledResource, nil
+	case "collection_member":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRoleCollectionMember, nil
+	case "folder_member":
+		return GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRoleFolderMember, nil
+	}
+	var t GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole) Ptr() *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemMatchSnippetRole {
+	return &g
+}
+
+var (
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldID           = big.NewInt(1 << 0)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldSlug         = big.NewInt(1 << 1)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldName         = big.NewInt(1 << 2)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldLogoURL      = big.NewInt(1 << 3)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldIsActive     = big.NewInt(1 << 4)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldModality     = big.NewInt(1 << 5)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldProviderID   = big.NewInt(1 << 6)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldProviderSlug = big.NewInt(1 << 7)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldProviderName = big.NewInt(1 << 8)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldPosition     = big.NewInt(1 << 9)
+)
+
+type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem struct {
+	ID       string  `json:"id" url:"id"`
+	Slug     string  `json:"slug" url:"slug"`
+	Name     string  `json:"name" url:"name"`
+	LogoURL  *string `json:"logoUrl,omitempty" url:"logoUrl,omitempty"`
+	IsActive *bool   `json:"isActive,omitempty" url:"isActive,omitempty"`
+	// text | image | video | audio
+	Modality     *string `json:"modality,omitempty" url:"modality,omitempty"`
+	ProviderID   string  `json:"providerId" url:"providerId"`
+	ProviderSlug string  `json:"providerSlug" url:"providerSlug"`
+	ProviderName string  `json:"providerName" url:"providerName"`
+	Position     *int    `json:"position,omitempty" url:"position,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetID() string {
+	if g == nil {
+		return ""
+	}
+	return g.ID
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetSlug() string {
+	if g == nil {
+		return ""
+	}
+	return g.Slug
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetName() string {
+	if g == nil {
+		return ""
+	}
+	return g.Name
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetLogoURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.LogoURL
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetIsActive() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsActive
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetModality() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Modality
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetProviderID() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderID
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetProviderSlug() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderSlug
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetProviderName() string {
+	if g == nil {
+		return ""
+	}
+	return g.ProviderName
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetPosition() *int {
+	if g == nil {
+		return nil
+	}
+	return g.Position
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetID(id string) {
+	g.ID = id
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldID)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetSlug(slug string) {
+	g.Slug = slug
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldSlug)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetName(name string) {
+	g.Name = name
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldName)
+}
+
+// SetLogoURL sets the LogoURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetLogoURL(logoURL *string) {
+	g.LogoURL = logoURL
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldLogoURL)
+}
+
+// SetIsActive sets the IsActive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetIsActive(isActive *bool) {
+	g.IsActive = isActive
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldIsActive)
+}
+
+// SetModality sets the Modality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetModality(modality *string) {
+	g.Modality = modality
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldModality)
+}
+
+// SetProviderID sets the ProviderID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetProviderID(providerID string) {
+	g.ProviderID = providerID
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldProviderID)
+}
+
+// SetProviderSlug sets the ProviderSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetProviderSlug(providerSlug string) {
+	g.ProviderSlug = providerSlug
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldProviderSlug)
+}
+
+// SetProviderName sets the ProviderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetProviderName(providerName string) {
+	g.ProviderName = providerName
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldProviderName)
+}
+
+// SetPosition sets the Position field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) SetPosition(position *int) {
+	g.Position = position
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItemFieldPosition)
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) MarshalJSON() ([]byte, error) {
+	type embed GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemRecommendedModelsItem) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldUserID        = big.NewInt(1 << 0)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldBio           = big.NewInt(1 << 1)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldIsVerified    = big.NewInt(1 << 2)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldDisplayName   = big.NewInt(1 << 3)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldAvatarURL     = big.NewInt(1 << 4)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldProfileHandle = big.NewInt(1 << 5)
+	getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldUsername      = big.NewInt(1 << 6)
 )
 
 type GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller struct {
-	UserID      *string `json:"userId,omitempty" url:"userId,omitempty"`
-	Bio         *string `json:"bio,omitempty" url:"bio,omitempty"`
-	IsVerified  *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
-	DisplayName *string `json:"displayName,omitempty" url:"displayName,omitempty"`
-	AvatarURL   *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	UserID        *string `json:"userId,omitempty" url:"userId,omitempty"`
+	Bio           *string `json:"bio,omitempty" url:"bio,omitempty"`
+	IsVerified    *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
+	DisplayName   *string `json:"displayName,omitempty" url:"displayName,omitempty"`
+	AvatarURL     *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	ProfileHandle *string `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
+	Username      *string `json:"username,omitempty" url:"username,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1448,6 +1851,20 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetAvatarURL() 
 		return nil
 	}
 	return g.AvatarURL
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetProfileHandle() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ProfileHandle
+}
+
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetUsername() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Username
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) GetExtraProperties() map[string]interface{} {
@@ -1494,6 +1911,20 @@ func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetDisplayName(
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetAvatarURL(avatarURL *string) {
 	g.AvatarURL = avatarURL
 	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldAvatarURL)
+}
+
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetProfileHandle(profileHandle *string) {
+	g.ProfileHandle = profileHandle
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldProfileHandle)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) SetUsername(username *string) {
+	g.Username = username
+	g.require(getAPIV1MarketplaceCreatorMeFeedResponseDataItemSellerFieldUsername)
 }
 
 func (g *GetAPIV1MarketplaceCreatorMeFeedResponseDataItemSeller) UnmarshalJSON(data []byte) error {

@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AIEngineering26/promptvm-go-sdk/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/AIEngineering26/promptvm-go-sdk/core"
 )
 
 type RetryTestCase struct {

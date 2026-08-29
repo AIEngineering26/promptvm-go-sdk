@@ -4,11 +4,11 @@ package directories
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListDirectories(
 	ctx context.Context,
-	request *promptvmgosdk.ListDirectoriesRequest,
+	request *sdk.ListDirectoriesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.ListDirectoriesResponse], error) {
+) (*core.Response[*sdk.ListDirectoriesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListDirectories(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.ListDirectoriesResponse
+	var response *sdk.ListDirectoriesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListDirectories(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.ListDirectoriesResponse]{
+	return &core.Response[*sdk.ListDirectoriesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListDirectories(
 
 func (r *RawClient) CreateDirectory(
 	ctx context.Context,
-	request *promptvmgosdk.CreateDirectoryRequest,
+	request *sdk.CreateDirectoryRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.CreateDirectoryResponse], error) {
+) (*core.Response[*sdk.CreateDirectoryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateDirectory(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.CreateDirectoryResponse
+	var response *sdk.CreateDirectoryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) CreateDirectory(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.CreateDirectoryResponse]{
+	return &core.Response[*sdk.CreateDirectoryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -123,9 +123,9 @@ func (r *RawClient) CreateDirectory(
 
 func (r *RawClient) DeleteDirectory(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteDirectoryRequest,
+	request *sdk.DeleteDirectoryRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.DeleteDirectoryResponse], error) {
+) (*core.Response[*sdk.DeleteDirectoryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) DeleteDirectory(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.DeleteDirectoryResponse
+	var response *sdk.DeleteDirectoryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,13 +152,13 @@ func (r *RawClient) DeleteDirectory(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.DeleteDirectoryResponse]{
+	return &core.Response[*sdk.DeleteDirectoryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -167,9 +167,9 @@ func (r *RawClient) DeleteDirectory(
 
 func (r *RawClient) UpdateDirectory(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateDirectoryRequest,
+	request *sdk.UpdateDirectoryRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.UpdateDirectoryResponse], error) {
+) (*core.Response[*sdk.UpdateDirectoryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -185,7 +185,7 @@ func (r *RawClient) UpdateDirectory(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.UpdateDirectoryResponse
+	var response *sdk.UpdateDirectoryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -198,13 +198,13 @@ func (r *RawClient) UpdateDirectory(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.UpdateDirectoryResponse]{
+	return &core.Response[*sdk.UpdateDirectoryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

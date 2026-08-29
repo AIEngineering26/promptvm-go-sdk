@@ -4,7 +4,7 @@ package hookspublic
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Unauthenticated read. Returns the hook configuration as JSON.
 func (c *Client) GetPublicHookBySlug(
 	ctx context.Context,
-	request *promptvmgosdk.GetPublicHookBySlugRequest,
+	request *sdk.GetPublicHookBySlugRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetPublicHookBySlugResponse, error) {
+) (*sdk.GetPublicHookBySlugResponse, error) {
 	response, err := c.WithRawResponse.GetPublicHookBySlug(
 		ctx,
 		request,

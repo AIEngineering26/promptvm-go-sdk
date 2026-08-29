@@ -4,7 +4,7 @@ package workspaces
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns workspaces the authenticated user can access within an organization.
 func (c *Client) ListWorkspaces(
 	ctx context.Context,
-	request *promptvmgosdk.ListWorkspacesRequest,
+	request *sdk.ListWorkspacesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListWorkspacesResponse, error) {
+) (*sdk.ListWorkspacesResponse, error) {
 	response, err := c.WithRawResponse.ListWorkspaces(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListWorkspaces(
 // Creates a new workspace within an organization. The creator is added as owner.
 func (c *Client) CreateWorkspace(
 	ctx context.Context,
-	request *promptvmgosdk.CreateWorkspaceRequest,
+	request *sdk.CreateWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreateWorkspaceResponse, error) {
+) (*sdk.CreateWorkspaceResponse, error) {
 	response, err := c.WithRawResponse.CreateWorkspace(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) CreateWorkspace(
 // Returns full workspace metadata including owner, members, and content counts. PRIVATE workspaces are readable only by org owners/admins, the workspace owner, or workspace members; other org members receive 404.
 func (c *Client) GetWorkspace(
 	ctx context.Context,
-	request *promptvmgosdk.GetWorkspaceRequest,
+	request *sdk.GetWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetWorkspaceResponse, error) {
+) (*sdk.GetWorkspaceResponse, error) {
 	response, err := c.WithRawResponse.GetWorkspace(
 		ctx,
 		request,
@@ -86,9 +86,9 @@ func (c *Client) GetWorkspace(
 // Soft-deletes a workspace. Cannot delete default workspace. Use cascade=true to also delete prompts/directories.
 func (c *Client) DeleteWorkspace(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteWorkspaceRequest,
+	request *sdk.DeleteWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.DeleteWorkspaceResponse, error) {
+) (*sdk.DeleteWorkspaceResponse, error) {
 	response, err := c.WithRawResponse.DeleteWorkspace(
 		ctx,
 		request,
@@ -103,9 +103,9 @@ func (c *Client) DeleteWorkspace(
 // Updates workspace metadata. Only owner or admin can update. Re-generates slug if name changes.
 func (c *Client) UpdateWorkspace(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateWorkspaceRequest,
+	request *sdk.UpdateWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateWorkspaceResponse, error) {
+) (*sdk.UpdateWorkspaceResponse, error) {
 	response, err := c.WithRawResponse.UpdateWorkspace(
 		ctx,
 		request,
@@ -120,9 +120,9 @@ func (c *Client) UpdateWorkspace(
 // Pins or unpins a workspace for the authenticated user.
 func (c *Client) UpdateWorkspacePin(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateWorkspacePinRequest,
+	request *sdk.UpdateWorkspacePinRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateWorkspacePinResponse, error) {
+) (*sdk.UpdateWorkspacePinResponse, error) {
 	response, err := c.WithRawResponse.UpdateWorkspacePin(
 		ctx,
 		request,
@@ -137,9 +137,9 @@ func (c *Client) UpdateWorkspacePin(
 // Transfers workspace ownership to another org member. Only current owner can transfer. Cannot transfer default workspace.
 func (c *Client) TransferWorkspaceOwnership(
 	ctx context.Context,
-	request *promptvmgosdk.TransferWorkspaceOwnershipRequest,
+	request *sdk.TransferWorkspaceOwnershipRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.TransferWorkspaceOwnershipResponse, error) {
+) (*sdk.TransferWorkspaceOwnershipResponse, error) {
 	response, err := c.WithRawResponse.TransferWorkspaceOwnership(
 		ctx,
 		request,

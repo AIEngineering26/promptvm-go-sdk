@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
 
@@ -63,6 +63,31 @@ func (b *BrowseMarketplaceCreatorsRequest) SetLimit(limit *string) {
 }
 
 var (
+	checkMarketplaceCreatorHandleAvailabilityRequestFieldHandle = big.NewInt(1 << 0)
+)
+
+type CheckMarketplaceCreatorHandleAvailabilityRequest struct {
+	Handle string `json:"-" url:"handle"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetHandle sets the Handle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckMarketplaceCreatorHandleAvailabilityRequest) SetHandle(handle string) {
+	c.Handle = handle
+	c.require(checkMarketplaceCreatorHandleAvailabilityRequestFieldHandle)
+}
+
+var (
 	claimMarketplaceCreatorProfileRequestFieldCreatorUserID = big.NewInt(1 << 0)
 	claimMarketplaceCreatorProfileRequestFieldReason        = big.NewInt(1 << 1)
 	claimMarketplaceCreatorProfileRequestFieldProofURL      = big.NewInt(1 << 2)
@@ -115,19 +140,21 @@ func (c *ClaimMarketplaceCreatorProfileRequest) SetMessage(message *string) {
 }
 
 var (
-	createMarketplaceCreatorProfileRequestFieldBio         = big.NewInt(1 << 0)
-	createMarketplaceCreatorProfileRequestFieldWebsite     = big.NewInt(1 << 1)
-	createMarketplaceCreatorProfileRequestFieldSocialLinks = big.NewInt(1 << 2)
-	createMarketplaceCreatorProfileRequestFieldAvatarURL   = big.NewInt(1 << 3)
-	createMarketplaceCreatorProfileRequestFieldDisplayName = big.NewInt(1 << 4)
+	createMarketplaceCreatorProfileRequestFieldBio           = big.NewInt(1 << 0)
+	createMarketplaceCreatorProfileRequestFieldWebsite       = big.NewInt(1 << 1)
+	createMarketplaceCreatorProfileRequestFieldSocialLinks   = big.NewInt(1 << 2)
+	createMarketplaceCreatorProfileRequestFieldAvatarURL     = big.NewInt(1 << 3)
+	createMarketplaceCreatorProfileRequestFieldDisplayName   = big.NewInt(1 << 4)
+	createMarketplaceCreatorProfileRequestFieldProfileHandle = big.NewInt(1 << 5)
 )
 
 type CreateMarketplaceCreatorProfileRequest struct {
-	Bio         string                 `json:"bio" url:"-"`
-	Website     *string                `json:"website,omitempty" url:"-"`
-	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"-"`
-	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"-"`
-	DisplayName *string                `json:"displayName,omitempty" url:"-"`
+	Bio           string                 `json:"bio" url:"-"`
+	Website       *string                `json:"website,omitempty" url:"-"`
+	SocialLinks   map[string]interface{} `json:"socialLinks,omitempty" url:"-"`
+	AvatarURL     *string                `json:"avatarUrl,omitempty" url:"-"`
+	DisplayName   *string                `json:"displayName,omitempty" url:"-"`
+	ProfileHandle *string                `json:"profileHandle,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -175,6 +202,13 @@ func (c *CreateMarketplaceCreatorProfileRequest) SetDisplayName(displayName *str
 	c.require(createMarketplaceCreatorProfileRequestFieldDisplayName)
 }
 
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileRequest) SetProfileHandle(profileHandle *string) {
+	c.ProfileHandle = profileHandle
+	c.require(createMarketplaceCreatorProfileRequestFieldProfileHandle)
+}
+
 var (
 	getMarketplaceCreatorProfileRequestFieldUserID = big.NewInt(1 << 0)
 )
@@ -198,6 +232,31 @@ func (g *GetMarketplaceCreatorProfileRequest) require(field *big.Int) {
 func (g *GetMarketplaceCreatorProfileRequest) SetUserID(userID string) {
 	g.UserID = userID
 	g.require(getMarketplaceCreatorProfileRequestFieldUserID)
+}
+
+var (
+	getMarketplaceCreatorProfileByHandleRequestFieldHandle = big.NewInt(1 << 0)
+)
+
+type GetMarketplaceCreatorProfileByHandleRequest struct {
+	Handle string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetHandle sets the Handle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleRequest) SetHandle(handle string) {
+	g.Handle = handle
+	g.require(getMarketplaceCreatorProfileByHandleRequestFieldHandle)
 }
 
 type BrowseMarketplaceCreatorsRequestSort string
@@ -330,19 +389,21 @@ var (
 	browseMarketplaceCreatorsResponseDataItemFieldUserID        = big.NewInt(1 << 0)
 	browseMarketplaceCreatorsResponseDataItemFieldDisplayName   = big.NewInt(1 << 1)
 	browseMarketplaceCreatorsResponseDataItemFieldUsername      = big.NewInt(1 << 2)
-	browseMarketplaceCreatorsResponseDataItemFieldAvatarURL     = big.NewInt(1 << 3)
-	browseMarketplaceCreatorsResponseDataItemFieldIsVerified    = big.NewInt(1 << 4)
-	browseMarketplaceCreatorsResponseDataItemFieldBio           = big.NewInt(1 << 5)
-	browseMarketplaceCreatorsResponseDataItemFieldListingsCount = big.NewInt(1 << 6)
-	browseMarketplaceCreatorsResponseDataItemFieldInstalls      = big.NewInt(1 << 7)
-	browseMarketplaceCreatorsResponseDataItemFieldFollowers     = big.NewInt(1 << 8)
-	browseMarketplaceCreatorsResponseDataItemFieldIsFollowing   = big.NewInt(1 << 9)
+	browseMarketplaceCreatorsResponseDataItemFieldProfileHandle = big.NewInt(1 << 3)
+	browseMarketplaceCreatorsResponseDataItemFieldAvatarURL     = big.NewInt(1 << 4)
+	browseMarketplaceCreatorsResponseDataItemFieldIsVerified    = big.NewInt(1 << 5)
+	browseMarketplaceCreatorsResponseDataItemFieldBio           = big.NewInt(1 << 6)
+	browseMarketplaceCreatorsResponseDataItemFieldListingsCount = big.NewInt(1 << 7)
+	browseMarketplaceCreatorsResponseDataItemFieldInstalls      = big.NewInt(1 << 8)
+	browseMarketplaceCreatorsResponseDataItemFieldFollowers     = big.NewInt(1 << 9)
+	browseMarketplaceCreatorsResponseDataItemFieldIsFollowing   = big.NewInt(1 << 10)
 )
 
 type BrowseMarketplaceCreatorsResponseDataItem struct {
 	UserID        *string `json:"userId,omitempty" url:"userId,omitempty"`
 	DisplayName   *string `json:"displayName,omitempty" url:"displayName,omitempty"`
 	Username      *string `json:"username,omitempty" url:"username,omitempty"`
+	ProfileHandle *string `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
 	AvatarURL     *string `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
 	IsVerified    *bool   `json:"isVerified,omitempty" url:"isVerified,omitempty"`
 	Bio           *string `json:"bio,omitempty" url:"bio,omitempty"`
@@ -377,6 +438,13 @@ func (b *BrowseMarketplaceCreatorsResponseDataItem) GetUsername() *string {
 		return nil
 	}
 	return b.Username
+}
+
+func (b *BrowseMarketplaceCreatorsResponseDataItem) GetProfileHandle() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ProfileHandle
 }
 
 func (b *BrowseMarketplaceCreatorsResponseDataItem) GetAvatarURL() *string {
@@ -458,6 +526,13 @@ func (b *BrowseMarketplaceCreatorsResponseDataItem) SetDisplayName(displayName *
 func (b *BrowseMarketplaceCreatorsResponseDataItem) SetUsername(username *string) {
 	b.Username = username
 	b.require(browseMarketplaceCreatorsResponseDataItemFieldUsername)
+}
+
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BrowseMarketplaceCreatorsResponseDataItem) SetProfileHandle(profileHandle *string) {
+	b.ProfileHandle = profileHandle
+	b.require(browseMarketplaceCreatorsResponseDataItemFieldProfileHandle)
 }
 
 // SetAvatarURL sets the AvatarURL field and marks it as non-optional;
@@ -656,6 +731,195 @@ func (b *BrowseMarketplaceCreatorsResponseMeta) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+// Availability
+var (
+	checkMarketplaceCreatorHandleAvailabilityResponseFieldData = big.NewInt(1 << 0)
+)
+
+type CheckMarketplaceCreatorHandleAvailabilityResponse struct {
+	Data *CheckMarketplaceCreatorHandleAvailabilityResponseData `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponse) GetData() *CheckMarketplaceCreatorHandleAvailabilityResponseData {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponse) SetData(data *CheckMarketplaceCreatorHandleAvailabilityResponseData) {
+	c.Data = data
+	c.require(checkMarketplaceCreatorHandleAvailabilityResponseFieldData)
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CheckMarketplaceCreatorHandleAvailabilityResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CheckMarketplaceCreatorHandleAvailabilityResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponse) MarshalJSON() ([]byte, error) {
+	type embed CheckMarketplaceCreatorHandleAvailabilityResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	checkMarketplaceCreatorHandleAvailabilityResponseDataFieldHandle    = big.NewInt(1 << 0)
+	checkMarketplaceCreatorHandleAvailabilityResponseDataFieldAvailable = big.NewInt(1 << 1)
+	checkMarketplaceCreatorHandleAvailabilityResponseDataFieldReason    = big.NewInt(1 << 2)
+)
+
+type CheckMarketplaceCreatorHandleAvailabilityResponseData struct {
+	Handle    string  `json:"handle" url:"handle"`
+	Available bool    `json:"available" url:"available"`
+	Reason    *string `json:"reason,omitempty" url:"reason,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) GetHandle() string {
+	if c == nil {
+		return ""
+	}
+	return c.Handle
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) GetAvailable() bool {
+	if c == nil {
+		return false
+	}
+	return c.Available
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) GetReason() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Reason
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetHandle sets the Handle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) SetHandle(handle string) {
+	c.Handle = handle
+	c.require(checkMarketplaceCreatorHandleAvailabilityResponseDataFieldHandle)
+}
+
+// SetAvailable sets the Available field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) SetAvailable(available bool) {
+	c.Available = available
+	c.require(checkMarketplaceCreatorHandleAvailabilityResponseDataFieldAvailable)
+}
+
+// SetReason sets the Reason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) SetReason(reason *string) {
+	c.Reason = reason
+	c.require(checkMarketplaceCreatorHandleAvailabilityResponseDataFieldReason)
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler CheckMarketplaceCreatorHandleAvailabilityResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CheckMarketplaceCreatorHandleAvailabilityResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) MarshalJSON() ([]byte, error) {
+	type embed CheckMarketplaceCreatorHandleAvailabilityResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CheckMarketplaceCreatorHandleAvailabilityResponseData) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 // Claim request accepted
@@ -895,33 +1159,37 @@ func (c *CreateMarketplaceCreatorProfileResponse) String() string {
 }
 
 var (
-	createMarketplaceCreatorProfileResponseDataFieldID          = big.NewInt(1 << 0)
-	createMarketplaceCreatorProfileResponseDataFieldUserID      = big.NewInt(1 << 1)
-	createMarketplaceCreatorProfileResponseDataFieldBio         = big.NewInt(1 << 2)
-	createMarketplaceCreatorProfileResponseDataFieldWebsite     = big.NewInt(1 << 3)
-	createMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
-	createMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
-	createMarketplaceCreatorProfileResponseDataFieldVerifiedAt  = big.NewInt(1 << 6)
-	createMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 7)
-	createMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 8)
-	createMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 9)
-	createMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 10)
-	createMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 11)
+	createMarketplaceCreatorProfileResponseDataFieldID                     = big.NewInt(1 << 0)
+	createMarketplaceCreatorProfileResponseDataFieldUserID                 = big.NewInt(1 << 1)
+	createMarketplaceCreatorProfileResponseDataFieldBio                    = big.NewInt(1 << 2)
+	createMarketplaceCreatorProfileResponseDataFieldWebsite                = big.NewInt(1 << 3)
+	createMarketplaceCreatorProfileResponseDataFieldSocialLinks            = big.NewInt(1 << 4)
+	createMarketplaceCreatorProfileResponseDataFieldIsVerified             = big.NewInt(1 << 5)
+	createMarketplaceCreatorProfileResponseDataFieldVerifiedAt             = big.NewInt(1 << 6)
+	createMarketplaceCreatorProfileResponseDataFieldDisplayName            = big.NewInt(1 << 7)
+	createMarketplaceCreatorProfileResponseDataFieldUsername               = big.NewInt(1 << 8)
+	createMarketplaceCreatorProfileResponseDataFieldAvatarURL              = big.NewInt(1 << 9)
+	createMarketplaceCreatorProfileResponseDataFieldProfileHandle          = big.NewInt(1 << 10)
+	createMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt = big.NewInt(1 << 11)
+	createMarketplaceCreatorProfileResponseDataFieldCreatedAt              = big.NewInt(1 << 12)
+	createMarketplaceCreatorProfileResponseDataFieldUpdatedAt              = big.NewInt(1 << 13)
 )
 
 type CreateMarketplaceCreatorProfileResponseData struct {
-	ID          string                 `json:"id" url:"id"`
-	UserID      string                 `json:"userId" url:"userId"`
-	Bio         *string                `json:"bio,omitempty" url:"bio,omitempty"`
-	Website     *string                `json:"website,omitempty" url:"website,omitempty"`
-	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
-	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
-	VerifiedAt  *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
-	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
-	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
-	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
-	CreatedAt   time.Time              `json:"createdAt" url:"createdAt"`
-	UpdatedAt   time.Time              `json:"updatedAt" url:"updatedAt"`
+	ID                     string                 `json:"id" url:"id"`
+	UserID                 string                 `json:"userId" url:"userId"`
+	Bio                    *string                `json:"bio,omitempty" url:"bio,omitempty"`
+	Website                *string                `json:"website,omitempty" url:"website,omitempty"`
+	SocialLinks            map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
+	IsVerified             bool                   `json:"isVerified" url:"isVerified"`
+	VerifiedAt             *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
+	DisplayName            *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username               *string                `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL              *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	ProfileHandle          *string                `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
+	ProfileHandleChangedAt *time.Time             `json:"profileHandleChangedAt,omitempty" url:"profileHandleChangedAt,omitempty"`
+	CreatedAt              time.Time              `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time              `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -998,6 +1266,20 @@ func (c *CreateMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
 		return nil
 	}
 	return c.AvatarURL
+}
+
+func (c *CreateMarketplaceCreatorProfileResponseData) GetProfileHandle() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ProfileHandle
+}
+
+func (c *CreateMarketplaceCreatorProfileResponseData) GetProfileHandleChangedAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.ProfileHandleChangedAt
 }
 
 func (c *CreateMarketplaceCreatorProfileResponseData) GetCreatedAt() time.Time {
@@ -1095,6 +1377,20 @@ func (c *CreateMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *st
 	c.require(createMarketplaceCreatorProfileResponseDataFieldAvatarURL)
 }
 
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileResponseData) SetProfileHandle(profileHandle *string) {
+	c.ProfileHandle = profileHandle
+	c.require(createMarketplaceCreatorProfileResponseDataFieldProfileHandle)
+}
+
+// SetProfileHandleChangedAt sets the ProfileHandleChangedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateMarketplaceCreatorProfileResponseData) SetProfileHandleChangedAt(profileHandleChangedAt *time.Time) {
+	c.ProfileHandleChangedAt = profileHandleChangedAt
+	c.require(createMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateMarketplaceCreatorProfileResponseData) SetCreatedAt(createdAt time.Time) {
@@ -1113,9 +1409,10 @@ func (c *CreateMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte)
 	type embed CreateMarketplaceCreatorProfileResponseData
 	var unmarshaler = struct {
 		embed
-		VerifiedAt *internal.DateTime `json:"verifiedAt,omitempty"`
-		CreatedAt  *internal.DateTime `json:"createdAt"`
-		UpdatedAt  *internal.DateTime `json:"updatedAt"`
+		VerifiedAt             *internal.DateTime `json:"verifiedAt,omitempty"`
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+		CreatedAt              *internal.DateTime `json:"createdAt"`
+		UpdatedAt              *internal.DateTime `json:"updatedAt"`
 	}{
 		embed: embed(*c),
 	}
@@ -1124,6 +1421,7 @@ func (c *CreateMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte)
 	}
 	*c = CreateMarketplaceCreatorProfileResponseData(unmarshaler.embed)
 	c.VerifiedAt = unmarshaler.VerifiedAt.TimePtr()
+	c.ProfileHandleChangedAt = unmarshaler.ProfileHandleChangedAt.TimePtr()
 	c.CreatedAt = unmarshaler.CreatedAt.Time()
 	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
@@ -1139,14 +1437,16 @@ func (c *CreateMarketplaceCreatorProfileResponseData) MarshalJSON() ([]byte, err
 	type embed CreateMarketplaceCreatorProfileResponseData
 	var marshaler = struct {
 		embed
-		VerifiedAt *internal.DateTime `json:"verifiedAt,omitempty"`
-		CreatedAt  *internal.DateTime `json:"createdAt"`
-		UpdatedAt  *internal.DateTime `json:"updatedAt"`
+		VerifiedAt             *internal.DateTime `json:"verifiedAt,omitempty"`
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+		CreatedAt              *internal.DateTime `json:"createdAt"`
+		UpdatedAt              *internal.DateTime `json:"updatedAt"`
 	}{
-		embed:      embed(*c),
-		VerifiedAt: internal.NewOptionalDateTime(c.VerifiedAt),
-		CreatedAt:  internal.NewDateTime(c.CreatedAt),
-		UpdatedAt:  internal.NewDateTime(c.UpdatedAt),
+		embed:                  embed(*c),
+		VerifiedAt:             internal.NewOptionalDateTime(c.VerifiedAt),
+		ProfileHandleChangedAt: internal.NewOptionalDateTime(c.ProfileHandleChangedAt),
+		CreatedAt:              internal.NewDateTime(c.CreatedAt),
+		UpdatedAt:              internal.NewDateTime(c.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1162,6 +1462,441 @@ func (c *CreateMarketplaceCreatorProfileResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+// Public profile
+var (
+	getMarketplaceCreatorProfileByHandleResponseFieldData = big.NewInt(1 << 0)
+	getMarketplaceCreatorProfileByHandleResponseFieldMeta = big.NewInt(1 << 1)
+)
+
+type GetMarketplaceCreatorProfileByHandleResponse struct {
+	Data *GetMarketplaceCreatorProfileByHandleResponseData `json:"data" url:"data"`
+	Meta *GetMarketplaceCreatorProfileByHandleResponseMeta `json:"meta" url:"meta"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponse) GetData() *GetMarketplaceCreatorProfileByHandleResponseData {
+	if g == nil {
+		return nil
+	}
+	return g.Data
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponse) GetMeta() *GetMarketplaceCreatorProfileByHandleResponseMeta {
+	if g == nil {
+		return nil
+	}
+	return g.Meta
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponse) SetData(data *GetMarketplaceCreatorProfileByHandleResponseData) {
+	g.Data = data
+	g.require(getMarketplaceCreatorProfileByHandleResponseFieldData)
+}
+
+// SetMeta sets the Meta field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponse) SetMeta(meta *GetMarketplaceCreatorProfileByHandleResponseMeta) {
+	g.Meta = meta
+	g.require(getMarketplaceCreatorProfileByHandleResponseFieldMeta)
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarketplaceCreatorProfileByHandleResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarketplaceCreatorProfileByHandleResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponse) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceCreatorProfileByHandleResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponse) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getMarketplaceCreatorProfileByHandleResponseDataFieldID                     = big.NewInt(1 << 0)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldUserID                 = big.NewInt(1 << 1)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldBio                    = big.NewInt(1 << 2)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldWebsite                = big.NewInt(1 << 3)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldSocialLinks            = big.NewInt(1 << 4)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldIsVerified             = big.NewInt(1 << 5)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldDisplayName            = big.NewInt(1 << 6)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldUsername               = big.NewInt(1 << 7)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldProfileHandle          = big.NewInt(1 << 8)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldProfileHandleChangedAt = big.NewInt(1 << 9)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldAvatarURL              = big.NewInt(1 << 10)
+	getMarketplaceCreatorProfileByHandleResponseDataFieldIsClaimable            = big.NewInt(1 << 11)
+)
+
+type GetMarketplaceCreatorProfileByHandleResponseData struct {
+	ID                     string                 `json:"id" url:"id"`
+	UserID                 string                 `json:"userId" url:"userId"`
+	Bio                    *string                `json:"bio,omitempty" url:"bio,omitempty"`
+	Website                *string                `json:"website,omitempty" url:"website,omitempty"`
+	SocialLinks            map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
+	IsVerified             bool                   `json:"isVerified" url:"isVerified"`
+	DisplayName            *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username               *string                `json:"username,omitempty" url:"username,omitempty"`
+	ProfileHandle          *string                `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
+	ProfileHandleChangedAt *time.Time             `json:"profileHandleChangedAt,omitempty" url:"profileHandleChangedAt,omitempty"`
+	AvatarURL              *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	IsClaimable            *bool                  `json:"isClaimable,omitempty" url:"isClaimable,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetID() string {
+	if g == nil {
+		return ""
+	}
+	return g.ID
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetUserID() string {
+	if g == nil {
+		return ""
+	}
+	return g.UserID
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetBio() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Bio
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetWebsite() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Website
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetSocialLinks() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.SocialLinks
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetIsVerified() bool {
+	if g == nil {
+		return false
+	}
+	return g.IsVerified
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetDisplayName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DisplayName
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetUsername() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Username
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetProfileHandle() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ProfileHandle
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetProfileHandleChangedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.ProfileHandleChangedAt
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetAvatarURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AvatarURL
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetIsClaimable() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsClaimable
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetID sets the ID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetID(id string) {
+	g.ID = id
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldID)
+}
+
+// SetUserID sets the UserID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetUserID(userID string) {
+	g.UserID = userID
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldUserID)
+}
+
+// SetBio sets the Bio field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetBio(bio *string) {
+	g.Bio = bio
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldBio)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetWebsite(website *string) {
+	g.Website = website
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldWebsite)
+}
+
+// SetSocialLinks sets the SocialLinks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetSocialLinks(socialLinks map[string]interface{}) {
+	g.SocialLinks = socialLinks
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldSocialLinks)
+}
+
+// SetIsVerified sets the IsVerified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetIsVerified(isVerified bool) {
+	g.IsVerified = isVerified
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldIsVerified)
+}
+
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetDisplayName(displayName *string) {
+	g.DisplayName = displayName
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldDisplayName)
+}
+
+// SetUsername sets the Username field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetUsername(username *string) {
+	g.Username = username
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldUsername)
+}
+
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetProfileHandle(profileHandle *string) {
+	g.ProfileHandle = profileHandle
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldProfileHandle)
+}
+
+// SetProfileHandleChangedAt sets the ProfileHandleChangedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetProfileHandleChangedAt(profileHandleChangedAt *time.Time) {
+	g.ProfileHandleChangedAt = profileHandleChangedAt
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldProfileHandleChangedAt)
+}
+
+// SetAvatarURL sets the AvatarURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetAvatarURL(avatarURL *string) {
+	g.AvatarURL = avatarURL
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldAvatarURL)
+}
+
+// SetIsClaimable sets the IsClaimable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) SetIsClaimable(isClaimable *bool) {
+	g.IsClaimable = isClaimable
+	g.require(getMarketplaceCreatorProfileByHandleResponseDataFieldIsClaimable)
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) UnmarshalJSON(data []byte) error {
+	type embed GetMarketplaceCreatorProfileByHandleResponseData
+	var unmarshaler = struct {
+		embed
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetMarketplaceCreatorProfileByHandleResponseData(unmarshaler.embed)
+	g.ProfileHandleChangedAt = unmarshaler.ProfileHandleChangedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceCreatorProfileByHandleResponseData
+	var marshaler = struct {
+		embed
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+	}{
+		embed:                  embed(*g),
+		ProfileHandleChangedAt: internal.NewOptionalDateTime(g.ProfileHandleChangedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseData) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	getMarketplaceCreatorProfileByHandleResponseMetaFieldRedirectTo = big.NewInt(1 << 0)
+)
+
+type GetMarketplaceCreatorProfileByHandleResponseMeta struct {
+	RedirectTo *string `json:"redirectTo,omitempty" url:"redirectTo,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseMeta) GetRedirectTo() *string {
+	if g == nil {
+		return nil
+	}
+	return g.RedirectTo
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseMeta) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseMeta) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetRedirectTo sets the RedirectTo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileByHandleResponseMeta) SetRedirectTo(redirectTo *string) {
+	g.RedirectTo = redirectTo
+	g.require(getMarketplaceCreatorProfileByHandleResponseMetaFieldRedirectTo)
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseMeta) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarketplaceCreatorProfileByHandleResponseMeta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarketplaceCreatorProfileByHandleResponseMeta(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseMeta) MarshalJSON() ([]byte, error) {
+	type embed GetMarketplaceCreatorProfileByHandleResponseMeta
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMarketplaceCreatorProfileByHandleResponseMeta) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 // Public profile
@@ -1244,29 +1979,33 @@ func (g *GetMarketplaceCreatorProfileResponse) String() string {
 }
 
 var (
-	getMarketplaceCreatorProfileResponseDataFieldID          = big.NewInt(1 << 0)
-	getMarketplaceCreatorProfileResponseDataFieldUserID      = big.NewInt(1 << 1)
-	getMarketplaceCreatorProfileResponseDataFieldBio         = big.NewInt(1 << 2)
-	getMarketplaceCreatorProfileResponseDataFieldWebsite     = big.NewInt(1 << 3)
-	getMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
-	getMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
-	getMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 6)
-	getMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 7)
-	getMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 8)
-	getMarketplaceCreatorProfileResponseDataFieldIsClaimable = big.NewInt(1 << 9)
+	getMarketplaceCreatorProfileResponseDataFieldID                     = big.NewInt(1 << 0)
+	getMarketplaceCreatorProfileResponseDataFieldUserID                 = big.NewInt(1 << 1)
+	getMarketplaceCreatorProfileResponseDataFieldBio                    = big.NewInt(1 << 2)
+	getMarketplaceCreatorProfileResponseDataFieldWebsite                = big.NewInt(1 << 3)
+	getMarketplaceCreatorProfileResponseDataFieldSocialLinks            = big.NewInt(1 << 4)
+	getMarketplaceCreatorProfileResponseDataFieldIsVerified             = big.NewInt(1 << 5)
+	getMarketplaceCreatorProfileResponseDataFieldDisplayName            = big.NewInt(1 << 6)
+	getMarketplaceCreatorProfileResponseDataFieldUsername               = big.NewInt(1 << 7)
+	getMarketplaceCreatorProfileResponseDataFieldProfileHandle          = big.NewInt(1 << 8)
+	getMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt = big.NewInt(1 << 9)
+	getMarketplaceCreatorProfileResponseDataFieldAvatarURL              = big.NewInt(1 << 10)
+	getMarketplaceCreatorProfileResponseDataFieldIsClaimable            = big.NewInt(1 << 11)
 )
 
 type GetMarketplaceCreatorProfileResponseData struct {
-	ID          string                 `json:"id" url:"id"`
-	UserID      string                 `json:"userId" url:"userId"`
-	Bio         *string                `json:"bio,omitempty" url:"bio,omitempty"`
-	Website     *string                `json:"website,omitempty" url:"website,omitempty"`
-	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
-	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
-	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
-	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
-	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
-	IsClaimable *bool                  `json:"isClaimable,omitempty" url:"isClaimable,omitempty"`
+	ID                     string                 `json:"id" url:"id"`
+	UserID                 string                 `json:"userId" url:"userId"`
+	Bio                    *string                `json:"bio,omitempty" url:"bio,omitempty"`
+	Website                *string                `json:"website,omitempty" url:"website,omitempty"`
+	SocialLinks            map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
+	IsVerified             bool                   `json:"isVerified" url:"isVerified"`
+	DisplayName            *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username               *string                `json:"username,omitempty" url:"username,omitempty"`
+	ProfileHandle          *string                `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
+	ProfileHandleChangedAt *time.Time             `json:"profileHandleChangedAt,omitempty" url:"profileHandleChangedAt,omitempty"`
+	AvatarURL              *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	IsClaimable            *bool                  `json:"isClaimable,omitempty" url:"isClaimable,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1329,6 +2068,20 @@ func (g *GetMarketplaceCreatorProfileResponseData) GetUsername() *string {
 		return nil
 	}
 	return g.Username
+}
+
+func (g *GetMarketplaceCreatorProfileResponseData) GetProfileHandle() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ProfileHandle
+}
+
+func (g *GetMarketplaceCreatorProfileResponseData) GetProfileHandleChangedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.ProfileHandleChangedAt
 }
 
 func (g *GetMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
@@ -1412,6 +2165,20 @@ func (g *GetMarketplaceCreatorProfileResponseData) SetUsername(username *string)
 	g.require(getMarketplaceCreatorProfileResponseDataFieldUsername)
 }
 
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileResponseData) SetProfileHandle(profileHandle *string) {
+	g.ProfileHandle = profileHandle
+	g.require(getMarketplaceCreatorProfileResponseDataFieldProfileHandle)
+}
+
+// SetProfileHandleChangedAt sets the ProfileHandleChangedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMarketplaceCreatorProfileResponseData) SetProfileHandleChangedAt(profileHandleChangedAt *time.Time) {
+	g.ProfileHandleChangedAt = profileHandleChangedAt
+	g.require(getMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt)
+}
+
 // SetAvatarURL sets the AvatarURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *string) {
@@ -1427,12 +2194,18 @@ func (g *GetMarketplaceCreatorProfileResponseData) SetIsClaimable(isClaimable *b
 }
 
 func (g *GetMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetMarketplaceCreatorProfileResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed GetMarketplaceCreatorProfileResponseData
+	var unmarshaler = struct {
+		embed
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*g = GetMarketplaceCreatorProfileResponseData(value)
+	*g = GetMarketplaceCreatorProfileResponseData(unmarshaler.embed)
+	g.ProfileHandleChangedAt = unmarshaler.ProfileHandleChangedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
 		return err
@@ -1446,8 +2219,10 @@ func (g *GetMarketplaceCreatorProfileResponseData) MarshalJSON() ([]byte, error)
 	type embed GetMarketplaceCreatorProfileResponseData
 	var marshaler = struct {
 		embed
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
 	}{
-		embed: embed(*g),
+		embed:                  embed(*g),
+		ProfileHandleChangedAt: internal.NewOptionalDateTime(g.ProfileHandleChangedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1545,33 +2320,37 @@ func (g *GetMyMarketplaceCreatorProfileResponse) String() string {
 }
 
 var (
-	getMyMarketplaceCreatorProfileResponseDataFieldID          = big.NewInt(1 << 0)
-	getMyMarketplaceCreatorProfileResponseDataFieldUserID      = big.NewInt(1 << 1)
-	getMyMarketplaceCreatorProfileResponseDataFieldBio         = big.NewInt(1 << 2)
-	getMyMarketplaceCreatorProfileResponseDataFieldWebsite     = big.NewInt(1 << 3)
-	getMyMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
-	getMyMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
-	getMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt  = big.NewInt(1 << 6)
-	getMyMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 7)
-	getMyMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 8)
-	getMyMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 9)
-	getMyMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 10)
-	getMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 11)
+	getMyMarketplaceCreatorProfileResponseDataFieldID                     = big.NewInt(1 << 0)
+	getMyMarketplaceCreatorProfileResponseDataFieldUserID                 = big.NewInt(1 << 1)
+	getMyMarketplaceCreatorProfileResponseDataFieldBio                    = big.NewInt(1 << 2)
+	getMyMarketplaceCreatorProfileResponseDataFieldWebsite                = big.NewInt(1 << 3)
+	getMyMarketplaceCreatorProfileResponseDataFieldSocialLinks            = big.NewInt(1 << 4)
+	getMyMarketplaceCreatorProfileResponseDataFieldIsVerified             = big.NewInt(1 << 5)
+	getMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt             = big.NewInt(1 << 6)
+	getMyMarketplaceCreatorProfileResponseDataFieldDisplayName            = big.NewInt(1 << 7)
+	getMyMarketplaceCreatorProfileResponseDataFieldUsername               = big.NewInt(1 << 8)
+	getMyMarketplaceCreatorProfileResponseDataFieldAvatarURL              = big.NewInt(1 << 9)
+	getMyMarketplaceCreatorProfileResponseDataFieldProfileHandle          = big.NewInt(1 << 10)
+	getMyMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt = big.NewInt(1 << 11)
+	getMyMarketplaceCreatorProfileResponseDataFieldCreatedAt              = big.NewInt(1 << 12)
+	getMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt              = big.NewInt(1 << 13)
 )
 
 type GetMyMarketplaceCreatorProfileResponseData struct {
-	ID          string                 `json:"id" url:"id"`
-	UserID      string                 `json:"userId" url:"userId"`
-	Bio         *string                `json:"bio,omitempty" url:"bio,omitempty"`
-	Website     *string                `json:"website,omitempty" url:"website,omitempty"`
-	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
-	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
-	VerifiedAt  *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
-	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
-	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
-	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
-	CreatedAt   time.Time              `json:"createdAt" url:"createdAt"`
-	UpdatedAt   time.Time              `json:"updatedAt" url:"updatedAt"`
+	ID                     string                 `json:"id" url:"id"`
+	UserID                 string                 `json:"userId" url:"userId"`
+	Bio                    *string                `json:"bio,omitempty" url:"bio,omitempty"`
+	Website                *string                `json:"website,omitempty" url:"website,omitempty"`
+	SocialLinks            map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
+	IsVerified             bool                   `json:"isVerified" url:"isVerified"`
+	VerifiedAt             *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
+	DisplayName            *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username               *string                `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL              *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	ProfileHandle          *string                `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
+	ProfileHandleChangedAt *time.Time             `json:"profileHandleChangedAt,omitempty" url:"profileHandleChangedAt,omitempty"`
+	CreatedAt              time.Time              `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time              `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1648,6 +2427,20 @@ func (g *GetMyMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
 		return nil
 	}
 	return g.AvatarURL
+}
+
+func (g *GetMyMarketplaceCreatorProfileResponseData) GetProfileHandle() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ProfileHandle
+}
+
+func (g *GetMyMarketplaceCreatorProfileResponseData) GetProfileHandleChangedAt() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.ProfileHandleChangedAt
 }
 
 func (g *GetMyMarketplaceCreatorProfileResponseData) GetCreatedAt() time.Time {
@@ -1745,6 +2538,20 @@ func (g *GetMyMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *str
 	g.require(getMyMarketplaceCreatorProfileResponseDataFieldAvatarURL)
 }
 
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMyMarketplaceCreatorProfileResponseData) SetProfileHandle(profileHandle *string) {
+	g.ProfileHandle = profileHandle
+	g.require(getMyMarketplaceCreatorProfileResponseDataFieldProfileHandle)
+}
+
+// SetProfileHandleChangedAt sets the ProfileHandleChangedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMyMarketplaceCreatorProfileResponseData) SetProfileHandleChangedAt(profileHandleChangedAt *time.Time) {
+	g.ProfileHandleChangedAt = profileHandleChangedAt
+	g.require(getMyMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetMyMarketplaceCreatorProfileResponseData) SetCreatedAt(createdAt time.Time) {
@@ -1763,9 +2570,10 @@ func (g *GetMyMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte) 
 	type embed GetMyMarketplaceCreatorProfileResponseData
 	var unmarshaler = struct {
 		embed
-		VerifiedAt *internal.DateTime `json:"verifiedAt,omitempty"`
-		CreatedAt  *internal.DateTime `json:"createdAt"`
-		UpdatedAt  *internal.DateTime `json:"updatedAt"`
+		VerifiedAt             *internal.DateTime `json:"verifiedAt,omitempty"`
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+		CreatedAt              *internal.DateTime `json:"createdAt"`
+		UpdatedAt              *internal.DateTime `json:"updatedAt"`
 	}{
 		embed: embed(*g),
 	}
@@ -1774,6 +2582,7 @@ func (g *GetMyMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byte) 
 	}
 	*g = GetMyMarketplaceCreatorProfileResponseData(unmarshaler.embed)
 	g.VerifiedAt = unmarshaler.VerifiedAt.TimePtr()
+	g.ProfileHandleChangedAt = unmarshaler.ProfileHandleChangedAt.TimePtr()
 	g.CreatedAt = unmarshaler.CreatedAt.Time()
 	g.UpdatedAt = unmarshaler.UpdatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *g)
@@ -1789,14 +2598,16 @@ func (g *GetMyMarketplaceCreatorProfileResponseData) MarshalJSON() ([]byte, erro
 	type embed GetMyMarketplaceCreatorProfileResponseData
 	var marshaler = struct {
 		embed
-		VerifiedAt *internal.DateTime `json:"verifiedAt,omitempty"`
-		CreatedAt  *internal.DateTime `json:"createdAt"`
-		UpdatedAt  *internal.DateTime `json:"updatedAt"`
+		VerifiedAt             *internal.DateTime `json:"verifiedAt,omitempty"`
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+		CreatedAt              *internal.DateTime `json:"createdAt"`
+		UpdatedAt              *internal.DateTime `json:"updatedAt"`
 	}{
-		embed:      embed(*g),
-		VerifiedAt: internal.NewOptionalDateTime(g.VerifiedAt),
-		CreatedAt:  internal.NewDateTime(g.CreatedAt),
-		UpdatedAt:  internal.NewDateTime(g.UpdatedAt),
+		embed:                  embed(*g),
+		VerifiedAt:             internal.NewOptionalDateTime(g.VerifiedAt),
+		ProfileHandleChangedAt: internal.NewOptionalDateTime(g.ProfileHandleChangedAt),
+		CreatedAt:              internal.NewDateTime(g.CreatedAt),
+		UpdatedAt:              internal.NewDateTime(g.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1894,33 +2705,37 @@ func (u *UpdateMyMarketplaceCreatorProfileResponse) String() string {
 }
 
 var (
-	updateMyMarketplaceCreatorProfileResponseDataFieldID          = big.NewInt(1 << 0)
-	updateMyMarketplaceCreatorProfileResponseDataFieldUserID      = big.NewInt(1 << 1)
-	updateMyMarketplaceCreatorProfileResponseDataFieldBio         = big.NewInt(1 << 2)
-	updateMyMarketplaceCreatorProfileResponseDataFieldWebsite     = big.NewInt(1 << 3)
-	updateMyMarketplaceCreatorProfileResponseDataFieldSocialLinks = big.NewInt(1 << 4)
-	updateMyMarketplaceCreatorProfileResponseDataFieldIsVerified  = big.NewInt(1 << 5)
-	updateMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt  = big.NewInt(1 << 6)
-	updateMyMarketplaceCreatorProfileResponseDataFieldDisplayName = big.NewInt(1 << 7)
-	updateMyMarketplaceCreatorProfileResponseDataFieldUsername    = big.NewInt(1 << 8)
-	updateMyMarketplaceCreatorProfileResponseDataFieldAvatarURL   = big.NewInt(1 << 9)
-	updateMyMarketplaceCreatorProfileResponseDataFieldCreatedAt   = big.NewInt(1 << 10)
-	updateMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt   = big.NewInt(1 << 11)
+	updateMyMarketplaceCreatorProfileResponseDataFieldID                     = big.NewInt(1 << 0)
+	updateMyMarketplaceCreatorProfileResponseDataFieldUserID                 = big.NewInt(1 << 1)
+	updateMyMarketplaceCreatorProfileResponseDataFieldBio                    = big.NewInt(1 << 2)
+	updateMyMarketplaceCreatorProfileResponseDataFieldWebsite                = big.NewInt(1 << 3)
+	updateMyMarketplaceCreatorProfileResponseDataFieldSocialLinks            = big.NewInt(1 << 4)
+	updateMyMarketplaceCreatorProfileResponseDataFieldIsVerified             = big.NewInt(1 << 5)
+	updateMyMarketplaceCreatorProfileResponseDataFieldVerifiedAt             = big.NewInt(1 << 6)
+	updateMyMarketplaceCreatorProfileResponseDataFieldDisplayName            = big.NewInt(1 << 7)
+	updateMyMarketplaceCreatorProfileResponseDataFieldUsername               = big.NewInt(1 << 8)
+	updateMyMarketplaceCreatorProfileResponseDataFieldAvatarURL              = big.NewInt(1 << 9)
+	updateMyMarketplaceCreatorProfileResponseDataFieldProfileHandle          = big.NewInt(1 << 10)
+	updateMyMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt = big.NewInt(1 << 11)
+	updateMyMarketplaceCreatorProfileResponseDataFieldCreatedAt              = big.NewInt(1 << 12)
+	updateMyMarketplaceCreatorProfileResponseDataFieldUpdatedAt              = big.NewInt(1 << 13)
 )
 
 type UpdateMyMarketplaceCreatorProfileResponseData struct {
-	ID          string                 `json:"id" url:"id"`
-	UserID      string                 `json:"userId" url:"userId"`
-	Bio         *string                `json:"bio,omitempty" url:"bio,omitempty"`
-	Website     *string                `json:"website,omitempty" url:"website,omitempty"`
-	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
-	IsVerified  bool                   `json:"isVerified" url:"isVerified"`
-	VerifiedAt  *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
-	DisplayName *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
-	Username    *string                `json:"username,omitempty" url:"username,omitempty"`
-	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
-	CreatedAt   time.Time              `json:"createdAt" url:"createdAt"`
-	UpdatedAt   time.Time              `json:"updatedAt" url:"updatedAt"`
+	ID                     string                 `json:"id" url:"id"`
+	UserID                 string                 `json:"userId" url:"userId"`
+	Bio                    *string                `json:"bio,omitempty" url:"bio,omitempty"`
+	Website                *string                `json:"website,omitempty" url:"website,omitempty"`
+	SocialLinks            map[string]interface{} `json:"socialLinks,omitempty" url:"socialLinks,omitempty"`
+	IsVerified             bool                   `json:"isVerified" url:"isVerified"`
+	VerifiedAt             *time.Time             `json:"verifiedAt,omitempty" url:"verifiedAt,omitempty"`
+	DisplayName            *string                `json:"displayName,omitempty" url:"displayName,omitempty"`
+	Username               *string                `json:"username,omitempty" url:"username,omitempty"`
+	AvatarURL              *string                `json:"avatarUrl,omitempty" url:"avatarUrl,omitempty"`
+	ProfileHandle          *string                `json:"profileHandle,omitempty" url:"profileHandle,omitempty"`
+	ProfileHandleChangedAt *time.Time             `json:"profileHandleChangedAt,omitempty" url:"profileHandleChangedAt,omitempty"`
+	CreatedAt              time.Time              `json:"createdAt" url:"createdAt"`
+	UpdatedAt              time.Time              `json:"updatedAt" url:"updatedAt"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1997,6 +2812,20 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetAvatarURL() *string {
 		return nil
 	}
 	return u.AvatarURL
+}
+
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetProfileHandle() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ProfileHandle
+}
+
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetProfileHandleChangedAt() *time.Time {
+	if u == nil {
+		return nil
+	}
+	return u.ProfileHandleChangedAt
 }
 
 func (u *UpdateMyMarketplaceCreatorProfileResponseData) GetCreatedAt() time.Time {
@@ -2094,6 +2923,20 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetAvatarURL(avatarURL *
 	u.require(updateMyMarketplaceCreatorProfileResponseDataFieldAvatarURL)
 }
 
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetProfileHandle(profileHandle *string) {
+	u.ProfileHandle = profileHandle
+	u.require(updateMyMarketplaceCreatorProfileResponseDataFieldProfileHandle)
+}
+
+// SetProfileHandleChangedAt sets the ProfileHandleChangedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetProfileHandleChangedAt(profileHandleChangedAt *time.Time) {
+	u.ProfileHandleChangedAt = profileHandleChangedAt
+	u.require(updateMyMarketplaceCreatorProfileResponseDataFieldProfileHandleChangedAt)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateMyMarketplaceCreatorProfileResponseData) SetCreatedAt(createdAt time.Time) {
@@ -2112,9 +2955,10 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byt
 	type embed UpdateMyMarketplaceCreatorProfileResponseData
 	var unmarshaler = struct {
 		embed
-		VerifiedAt *internal.DateTime `json:"verifiedAt,omitempty"`
-		CreatedAt  *internal.DateTime `json:"createdAt"`
-		UpdatedAt  *internal.DateTime `json:"updatedAt"`
+		VerifiedAt             *internal.DateTime `json:"verifiedAt,omitempty"`
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+		CreatedAt              *internal.DateTime `json:"createdAt"`
+		UpdatedAt              *internal.DateTime `json:"updatedAt"`
 	}{
 		embed: embed(*u),
 	}
@@ -2123,6 +2967,7 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) UnmarshalJSON(data []byt
 	}
 	*u = UpdateMyMarketplaceCreatorProfileResponseData(unmarshaler.embed)
 	u.VerifiedAt = unmarshaler.VerifiedAt.TimePtr()
+	u.ProfileHandleChangedAt = unmarshaler.ProfileHandleChangedAt.TimePtr()
 	u.CreatedAt = unmarshaler.CreatedAt.Time()
 	u.UpdatedAt = unmarshaler.UpdatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *u)
@@ -2138,14 +2983,16 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) MarshalJSON() ([]byte, e
 	type embed UpdateMyMarketplaceCreatorProfileResponseData
 	var marshaler = struct {
 		embed
-		VerifiedAt *internal.DateTime `json:"verifiedAt,omitempty"`
-		CreatedAt  *internal.DateTime `json:"createdAt"`
-		UpdatedAt  *internal.DateTime `json:"updatedAt"`
+		VerifiedAt             *internal.DateTime `json:"verifiedAt,omitempty"`
+		ProfileHandleChangedAt *internal.DateTime `json:"profileHandleChangedAt,omitempty"`
+		CreatedAt              *internal.DateTime `json:"createdAt"`
+		UpdatedAt              *internal.DateTime `json:"updatedAt"`
 	}{
-		embed:      embed(*u),
-		VerifiedAt: internal.NewOptionalDateTime(u.VerifiedAt),
-		CreatedAt:  internal.NewDateTime(u.CreatedAt),
-		UpdatedAt:  internal.NewDateTime(u.UpdatedAt),
+		embed:                  embed(*u),
+		VerifiedAt:             internal.NewOptionalDateTime(u.VerifiedAt),
+		ProfileHandleChangedAt: internal.NewOptionalDateTime(u.ProfileHandleChangedAt),
+		CreatedAt:              internal.NewDateTime(u.CreatedAt),
+		UpdatedAt:              internal.NewDateTime(u.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -2164,19 +3011,21 @@ func (u *UpdateMyMarketplaceCreatorProfileResponseData) String() string {
 }
 
 var (
-	updateMyMarketplaceCreatorProfileRequestFieldBio         = big.NewInt(1 << 0)
-	updateMyMarketplaceCreatorProfileRequestFieldWebsite     = big.NewInt(1 << 1)
-	updateMyMarketplaceCreatorProfileRequestFieldSocialLinks = big.NewInt(1 << 2)
-	updateMyMarketplaceCreatorProfileRequestFieldAvatarURL   = big.NewInt(1 << 3)
-	updateMyMarketplaceCreatorProfileRequestFieldDisplayName = big.NewInt(1 << 4)
+	updateMyMarketplaceCreatorProfileRequestFieldBio           = big.NewInt(1 << 0)
+	updateMyMarketplaceCreatorProfileRequestFieldWebsite       = big.NewInt(1 << 1)
+	updateMyMarketplaceCreatorProfileRequestFieldSocialLinks   = big.NewInt(1 << 2)
+	updateMyMarketplaceCreatorProfileRequestFieldAvatarURL     = big.NewInt(1 << 3)
+	updateMyMarketplaceCreatorProfileRequestFieldDisplayName   = big.NewInt(1 << 4)
+	updateMyMarketplaceCreatorProfileRequestFieldProfileHandle = big.NewInt(1 << 5)
 )
 
 type UpdateMyMarketplaceCreatorProfileRequest struct {
-	Bio         *string                `json:"bio,omitempty" url:"-"`
-	Website     *string                `json:"website,omitempty" url:"-"`
-	SocialLinks map[string]interface{} `json:"socialLinks,omitempty" url:"-"`
-	AvatarURL   *string                `json:"avatarUrl,omitempty" url:"-"`
-	DisplayName *string                `json:"displayName,omitempty" url:"-"`
+	Bio           *string                `json:"bio,omitempty" url:"-"`
+	Website       *string                `json:"website,omitempty" url:"-"`
+	SocialLinks   map[string]interface{} `json:"socialLinks,omitempty" url:"-"`
+	AvatarURL     *string                `json:"avatarUrl,omitempty" url:"-"`
+	DisplayName   *string                `json:"displayName,omitempty" url:"-"`
+	ProfileHandle *string                `json:"profileHandle,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2222,4 +3071,11 @@ func (u *UpdateMyMarketplaceCreatorProfileRequest) SetAvatarURL(avatarURL *strin
 func (u *UpdateMyMarketplaceCreatorProfileRequest) SetDisplayName(displayName *string) {
 	u.DisplayName = displayName
 	u.require(updateMyMarketplaceCreatorProfileRequestFieldDisplayName)
+}
+
+// SetProfileHandle sets the ProfileHandle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateMyMarketplaceCreatorProfileRequest) SetProfileHandle(profileHandle *string) {
+	u.ProfileHandle = profileHandle
+	u.require(updateMyMarketplaceCreatorProfileRequestFieldProfileHandle)
 }

@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceBrowseListMarketplaceListingsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListMarketplaceListingsRequest{}
+	request := &sdk.ListMarketplaceListingsRequest{}
 	_, invocationErr := client.MarketplaceBrowse.ListMarketplaceListings(
 		context.TODO(),
 		request,
@@ -97,7 +97,7 @@ func TestMarketplaceBrowseGetMarketplaceListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetMarketplaceListingRequest{
+	request := &sdk.GetMarketplaceListingRequest{
 		ListingID: "listingId",
 	}
 	_, invocationErr := client.MarketplaceBrowse.GetMarketplaceListing(
@@ -156,6 +156,28 @@ func TestMarketplaceBrowseListMarketplaceCategoriesWithWireMock(
 	VerifyRequestCount(t, "TestMarketplaceBrowseListMarketplaceCategoriesWithWireMock", "GET", "/api/v1/marketplace/categories", nil, 1)
 }
 
+func TestMarketplaceBrowseListMarketplaceAiModelsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	_, invocationErr := client.MarketplaceBrowse.ListMarketplaceAiModels(
+		context.TODO(),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceBrowseListMarketplaceAiModelsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceBrowseListMarketplaceAiModelsWithWireMock", "GET", "/api/v1/marketplace/ai-models", nil, 1)
+}
+
 func TestMarketplaceBrowseListMarketplaceContentTypesWithWireMock(
 	t *testing.T,
 ) {
@@ -189,7 +211,7 @@ func TestMarketplaceBrowseGetMarketplaceFacetsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetMarketplaceFacetsRequest{}
+	request := &sdk.GetMarketplaceFacetsRequest{}
 	_, invocationErr := client.MarketplaceBrowse.GetMarketplaceFacets(
 		context.TODO(),
 		request,

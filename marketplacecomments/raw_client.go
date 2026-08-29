@@ -4,11 +4,11 @@ package marketplacecomments
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	http "net/http"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListThreadedCommentsOnAListing(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest,
+	request *sdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse], error) {
+) (*core.Response[*sdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) ListThreadedCommentsOnAListing(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse
+	var response *sdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,13 +68,13 @@ func (r *RawClient) ListThreadedCommentsOnAListing(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse]{
+	return &core.Response[*sdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -83,9 +83,9 @@ func (r *RawClient) ListThreadedCommentsOnAListing(
 
 func (r *RawClient) CreateACommentOrReplyOnAListing(
 	ctx context.Context,
-	request *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest,
+	request *sdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse], error) {
+) (*core.Response[*sdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -101,7 +101,7 @@ func (r *RawClient) CreateACommentOrReplyOnAListing(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse
+	var response *sdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,13 +114,13 @@ func (r *RawClient) CreateACommentOrReplyOnAListing(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse]{
+	return &core.Response[*sdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -129,7 +129,7 @@ func (r *RawClient) CreateACommentOrReplyOnAListing(
 
 func (r *RawClient) SoftDeleteMyComment(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest,
+	request *sdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -156,7 +156,7 @@ func (r *RawClient) SoftDeleteMyComment(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
 		},
 	)
 	if err != nil {

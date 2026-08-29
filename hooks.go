@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	big "math/big"
+	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	time "time"
 )
 
@@ -532,6 +532,7 @@ var (
 	createHookResponseDataFieldCreatedByName    = big.NewInt(1 << 20)
 	createHookResponseDataFieldCreatedAt        = big.NewInt(1 << 21)
 	createHookResponseDataFieldUpdatedAt        = big.NewInt(1 << 22)
+	createHookResponseDataFieldVersionID        = big.NewInt(1 << 23)
 )
 
 type CreateHookResponseData struct {
@@ -558,6 +559,7 @@ type CreateHookResponseData struct {
 	CreatedByName    *string                            `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt        *time.Time                         `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt        *time.Time                         `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	VersionID        *string                            `json:"versionId,omitempty" url:"versionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -725,6 +727,13 @@ func (c *CreateHookResponseData) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return c.UpdatedAt
+}
+
+func (c *CreateHookResponseData) GetVersionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.VersionID
 }
 
 func (c *CreateHookResponseData) GetExtraProperties() map[string]interface{} {
@@ -897,6 +906,13 @@ func (c *CreateHookResponseData) SetCreatedAt(createdAt *time.Time) {
 func (c *CreateHookResponseData) SetUpdatedAt(updatedAt *time.Time) {
 	c.UpdatedAt = updatedAt
 	c.require(createHookResponseDataFieldUpdatedAt)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateHookResponseData) SetVersionID(versionID *string) {
+	c.VersionID = versionID
+	c.require(createHookResponseDataFieldVersionID)
 }
 
 func (c *CreateHookResponseData) UnmarshalJSON(data []byte) error {
@@ -1466,6 +1482,7 @@ var (
 	getHookResponseDataFieldCreatedByName    = big.NewInt(1 << 20)
 	getHookResponseDataFieldCreatedAt        = big.NewInt(1 << 21)
 	getHookResponseDataFieldUpdatedAt        = big.NewInt(1 << 22)
+	getHookResponseDataFieldVersionID        = big.NewInt(1 << 23)
 )
 
 type GetHookResponseData struct {
@@ -1492,6 +1509,7 @@ type GetHookResponseData struct {
 	CreatedByName    *string                         `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt        *time.Time                      `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt        *time.Time                      `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	VersionID        *string                         `json:"versionId,omitempty" url:"versionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1659,6 +1677,13 @@ func (g *GetHookResponseData) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return g.UpdatedAt
+}
+
+func (g *GetHookResponseData) GetVersionID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.VersionID
 }
 
 func (g *GetHookResponseData) GetExtraProperties() map[string]interface{} {
@@ -1831,6 +1856,13 @@ func (g *GetHookResponseData) SetCreatedAt(createdAt *time.Time) {
 func (g *GetHookResponseData) SetUpdatedAt(updatedAt *time.Time) {
 	g.UpdatedAt = updatedAt
 	g.require(getHookResponseDataFieldUpdatedAt)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetHookResponseData) SetVersionID(versionID *string) {
+	g.VersionID = versionID
+	g.require(getHookResponseDataFieldVersionID)
 }
 
 func (g *GetHookResponseData) UnmarshalJSON(data []byte) error {
@@ -3067,6 +3099,7 @@ var (
 	updateHookResponseDataFieldCreatedByName    = big.NewInt(1 << 20)
 	updateHookResponseDataFieldCreatedAt        = big.NewInt(1 << 21)
 	updateHookResponseDataFieldUpdatedAt        = big.NewInt(1 << 22)
+	updateHookResponseDataFieldVersionID        = big.NewInt(1 << 23)
 )
 
 type UpdateHookResponseData struct {
@@ -3093,6 +3126,7 @@ type UpdateHookResponseData struct {
 	CreatedByName    *string                            `json:"createdByName,omitempty" url:"createdByName,omitempty"`
 	CreatedAt        *time.Time                         `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt        *time.Time                         `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	VersionID        *string                            `json:"versionId,omitempty" url:"versionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3260,6 +3294,13 @@ func (u *UpdateHookResponseData) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return u.UpdatedAt
+}
+
+func (u *UpdateHookResponseData) GetVersionID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.VersionID
 }
 
 func (u *UpdateHookResponseData) GetExtraProperties() map[string]interface{} {
@@ -3432,6 +3473,13 @@ func (u *UpdateHookResponseData) SetCreatedAt(createdAt *time.Time) {
 func (u *UpdateHookResponseData) SetUpdatedAt(updatedAt *time.Time) {
 	u.UpdatedAt = updatedAt
 	u.require(updateHookResponseDataFieldUpdatedAt)
+}
+
+// SetVersionID sets the VersionID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateHookResponseData) SetVersionID(versionID *string) {
+	u.VersionID = versionID
+	u.require(updateHookResponseDataFieldVersionID)
 }
 
 func (u *UpdateHookResponseData) UnmarshalJSON(data []byte) error {

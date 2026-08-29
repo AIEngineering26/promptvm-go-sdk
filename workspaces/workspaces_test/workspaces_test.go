@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestWorkspacesListWorkspacesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListWorkspacesRequest{
+	request := &sdk.ListWorkspacesRequest{
 		OrganizationID: "organizationId",
 	}
 	_, invocationErr := client.Workspaces.ListWorkspaces(
@@ -99,7 +99,7 @@ func TestWorkspacesCreateWorkspaceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateWorkspaceRequest{
+	request := &sdk.CreateWorkspaceRequest{
 		Name:           "name",
 		OrganizationID: "organizationId",
 	}
@@ -126,7 +126,7 @@ func TestWorkspacesGetWorkspaceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetWorkspaceRequest{
+	request := &sdk.GetWorkspaceRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Workspaces.GetWorkspace(
@@ -152,7 +152,7 @@ func TestWorkspacesDeleteWorkspaceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteWorkspaceRequest{
+	request := &sdk.DeleteWorkspaceRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Workspaces.DeleteWorkspace(
@@ -178,7 +178,7 @@ func TestWorkspacesUpdateWorkspaceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateWorkspaceRequest{
+	request := &sdk.UpdateWorkspaceRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Workspaces.UpdateWorkspace(
@@ -204,7 +204,7 @@ func TestWorkspacesUpdateWorkspacePinWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateWorkspacePinRequest{
+	request := &sdk.UpdateWorkspacePinRequest{
 		WorkspaceID: "workspaceId",
 		Pinned:      true,
 	}
@@ -231,7 +231,7 @@ func TestWorkspacesTransferWorkspaceOwnershipWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.TransferWorkspaceOwnershipRequest{
+	request := &sdk.TransferWorkspaceOwnershipRequest{
 		WorkspaceID: "workspaceId",
 		NewOwnerID:  "newOwnerId",
 	}

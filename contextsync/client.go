@@ -4,7 +4,7 @@ package contextsync
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -36,7 +36,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetContextSyncManifest(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetContextSyncManifestResponse, error) {
+) (*sdk.GetContextSyncManifestResponse, error) {
 	response, err := c.WithRawResponse.GetContextSyncManifest(
 		ctx,
 		opts...,
@@ -49,9 +49,9 @@ func (c *Client) GetContextSyncManifest(
 
 func (c *Client) ListCapturedSessions(
 	ctx context.Context,
-	request *promptvmgosdk.ListCapturedSessionsRequest,
+	request *sdk.ListCapturedSessionsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListCapturedSessionsResponse, error) {
+) (*sdk.ListCapturedSessionsResponse, error) {
 	response, err := c.WithRawResponse.ListCapturedSessions(
 		ctx,
 		request,
@@ -65,9 +65,9 @@ func (c *Client) ListCapturedSessions(
 
 func (c *Client) IngestCapturedSession(
 	ctx context.Context,
-	request *promptvmgosdk.IngestCapturedSessionRequest,
+	request *sdk.IngestCapturedSessionRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.IngestCapturedSessionResponse, error) {
+) (*sdk.IngestCapturedSessionResponse, error) {
 	response, err := c.WithRawResponse.IngestCapturedSession(
 		ctx,
 		request,
@@ -81,9 +81,9 @@ func (c *Client) IngestCapturedSession(
 
 func (c *Client) GetContextSyncHealth(
 	ctx context.Context,
-	request *promptvmgosdk.GetContextSyncHealthRequest,
+	request *sdk.GetContextSyncHealthRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetContextSyncHealthResponse, error) {
+) (*sdk.GetContextSyncHealthResponse, error) {
 	response, err := c.WithRawResponse.GetContextSyncHealth(
 		ctx,
 		request,
@@ -97,9 +97,9 @@ func (c *Client) GetContextSyncHealth(
 
 func (c *Client) ListCaptureRepos(
 	ctx context.Context,
-	request *promptvmgosdk.ListCaptureReposRequest,
+	request *sdk.ListCaptureReposRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListCaptureReposResponse, error) {
+) (*sdk.ListCaptureReposResponse, error) {
 	response, err := c.WithRawResponse.ListCaptureRepos(
 		ctx,
 		request,
@@ -113,7 +113,7 @@ func (c *Client) ListCaptureRepos(
 
 func (c *Client) BulkPromoteCapturedSessions(
 	ctx context.Context,
-	request *promptvmgosdk.BulkPromoteCapturedSessionsRequest,
+	request *sdk.BulkPromoteCapturedSessionsRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.BulkPromoteCapturedSessions(
@@ -129,7 +129,7 @@ func (c *Client) BulkPromoteCapturedSessions(
 
 func (c *Client) BulkDiscardCapturedSessions(
 	ctx context.Context,
-	request *promptvmgosdk.BulkDiscardCapturedSessionsRequest,
+	request *sdk.BulkDiscardCapturedSessionsRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.BulkDiscardCapturedSessions(
@@ -145,9 +145,9 @@ func (c *Client) BulkDiscardCapturedSessions(
 
 func (c *Client) PromoteCapturedSession(
 	ctx context.Context,
-	request *promptvmgosdk.PromoteCapturedSessionRequest,
+	request *sdk.PromoteCapturedSessionRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.PromoteCapturedSessionResponse, error) {
+) (*sdk.PromoteCapturedSessionResponse, error) {
 	response, err := c.WithRawResponse.PromoteCapturedSession(
 		ctx,
 		request,
@@ -161,9 +161,9 @@ func (c *Client) PromoteCapturedSession(
 
 func (c *Client) DiscardCapturedSession(
 	ctx context.Context,
-	request *promptvmgosdk.DiscardCapturedSessionRequest,
+	request *sdk.DiscardCapturedSessionRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.DiscardCapturedSessionResponse, error) {
+) (*sdk.DiscardCapturedSessionResponse, error) {
 	response, err := c.WithRawResponse.DiscardCapturedSession(
 		ctx,
 		request,

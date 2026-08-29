@@ -4,7 +4,7 @@ package marketplacestats
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -36,7 +36,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetMarketplaceStats(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetMarketplaceStatsResponse, error) {
+) (*sdk.GetMarketplaceStatsResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceStats(
 		ctx,
 		opts...,

@@ -4,7 +4,7 @@ package apikeys
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Retrieves a paginated list of API keys for the authenticated user. Results include metadata but never expose the secret key.
 func (c *Client) ListAPIKeys(
 	ctx context.Context,
-	request *promptvmgosdk.ListAPIKeysRequest,
+	request *sdk.ListAPIKeysRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListAPIKeysResponse, error) {
+) (*sdk.ListAPIKeysResponse, error) {
 	response, err := c.WithRawResponse.ListAPIKeys(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListAPIKeys(
 // Generates a new API key for the authenticated user. Requires Pro or Enterprise tier. The secret key is only returned once during creation - store it securely.
 func (c *Client) CreateAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.CreateAPIKeyRequest,
+	request *sdk.CreateAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreateAPIKeyResponse, error) {
+) (*sdk.CreateAPIKeyResponse, error) {
 	response, err := c.WithRawResponse.CreateAPIKey(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) CreateAPIKey(
 // Retrieves detailed information about a specific API key. Does not include the secret key.
 func (c *Client) GetAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIKeyRequest,
+	request *sdk.GetAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetAPIKeyResponse, error) {
+) (*sdk.GetAPIKeyResponse, error) {
 	response, err := c.WithRawResponse.GetAPIKey(
 		ctx,
 		request,
@@ -86,9 +86,9 @@ func (c *Client) GetAPIKey(
 // Permanently revokes an API key. Revoked keys cannot be used for API access but remain in the system for audit purposes. This action cannot be undone.
 func (c *Client) RevokeAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.RevokeAPIKeyRequest,
+	request *sdk.RevokeAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.RevokeAPIKeyResponse, error) {
+) (*sdk.RevokeAPIKeyResponse, error) {
 	response, err := c.WithRawResponse.RevokeAPIKey(
 		ctx,
 		request,
@@ -103,9 +103,9 @@ func (c *Client) RevokeAPIKey(
 // Updates the metadata (name) of an existing API key. Cannot modify scopes after creation.
 func (c *Client) UpdateAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateAPIKeyRequest,
+	request *sdk.UpdateAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateAPIKeyResponse, error) {
+) (*sdk.UpdateAPIKeyResponse, error) {
 	response, err := c.WithRawResponse.UpdateAPIKey(
 		ctx,
 		request,
@@ -120,9 +120,9 @@ func (c *Client) UpdateAPIKey(
 // Retrieves usage statistics for a specific API key including request counts, error rates, and latency metrics.
 func (c *Client) GetAPIKeyUsage(
 	ctx context.Context,
-	request *promptvmgosdk.GetAPIKeyUsageRequest,
+	request *sdk.GetAPIKeyUsageRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetAPIKeyUsageResponse, error) {
+) (*sdk.GetAPIKeyUsageResponse, error) {
 	response, err := c.WithRawResponse.GetAPIKeyUsage(
 		ctx,
 		request,
@@ -137,9 +137,9 @@ func (c *Client) GetAPIKeyUsage(
 // Generates a new secret for an existing API key. The public key remains unchanged. The old secret remains valid for a configurable grace period (default: 24 hours). Requires JWT auth — cannot rotate using the key itself.
 func (c *Client) RotateAPIKey(
 	ctx context.Context,
-	request *promptvmgosdk.RotateAPIKeyRequest,
+	request *sdk.RotateAPIKeyRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.RotateAPIKeyResponse, error) {
+) (*sdk.RotateAPIKeyResponse, error) {
 	response, err := c.WithRawResponse.RotateAPIKey(
 		ctx,
 		request,

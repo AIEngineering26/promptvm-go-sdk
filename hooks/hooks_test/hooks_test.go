@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestHooksListHooksWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListHooksRequest{
+	request := &sdk.ListHooksRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Hooks.ListHooks(
@@ -99,7 +99,7 @@ func TestHooksCreateHookWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateHookRequest{
+	request := &sdk.CreateHookRequest{
 		HookJSON:    "hook_json",
 		WorkspaceID: "workspaceId",
 	}
@@ -126,7 +126,7 @@ func TestHooksGetHookWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetHookRequest{
+	request := &sdk.GetHookRequest{
 		HookID: "hookId",
 	}
 	_, invocationErr := client.Hooks.GetHook(
@@ -152,7 +152,7 @@ func TestHooksDeleteHookWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteHookRequest{
+	request := &sdk.DeleteHookRequest{
 		HookID: "hookId",
 	}
 	_, invocationErr := client.Hooks.DeleteHook(
@@ -178,7 +178,7 @@ func TestHooksUpdateHookWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateHookRequest{
+	request := &sdk.UpdateHookRequest{
 		HookID: "hookId",
 	}
 	_, invocationErr := client.Hooks.UpdateHook(
@@ -204,7 +204,7 @@ func TestHooksExportHookWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ExportHookRequest{
+	request := &sdk.ExportHookRequest{
 		HookID: "hookId",
 	}
 	_, invocationErr := client.Hooks.ExportHook(
@@ -230,7 +230,7 @@ func TestHooksValidateHookWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ValidateHookRequest{
+	request := &sdk.ValidateHookRequest{
 		HookJSON: "hook_json",
 	}
 	_, invocationErr := client.Hooks.ValidateHook(
@@ -256,8 +256,8 @@ func TestHooksImportHooksWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ImportHooksRequest{
-		Source:      promptvmgosdk.ImportHooksRequestSourceSettingsJSON,
+	request := &sdk.ImportHooksRequest{
+		Source:      sdk.ImportHooksRequestSourceSettingsJSON,
 		Content:     "content",
 		WorkspaceID: "workspaceId",
 	}

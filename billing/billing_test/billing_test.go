@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestBillingGetPromoOfferWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetPromoOfferRequest{
+	request := &sdk.GetPromoOfferRequest{
 		Token: "token",
 	}
 	_, invocationErr := client.Billing.GetPromoOffer(
@@ -121,10 +121,10 @@ func TestBillingCreateBillingCheckoutSessionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateBillingCheckoutSessionRequest{
+	request := &sdk.CreateBillingCheckoutSessionRequest{
 		OrgID:    "018e4a3b-0000-0000-0000-000000000001",
 		PlanSlug: "pro",
-		Interval: promptvmgosdk.CreateBillingCheckoutSessionRequestIntervalMonth,
+		Interval: sdk.CreateBillingCheckoutSessionRequestIntervalMonth,
 	}
 	_, invocationErr := client.Billing.CreateBillingCheckoutSession(
 		context.TODO(),
@@ -149,7 +149,7 @@ func TestBillingCreateBillingPortalSessionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateBillingPortalSessionRequest{
+	request := &sdk.CreateBillingPortalSessionRequest{
 		OrgID: "018e4a3b-0000-0000-0000-000000000001",
 	}
 	_, invocationErr := client.Billing.CreateBillingPortalSession(
@@ -175,10 +175,10 @@ func TestBillingChangeBillingPlanWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ChangeBillingPlanRequest{
+	request := &sdk.ChangeBillingPlanRequest{
 		OrgID:    "018e4a3b-0000-0000-0000-000000000001",
 		PlanSlug: "teams",
-		Interval: promptvmgosdk.ChangeBillingPlanRequestIntervalMonth,
+		Interval: sdk.ChangeBillingPlanRequestIntervalMonth,
 	}
 	_, invocationErr := client.Billing.ChangeBillingPlan(
 		context.TODO(),
@@ -203,7 +203,7 @@ func TestBillingAdjustBillingSeatsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.AdjustBillingSeatsRequest{
+	request := &sdk.AdjustBillingSeatsRequest{
 		OrgID: "018e4a3b-0000-0000-0000-000000000001",
 		Seats: 5,
 	}
@@ -230,7 +230,7 @@ func TestBillingCancelBillingSubscriptionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CancelBillingSubscriptionRequest{
+	request := &sdk.CancelBillingSubscriptionRequest{
 		OrgID: "018e4a3b-0000-0000-0000-000000000001",
 	}
 	_, invocationErr := client.Billing.CancelBillingSubscription(
@@ -256,7 +256,7 @@ func TestBillingResumeBillingSubscriptionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ResumeBillingSubscriptionRequest{
+	request := &sdk.ResumeBillingSubscriptionRequest{
 		OrgID: "018e4a3b-0000-0000-0000-000000000001",
 	}
 	_, invocationErr := client.Billing.ResumeBillingSubscription(
@@ -282,7 +282,7 @@ func TestBillingListBillingInvoicesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListBillingInvoicesRequest{
+	request := &sdk.ListBillingInvoicesRequest{
 		OrgID: "018e4a3b-0000-0000-0000-000000000001",
 	}
 	_, invocationErr := client.Billing.ListBillingInvoices(
@@ -308,7 +308,7 @@ func TestBillingRedeemPromotionalOfferWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.RedeemPromotionalOfferRequest{
+	request := &sdk.RedeemPromotionalOfferRequest{
 		Token: "abcdef0123456789ABCDEF0123456789",
 		OrgID: "018e4a3b-0000-0000-0000-000000000001",
 	}
@@ -335,8 +335,8 @@ func TestBillingGetBillingStatusWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetBillingStatusRequest{
-		OrgID: promptvmgosdk.String(
+	request := &sdk.GetBillingStatusRequest{
+		OrgID: sdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -363,7 +363,7 @@ func TestBillingListBillingWebhookErrorsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListBillingWebhookErrorsRequest{
+	request := &sdk.ListBillingWebhookErrorsRequest{
 		OrgID: "018e4a3b-0000-0000-0000-000000000001",
 	}
 	_, invocationErr := client.Billing.ListBillingWebhookErrors(

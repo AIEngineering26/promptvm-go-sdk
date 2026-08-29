@@ -70,6 +70,7 @@ type Client struct {
 	Sharing                     *sharing.Client
 	APIKeys                     *apikeys.Client
 	MarketplaceSocial           *marketplacesocial.Client
+	Marketplace                 *marketplace.Client
 	MarketplaceCreatorDashboard *marketplacecreatordashboard.Client
 	MarketplaceSubscriptions    *marketplacesubscriptions.Client
 	MarketplaceRatings          *marketplaceratings.Client
@@ -77,7 +78,6 @@ type Client struct {
 	Onboarding                  *onboarding.Client
 	Users                       *users.Client
 	Settings                    *settings.Client
-	Marketplace                 *marketplace.Client
 	Organizations               *organizations.Client
 	Prompts                     *prompts.Client
 	PromptVersions              *promptversions.Client
@@ -123,6 +123,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Sharing:                     sharing.NewClient(options),
 		APIKeys:                     apikeys.NewClient(options),
 		MarketplaceSocial:           marketplacesocial.NewClient(options),
+		Marketplace:                 marketplace.NewClient(options),
 		MarketplaceCreatorDashboard: marketplacecreatordashboard.NewClient(options),
 		MarketplaceSubscriptions:    marketplacesubscriptions.NewClient(options),
 		MarketplaceRatings:          marketplaceratings.NewClient(options),
@@ -130,7 +131,6 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Onboarding:                  onboarding.NewClient(options),
 		Users:                       users.NewClient(options),
 		Settings:                    settings.NewClient(options),
-		Marketplace:                 marketplace.NewClient(options),
 		Organizations:               organizations.NewClient(options),
 		Prompts:                     prompts.NewClient(options),
 		PromptVersions:              promptversions.NewClient(options),

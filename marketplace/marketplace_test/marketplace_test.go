@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -62,6 +62,35 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+func TestMarketplaceSetListingRecommendedModelsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.SetListingRecommendedModelsRequest{
+		ListingID: "listingId",
+		ModelIDs: []string{
+			"modelIds",
+		},
+	}
+	_, invocationErr := client.Marketplace.SetListingRecommendedModels(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceSetListingRecommendedModelsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceSetListingRecommendedModelsWithWireMock", "PUT", "/api/v1/marketplace/listings/listingId/recommended-models", nil, 1)
+}
+
 func TestMarketplaceAdminListContentTypesWithWireMock(
 	t *testing.T,
 ) {
@@ -95,7 +124,7 @@ func TestMarketplaceAdminCreateContentTypeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.AdminCreateContentTypeRequest{
+	request := &sdk.AdminCreateContentTypeRequest{
 		Slug:        "slug",
 		Label:       "label",
 		PluralLabel: "pluralLabel",
@@ -125,9 +154,9 @@ func TestMarketplaceAdminReorderContentTypesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.AdminReorderContentTypesRequest{
-		Items: []*promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
-			&promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
+	request := &sdk.AdminReorderContentTypesRequest{
+		Items: []*sdk.AdminReorderContentTypesRequestItemsItem{
+			&sdk.AdminReorderContentTypesRequestItemsItem{
 				Slug:      "slug",
 				SortOrder: 1,
 			},
@@ -156,7 +185,7 @@ func TestMarketplaceAdminDeleteContentTypeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.AdminDeleteContentTypeRequest{
+	request := &sdk.AdminDeleteContentTypeRequest{
 		Slug: "slug",
 	}
 	invocationErr := client.Marketplace.AdminDeleteContentType(
@@ -182,7 +211,7 @@ func TestMarketplaceAdminUpdateContentTypeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.AdminUpdateContentTypeRequest{
+	request := &sdk.AdminUpdateContentTypeRequest{
 		Slug: "slug",
 	}
 	_, invocationErr := client.Marketplace.AdminUpdateContentType(
@@ -195,4 +224,403 @@ func TestMarketplaceAdminUpdateContentTypeWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMarketplaceAdminUpdateContentTypeWithWireMock", "PATCH", "/api/v1/admin/content-types/slug", nil, 1)
+}
+
+func TestMarketplaceAdminListAiModelProvidersWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	_, invocationErr := client.Marketplace.AdminListAiModelProviders(
+		context.TODO(),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminListAiModelProvidersWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminListAiModelProvidersWithWireMock", "GET", "/api/v1/admin/ai-catalog/providers", nil, 1)
+}
+
+func TestMarketplaceAdminCreateAiModelProviderWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminCreateAiModelProviderRequest{
+		Slug: "slug",
+		Name: "name",
+	}
+	_, invocationErr := client.Marketplace.AdminCreateAiModelProvider(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminCreateAiModelProviderWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminCreateAiModelProviderWithWireMock", "POST", "/api/v1/admin/ai-catalog/providers", nil, 1)
+}
+
+func TestMarketplaceAdminReorderAiModelProvidersWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminReorderAiModelProvidersRequest{
+		Items: []*sdk.AdminReorderAiModelProvidersRequestItemsItem{
+			&sdk.AdminReorderAiModelProvidersRequestItemsItem{
+				ID:        "id",
+				SortOrder: 1,
+			},
+		},
+	}
+	_, invocationErr := client.Marketplace.AdminReorderAiModelProviders(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminReorderAiModelProvidersWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminReorderAiModelProvidersWithWireMock", "PATCH", "/api/v1/admin/ai-catalog/providers/reorder", nil, 1)
+}
+
+func TestMarketplaceAdminDeleteAiModelProviderWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminDeleteAiModelProviderRequest{
+		Slug: "slug",
+	}
+	invocationErr := client.Marketplace.AdminDeleteAiModelProvider(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminDeleteAiModelProviderWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminDeleteAiModelProviderWithWireMock", "DELETE", "/api/v1/admin/ai-catalog/providers/slug", nil, 1)
+}
+
+func TestMarketplaceAdminUpdateAiModelProviderWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminUpdateAiModelProviderRequest{
+		Slug: "slug",
+	}
+	_, invocationErr := client.Marketplace.AdminUpdateAiModelProvider(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminUpdateAiModelProviderWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminUpdateAiModelProviderWithWireMock", "PATCH", "/api/v1/admin/ai-catalog/providers/slug", nil, 1)
+}
+
+func TestMarketplaceAdminListAiModelsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminListAiModelsRequest{}
+	_, invocationErr := client.Marketplace.AdminListAiModels(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminListAiModelsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminListAiModelsWithWireMock", "GET", "/api/v1/admin/ai-catalog/models", nil, 1)
+}
+
+func TestMarketplaceAdminCreateAiModelWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminCreateAiModelRequest{
+		ProviderID: "providerId",
+		Slug:       "slug",
+		Name:       "name",
+	}
+	_, invocationErr := client.Marketplace.AdminCreateAiModel(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminCreateAiModelWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminCreateAiModelWithWireMock", "POST", "/api/v1/admin/ai-catalog/models", nil, 1)
+}
+
+func TestMarketplaceAdminReorderAiModelsWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminReorderAiModelsRequest{
+		Items: []*sdk.AdminReorderAiModelsRequestItemsItem{
+			&sdk.AdminReorderAiModelsRequestItemsItem{
+				ID:        "id",
+				SortOrder: 1,
+			},
+		},
+	}
+	_, invocationErr := client.Marketplace.AdminReorderAiModels(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminReorderAiModelsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminReorderAiModelsWithWireMock", "PATCH", "/api/v1/admin/ai-catalog/models/reorder", nil, 1)
+}
+
+func TestMarketplaceAdminDeleteAiModelWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminDeleteAiModelRequest{
+		ID: "id",
+	}
+	invocationErr := client.Marketplace.AdminDeleteAiModel(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminDeleteAiModelWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminDeleteAiModelWithWireMock", "DELETE", "/api/v1/admin/ai-catalog/models/id", nil, 1)
+}
+
+func TestMarketplaceAdminUpdateAiModelWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminUpdateAiModelRequest{
+		ID: "id",
+	}
+	_, invocationErr := client.Marketplace.AdminUpdateAiModel(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminUpdateAiModelWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminUpdateAiModelWithWireMock", "PATCH", "/api/v1/admin/ai-catalog/models/id", nil, 1)
+}
+
+func TestMarketplaceAdminListCategoriesWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	_, invocationErr := client.Marketplace.AdminListCategories(
+		context.TODO(),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminListCategoriesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminListCategoriesWithWireMock", "GET", "/api/v1/admin/categories", nil, 1)
+}
+
+func TestMarketplaceAdminCreateCategoryWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminCreateCategoryRequest{
+		Name: "name",
+		Slug: "slug",
+	}
+	_, invocationErr := client.Marketplace.AdminCreateCategory(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminCreateCategoryWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminCreateCategoryWithWireMock", "POST", "/api/v1/admin/categories", nil, 1)
+}
+
+func TestMarketplaceAdminReorderCategoriesWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminReorderCategoriesRequest{
+		Items: []*sdk.AdminReorderCategoriesRequestItemsItem{
+			&sdk.AdminReorderCategoriesRequestItemsItem{
+				ID:           "id",
+				DisplayOrder: 1,
+			},
+		},
+	}
+	_, invocationErr := client.Marketplace.AdminReorderCategories(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminReorderCategoriesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminReorderCategoriesWithWireMock", "PATCH", "/api/v1/admin/categories/reorder", nil, 1)
+}
+
+func TestMarketplaceAdminDeleteCategoryWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminDeleteCategoryRequest{
+		ID: "id",
+	}
+	invocationErr := client.Marketplace.AdminDeleteCategory(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminDeleteCategoryWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminDeleteCategoryWithWireMock", "DELETE", "/api/v1/admin/categories/id", nil, 1)
+}
+
+func TestMarketplaceAdminUpdateCategoryWithWireMock(
+	t *testing.T,
+) {
+	wiremockPort := os.Getenv("WIREMOCK_PORT")
+	if wiremockPort == "" {
+		wiremockPort = "8080"
+	}
+	WireMockBaseURL := "http://localhost:" + wiremockPort
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &sdk.AdminUpdateCategoryRequest{
+		ID: "id",
+	}
+	_, invocationErr := client.Marketplace.AdminUpdateCategory(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMarketplaceAdminUpdateCategoryWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMarketplaceAdminUpdateCategoryWithWireMock", "PATCH", "/api/v1/admin/categories/id", nil, 1)
 }

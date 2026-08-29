@@ -295,7 +295,7 @@ func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
 }
 
-// File exceeds the size limit
+// Too many, unknown, or retired models
 type UnprocessableEntityError struct {
 	*core.APIError
 	Body interface{}

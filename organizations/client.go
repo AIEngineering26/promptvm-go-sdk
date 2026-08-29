@@ -4,7 +4,7 @@ package organizations
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) ListOrganizations(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListOrganizationsResponse, error) {
+) (*sdk.ListOrganizationsResponse, error) {
 	response, err := c.WithRawResponse.ListOrganizations(
 		ctx,
 		opts...,
@@ -48,7 +48,7 @@ func (c *Client) ListOrganizations(
 
 func (c *Client) CreateOrganization(
 	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationRequest,
+	request *sdk.CreateOrganizationRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.CreateOrganization(
@@ -65,7 +65,7 @@ func (c *Client) CreateOrganization(
 // Soft-deletes the organization and cascades: workspaces and files are soft-deleted, members removed, API keys and org-scoped sessions revoked, the active Stripe subscription is cancelled immediately, and an org.deleted audit log is written. Owner only; JWT session only — API-key and CLI-token callers are rejected with 403 regardless of role. Personal organizations cannot be deleted standalone (422) — they are deleted together with the account.
 func (c *Client) DeleteOrganization(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteOrganizationRequest,
+	request *sdk.DeleteOrganizationRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DeleteOrganization(
@@ -81,9 +81,9 @@ func (c *Client) DeleteOrganization(
 
 func (c *Client) AcceptOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.AcceptOrganizationInvitationRequest,
+	request *sdk.AcceptOrganizationInvitationRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.AcceptOrganizationInvitationResponse, error) {
+) (*sdk.AcceptOrganizationInvitationResponse, error) {
 	response, err := c.WithRawResponse.AcceptOrganizationInvitation(
 		ctx,
 		request,
@@ -98,9 +98,9 @@ func (c *Client) AcceptOrganizationInvitation(
 // Returns all workspaces in the org visible to the caller. Org owners and admins see every workspace; regular members see workspaces they own, are a member of, or that have public/internal visibility.
 func (c *Client) ListOrganizationWorkspaces(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationWorkspacesRequest,
+	request *sdk.ListOrganizationWorkspacesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListOrganizationWorkspacesResponse, error) {
+) (*sdk.ListOrganizationWorkspacesResponse, error) {
 	response, err := c.WithRawResponse.ListOrganizationWorkspaces(
 		ctx,
 		request,
@@ -114,7 +114,7 @@ func (c *Client) ListOrganizationWorkspaces(
 
 func (c *Client) ListOrganizationMembers(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationMembersRequest,
+	request *sdk.ListOrganizationMembersRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ListOrganizationMembers(
@@ -130,7 +130,7 @@ func (c *Client) ListOrganizationMembers(
 
 func (c *Client) GetOrganizationPermissions(
 	ctx context.Context,
-	request *promptvmgosdk.GetOrganizationPermissionsRequest,
+	request *sdk.GetOrganizationPermissionsRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.GetOrganizationPermissions(
@@ -146,7 +146,7 @@ func (c *Client) GetOrganizationPermissions(
 
 func (c *Client) UpdateOrganizationPermissions(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationPermissionsRequest,
+	request *sdk.UpdateOrganizationPermissionsRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.UpdateOrganizationPermissions(
@@ -162,7 +162,7 @@ func (c *Client) UpdateOrganizationPermissions(
 
 func (c *Client) ListOrganizationRoles(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationRolesRequest,
+	request *sdk.ListOrganizationRolesRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ListOrganizationRoles(
@@ -178,7 +178,7 @@ func (c *Client) ListOrganizationRoles(
 
 func (c *Client) CreateOrganizationRole(
 	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationRoleRequest,
+	request *sdk.CreateOrganizationRoleRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.CreateOrganizationRole(
@@ -194,7 +194,7 @@ func (c *Client) CreateOrganizationRole(
 
 func (c *Client) RemoveOrganizationMember(
 	ctx context.Context,
-	request *promptvmgosdk.RemoveOrganizationMemberRequest,
+	request *sdk.RemoveOrganizationMemberRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.RemoveOrganizationMember(
@@ -210,7 +210,7 @@ func (c *Client) RemoveOrganizationMember(
 
 func (c *Client) UpdateOrganizationMemberRole(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationMemberRoleRequest,
+	request *sdk.UpdateOrganizationMemberRoleRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.UpdateOrganizationMemberRole(
@@ -226,7 +226,7 @@ func (c *Client) UpdateOrganizationMemberRole(
 
 func (c *Client) ListOrganizationInvitations(
 	ctx context.Context,
-	request *promptvmgosdk.ListOrganizationInvitationsRequest,
+	request *sdk.ListOrganizationInvitationsRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ListOrganizationInvitations(
@@ -242,7 +242,7 @@ func (c *Client) ListOrganizationInvitations(
 
 func (c *Client) CreateOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.CreateOrganizationInvitationRequest,
+	request *sdk.CreateOrganizationInvitationRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.CreateOrganizationInvitation(
@@ -258,7 +258,7 @@ func (c *Client) CreateOrganizationInvitation(
 
 func (c *Client) RevokeOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.RevokeOrganizationInvitationRequest,
+	request *sdk.RevokeOrganizationInvitationRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.RevokeOrganizationInvitation(
@@ -274,7 +274,7 @@ func (c *Client) RevokeOrganizationInvitation(
 
 func (c *Client) ResendOrganizationInvitation(
 	ctx context.Context,
-	request *promptvmgosdk.ResendOrganizationInvitationRequest,
+	request *sdk.ResendOrganizationInvitationRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ResendOrganizationInvitation(
@@ -290,7 +290,7 @@ func (c *Client) ResendOrganizationInvitation(
 
 func (c *Client) DeleteOrganizationRole(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteOrganizationRoleRequest,
+	request *sdk.DeleteOrganizationRoleRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DeleteOrganizationRole(
@@ -306,7 +306,7 @@ func (c *Client) DeleteOrganizationRole(
 
 func (c *Client) UpdateOrganizationRole(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateOrganizationRoleRequest,
+	request *sdk.UpdateOrganizationRoleRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.UpdateOrganizationRole(

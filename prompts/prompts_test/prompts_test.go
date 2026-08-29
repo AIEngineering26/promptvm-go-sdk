@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestPromptsListPromptsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListPromptsRequest{
+	request := &sdk.ListPromptsRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Prompts.ListPrompts(
@@ -99,7 +99,7 @@ func TestPromptsCreatePromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreatePromptRequest{
+	request := &sdk.CreatePromptRequest{
 		Name:        "name",
 		WorkspaceID: "workspaceId",
 		Content:     "content",
@@ -127,7 +127,7 @@ func TestPromptsGetPromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.GetPromptRequest{
+	request := &sdk.GetPromptRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Prompts.GetPrompt(
@@ -153,7 +153,7 @@ func TestPromptsDeletePromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeletePromptRequest{
+	request := &sdk.DeletePromptRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Prompts.DeletePrompt(
@@ -179,7 +179,7 @@ func TestPromptsUpdatePromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdatePromptRequest{
+	request := &sdk.UpdatePromptRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Prompts.UpdatePrompt(

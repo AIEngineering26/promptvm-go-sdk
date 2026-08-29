@@ -14,9 +14,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/AIEngineering26/promptvm-go-sdk/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/AIEngineering26/promptvm-go-sdk/core"
 )
 
 // InternalTestCase represents a single test case.

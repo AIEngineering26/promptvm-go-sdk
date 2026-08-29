@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestDirectoriesListDirectoriesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.ListDirectoriesRequest{
+	request := &sdk.ListDirectoriesRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Directories.ListDirectories(
@@ -99,7 +99,7 @@ func TestDirectoriesCreateDirectoryWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.CreateDirectoryRequest{
+	request := &sdk.CreateDirectoryRequest{
 		WorkspaceID: "workspaceId",
 		Name:        "name",
 	}
@@ -126,7 +126,7 @@ func TestDirectoriesDeleteDirectoryWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.DeleteDirectoryRequest{
+	request := &sdk.DeleteDirectoryRequest{
 		DirectoryID: "directoryId",
 	}
 	_, invocationErr := client.Directories.DeleteDirectory(
@@ -152,7 +152,7 @@ func TestDirectoriesUpdateDirectoryWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UpdateDirectoryRequest{
+	request := &sdk.UpdateDirectoryRequest{
 		DirectoryID: "directoryId",
 	}
 	_, invocationErr := client.Directories.UpdateDirectory(

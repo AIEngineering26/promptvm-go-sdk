@@ -4,7 +4,7 @@ package resources
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns all confirmed, non-deleted resources belonging to a workspace. By default, resources bundled into the current version of a skill are excluded — they are internal to the skill and surface through its files manifest. Resources attached to ordinary prompts remain included. Pass includeBundled=true to return everything, including skill-bundled resources. Pass orphansOnly=true to return ONLY resources not bound to any prompt/skill version — typically leftovers from failed CLI skill uploads (the CLI cleanup-orphans command uses this).
 func (c *Client) ListWorkspaceResources(
 	ctx context.Context,
-	request *promptvmgosdk.ListWorkspaceResourcesRequest,
+	request *sdk.ListWorkspaceResourcesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListWorkspaceResourcesResponse, error) {
+) (*sdk.ListWorkspaceResourcesResponse, error) {
 	response, err := c.WithRawResponse.ListWorkspaceResources(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListWorkspaceResources(
 // Creates a file record and returns a presigned S3 PUT URL. Upload your file bytes directly to the presigned URL within 15 minutes. Then call POST /resources/:resourceId/confirm to complete the process.
 func (c *Client) InitiateResourceUpload(
 	ctx context.Context,
-	request *promptvmgosdk.InitiateResourceUploadRequest,
+	request *sdk.InitiateResourceUploadRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.InitiateResourceUploadResponse, error) {
+) (*sdk.InitiateResourceUploadResponse, error) {
 	response, err := c.WithRawResponse.InitiateResourceUpload(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) InitiateResourceUpload(
 // Verifies the file was uploaded to S3 and marks the resource as available for use.
 func (c *Client) ConfirmResourceUpload(
 	ctx context.Context,
-	request *promptvmgosdk.ConfirmResourceUploadRequest,
+	request *sdk.ConfirmResourceUploadRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ConfirmResourceUploadResponse, error) {
+) (*sdk.ConfirmResourceUploadResponse, error) {
 	response, err := c.WithRawResponse.ConfirmResourceUpload(
 		ctx,
 		request,
@@ -85,9 +85,9 @@ func (c *Client) ConfirmResourceUpload(
 
 func (c *Client) GetResource(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceRequest,
+	request *sdk.GetResourceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetResourceResponse, error) {
+) (*sdk.GetResourceResponse, error) {
 	response, err := c.WithRawResponse.GetResource(
 		ctx,
 		request,
@@ -102,7 +102,7 @@ func (c *Client) GetResource(
 // Soft-deletes the resource and removes its S3 object. Also detaches it from all prompt versions.
 func (c *Client) DeleteResource(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteResourceRequest,
+	request *sdk.DeleteResourceRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DeleteResource(
@@ -119,9 +119,9 @@ func (c *Client) DeleteResource(
 // Update resource metadata (name, directory placement).
 func (c *Client) UpdateResource(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateResourceRequest,
+	request *sdk.UpdateResourceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateResourceResponse, error) {
+) (*sdk.UpdateResourceResponse, error) {
 	response, err := c.WithRawResponse.UpdateResource(
 		ctx,
 		request,
@@ -136,9 +136,9 @@ func (c *Client) UpdateResource(
 // Returns a time-limited presigned URL (1 hour) for downloading the resource from S3. Disposition defaults to attachment; inline is honored only for sniff-verified preview-safe types (png, jpeg, gif, webp, pdf) and otherwise falls back to attachment, reported in the response.
 func (c *Client) GetResourceDownloadURL(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceDownloadURLRequest,
+	request *sdk.GetResourceDownloadURLRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetResourceDownloadURLResponse, error) {
+) (*sdk.GetResourceDownloadURLResponse, error) {
 	response, err := c.WithRawResponse.GetResourceDownloadURL(
 		ctx,
 		request,
@@ -153,9 +153,9 @@ func (c *Client) GetResourceDownloadURL(
 // Returns the document-processing status for the resource's current version: ingestion job status, failure stage/message, chunk count, whether a markdown render exists, and the number of current embeddings. Powers the "RAG Status" metadata row in the resource detail panel.
 func (c *Client) GetResourceRagStatus(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceRagStatusRequest,
+	request *sdk.GetResourceRagStatusRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetResourceRagStatusResponse, error) {
+) (*sdk.GetResourceRagStatusResponse, error) {
 	response, err := c.WithRawResponse.GetResourceRagStatus(
 		ctx,
 		request,
@@ -170,9 +170,9 @@ func (c *Client) GetResourceRagStatus(
 // Toggle whether this resource is indexed for Knowledge Search (RAG). Disabling removes it from search and purges its embeddings; enabling re-triggers processing. Returns the refreshed RAG status.
 func (c *Client) SetResourceSearchIndexing(
 	ctx context.Context,
-	request *promptvmgosdk.SetResourceSearchIndexingRequest,
+	request *sdk.SetResourceSearchIndexingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.SetResourceSearchIndexingResponse, error) {
+) (*sdk.SetResourceSearchIndexingResponse, error) {
 	response, err := c.WithRawResponse.SetResourceSearchIndexing(
 		ctx,
 		request,
@@ -187,9 +187,9 @@ func (c *Client) SetResourceSearchIndexing(
 // Returns a time-limited presigned URL (1 hour) for the markdown render of the resource's current version (e.g. a PDF converted to markdown by docproc). Returns 404 when no markdown render is available. Powers the Original/Markdown toggle.
 func (c *Client) GetResourceMarkdownURL(
 	ctx context.Context,
-	request *promptvmgosdk.GetResourceMarkdownURLRequest,
+	request *sdk.GetResourceMarkdownURLRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetResourceMarkdownURLResponse, error) {
+) (*sdk.GetResourceMarkdownURLResponse, error) {
 	response, err := c.WithRawResponse.GetResourceMarkdownURL(
 		ctx,
 		request,
@@ -204,9 +204,9 @@ func (c *Client) GetResourceMarkdownURL(
 // Returns the document-processing status for the prompt's current version: ingestion job status, chunk count, and current embedding count. Prompts are embedded like files, so this powers the RAG status indicator in the editor.
 func (c *Client) GetPromptRagStatus(
 	ctx context.Context,
-	request *promptvmgosdk.GetPromptRagStatusRequest,
+	request *sdk.GetPromptRagStatusRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetPromptRagStatusResponse, error) {
+) (*sdk.GetPromptRagStatusResponse, error) {
 	response, err := c.WithRawResponse.GetPromptRagStatus(
 		ctx,
 		request,
@@ -221,9 +221,9 @@ func (c *Client) GetPromptRagStatus(
 // Toggle whether this prompt is indexed for Knowledge Search (RAG). Disabling removes it from search and purges its embeddings; enabling re-triggers processing. Returns the refreshed RAG status.
 func (c *Client) SetPromptSearchIndexing(
 	ctx context.Context,
-	request *promptvmgosdk.SetPromptSearchIndexingRequest,
+	request *sdk.SetPromptSearchIndexingRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.SetPromptSearchIndexingResponse, error) {
+) (*sdk.SetPromptSearchIndexingResponse, error) {
 	response, err := c.WithRawResponse.SetPromptSearchIndexing(
 		ctx,
 		request,
@@ -237,9 +237,9 @@ func (c *Client) SetPromptSearchIndexing(
 
 func (c *Client) ListPromptResources(
 	ctx context.Context,
-	request *promptvmgosdk.ListPromptResourcesRequest,
+	request *sdk.ListPromptResourcesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListPromptResourcesResponse, error) {
+) (*sdk.ListPromptResourcesResponse, error) {
 	response, err := c.WithRawResponse.ListPromptResources(
 		ctx,
 		request,
@@ -254,9 +254,9 @@ func (c *Client) ListPromptResources(
 // The resource must be confirmed (upload completed) and belong to the same workspace.
 func (c *Client) AttachPromptResource(
 	ctx context.Context,
-	request *promptvmgosdk.AttachPromptResourceRequest,
+	request *sdk.AttachPromptResourceRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.AttachPromptResourceResponse, error) {
+) (*sdk.AttachPromptResourceResponse, error) {
 	response, err := c.WithRawResponse.AttachPromptResource(
 		ctx,
 		request,
@@ -271,7 +271,7 @@ func (c *Client) AttachPromptResource(
 // Removes the association only — the resource file is not deleted.
 func (c *Client) DetachPromptResource(
 	ctx context.Context,
-	request *promptvmgosdk.DetachPromptResourceRequest,
+	request *sdk.DetachPromptResourceRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DetachPromptResource(

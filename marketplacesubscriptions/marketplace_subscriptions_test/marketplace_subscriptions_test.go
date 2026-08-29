@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceSubscriptionsSubscribeToMarketplaceCreatorWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.SubscribeToMarketplaceCreatorRequest{
+	request := &sdk.SubscribeToMarketplaceCreatorRequest{
 		CreatorUserID: "creatorUserId",
 	}
 	_, invocationErr := client.MarketplaceSubscriptions.SubscribeToMarketplaceCreator(
@@ -99,7 +99,7 @@ func TestMarketplaceSubscriptionsUnsubscribeFromMarketplaceCreatorWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &promptvmgosdk.UnsubscribeFromMarketplaceCreatorRequest{
+	request := &sdk.UnsubscribeFromMarketplaceCreatorRequest{
 		CreatorUserID: "creatorUserId",
 	}
 	invocationErr := client.MarketplaceSubscriptions.UnsubscribeFromMarketplaceCreator(

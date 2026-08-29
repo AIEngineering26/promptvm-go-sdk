@@ -4,7 +4,7 @@ package skills
 
 import (
 	context "context"
-	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	sdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns paginated skills. Filter `q` matches name, description, AND when_to_use (the Claude/Agent Skills documented match basis). Filter `tag` matches the tags array exactly (case-insensitive).
 func (c *Client) ListSkills(
 	ctx context.Context,
-	request *promptvmgosdk.ListSkillsRequest,
+	request *sdk.ListSkillsRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListSkillsResponse, error) {
+) (*sdk.ListSkillsResponse, error) {
 	response, err := c.WithRawResponse.ListSkills(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListSkills(
 // Creates a skill artifact (content_kind=skill). The full SKILL.md bytes (frontmatter + body) are stored verbatim. Frontmatter is parsed into a derived metadata cache used by the typed read shape.
 func (c *Client) CreateSkill(
 	ctx context.Context,
-	request *promptvmgosdk.CreateSkillRequest,
+	request *sdk.CreateSkillRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.CreateSkillResponse, error) {
+) (*sdk.CreateSkillResponse, error) {
 	response, err := c.WithRawResponse.CreateSkill(
 		ctx,
 		request,
@@ -68,9 +68,9 @@ func (c *Client) CreateSkill(
 
 func (c *Client) GetSkill(
 	ctx context.Context,
-	request *promptvmgosdk.GetSkillRequest,
+	request *sdk.GetSkillRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetSkillResponse, error) {
+) (*sdk.GetSkillResponse, error) {
 	response, err := c.WithRawResponse.GetSkill(
 		ctx,
 		request,
@@ -84,9 +84,9 @@ func (c *Client) GetSkill(
 
 func (c *Client) DeleteSkill(
 	ctx context.Context,
-	request *promptvmgosdk.DeleteSkillRequest,
+	request *sdk.DeleteSkillRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.DeleteSkillResponse, error) {
+) (*sdk.DeleteSkillResponse, error) {
 	response, err := c.WithRawResponse.DeleteSkill(
 		ctx,
 		request,
@@ -101,9 +101,9 @@ func (c *Client) DeleteSkill(
 // Replaces any subset of skill fields. Replacing skill_md re-runs ingest, regenerates the metadata cache, and creates a new version. Replacing files atomically rebinds resource references.
 func (c *Client) UpdateSkill(
 	ctx context.Context,
-	request *promptvmgosdk.UpdateSkillRequest,
+	request *sdk.UpdateSkillRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.UpdateSkillResponse, error) {
+) (*sdk.UpdateSkillResponse, error) {
 	response, err := c.WithRawResponse.UpdateSkill(
 		ctx,
 		request,
@@ -118,9 +118,9 @@ func (c *Client) UpdateSkill(
 // Returns the manifest of files bundled into the skill’s current version — path, sizeBytes, contentType — without any file bytes. Pull an individual file with GET /skills/:skillId/files/content?path=…
 func (c *Client) ListSkillFiles(
 	ctx context.Context,
-	request *promptvmgosdk.ListSkillFilesRequest,
+	request *sdk.ListSkillFilesRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.ListSkillFilesResponse, error) {
+) (*sdk.ListSkillFilesResponse, error) {
 	response, err := c.WithRawResponse.ListSkillFiles(
 		ctx,
 		request,
@@ -135,9 +135,9 @@ func (c *Client) ListSkillFiles(
 // Returns a single bundled file identified by its manifest path. Text files are returned inline (encoding=inline, content is UTF-8); binary files (and any file over the inline cap) return a short-lived presigned download URL (encoding=url, downloadUrl).
 func (c *Client) GetSkillFileContent(
 	ctx context.Context,
-	request *promptvmgosdk.GetSkillFileContentRequest,
+	request *sdk.GetSkillFileContentRequest,
 	opts ...option.RequestOption,
-) (*promptvmgosdk.GetSkillFileContentResponse, error) {
+) (*sdk.GetSkillFileContentResponse, error) {
 	response, err := c.WithRawResponse.GetSkillFileContent(
 		ctx,
 		request,
