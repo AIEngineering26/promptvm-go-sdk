@@ -4,11 +4,11 @@ package marketplacecreatordashboard
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListMarketplaceCreatorListings(
 	ctx context.Context,
-	request *sdk.ListMarketplaceCreatorListingsRequest,
+	request *promptvmgosdk.ListMarketplaceCreatorListingsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListMarketplaceCreatorListingsResponse], error) {
+) (*core.Response[*promptvmgosdk.ListMarketplaceCreatorListingsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListMarketplaceCreatorListings(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListMarketplaceCreatorListingsResponse
+	var response *promptvmgosdk.ListMarketplaceCreatorListingsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListMarketplaceCreatorListings(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListMarketplaceCreatorListingsResponse]{
+	return &core.Response[*promptvmgosdk.ListMarketplaceCreatorListingsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListMarketplaceCreatorListings(
 
 func (r *RawClient) ListMarketplaceCreatorSubscribers(
 	ctx context.Context,
-	request *sdk.ListMarketplaceCreatorSubscribersRequest,
+	request *promptvmgosdk.ListMarketplaceCreatorSubscribersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListMarketplaceCreatorSubscribersResponse], error) {
+) (*core.Response[*promptvmgosdk.ListMarketplaceCreatorSubscribersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -101,7 +101,7 @@ func (r *RawClient) ListMarketplaceCreatorSubscribers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListMarketplaceCreatorSubscribersResponse
+	var response *promptvmgosdk.ListMarketplaceCreatorSubscribersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -113,13 +113,13 @@ func (r *RawClient) ListMarketplaceCreatorSubscribers(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListMarketplaceCreatorSubscribersResponse]{
+	return &core.Response[*promptvmgosdk.ListMarketplaceCreatorSubscribersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

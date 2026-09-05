@@ -4,11 +4,11 @@ package sharing
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AccessSharedPrompt(
 	ctx context.Context,
-	request *sdk.AccessSharedPromptRequest,
+	request *promptvmgosdk.AccessSharedPromptRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AccessSharedPromptResponse], error) {
+) (*core.Response[*promptvmgosdk.AccessSharedPromptResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) AccessSharedPrompt(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.AccessSharedPromptResponse
+	var response *promptvmgosdk.AccessSharedPromptResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,13 +68,13 @@ func (r *RawClient) AccessSharedPrompt(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AccessSharedPromptResponse]{
+	return &core.Response[*promptvmgosdk.AccessSharedPromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -83,9 +83,9 @@ func (r *RawClient) AccessSharedPrompt(
 
 func (r *RawClient) SharePrompt(
 	ctx context.Context,
-	request *sdk.SharePromptRequest,
+	request *promptvmgosdk.SharePromptRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SharePromptResponse], error) {
+) (*core.Response[*promptvmgosdk.SharePromptResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -101,7 +101,7 @@ func (r *RawClient) SharePrompt(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.SharePromptResponse
+	var response *promptvmgosdk.SharePromptResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,13 +114,13 @@ func (r *RawClient) SharePrompt(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SharePromptResponse]{
+	return &core.Response[*promptvmgosdk.SharePromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -129,9 +129,9 @@ func (r *RawClient) SharePrompt(
 
 func (r *RawClient) ListPromptCollaborators(
 	ctx context.Context,
-	request *sdk.ListPromptCollaboratorsRequest,
+	request *promptvmgosdk.ListPromptCollaboratorsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListPromptCollaboratorsResponse], error) {
+) (*core.Response[*promptvmgosdk.ListPromptCollaboratorsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -146,7 +146,7 @@ func (r *RawClient) ListPromptCollaborators(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListPromptCollaboratorsResponse
+	var response *promptvmgosdk.ListPromptCollaboratorsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,13 +158,13 @@ func (r *RawClient) ListPromptCollaborators(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListPromptCollaboratorsResponse]{
+	return &core.Response[*promptvmgosdk.ListPromptCollaboratorsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -173,9 +173,9 @@ func (r *RawClient) ListPromptCollaborators(
 
 func (r *RawClient) RevokePromptCollaborator(
 	ctx context.Context,
-	request *sdk.RevokePromptCollaboratorRequest,
+	request *promptvmgosdk.RevokePromptCollaboratorRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RevokePromptCollaboratorResponse], error) {
+) (*core.Response[*promptvmgosdk.RevokePromptCollaboratorResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -191,7 +191,7 @@ func (r *RawClient) RevokePromptCollaborator(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.RevokePromptCollaboratorResponse
+	var response *promptvmgosdk.RevokePromptCollaboratorResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -203,13 +203,13 @@ func (r *RawClient) RevokePromptCollaborator(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RevokePromptCollaboratorResponse]{
+	return &core.Response[*promptvmgosdk.RevokePromptCollaboratorResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -218,9 +218,9 @@ func (r *RawClient) RevokePromptCollaborator(
 
 func (r *RawClient) ListPromptShareLinks(
 	ctx context.Context,
-	request *sdk.ListPromptShareLinksRequest,
+	request *promptvmgosdk.ListPromptShareLinksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListPromptShareLinksResponse], error) {
+) (*core.Response[*promptvmgosdk.ListPromptShareLinksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -235,7 +235,7 @@ func (r *RawClient) ListPromptShareLinks(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListPromptShareLinksResponse
+	var response *promptvmgosdk.ListPromptShareLinksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -247,13 +247,13 @@ func (r *RawClient) ListPromptShareLinks(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListPromptShareLinksResponse]{
+	return &core.Response[*promptvmgosdk.ListPromptShareLinksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -262,7 +262,7 @@ func (r *RawClient) ListPromptShareLinks(
 
 func (r *RawClient) RevokePromptShareLink(
 	ctx context.Context,
-	request *sdk.RevokePromptShareLinkRequest,
+	request *promptvmgosdk.RevokePromptShareLinkRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -290,7 +290,7 @@ func (r *RawClient) RevokePromptShareLink(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -305,9 +305,9 @@ func (r *RawClient) RevokePromptShareLink(
 
 func (r *RawClient) CreatePromptShareLink(
 	ctx context.Context,
-	request *sdk.CreatePromptShareLinkRequest,
+	request *promptvmgosdk.CreatePromptShareLinkRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreatePromptShareLinkResponse], error) {
+) (*core.Response[*promptvmgosdk.CreatePromptShareLinkResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -326,7 +326,7 @@ func (r *RawClient) CreatePromptShareLink(
 		headers.Add("idempotency-key", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreatePromptShareLinkResponse
+	var response *promptvmgosdk.CreatePromptShareLinkResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -339,13 +339,13 @@ func (r *RawClient) CreatePromptShareLink(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreatePromptShareLinkResponse]{
+	return &core.Response[*promptvmgosdk.CreatePromptShareLinkResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -354,9 +354,9 @@ func (r *RawClient) CreatePromptShareLink(
 
 func (r *RawClient) ImportSharedPrompt(
 	ctx context.Context,
-	request *sdk.ImportSharedPromptRequest,
+	request *promptvmgosdk.ImportSharedPromptRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ImportSharedPromptResponse], error) {
+) (*core.Response[*promptvmgosdk.ImportSharedPromptResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -375,7 +375,7 @@ func (r *RawClient) ImportSharedPrompt(
 		headers.Add("idempotency-key", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.ImportSharedPromptResponse
+	var response *promptvmgosdk.ImportSharedPromptResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -388,13 +388,13 @@ func (r *RawClient) ImportSharedPrompt(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ImportSharedPromptResponse]{
+	return &core.Response[*promptvmgosdk.ImportSharedPromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

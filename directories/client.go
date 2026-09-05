@@ -4,7 +4,7 @@ package directories
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns all active directories in a workspace.
 func (c *Client) ListDirectories(
 	ctx context.Context,
-	request *sdk.ListDirectoriesRequest,
+	request *promptvmgosdk.ListDirectoriesRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListDirectoriesResponse, error) {
+) (*promptvmgosdk.ListDirectoriesResponse, error) {
 	response, err := c.WithRawResponse.ListDirectories(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListDirectories(
 // Creates a persisted directory inside a workspace.
 func (c *Client) CreateDirectory(
 	ctx context.Context,
-	request *sdk.CreateDirectoryRequest,
+	request *promptvmgosdk.CreateDirectoryRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreateDirectoryResponse, error) {
+) (*promptvmgosdk.CreateDirectoryResponse, error) {
 	response, err := c.WithRawResponse.CreateDirectory(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) CreateDirectory(
 // Deletes an empty directory.
 func (c *Client) DeleteDirectory(
 	ctx context.Context,
-	request *sdk.DeleteDirectoryRequest,
+	request *promptvmgosdk.DeleteDirectoryRequest,
 	opts ...option.RequestOption,
-) (*sdk.DeleteDirectoryResponse, error) {
+) (*promptvmgosdk.DeleteDirectoryResponse, error) {
 	response, err := c.WithRawResponse.DeleteDirectory(
 		ctx,
 		request,
@@ -86,9 +86,9 @@ func (c *Client) DeleteDirectory(
 // Updates persisted directory metadata.
 func (c *Client) UpdateDirectory(
 	ctx context.Context,
-	request *sdk.UpdateDirectoryRequest,
+	request *promptvmgosdk.UpdateDirectoryRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdateDirectoryResponse, error) {
+) (*promptvmgosdk.UpdateDirectoryResponse, error) {
 	response, err := c.WithRawResponse.UpdateDirectory(
 		ctx,
 		request,

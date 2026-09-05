@@ -4,11 +4,11 @@ package hooks
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListHooks(
 	ctx context.Context,
-	request *sdk.ListHooksRequest,
+	request *promptvmgosdk.ListHooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListHooksResponse], error) {
+) (*core.Response[*promptvmgosdk.ListHooksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListHooks(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListHooksResponse
+	var response *promptvmgosdk.ListHooksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListHooks(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListHooksResponse]{
+	return &core.Response[*promptvmgosdk.ListHooksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListHooks(
 
 func (r *RawClient) CreateHook(
 	ctx context.Context,
-	request *sdk.CreateHookRequest,
+	request *promptvmgosdk.CreateHookRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreateHookResponse], error) {
+) (*core.Response[*promptvmgosdk.CreateHookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateHook(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreateHookResponse
+	var response *promptvmgosdk.CreateHookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) CreateHook(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreateHookResponse]{
+	return &core.Response[*promptvmgosdk.CreateHookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -123,9 +123,9 @@ func (r *RawClient) CreateHook(
 
 func (r *RawClient) GetHook(
 	ctx context.Context,
-	request *sdk.GetHookRequest,
+	request *promptvmgosdk.GetHookRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetHookResponse], error) {
+) (*core.Response[*promptvmgosdk.GetHookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetHook(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetHookResponse
+	var response *promptvmgosdk.GetHookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,13 +152,13 @@ func (r *RawClient) GetHook(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetHookResponse]{
+	return &core.Response[*promptvmgosdk.GetHookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -167,9 +167,9 @@ func (r *RawClient) GetHook(
 
 func (r *RawClient) DeleteHook(
 	ctx context.Context,
-	request *sdk.DeleteHookRequest,
+	request *promptvmgosdk.DeleteHookRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DeleteHookResponse], error) {
+) (*core.Response[*promptvmgosdk.DeleteHookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteHook(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.DeleteHookResponse
+	var response *promptvmgosdk.DeleteHookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -196,13 +196,13 @@ func (r *RawClient) DeleteHook(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DeleteHookResponse]{
+	return &core.Response[*promptvmgosdk.DeleteHookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -211,9 +211,9 @@ func (r *RawClient) DeleteHook(
 
 func (r *RawClient) UpdateHook(
 	ctx context.Context,
-	request *sdk.UpdateHookRequest,
+	request *promptvmgosdk.UpdateHookRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdateHookResponse], error) {
+) (*core.Response[*promptvmgosdk.UpdateHookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateHook(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.UpdateHookResponse
+	var response *promptvmgosdk.UpdateHookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -242,13 +242,13 @@ func (r *RawClient) UpdateHook(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdateHookResponse]{
+	return &core.Response[*promptvmgosdk.UpdateHookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -257,9 +257,9 @@ func (r *RawClient) UpdateHook(
 
 func (r *RawClient) ExportHook(
 	ctx context.Context,
-	request *sdk.ExportHookRequest,
+	request *promptvmgosdk.ExportHookRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ExportHookResponse], error) {
+) (*core.Response[*promptvmgosdk.ExportHookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -274,7 +274,7 @@ func (r *RawClient) ExportHook(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ExportHookResponse
+	var response *promptvmgosdk.ExportHookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -286,13 +286,13 @@ func (r *RawClient) ExportHook(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ExportHookResponse]{
+	return &core.Response[*promptvmgosdk.ExportHookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -301,9 +301,9 @@ func (r *RawClient) ExportHook(
 
 func (r *RawClient) ValidateHook(
 	ctx context.Context,
-	request *sdk.ValidateHookRequest,
+	request *promptvmgosdk.ValidateHookRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ValidateHookResponse], error) {
+) (*core.Response[*promptvmgosdk.ValidateHookResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -316,7 +316,7 @@ func (r *RawClient) ValidateHook(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.ValidateHookResponse
+	var response *promptvmgosdk.ValidateHookResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -329,13 +329,13 @@ func (r *RawClient) ValidateHook(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ValidateHookResponse]{
+	return &core.Response[*promptvmgosdk.ValidateHookResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -344,9 +344,9 @@ func (r *RawClient) ValidateHook(
 
 func (r *RawClient) ImportHooks(
 	ctx context.Context,
-	request *sdk.ImportHooksRequest,
+	request *promptvmgosdk.ImportHooksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ImportHooksResponse], error) {
+) (*core.Response[*promptvmgosdk.ImportHooksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -359,7 +359,7 @@ func (r *RawClient) ImportHooks(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.ImportHooksResponse
+	var response *promptvmgosdk.ImportHooksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -372,13 +372,13 @@ func (r *RawClient) ImportHooks(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ImportHooksResponse]{
+	return &core.Response[*promptvmgosdk.ImportHooksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

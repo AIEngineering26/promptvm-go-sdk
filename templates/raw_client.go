@@ -4,11 +4,11 @@ package templates
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ConvertPromptToTemplate(
 	ctx context.Context,
-	request *sdk.ConvertPromptToTemplateRequest,
+	request *promptvmgosdk.ConvertPromptToTemplateRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ConvertPromptToTemplateResponse], error) {
+) (*core.Response[*promptvmgosdk.ConvertPromptToTemplateResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -49,7 +49,7 @@ func (r *RawClient) ConvertPromptToTemplate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ConvertPromptToTemplateResponse
+	var response *promptvmgosdk.ConvertPromptToTemplateResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -61,13 +61,13 @@ func (r *RawClient) ConvertPromptToTemplate(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ConvertPromptToTemplateResponse]{
+	return &core.Response[*promptvmgosdk.ConvertPromptToTemplateResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -76,9 +76,9 @@ func (r *RawClient) ConvertPromptToTemplate(
 
 func (r *RawClient) ListTemplates(
 	ctx context.Context,
-	request *sdk.ListTemplatesRequest,
+	request *promptvmgosdk.ListTemplatesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListTemplatesResponse], error) {
+) (*core.Response[*promptvmgosdk.ListTemplatesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -97,7 +97,7 @@ func (r *RawClient) ListTemplates(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListTemplatesResponse
+	var response *promptvmgosdk.ListTemplatesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -109,13 +109,13 @@ func (r *RawClient) ListTemplates(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListTemplatesResponse]{
+	return &core.Response[*promptvmgosdk.ListTemplatesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -124,9 +124,9 @@ func (r *RawClient) ListTemplates(
 
 func (r *RawClient) CreatePromptFromTemplate(
 	ctx context.Context,
-	request *sdk.CreatePromptFromTemplateRequest,
+	request *promptvmgosdk.CreatePromptFromTemplateRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreatePromptFromTemplateResponse], error) {
+) (*core.Response[*promptvmgosdk.CreatePromptFromTemplateResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -139,7 +139,7 @@ func (r *RawClient) CreatePromptFromTemplate(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreatePromptFromTemplateResponse
+	var response *promptvmgosdk.CreatePromptFromTemplateResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,13 +152,13 @@ func (r *RawClient) CreatePromptFromTemplate(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreatePromptFromTemplateResponse]{
+	return &core.Response[*promptvmgosdk.CreatePromptFromTemplateResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

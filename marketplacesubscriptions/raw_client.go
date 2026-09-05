@@ -4,11 +4,11 @@ package marketplacesubscriptions
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) SubscribeToMarketplaceCreator(
 	ctx context.Context,
-	request *sdk.SubscribeToMarketplaceCreatorRequest,
+	request *promptvmgosdk.SubscribeToMarketplaceCreatorRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SubscribeToMarketplaceCreatorResponse], error) {
+) (*core.Response[*promptvmgosdk.SubscribeToMarketplaceCreatorResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -49,7 +49,7 @@ func (r *RawClient) SubscribeToMarketplaceCreator(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.SubscribeToMarketplaceCreatorResponse
+	var response *promptvmgosdk.SubscribeToMarketplaceCreatorResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -61,13 +61,13 @@ func (r *RawClient) SubscribeToMarketplaceCreator(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SubscribeToMarketplaceCreatorResponse]{
+	return &core.Response[*promptvmgosdk.SubscribeToMarketplaceCreatorResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -76,7 +76,7 @@ func (r *RawClient) SubscribeToMarketplaceCreator(
 
 func (r *RawClient) UnsubscribeFromMarketplaceCreator(
 	ctx context.Context,
-	request *sdk.UnsubscribeFromMarketplaceCreatorRequest,
+	request *promptvmgosdk.UnsubscribeFromMarketplaceCreatorRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -103,7 +103,7 @@ func (r *RawClient) UnsubscribeFromMarketplaceCreator(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {

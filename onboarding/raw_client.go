@@ -4,11 +4,11 @@ package onboarding
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) GetOnboardingStatus(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetOnboardingStatusResponse], error) {
+) (*core.Response[*promptvmgosdk.GetOnboardingStatusResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -45,7 +45,7 @@ func (r *RawClient) GetOnboardingStatus(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetOnboardingStatusResponse
+	var response *promptvmgosdk.GetOnboardingStatusResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -57,13 +57,13 @@ func (r *RawClient) GetOnboardingStatus(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetOnboardingStatusResponse]{
+	return &core.Response[*promptvmgosdk.GetOnboardingStatusResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -72,9 +72,9 @@ func (r *RawClient) GetOnboardingStatus(
 
 func (r *RawClient) UpdateOnboardingStep(
 	ctx context.Context,
-	request *sdk.UpdateOnboardingStepRequest,
+	request *promptvmgosdk.UpdateOnboardingStepRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdateOnboardingStepResponse], error) {
+) (*core.Response[*promptvmgosdk.UpdateOnboardingStepResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -87,7 +87,7 @@ func (r *RawClient) UpdateOnboardingStep(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.UpdateOnboardingStepResponse
+	var response *promptvmgosdk.UpdateOnboardingStepResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -100,13 +100,13 @@ func (r *RawClient) UpdateOnboardingStep(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdateOnboardingStepResponse]{
+	return &core.Response[*promptvmgosdk.UpdateOnboardingStepResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -116,7 +116,7 @@ func (r *RawClient) UpdateOnboardingStep(
 func (r *RawClient) DismissOnboarding(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DismissOnboardingResponse], error) {
+) (*core.Response[*promptvmgosdk.DismissOnboardingResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -128,7 +128,7 @@ func (r *RawClient) DismissOnboarding(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.DismissOnboardingResponse
+	var response *promptvmgosdk.DismissOnboardingResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -140,13 +140,13 @@ func (r *RawClient) DismissOnboarding(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DismissOnboardingResponse]{
+	return &core.Response[*promptvmgosdk.DismissOnboardingResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

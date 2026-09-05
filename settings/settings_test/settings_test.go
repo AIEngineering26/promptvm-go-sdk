@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,8 +73,8 @@ func TestSettingsGetSettingsOverviewWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetSettingsOverviewRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.GetSettingsOverviewRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -101,8 +101,8 @@ func TestSettingsGetAdminTasksWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetAdminTasksRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.GetAdminTasksRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -129,8 +129,8 @@ func TestSettingsListAuditLogsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListAuditLogsRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.ListAuditLogsRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -157,8 +157,8 @@ func TestSettingsListOrgTagsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListOrgTagsRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.ListOrgTagsRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -185,12 +185,12 @@ func TestSettingsCreateOrgTagWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.CreateOrgTagRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.CreateOrgTagRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 		Name:      "name",
-		Category:  sdk.CreateOrgTagRequestCategoryEngineering,
+		Category:  promptvmgosdk.CreateOrgTagRequestCategoryEngineering,
 		Protected: true,
 	}
 	_, invocationErr := client.Settings.CreateOrgTag(
@@ -216,9 +216,9 @@ func TestSettingsDeleteOrgTagWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DeleteOrgTagRequest{
+	request := &promptvmgosdk.DeleteOrgTagRequest{
 		ID: "id",
-		OrgID: sdk.String(
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -245,9 +245,9 @@ func TestSettingsUpdateOrgTagWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.UpdateOrgTagRequest{
+	request := &promptvmgosdk.UpdateOrgTagRequest{
 		ID: "id",
-		OrgID: sdk.String(
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -274,8 +274,8 @@ func TestSettingsGetSecurityStatusWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetSecurityStatusRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.GetSecurityStatusRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -324,7 +324,7 @@ func TestSettingsVerifyTotpWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.VerifyTotpRequest{
+	request := &promptvmgosdk.VerifyTotpRequest{
 		Code: "code",
 	}
 	_, invocationErr := client.Settings.VerifyTotp(
@@ -350,7 +350,7 @@ func TestSettingsDisableTotpWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DisableTotpRequest{
+	request := &promptvmgosdk.DisableTotpRequest{
 		Code: "code",
 	}
 	_, invocationErr := client.Settings.DisableTotp(
@@ -376,7 +376,7 @@ func TestSettingsRegenerateRecoveryCodesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.RegenerateRecoveryCodesRequest{
+	request := &promptvmgosdk.RegenerateRecoveryCodesRequest{
 		Code: "code",
 	}
 	_, invocationErr := client.Settings.RegenerateRecoveryCodes(
@@ -402,7 +402,7 @@ func TestSettingsChangePasswordWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ChangePasswordRequest{
+	request := &promptvmgosdk.ChangePasswordRequest{
 		CurrentPassword: "currentPassword",
 		NewPassword:     "newPassword",
 	}
@@ -429,8 +429,8 @@ func TestSettingsUpdateOrgMfaPolicyWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.UpdateOrgMfaPolicyRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.UpdateOrgMfaPolicyRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 		RequireMfa: true,
@@ -480,7 +480,7 @@ func TestSettingsVerifyEmailOtpWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.VerifyEmailOtpRequest{
+	request := &promptvmgosdk.VerifyEmailOtpRequest{
 		Code: "code",
 	}
 	_, invocationErr := client.Settings.VerifyEmailOtp(
@@ -506,7 +506,7 @@ func TestSettingsDisableEmailOtpWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DisableEmailOtpRequest{
+	request := &promptvmgosdk.DisableEmailOtpRequest{
 		Code: "code",
 	}
 	_, invocationErr := client.Settings.DisableEmailOtp(

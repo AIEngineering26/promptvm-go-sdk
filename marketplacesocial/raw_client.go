@@ -4,11 +4,11 @@ package marketplacesocial
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) FollowACreator(
 	ctx context.Context,
-	request *sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
+	request *promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse], error) {
+) (*core.Response[*promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -49,7 +49,7 @@ func (r *RawClient) FollowACreator(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse
+	var response *promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -61,13 +61,13 @@ func (r *RawClient) FollowACreator(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse]{
+	return &core.Response[*promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -76,7 +76,7 @@ func (r *RawClient) FollowACreator(
 
 func (r *RawClient) UnfollowACreator(
 	ctx context.Context,
-	request *sdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
+	request *promptvmgosdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -103,7 +103,7 @@ func (r *RawClient) UnfollowACreator(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -118,9 +118,9 @@ func (r *RawClient) UnfollowACreator(
 
 func (r *RawClient) ListCreatorsIFollow(
 	ctx context.Context,
-	request *sdk.GetAPIV1MarketplaceCreatorMeFollowingRequest,
+	request *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetAPIV1MarketplaceCreatorMeFollowingResponse], error) {
+) (*core.Response[*promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -139,7 +139,7 @@ func (r *RawClient) ListCreatorsIFollow(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetAPIV1MarketplaceCreatorMeFollowingResponse
+	var response *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -151,13 +151,13 @@ func (r *RawClient) ListCreatorsIFollow(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetAPIV1MarketplaceCreatorMeFollowingResponse]{
+	return &core.Response[*promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -166,9 +166,9 @@ func (r *RawClient) ListCreatorsIFollow(
 
 func (r *RawClient) FollowedCreatorListingFeed(
 	ctx context.Context,
-	request *sdk.GetAPIV1MarketplaceCreatorMeFeedRequest,
+	request *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetAPIV1MarketplaceCreatorMeFeedResponse], error) {
+) (*core.Response[*promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -187,7 +187,7 @@ func (r *RawClient) FollowedCreatorListingFeed(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetAPIV1MarketplaceCreatorMeFeedResponse
+	var response *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -199,13 +199,13 @@ func (r *RawClient) FollowedCreatorListingFeed(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetAPIV1MarketplaceCreatorMeFeedResponse]{
+	return &core.Response[*promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -214,9 +214,9 @@ func (r *RawClient) FollowedCreatorListingFeed(
 
 func (r *RawClient) ListACreatorsFollowers(
 	ctx context.Context,
-	request *sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest,
+	request *promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse], error) {
+) (*core.Response[*promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -238,7 +238,7 @@ func (r *RawClient) ListACreatorsFollowers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse
+	var response *promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -250,13 +250,13 @@ func (r *RawClient) ListACreatorsFollowers(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse]{
+	return &core.Response[*promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

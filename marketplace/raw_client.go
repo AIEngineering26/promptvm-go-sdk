@@ -4,11 +4,11 @@ package marketplace
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) SetListingRecommendedModels(
 	ctx context.Context,
-	request *sdk.SetListingRecommendedModelsRequest,
+	request *promptvmgosdk.SetListingRecommendedModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SetListingRecommendedModelsResponse], error) {
+) (*core.Response[*promptvmgosdk.SetListingRecommendedModelsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -50,7 +50,7 @@ func (r *RawClient) SetListingRecommendedModels(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.SetListingRecommendedModelsResponse
+	var response *promptvmgosdk.SetListingRecommendedModelsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -63,13 +63,13 @@ func (r *RawClient) SetListingRecommendedModels(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SetListingRecommendedModelsResponse]{
+	return &core.Response[*promptvmgosdk.SetListingRecommendedModelsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -79,7 +79,7 @@ func (r *RawClient) SetListingRecommendedModels(
 func (r *RawClient) AdminListContentTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminListContentTypesResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminListContentTypesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -91,7 +91,7 @@ func (r *RawClient) AdminListContentTypes(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.AdminListContentTypesResponse
+	var response *promptvmgosdk.AdminListContentTypesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -103,13 +103,13 @@ func (r *RawClient) AdminListContentTypes(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminListContentTypesResponse]{
+	return &core.Response[*promptvmgosdk.AdminListContentTypesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -118,9 +118,9 @@ func (r *RawClient) AdminListContentTypes(
 
 func (r *RawClient) AdminCreateContentType(
 	ctx context.Context,
-	request *sdk.AdminCreateContentTypeRequest,
+	request *promptvmgosdk.AdminCreateContentTypeRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminCreateContentTypeResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminCreateContentTypeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -133,7 +133,7 @@ func (r *RawClient) AdminCreateContentType(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminCreateContentTypeResponse
+	var response *promptvmgosdk.AdminCreateContentTypeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -146,13 +146,13 @@ func (r *RawClient) AdminCreateContentType(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminCreateContentTypeResponse]{
+	return &core.Response[*promptvmgosdk.AdminCreateContentTypeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -161,9 +161,9 @@ func (r *RawClient) AdminCreateContentType(
 
 func (r *RawClient) AdminReorderContentTypes(
 	ctx context.Context,
-	request *sdk.AdminReorderContentTypesRequest,
+	request *promptvmgosdk.AdminReorderContentTypesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminReorderContentTypesResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminReorderContentTypesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -176,7 +176,7 @@ func (r *RawClient) AdminReorderContentTypes(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminReorderContentTypesResponse
+	var response *promptvmgosdk.AdminReorderContentTypesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -189,13 +189,13 @@ func (r *RawClient) AdminReorderContentTypes(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminReorderContentTypesResponse]{
+	return &core.Response[*promptvmgosdk.AdminReorderContentTypesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -204,7 +204,7 @@ func (r *RawClient) AdminReorderContentTypes(
 
 func (r *RawClient) AdminDeleteContentType(
 	ctx context.Context,
-	request *sdk.AdminDeleteContentTypeRequest,
+	request *promptvmgosdk.AdminDeleteContentTypeRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -231,7 +231,7 @@ func (r *RawClient) AdminDeleteContentType(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -246,9 +246,9 @@ func (r *RawClient) AdminDeleteContentType(
 
 func (r *RawClient) AdminUpdateContentType(
 	ctx context.Context,
-	request *sdk.AdminUpdateContentTypeRequest,
+	request *promptvmgosdk.AdminUpdateContentTypeRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminUpdateContentTypeResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminUpdateContentTypeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -264,7 +264,7 @@ func (r *RawClient) AdminUpdateContentType(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminUpdateContentTypeResponse
+	var response *promptvmgosdk.AdminUpdateContentTypeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -277,13 +277,13 @@ func (r *RawClient) AdminUpdateContentType(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminUpdateContentTypeResponse]{
+	return &core.Response[*promptvmgosdk.AdminUpdateContentTypeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -293,7 +293,7 @@ func (r *RawClient) AdminUpdateContentType(
 func (r *RawClient) AdminListAiModelProviders(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminListAiModelProvidersResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminListAiModelProvidersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -305,7 +305,7 @@ func (r *RawClient) AdminListAiModelProviders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.AdminListAiModelProvidersResponse
+	var response *promptvmgosdk.AdminListAiModelProvidersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -317,13 +317,13 @@ func (r *RawClient) AdminListAiModelProviders(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminListAiModelProvidersResponse]{
+	return &core.Response[*promptvmgosdk.AdminListAiModelProvidersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -332,9 +332,9 @@ func (r *RawClient) AdminListAiModelProviders(
 
 func (r *RawClient) AdminCreateAiModelProvider(
 	ctx context.Context,
-	request *sdk.AdminCreateAiModelProviderRequest,
+	request *promptvmgosdk.AdminCreateAiModelProviderRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminCreateAiModelProviderResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminCreateAiModelProviderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -347,7 +347,7 @@ func (r *RawClient) AdminCreateAiModelProvider(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminCreateAiModelProviderResponse
+	var response *promptvmgosdk.AdminCreateAiModelProviderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -360,13 +360,13 @@ func (r *RawClient) AdminCreateAiModelProvider(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminCreateAiModelProviderResponse]{
+	return &core.Response[*promptvmgosdk.AdminCreateAiModelProviderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -375,9 +375,9 @@ func (r *RawClient) AdminCreateAiModelProvider(
 
 func (r *RawClient) AdminReorderAiModelProviders(
 	ctx context.Context,
-	request *sdk.AdminReorderAiModelProvidersRequest,
+	request *promptvmgosdk.AdminReorderAiModelProvidersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminReorderAiModelProvidersResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminReorderAiModelProvidersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -390,7 +390,7 @@ func (r *RawClient) AdminReorderAiModelProviders(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminReorderAiModelProvidersResponse
+	var response *promptvmgosdk.AdminReorderAiModelProvidersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -403,13 +403,13 @@ func (r *RawClient) AdminReorderAiModelProviders(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminReorderAiModelProvidersResponse]{
+	return &core.Response[*promptvmgosdk.AdminReorderAiModelProvidersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -418,7 +418,7 @@ func (r *RawClient) AdminReorderAiModelProviders(
 
 func (r *RawClient) AdminDeleteAiModelProvider(
 	ctx context.Context,
-	request *sdk.AdminDeleteAiModelProviderRequest,
+	request *promptvmgosdk.AdminDeleteAiModelProviderRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -445,7 +445,7 @@ func (r *RawClient) AdminDeleteAiModelProvider(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -460,9 +460,9 @@ func (r *RawClient) AdminDeleteAiModelProvider(
 
 func (r *RawClient) AdminUpdateAiModelProvider(
 	ctx context.Context,
-	request *sdk.AdminUpdateAiModelProviderRequest,
+	request *promptvmgosdk.AdminUpdateAiModelProviderRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminUpdateAiModelProviderResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminUpdateAiModelProviderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -478,7 +478,7 @@ func (r *RawClient) AdminUpdateAiModelProvider(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminUpdateAiModelProviderResponse
+	var response *promptvmgosdk.AdminUpdateAiModelProviderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -491,13 +491,13 @@ func (r *RawClient) AdminUpdateAiModelProvider(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminUpdateAiModelProviderResponse]{
+	return &core.Response[*promptvmgosdk.AdminUpdateAiModelProviderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -506,9 +506,9 @@ func (r *RawClient) AdminUpdateAiModelProvider(
 
 func (r *RawClient) AdminListAiModels(
 	ctx context.Context,
-	request *sdk.AdminListAiModelsRequest,
+	request *promptvmgosdk.AdminListAiModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminListAiModelsResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminListAiModelsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -527,7 +527,7 @@ func (r *RawClient) AdminListAiModels(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.AdminListAiModelsResponse
+	var response *promptvmgosdk.AdminListAiModelsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -539,13 +539,13 @@ func (r *RawClient) AdminListAiModels(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminListAiModelsResponse]{
+	return &core.Response[*promptvmgosdk.AdminListAiModelsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -554,9 +554,9 @@ func (r *RawClient) AdminListAiModels(
 
 func (r *RawClient) AdminCreateAiModel(
 	ctx context.Context,
-	request *sdk.AdminCreateAiModelRequest,
+	request *promptvmgosdk.AdminCreateAiModelRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminCreateAiModelResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminCreateAiModelResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -569,7 +569,7 @@ func (r *RawClient) AdminCreateAiModel(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminCreateAiModelResponse
+	var response *promptvmgosdk.AdminCreateAiModelResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -582,13 +582,13 @@ func (r *RawClient) AdminCreateAiModel(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminCreateAiModelResponse]{
+	return &core.Response[*promptvmgosdk.AdminCreateAiModelResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -597,9 +597,9 @@ func (r *RawClient) AdminCreateAiModel(
 
 func (r *RawClient) AdminReorderAiModels(
 	ctx context.Context,
-	request *sdk.AdminReorderAiModelsRequest,
+	request *promptvmgosdk.AdminReorderAiModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminReorderAiModelsResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminReorderAiModelsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -612,7 +612,7 @@ func (r *RawClient) AdminReorderAiModels(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminReorderAiModelsResponse
+	var response *promptvmgosdk.AdminReorderAiModelsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -625,13 +625,13 @@ func (r *RawClient) AdminReorderAiModels(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminReorderAiModelsResponse]{
+	return &core.Response[*promptvmgosdk.AdminReorderAiModelsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -640,7 +640,7 @@ func (r *RawClient) AdminReorderAiModels(
 
 func (r *RawClient) AdminDeleteAiModel(
 	ctx context.Context,
-	request *sdk.AdminDeleteAiModelRequest,
+	request *promptvmgosdk.AdminDeleteAiModelRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -667,7 +667,7 @@ func (r *RawClient) AdminDeleteAiModel(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -682,9 +682,9 @@ func (r *RawClient) AdminDeleteAiModel(
 
 func (r *RawClient) AdminUpdateAiModel(
 	ctx context.Context,
-	request *sdk.AdminUpdateAiModelRequest,
+	request *promptvmgosdk.AdminUpdateAiModelRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminUpdateAiModelResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminUpdateAiModelResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -700,7 +700,7 @@ func (r *RawClient) AdminUpdateAiModel(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminUpdateAiModelResponse
+	var response *promptvmgosdk.AdminUpdateAiModelResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -713,13 +713,13 @@ func (r *RawClient) AdminUpdateAiModel(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminUpdateAiModelResponse]{
+	return &core.Response[*promptvmgosdk.AdminUpdateAiModelResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -729,7 +729,7 @@ func (r *RawClient) AdminUpdateAiModel(
 func (r *RawClient) AdminListCategories(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminListCategoriesResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminListCategoriesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -741,7 +741,7 @@ func (r *RawClient) AdminListCategories(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.AdminListCategoriesResponse
+	var response *promptvmgosdk.AdminListCategoriesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -753,13 +753,13 @@ func (r *RawClient) AdminListCategories(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminListCategoriesResponse]{
+	return &core.Response[*promptvmgosdk.AdminListCategoriesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -768,9 +768,9 @@ func (r *RawClient) AdminListCategories(
 
 func (r *RawClient) AdminCreateCategory(
 	ctx context.Context,
-	request *sdk.AdminCreateCategoryRequest,
+	request *promptvmgosdk.AdminCreateCategoryRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminCreateCategoryResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminCreateCategoryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -783,7 +783,7 @@ func (r *RawClient) AdminCreateCategory(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminCreateCategoryResponse
+	var response *promptvmgosdk.AdminCreateCategoryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -796,13 +796,13 @@ func (r *RawClient) AdminCreateCategory(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminCreateCategoryResponse]{
+	return &core.Response[*promptvmgosdk.AdminCreateCategoryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -811,9 +811,9 @@ func (r *RawClient) AdminCreateCategory(
 
 func (r *RawClient) AdminReorderCategories(
 	ctx context.Context,
-	request *sdk.AdminReorderCategoriesRequest,
+	request *promptvmgosdk.AdminReorderCategoriesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminReorderCategoriesResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminReorderCategoriesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -826,7 +826,7 @@ func (r *RawClient) AdminReorderCategories(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminReorderCategoriesResponse
+	var response *promptvmgosdk.AdminReorderCategoriesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -839,13 +839,13 @@ func (r *RawClient) AdminReorderCategories(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminReorderCategoriesResponse]{
+	return &core.Response[*promptvmgosdk.AdminReorderCategoriesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -854,7 +854,7 @@ func (r *RawClient) AdminReorderCategories(
 
 func (r *RawClient) AdminDeleteCategory(
 	ctx context.Context,
-	request *sdk.AdminDeleteCategoryRequest,
+	request *promptvmgosdk.AdminDeleteCategoryRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -881,7 +881,7 @@ func (r *RawClient) AdminDeleteCategory(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -896,9 +896,9 @@ func (r *RawClient) AdminDeleteCategory(
 
 func (r *RawClient) AdminUpdateCategory(
 	ctx context.Context,
-	request *sdk.AdminUpdateCategoryRequest,
+	request *promptvmgosdk.AdminUpdateCategoryRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdminUpdateCategoryResponse], error) {
+) (*core.Response[*promptvmgosdk.AdminUpdateCategoryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -914,7 +914,7 @@ func (r *RawClient) AdminUpdateCategory(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdminUpdateCategoryResponse
+	var response *promptvmgosdk.AdminUpdateCategoryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -927,13 +927,13 @@ func (r *RawClient) AdminUpdateCategory(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdminUpdateCategoryResponse]{
+	return &core.Response[*promptvmgosdk.AdminUpdateCategoryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

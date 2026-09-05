@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,8 +73,8 @@ func TestAPIKeysListAPIKeysWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListAPIKeysRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.ListAPIKeysRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -101,14 +101,14 @@ func TestAPIKeysCreateAPIKeyWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.CreateAPIKeyRequest{
-		OrgID: sdk.String(
+	request := &promptvmgosdk.CreateAPIKeyRequest{
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 		Name: "Production API Key",
-		Scopes: []sdk.CreateAPIKeyRequestScopesItem{
-			sdk.CreateAPIKeyRequestScopesItemRead,
-			sdk.CreateAPIKeyRequestScopesItemWrite,
+		Scopes: []promptvmgosdk.CreateAPIKeyRequestScopesItem{
+			promptvmgosdk.CreateAPIKeyRequestScopesItemRead,
+			promptvmgosdk.CreateAPIKeyRequestScopesItemWrite,
 		},
 	}
 	_, invocationErr := client.APIKeys.CreateAPIKey(
@@ -134,9 +134,9 @@ func TestAPIKeysGetAPIKeyWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetAPIKeyRequest{
+	request := &promptvmgosdk.GetAPIKeyRequest{
 		APIKeyID: "apiKeyId",
-		OrgID: sdk.String(
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -163,9 +163,9 @@ func TestAPIKeysRevokeAPIKeyWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.RevokeAPIKeyRequest{
+	request := &promptvmgosdk.RevokeAPIKeyRequest{
 		APIKeyID: "apiKeyId",
-		OrgID: sdk.String(
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -192,9 +192,9 @@ func TestAPIKeysUpdateAPIKeyWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.UpdateAPIKeyRequest{
+	request := &promptvmgosdk.UpdateAPIKeyRequest{
 		APIKeyID: "apiKeyId",
-		OrgID: sdk.String(
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -221,9 +221,9 @@ func TestAPIKeysGetAPIKeyUsageWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetAPIKeyUsageRequest{
+	request := &promptvmgosdk.GetAPIKeyUsageRequest{
 		APIKeyID: "apiKeyId",
-		OrgID: sdk.String(
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}
@@ -250,9 +250,9 @@ func TestAPIKeysRotateAPIKeyWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.RotateAPIKeyRequest{
+	request := &promptvmgosdk.RotateAPIKeyRequest{
 		APIKeyID: "apiKeyId",
-		OrgID: sdk.String(
+		OrgID: promptvmgosdk.String(
 			"018e4a3b-0000-0000-0000-000000000001",
 		),
 	}

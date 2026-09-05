@@ -27,7 +27,7 @@ Browser-facing endpoint used by the MCP server to authenticate users via the bac
 <dd>
 
 ```go
-request := &sdk.McpAuthorizeRequest{
+request := &promptvmgosdk.McpAuthorizeRequest{
         RedirectURI: "redirect_uri",
         State: "state",
     }
@@ -78,7 +78,7 @@ client.Authentication.McpAuthorize(
 </dl>
 </details>
 
-<details><summary><code>client.Authentication.UpdateUIPreferences(request) -> *sdk.UpdateUIPreferencesResponse</code></summary>
+<details><summary><code>client.Authentication.UpdateUIPreferences(request) -> *promptvmgosdk.UpdateUIPreferencesResponse</code></summary>
 <dl>
 <dd>
 
@@ -105,7 +105,7 @@ Merges the provided UI preferences (panel collapse state, widths, etc.) with the
 <dd>
 
 ```go
-request := &sdk.UpdateUIPreferencesRequest{}
+request := &promptvmgosdk.UpdateUIPreferencesRequest{}
 client.Authentication.UpdateUIPreferences(
         context.TODO(),
         request,
@@ -170,7 +170,7 @@ client.Authentication.UpdateUIPreferences(
 </details>
 
 ## CliAuth
-<details><summary><code>client.CliAuth.CliAuthorize(request) -> *sdk.CliAuthorizeResponse</code></summary>
+<details><summary><code>client.CliAuth.CliAuthorize(request) -> *promptvmgosdk.CliAuthorizeResponse</code></summary>
 <dl>
 <dd>
 
@@ -197,11 +197,11 @@ Called by the frontend consent page after the user authorizes a CLI login reques
 <dd>
 
 ```go
-request := &sdk.CliAuthorizeRequest{
+request := &promptvmgosdk.CliAuthorizeRequest{
         CodeChallenge: "code_challenge",
-        CodeChallengeMethod: sdk.CliAuthorizeRequestCodeChallengeMethodS256,
+        CodeChallengeMethod: promptvmgosdk.CliAuthorizeRequestCodeChallengeMethodS256,
         RedirectURI: "redirect_uri",
-        ClientID: sdk.CliAuthorizeRequestClientIDPromptvmCli,
+        ClientID: promptvmgosdk.CliAuthorizeRequestClientIDPromptvmCli,
     }
 client.CliAuth.CliAuthorize(
         context.TODO(),
@@ -230,7 +230,7 @@ client.CliAuth.CliAuthorize(
 <dl>
 <dd>
 
-**codeChallengeMethod:** `*sdk.CliAuthorizeRequestCodeChallengeMethod` 
+**codeChallengeMethod:** `*promptvmgosdk.CliAuthorizeRequestCodeChallengeMethod` 
     
 </dd>
 </dl>
@@ -254,7 +254,7 @@ client.CliAuth.CliAuthorize(
 <dl>
 <dd>
 
-**clientID:** `*sdk.CliAuthorizeRequestClientID` 
+**clientID:** `*promptvmgosdk.CliAuthorizeRequestClientID` 
     
 </dd>
 </dl>
@@ -266,7 +266,7 @@ client.CliAuth.CliAuthorize(
 </dl>
 </details>
 
-<details><summary><code>client.CliAuth.CliDeviceAuthorize(request) -> *sdk.CliDeviceAuthorizeResponse</code></summary>
+<details><summary><code>client.CliAuth.CliDeviceAuthorize(request) -> *promptvmgosdk.CliDeviceAuthorizeResponse</code></summary>
 <dl>
 <dd>
 
@@ -279,9 +279,9 @@ client.CliAuth.CliAuthorize(
 <dd>
 
 ```go
-request := &sdk.CliDeviceAuthorizeRequest{
+request := &promptvmgosdk.CliDeviceAuthorizeRequest{
         UserCode: "user_code",
-        Action: sdk.CliDeviceAuthorizeRequestActionApprove,
+        Action: promptvmgosdk.CliDeviceAuthorizeRequestActionApprove,
     }
 client.CliAuth.CliDeviceAuthorize(
         context.TODO(),
@@ -310,7 +310,7 @@ client.CliAuth.CliDeviceAuthorize(
 <dl>
 <dd>
 
-**action:** `*sdk.CliDeviceAuthorizeRequestAction` 
+**action:** `*promptvmgosdk.CliDeviceAuthorizeRequestAction` 
     
 </dd>
 </dl>
@@ -322,7 +322,7 @@ client.CliAuth.CliDeviceAuthorize(
 </dl>
 </details>
 
-<details><summary><code>client.CliAuth.ListCliSessions() -> []*sdk.ListCliSessionsResponseItem</code></summary>
+<details><summary><code>client.CliAuth.ListCliSessions() -> []*promptvmgosdk.ListCliSessionsResponseItem</code></summary>
 <dl>
 <dd>
 
@@ -363,7 +363,7 @@ client.CliAuth.ListCliSessions(
 <dd>
 
 ```go
-request := &sdk.RevokeCliSessionRequest{
+request := &promptvmgosdk.RevokeCliSessionRequest{
         ID: "id",
     }
 client.CliAuth.RevokeCliSession(
@@ -424,12 +424,12 @@ OAuth 2.0 token endpoint supporting grant_type=authorization_code (with PKCE) an
 <dd>
 
 ```go
-request := &sdk.CliTokenExchangeRequest{
-        AuthorizationCode: &sdk.CliTokenExchangeRequestAuthorizationCode{
+request := &promptvmgosdk.CliTokenExchangeRequest{
+        AuthorizationCode: &promptvmgosdk.CliTokenExchangeRequestAuthorizationCode{
             Code: "code",
             CodeVerifier: "code_verifier",
             RedirectURI: "redirect_uri",
-            ClientID: sdk.CliTokenExchangeRequestAuthorizationCodeClientIDPromptvmCli,
+            ClientID: promptvmgosdk.CliTokenExchangeRequestAuthorizationCodeClientIDPromptvmCli,
         },
     }
 client.CliAuth.CliTokenExchange(
@@ -451,7 +451,7 @@ client.CliAuth.CliTokenExchange(
 <dl>
 <dd>
 
-**request:** `*sdk.CliTokenExchangeRequest` 
+**request:** `*promptvmgosdk.CliTokenExchangeRequest` 
     
 </dd>
 </dl>
@@ -463,7 +463,7 @@ client.CliAuth.CliTokenExchange(
 </dl>
 </details>
 
-<details><summary><code>client.CliAuth.CliDeviceCode(request) -> *sdk.CliDeviceCodeResponse</code></summary>
+<details><summary><code>client.CliAuth.CliDeviceCode(request) -> *promptvmgosdk.CliDeviceCodeResponse</code></summary>
 <dl>
 <dd>
 
@@ -476,8 +476,8 @@ client.CliAuth.CliTokenExchange(
 <dd>
 
 ```go
-request := &sdk.CliDeviceCodeRequest{
-        ClientID: sdk.CliDeviceCodeRequestClientIDPromptvmCli,
+request := &promptvmgosdk.CliDeviceCodeRequest{
+        ClientID: promptvmgosdk.CliDeviceCodeRequestClientIDPromptvmCli,
     }
 client.CliAuth.CliDeviceCode(
         context.TODO(),
@@ -498,7 +498,7 @@ client.CliAuth.CliDeviceCode(
 <dl>
 <dd>
 
-**clientID:** `*sdk.CliDeviceCodeRequestClientID` 
+**clientID:** `*promptvmgosdk.CliDeviceCodeRequestClientID` 
     
 </dd>
 </dl>
@@ -531,10 +531,10 @@ client.CliAuth.CliDeviceCode(
 <dd>
 
 ```go
-request := &sdk.CliDeviceTokenRequest{
-        GrantType: sdk.CliDeviceTokenRequestGrantTypeUrnIetfParamsOauthGrantTypeDeviceCode,
+request := &promptvmgosdk.CliDeviceTokenRequest{
+        GrantType: promptvmgosdk.CliDeviceTokenRequestGrantTypeUrnIetfParamsOauthGrantTypeDeviceCode,
         DeviceCode: "device_code",
-        ClientID: sdk.CliDeviceTokenRequestClientIDPromptvmCli,
+        ClientID: promptvmgosdk.CliDeviceTokenRequestClientIDPromptvmCli,
     }
 client.CliAuth.CliDeviceToken(
         context.TODO(),
@@ -555,7 +555,7 @@ client.CliAuth.CliDeviceToken(
 <dl>
 <dd>
 
-**grantType:** `*sdk.CliDeviceTokenRequestGrantType` 
+**grantType:** `*promptvmgosdk.CliDeviceTokenRequestGrantType` 
     
 </dd>
 </dl>
@@ -571,7 +571,7 @@ client.CliAuth.CliDeviceToken(
 <dl>
 <dd>
 
-**clientID:** `*sdk.CliDeviceTokenRequestClientID` 
+**clientID:** `*promptvmgosdk.CliDeviceTokenRequestClientID` 
     
 </dd>
 </dl>
@@ -584,7 +584,7 @@ client.CliAuth.CliDeviceToken(
 </details>
 
 ## Billing
-<details><summary><code>client.Billing.GetPromoOffer(Token) -> *sdk.GetPromoOfferResponse</code></summary>
+<details><summary><code>client.Billing.GetPromoOffer(Token) -> *promptvmgosdk.GetPromoOfferResponse</code></summary>
 <dl>
 <dd>
 
@@ -611,7 +611,7 @@ Public endpoint that returns the offer metadata and status for a single-use rede
 <dd>
 
 ```go
-request := &sdk.GetPromoOfferRequest{
+request := &promptvmgosdk.GetPromoOfferRequest{
         Token: "token",
     }
 client.Billing.GetPromoOffer(
@@ -687,7 +687,7 @@ client.Billing.ListBillingPlans(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.CreateBillingCheckoutSession(request) -> *sdk.CreateBillingCheckoutSessionResponse</code></summary>
+<details><summary><code>client.Billing.CreateBillingCheckoutSession(request) -> *promptvmgosdk.CreateBillingCheckoutSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -714,10 +714,10 @@ Returns a Stripe-hosted Checkout URL for the caller to complete payment. Owner/a
 <dd>
 
 ```go
-request := &sdk.CreateBillingCheckoutSessionRequest{
+request := &promptvmgosdk.CreateBillingCheckoutSessionRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
         PlanSlug: "pro",
-        Interval: sdk.CreateBillingCheckoutSessionRequestIntervalMonth,
+        Interval: promptvmgosdk.CreateBillingCheckoutSessionRequestIntervalMonth,
     }
 client.Billing.CreateBillingCheckoutSession(
         context.TODO(),
@@ -754,7 +754,7 @@ client.Billing.CreateBillingCheckoutSession(
 <dl>
 <dd>
 
-**interval:** `*sdk.CreateBillingCheckoutSessionRequestInterval` — Billing interval. Must match a `subscription_plans` row paired with `planSlug`.
+**interval:** `*promptvmgosdk.CreateBillingCheckoutSessionRequestInterval` — Billing interval. Must match a `subscription_plans` row paired with `planSlug`.
     
 </dd>
 </dl>
@@ -774,7 +774,7 @@ client.Billing.CreateBillingCheckoutSession(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.CreateBillingPortalSession() -> *sdk.CreateBillingPortalSessionResponse</code></summary>
+<details><summary><code>client.Billing.CreateBillingPortalSession() -> *promptvmgosdk.CreateBillingPortalSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -801,7 +801,7 @@ Returns a Stripe-hosted Customer Portal URL the caller can use to update their p
 <dd>
 
 ```go
-request := &sdk.CreateBillingPortalSessionRequest{
+request := &promptvmgosdk.CreateBillingPortalSessionRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
     }
 client.Billing.CreateBillingPortalSession(
@@ -835,7 +835,7 @@ client.Billing.CreateBillingPortalSession(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.ChangeBillingPlan(request) -> *sdk.ChangeBillingPlanResponse</code></summary>
+<details><summary><code>client.Billing.ChangeBillingPlan(request) -> *promptvmgosdk.ChangeBillingPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -862,10 +862,10 @@ Routes through the Phase 02 change-plan algorithm: detects upgrade/downgrade/sea
 <dd>
 
 ```go
-request := &sdk.ChangeBillingPlanRequest{
+request := &promptvmgosdk.ChangeBillingPlanRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
         PlanSlug: "teams",
-        Interval: sdk.ChangeBillingPlanRequestIntervalMonth,
+        Interval: promptvmgosdk.ChangeBillingPlanRequestIntervalMonth,
     }
 client.Billing.ChangeBillingPlan(
         context.TODO(),
@@ -902,7 +902,7 @@ client.Billing.ChangeBillingPlan(
 <dl>
 <dd>
 
-**interval:** `*sdk.ChangeBillingPlanRequestInterval` — Target billing interval. month→year=upgrade, year→month=downgrade (FR-02-4).
+**interval:** `*promptvmgosdk.ChangeBillingPlanRequestInterval` — Target billing interval. month→year=upgrade, year→month=downgrade (FR-02-4).
     
 </dd>
 </dl>
@@ -922,7 +922,7 @@ client.Billing.ChangeBillingPlan(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.AdjustBillingSeats(request) -> *sdk.AdjustBillingSeatsResponse</code></summary>
+<details><summary><code>client.Billing.AdjustBillingSeats(request) -> *promptvmgosdk.AdjustBillingSeatsResponse</code></summary>
 <dl>
 <dd>
 
@@ -949,7 +949,7 @@ Owner/admin only. Pushes a `quantity` change to the Stripe subscription item wit
 <dd>
 
 ```go
-request := &sdk.AdjustBillingSeatsRequest{
+request := &promptvmgosdk.AdjustBillingSeatsRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
         Seats: 5,
     }
@@ -992,7 +992,7 @@ client.Billing.AdjustBillingSeats(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.CancelBillingSubscription() -> *sdk.CancelBillingSubscriptionResponse</code></summary>
+<details><summary><code>client.Billing.CancelBillingSubscription() -> *promptvmgosdk.CancelBillingSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -1019,7 +1019,7 @@ Owner/admin only. Sets `cancel_at_period_end = true` on the Stripe subscription.
 <dd>
 
 ```go
-request := &sdk.CancelBillingSubscriptionRequest{
+request := &promptvmgosdk.CancelBillingSubscriptionRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
     }
 client.Billing.CancelBillingSubscription(
@@ -1053,7 +1053,7 @@ client.Billing.CancelBillingSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.ResumeBillingSubscription() -> *sdk.ResumeBillingSubscriptionResponse</code></summary>
+<details><summary><code>client.Billing.ResumeBillingSubscription() -> *promptvmgosdk.ResumeBillingSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -1080,7 +1080,7 @@ Owner/admin only. Sets `cancel_at_period_end = false` on the Stripe subscription
 <dd>
 
 ```go
-request := &sdk.ResumeBillingSubscriptionRequest{
+request := &promptvmgosdk.ResumeBillingSubscriptionRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
     }
 client.Billing.ResumeBillingSubscription(
@@ -1114,7 +1114,7 @@ client.Billing.ResumeBillingSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.ListBillingInvoices() -> *sdk.ListBillingInvoicesResponse</code></summary>
+<details><summary><code>client.Billing.ListBillingInvoices() -> *promptvmgosdk.ListBillingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1141,7 +1141,7 @@ Returns a paginated, owner/admin-gated history of Stripe invoices mirrored local
 <dd>
 
 ```go
-request := &sdk.ListBillingInvoicesRequest{
+request := &promptvmgosdk.ListBillingInvoicesRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
     }
 client.Billing.ListBillingInvoices(
@@ -1191,7 +1191,7 @@ client.Billing.ListBillingInvoices(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.RedeemPromotionalOffer(Token) -> *sdk.RedeemPromotionalOfferResponse</code></summary>
+<details><summary><code>client.Billing.RedeemPromotionalOffer(Token) -> *promptvmgosdk.RedeemPromotionalOfferResponse</code></summary>
 <dl>
 <dd>
 
@@ -1218,7 +1218,7 @@ Owner/admin only. Atomically locks the token, increments the offer counter, and 
 <dd>
 
 ```go
-request := &sdk.RedeemPromotionalOfferRequest{
+request := &promptvmgosdk.RedeemPromotionalOfferRequest{
         Token: "abcdef0123456789ABCDEF0123456789",
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
     }
@@ -1261,7 +1261,7 @@ client.Billing.RedeemPromotionalOffer(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.GetBillingStatus() -> *sdk.GetBillingStatusResponse</code></summary>
+<details><summary><code>client.Billing.GetBillingStatus() -> *promptvmgosdk.GetBillingStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -1288,8 +1288,8 @@ Returns the active org's subscription projection, plan-derived entitlements, and
 <dd>
 
 ```go
-request := &sdk.GetBillingStatusRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.GetBillingStatusRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -1324,7 +1324,7 @@ client.Billing.GetBillingStatus(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.ListBillingWebhookErrors() -> *sdk.ListBillingWebhookErrorsResponse</code></summary>
+<details><summary><code>client.Billing.ListBillingWebhookErrors() -> *promptvmgosdk.ListBillingWebhookErrorsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1351,7 +1351,7 @@ Returns the FR-05-11 dead-letter view: `stripe_webhook_events` rows where `error
 <dd>
 
 ```go
-request := &sdk.ListBillingWebhookErrorsRequest{
+request := &promptvmgosdk.ListBillingWebhookErrorsRequest{
         OrgID: "018e4a3b-0000-0000-0000-000000000001",
     }
 client.Billing.ListBillingWebhookErrors(
@@ -1445,7 +1445,7 @@ Returns resolved prompt content as plain text or JSON. Pass ?version=latest (def
 <dd>
 
 ```go
-request := &sdk.AgentResolvePromptRequest{
+request := &promptvmgosdk.AgentResolvePromptRequest{
         Slug: "slug",
     }
 client.AgentAPI.AgentResolvePrompt(
@@ -1483,7 +1483,15 @@ client.AgentAPI.AgentResolvePrompt(
 <dl>
 <dd>
 
-**format:** `*sdk.AgentResolvePromptRequestFormat` 
+**format:** `*promptvmgosdk.AgentResolvePromptRequestFormat` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**template:** `*string` — Force the {{placeholder}} form for every caller, including the prompt author. Used by surfaces that must render identically for everyone, such as a marketplace listing.
     
 </dd>
 </dl>
@@ -1523,7 +1531,7 @@ Unauthenticated. Atomically increments the tied marketplace listing's downloadCo
 <dd>
 
 ```go
-request := &sdk.RecordPublicSkillInstallRequest{
+request := &promptvmgosdk.RecordPublicSkillInstallRequest{
         Slug: "slug",
     }
 client.SkillsPublic.RecordPublicSkillInstall(
@@ -1565,7 +1573,7 @@ client.SkillsPublic.RecordPublicSkillInstall(
 </dl>
 </details>
 
-<details><summary><code>client.SkillsPublic.GetPublicSkillBySlug(Slug) -> *sdk.GetPublicSkillBySlugResponse</code></summary>
+<details><summary><code>client.SkillsPublic.GetPublicSkillBySlug(Slug) -> *promptvmgosdk.GetPublicSkillBySlugResponse</code></summary>
 <dl>
 <dd>
 
@@ -1592,7 +1600,7 @@ Unauthenticated read. Returns the parsed Agent Skills frontmatter as JSON, or th
 <dd>
 
 ```go
-request := &sdk.GetPublicSkillBySlugRequest{
+request := &promptvmgosdk.GetPublicSkillBySlugRequest{
         Slug: "slug",
     }
 client.SkillsPublic.GetPublicSkillBySlug(
@@ -1630,7 +1638,7 @@ client.SkillsPublic.GetPublicSkillBySlug(
 <dl>
 <dd>
 
-**format:** `*sdk.GetPublicSkillBySlugRequestFormat` 
+**format:** `*promptvmgosdk.GetPublicSkillBySlugRequestFormat` 
     
 </dd>
 </dl>
@@ -1651,7 +1659,7 @@ client.SkillsPublic.GetPublicSkillBySlug(
 </details>
 
 ## HooksPublic
-<details><summary><code>client.HooksPublic.GetPublicHookBySlug(Slug) -> *sdk.GetPublicHookBySlugResponse</code></summary>
+<details><summary><code>client.HooksPublic.GetPublicHookBySlug(Slug) -> *promptvmgosdk.GetPublicHookBySlugResponse</code></summary>
 <dl>
 <dd>
 
@@ -1678,7 +1686,7 @@ Unauthenticated read. Returns the hook configuration as JSON.
 <dd>
 
 ```go
-request := &sdk.GetPublicHookBySlugRequest{
+request := &promptvmgosdk.GetPublicHookBySlugRequest{
         Slug: "slug",
     }
 client.HooksPublic.GetPublicHookBySlug(
@@ -1729,7 +1737,7 @@ client.HooksPublic.GetPublicHookBySlug(
 </details>
 
 ## ContextSync
-<details><summary><code>client.ContextSync.GetContextSyncManifest() -> *sdk.GetContextSyncManifestResponse</code></summary>
+<details><summary><code>client.ContextSync.GetContextSyncManifest() -> *promptvmgosdk.GetContextSyncManifestResponse</code></summary>
 <dl>
 <dd>
 
@@ -1771,7 +1779,7 @@ client.ContextSync.GetContextSyncManifest(
 </dl>
 </details>
 
-<details><summary><code>client.ContextSync.ListCapturedSessions() -> *sdk.ListCapturedSessionsResponse</code></summary>
+<details><summary><code>client.ContextSync.ListCapturedSessions() -> *promptvmgosdk.ListCapturedSessionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1784,7 +1792,7 @@ client.ContextSync.GetContextSyncManifest(
 <dd>
 
 ```go
-request := &sdk.ListCapturedSessionsRequest{
+request := &promptvmgosdk.ListCapturedSessionsRequest{
         WorkspaceID: "workspaceId",
     }
 client.ContextSync.ListCapturedSessions(
@@ -1814,7 +1822,7 @@ client.ContextSync.ListCapturedSessions(
 <dl>
 <dd>
 
-**status:** `*sdk.ListCapturedSessionsRequestStatus` 
+**status:** `*promptvmgosdk.ListCapturedSessionsRequestStatus` 
     
 </dd>
 </dl>
@@ -1870,7 +1878,7 @@ client.ContextSync.ListCapturedSessions(
 <dl>
 <dd>
 
-**sort:** `*sdk.ListCapturedSessionsRequestSort` 
+**sort:** `*promptvmgosdk.ListCapturedSessionsRequestSort` 
     
 </dd>
 </dl>
@@ -1878,7 +1886,7 @@ client.ContextSync.ListCapturedSessions(
 <dl>
 <dd>
 
-**order:** `*sdk.ListCapturedSessionsRequestOrder` 
+**order:** `*promptvmgosdk.ListCapturedSessionsRequestOrder` 
     
 </dd>
 </dl>
@@ -1906,7 +1914,7 @@ client.ContextSync.ListCapturedSessions(
 </dl>
 </details>
 
-<details><summary><code>client.ContextSync.IngestCapturedSession(request) -> *sdk.IngestCapturedSessionResponse</code></summary>
+<details><summary><code>client.ContextSync.IngestCapturedSession(request) -> *promptvmgosdk.IngestCapturedSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -1919,11 +1927,11 @@ client.ContextSync.ListCapturedSessions(
 <dd>
 
 ```go
-request := &sdk.IngestCapturedSessionRequest{
+request := &promptvmgosdk.IngestCapturedSessionRequest{
         WorkspaceID: "workspaceId",
         ClaudeSessionID: "claudeSessionId",
         Source: "source",
-        CaptureMode: sdk.IngestCapturedSessionRequestCaptureModeSummary,
+        CaptureMode: promptvmgosdk.IngestCapturedSessionRequestCaptureModeSummary,
     }
 client.ContextSync.IngestCapturedSession(
         context.TODO(),
@@ -1976,7 +1984,7 @@ client.ContextSync.IngestCapturedSession(
 <dl>
 <dd>
 
-**captureMode:** `*sdk.IngestCapturedSessionRequestCaptureMode` 
+**captureMode:** `*promptvmgosdk.IngestCapturedSessionRequestCaptureMode` 
     
 </dd>
 </dl>
@@ -1992,7 +2000,7 @@ client.ContextSync.IngestCapturedSession(
 <dl>
 <dd>
 
-**metadata:** `*sdk.IngestCapturedSessionRequestMetadata` 
+**metadata:** `*promptvmgosdk.IngestCapturedSessionRequestMetadata` 
     
 </dd>
 </dl>
@@ -2036,7 +2044,7 @@ client.ContextSync.IngestCapturedSession(
 </dl>
 </details>
 
-<details><summary><code>client.ContextSync.GetContextSyncHealth() -> *sdk.GetContextSyncHealthResponse</code></summary>
+<details><summary><code>client.ContextSync.GetContextSyncHealth() -> *promptvmgosdk.GetContextSyncHealthResponse</code></summary>
 <dl>
 <dd>
 
@@ -2049,7 +2057,7 @@ client.ContextSync.IngestCapturedSession(
 <dd>
 
 ```go
-request := &sdk.GetContextSyncHealthRequest{
+request := &promptvmgosdk.GetContextSyncHealthRequest{
         WorkspaceID: "workspaceId",
     }
 client.ContextSync.GetContextSyncHealth(
@@ -2083,7 +2091,7 @@ client.ContextSync.GetContextSyncHealth(
 </dl>
 </details>
 
-<details><summary><code>client.ContextSync.ListCaptureRepos() -> *sdk.ListCaptureReposResponse</code></summary>
+<details><summary><code>client.ContextSync.ListCaptureRepos() -> *promptvmgosdk.ListCaptureReposResponse</code></summary>
 <dl>
 <dd>
 
@@ -2096,7 +2104,7 @@ client.ContextSync.GetContextSyncHealth(
 <dd>
 
 ```go
-request := &sdk.ListCaptureReposRequest{
+request := &promptvmgosdk.ListCaptureReposRequest{
         WorkspaceID: "workspaceId",
     }
 client.ContextSync.ListCaptureRepos(
@@ -2143,7 +2151,7 @@ client.ContextSync.ListCaptureRepos(
 <dd>
 
 ```go
-request := &sdk.BulkPromoteCapturedSessionsRequest{
+request := &promptvmgosdk.BulkPromoteCapturedSessionsRequest{
         IDs: []string{
             "ids",
         },
@@ -2192,7 +2200,7 @@ client.ContextSync.BulkPromoteCapturedSessions(
 <dd>
 
 ```go
-request := &sdk.BulkDiscardCapturedSessionsRequest{
+request := &promptvmgosdk.BulkDiscardCapturedSessionsRequest{
         IDs: []string{
             "ids",
         },
@@ -2228,7 +2236,7 @@ client.ContextSync.BulkDiscardCapturedSessions(
 </dl>
 </details>
 
-<details><summary><code>client.ContextSync.PromoteCapturedSession(ID) -> *sdk.PromoteCapturedSessionResponse</code></summary>
+<details><summary><code>client.ContextSync.PromoteCapturedSession(ID) -> *promptvmgosdk.PromoteCapturedSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -2241,7 +2249,7 @@ client.ContextSync.BulkDiscardCapturedSessions(
 <dd>
 
 ```go
-request := &sdk.PromoteCapturedSessionRequest{
+request := &promptvmgosdk.PromoteCapturedSessionRequest{
         ID: "id",
     }
 client.ContextSync.PromoteCapturedSession(
@@ -2275,7 +2283,7 @@ client.ContextSync.PromoteCapturedSession(
 </dl>
 </details>
 
-<details><summary><code>client.ContextSync.DiscardCapturedSession(ID) -> *sdk.DiscardCapturedSessionResponse</code></summary>
+<details><summary><code>client.ContextSync.DiscardCapturedSession(ID) -> *promptvmgosdk.DiscardCapturedSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -2288,7 +2296,7 @@ client.ContextSync.PromoteCapturedSession(
 <dd>
 
 ```go
-request := &sdk.DiscardCapturedSessionRequest{
+request := &promptvmgosdk.DiscardCapturedSessionRequest{
         ID: "id",
     }
 client.ContextSync.DiscardCapturedSession(
@@ -2323,7 +2331,7 @@ client.ContextSync.DiscardCapturedSession(
 </details>
 
 ## Contexts
-<details><summary><code>client.Contexts.ListContextKinds() -> *sdk.ListContextKindsResponse</code></summary>
+<details><summary><code>client.Contexts.ListContextKinds() -> *promptvmgosdk.ListContextKindsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2366,7 +2374,7 @@ client.Contexts.ListContextKinds(
 </details>
 
 ## MarketplaceSkillsFeed
-<details><summary><code>client.MarketplaceSkillsFeed.GetMarketplaceSkillsFeed() -> *sdk.GetMarketplaceSkillsFeedResponse</code></summary>
+<details><summary><code>client.MarketplaceSkillsFeed.GetMarketplaceSkillsFeed() -> *promptvmgosdk.GetMarketplaceSkillsFeedResponse</code></summary>
 <dl>
 <dd>
 
@@ -2393,7 +2401,7 @@ Unauthenticated, paginated feed of all public skills. Use ?since=<ISO> to fetch 
 <dd>
 
 ```go
-request := &sdk.GetMarketplaceSkillsFeedRequest{}
+request := &promptvmgosdk.GetMarketplaceSkillsFeedRequest{}
 client.MarketplaceSkillsFeed.GetMarketplaceSkillsFeed(
         context.TODO(),
         request,
@@ -2442,7 +2450,7 @@ client.MarketplaceSkillsFeed.GetMarketplaceSkillsFeed(
 </details>
 
 ## Marketplace - Browse
-<details><summary><code>client.MarketplaceBrowse.ListMarketplaceListings() -> *sdk.ListMarketplaceListingsResponse</code></summary>
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceListings() -> *promptvmgosdk.ListMarketplaceListingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2469,7 +2477,7 @@ Paginated browse with optional search, category filter, and sort.
 <dd>
 
 ```go
-request := &sdk.ListMarketplaceListingsRequest{}
+request := &promptvmgosdk.ListMarketplaceListingsRequest{}
 client.MarketplaceBrowse.ListMarketplaceListings(
         context.TODO(),
         request,
@@ -2513,7 +2521,7 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 <dl>
 <dd>
 
-**kind:** `*sdk.ListMarketplaceListingsRequestKind` — Filter listings by their underlying content_kind.
+**kind:** `*promptvmgosdk.ListMarketplaceListingsRequestKind` — Filter listings by their underlying content_kind.
     
 </dd>
 </dl>
@@ -2537,7 +2545,7 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 <dl>
 <dd>
 
-**sort:** `*sdk.ListMarketplaceListingsRequestSort` 
+**sort:** `*promptvmgosdk.ListMarketplaceListingsRequestSort` 
     
 </dd>
 </dl>
@@ -2561,7 +2569,7 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 <dl>
 <dd>
 
-**ranking:** `*sdk.ListMarketplaceListingsRequestRanking` — Search ranking for `q`. `semantic` ranks by multilingual embedding similarity (503 when the embedding backend is down); `hybrid` fuses keyword + semantic via RRF and degrades to keyword with `meta.degraded: true`.
+**ranking:** `*promptvmgosdk.ListMarketplaceListingsRequestRanking` — Search ranking for `q`. `semantic` ranks by multilingual embedding similarity (503 when the embedding backend is down); `hybrid` fuses keyword + semantic via RRF and degrades to keyword with `meta.degraded: true`.
     
 </dd>
 </dl>
@@ -2573,7 +2581,7 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceBrowse.GetMarketplaceListing(ListingID) -> *sdk.GetMarketplaceListingResponse</code></summary>
+<details><summary><code>client.MarketplaceBrowse.GetMarketplaceListing(ListingID) -> *promptvmgosdk.GetMarketplaceListingResponse</code></summary>
 <dl>
 <dd>
 
@@ -2586,7 +2594,7 @@ client.MarketplaceBrowse.ListMarketplaceListings(
 <dd>
 
 ```go
-request := &sdk.GetMarketplaceListingRequest{
+request := &promptvmgosdk.GetMarketplaceListingRequest{
         ListingID: "listingId",
     }
 client.MarketplaceBrowse.GetMarketplaceListing(
@@ -2620,7 +2628,7 @@ client.MarketplaceBrowse.GetMarketplaceListing(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceBrowse.ListFeaturedMarketplaceListings() -> *sdk.ListFeaturedMarketplaceListingsResponse</code></summary>
+<details><summary><code>client.MarketplaceBrowse.ListFeaturedMarketplaceListings() -> *promptvmgosdk.ListFeaturedMarketplaceListingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2648,7 +2656,7 @@ client.MarketplaceBrowse.ListFeaturedMarketplaceListings(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceBrowse.ListMarketplaceCategories() -> *sdk.ListMarketplaceCategoriesResponse</code></summary>
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceCategories() -> *promptvmgosdk.ListMarketplaceCategoriesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2676,7 +2684,7 @@ client.MarketplaceBrowse.ListMarketplaceCategories(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceBrowse.ListMarketplaceAiModels() -> *sdk.ListMarketplaceAiModelsResponse</code></summary>
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceAiModels() -> *promptvmgosdk.ListMarketplaceAiModelsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2718,7 +2726,7 @@ client.MarketplaceBrowse.ListMarketplaceAiModels(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceBrowse.ListMarketplaceContentTypes() -> *sdk.ListMarketplaceContentTypesResponse</code></summary>
+<details><summary><code>client.MarketplaceBrowse.ListMarketplaceContentTypes() -> *promptvmgosdk.ListMarketplaceContentTypesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2760,7 +2768,7 @@ client.MarketplaceBrowse.ListMarketplaceContentTypes(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceBrowse.GetMarketplaceFacets() -> *sdk.GetMarketplaceFacetsResponse</code></summary>
+<details><summary><code>client.MarketplaceBrowse.GetMarketplaceFacets() -> *promptvmgosdk.GetMarketplaceFacetsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2787,7 +2795,7 @@ Unauthenticated. Returns { total, kinds, categories } counted over ACTIVE listin
 <dd>
 
 ```go
-request := &sdk.GetMarketplaceFacetsRequest{}
+request := &promptvmgosdk.GetMarketplaceFacetsRequest{}
 client.MarketplaceBrowse.GetMarketplaceFacets(
         context.TODO(),
         request,
@@ -2820,7 +2828,7 @@ client.MarketplaceBrowse.GetMarketplaceFacets(
 </details>
 
 ## Marketplace - Listings
-<details><summary><code>client.MarketplaceListings.CreateMarketplaceListing(request) -> *sdk.CreateMarketplaceListingResponse</code></summary>
+<details><summary><code>client.MarketplaceListings.CreateMarketplaceListing(request) -> *promptvmgosdk.CreateMarketplaceListingResponse</code></summary>
 <dl>
 <dd>
 
@@ -2847,7 +2855,7 @@ Publishes a prompt, skill, hook, collection, or directory to the marketplace. Sk
 <dd>
 
 ```go
-request := &sdk.CreateMarketplaceListingRequest{
+request := &promptvmgosdk.CreateMarketplaceListingRequest{
         Title: "title",
         Description: "description",
     }
@@ -2950,7 +2958,7 @@ client.MarketplaceListings.CreateMarketplaceListing(
 <dl>
 <dd>
 
-**accessType:** `*sdk.CreateMarketplaceListingRequestAccessType` 
+**accessType:** `*promptvmgosdk.CreateMarketplaceListingRequestAccessType` 
     
 </dd>
 </dl>
@@ -2975,7 +2983,7 @@ client.MarketplaceListings.CreateMarketplaceListing(
 <dd>
 
 ```go
-request := &sdk.ArchiveMarketplaceListingRequest{
+request := &promptvmgosdk.ArchiveMarketplaceListingRequest{
         ListingID: "listingId",
     }
 client.MarketplaceListings.ArchiveMarketplaceListing(
@@ -3009,7 +3017,7 @@ client.MarketplaceListings.ArchiveMarketplaceListing(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceListings.UpdateMarketplaceListing(ListingID, request) -> *sdk.UpdateMarketplaceListingResponse</code></summary>
+<details><summary><code>client.MarketplaceListings.UpdateMarketplaceListing(ListingID, request) -> *promptvmgosdk.UpdateMarketplaceListingResponse</code></summary>
 <dl>
 <dd>
 
@@ -3022,7 +3030,7 @@ client.MarketplaceListings.ArchiveMarketplaceListing(
 <dd>
 
 ```go
-request := &sdk.UpdateMarketplaceListingRequest{
+request := &promptvmgosdk.UpdateMarketplaceListingRequest{
         ListingID: "listingId",
     }
 client.MarketplaceListings.UpdateMarketplaceListing(
@@ -3084,7 +3092,7 @@ client.MarketplaceListings.UpdateMarketplaceListing(
 <dl>
 <dd>
 
-**status:** `*sdk.UpdateMarketplaceListingRequestStatus` 
+**status:** `*promptvmgosdk.UpdateMarketplaceListingRequestStatus` 
     
 </dd>
 </dl>
@@ -3100,7 +3108,7 @@ client.MarketplaceListings.UpdateMarketplaceListing(
 <dl>
 <dd>
 
-**accessType:** `*sdk.UpdateMarketplaceListingRequestAccessType` 
+**accessType:** `*promptvmgosdk.UpdateMarketplaceListingRequestAccessType` 
     
 </dd>
 </dl>
@@ -3112,7 +3120,7 @@ client.MarketplaceListings.UpdateMarketplaceListing(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceListings.InitiateListingMediaUpload(ListingID, request) -> *sdk.InitiateListingMediaUploadResponse</code></summary>
+<details><summary><code>client.MarketplaceListings.InitiateListingMediaUpload(ListingID, request) -> *promptvmgosdk.InitiateListingMediaUploadResponse</code></summary>
 <dl>
 <dd>
 
@@ -3139,9 +3147,9 @@ Owner-only. Validates the MIME type and size against the featured-media allowlis
 <dd>
 
 ```go
-request := &sdk.InitiateListingMediaUploadRequest{
+request := &promptvmgosdk.InitiateListingMediaUploadRequest{
         ListingID: "listingId",
-        Kind: sdk.InitiateListingMediaUploadRequestKindImage,
+        Kind: promptvmgosdk.InitiateListingMediaUploadRequestKindImage,
         ContentType: "contentType",
         SizeBytes: 1,
     }
@@ -3172,7 +3180,7 @@ client.MarketplaceListings.InitiateListingMediaUpload(
 <dl>
 <dd>
 
-**kind:** `*sdk.InitiateListingMediaUploadRequestKind` 
+**kind:** `*promptvmgosdk.InitiateListingMediaUploadRequestKind` 
     
 </dd>
 </dl>
@@ -3200,7 +3208,7 @@ client.MarketplaceListings.InitiateListingMediaUpload(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceListings.ConfirmListingMediaUpload(ListingID, request) -> *sdk.ConfirmListingMediaUploadResponse</code></summary>
+<details><summary><code>client.MarketplaceListings.ConfirmListingMediaUpload(ListingID, request) -> *promptvmgosdk.ConfirmListingMediaUploadResponse</code></summary>
 <dl>
 <dd>
 
@@ -3227,9 +3235,9 @@ Owner-only. Verifies the uploaded object exists in S3 with a valid size/content-
 <dd>
 
 ```go
-request := &sdk.ConfirmListingMediaUploadRequest{
+request := &promptvmgosdk.ConfirmListingMediaUploadRequest{
         ListingID: "listingId",
-        Kind: sdk.ConfirmListingMediaUploadRequestKindImage,
+        Kind: promptvmgosdk.ConfirmListingMediaUploadRequestKindImage,
         Key: "key",
     }
 client.MarketplaceListings.ConfirmListingMediaUpload(
@@ -3259,7 +3267,7 @@ client.MarketplaceListings.ConfirmListingMediaUpload(
 <dl>
 <dd>
 
-**kind:** `*sdk.ConfirmListingMediaUploadRequestKind` 
+**kind:** `*promptvmgosdk.ConfirmListingMediaUploadRequestKind` 
     
 </dd>
 </dl>
@@ -3306,9 +3314,9 @@ Owner-only. Clears the stored key for the given kind and best-effort deletes the
 <dd>
 
 ```go
-request := &sdk.DeleteListingMediaRequest{
+request := &promptvmgosdk.DeleteListingMediaRequest{
         ListingID: "listingId",
-        Kind: sdk.DeleteListingMediaRequestKindImage.Ptr(),
+        Kind: promptvmgosdk.DeleteListingMediaRequestKindImage.Ptr(),
     }
 client.MarketplaceListings.DeleteListingMedia(
         context.TODO(),
@@ -3337,7 +3345,7 @@ client.MarketplaceListings.DeleteListingMedia(
 <dl>
 <dd>
 
-**kind:** `*sdk.DeleteListingMediaRequestKind` 
+**kind:** `*promptvmgosdk.DeleteListingMediaRequestKind` 
     
 </dd>
 </dl>
@@ -3349,7 +3357,7 @@ client.MarketplaceListings.DeleteListingMedia(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceListings.ClaimMarketplaceListing(ListingID, request) -> *sdk.ClaimMarketplaceListingResponse</code></summary>
+<details><summary><code>client.MarketplaceListings.ClaimMarketplaceListing(ListingID, request) -> *promptvmgosdk.ClaimMarketplaceListingResponse</code></summary>
 <dl>
 <dd>
 
@@ -3376,7 +3384,7 @@ Claims a free listing and copies the prompt/collection into the user workspace.
 <dd>
 
 ```go
-request := &sdk.ClaimMarketplaceListingRequest{
+request := &promptvmgosdk.ClaimMarketplaceListingRequest{
         ListingID: "listingId",
         WorkspaceID: "workspaceId",
     }
@@ -3420,7 +3428,7 @@ client.MarketplaceListings.ClaimMarketplaceListing(
 </details>
 
 ## Marketplace - Creator
-<details><summary><code>client.MarketplaceCreator.GetMarketplaceCreatorProfile(UserID) -> *sdk.GetMarketplaceCreatorProfileResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.GetMarketplaceCreatorProfile(UserID) -> *promptvmgosdk.GetMarketplaceCreatorProfileResponse</code></summary>
 <dl>
 <dd>
 
@@ -3433,7 +3441,7 @@ client.MarketplaceListings.ClaimMarketplaceListing(
 <dd>
 
 ```go
-request := &sdk.GetMarketplaceCreatorProfileRequest{
+request := &promptvmgosdk.GetMarketplaceCreatorProfileRequest{
         UserID: "userId",
     }
 client.MarketplaceCreator.GetMarketplaceCreatorProfile(
@@ -3467,7 +3475,7 @@ client.MarketplaceCreator.GetMarketplaceCreatorProfile(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreator.GetMarketplaceCreatorProfileByHandle(Handle) -> *sdk.GetMarketplaceCreatorProfileByHandleResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.GetMarketplaceCreatorProfileByHandle(Handle) -> *promptvmgosdk.GetMarketplaceCreatorProfileByHandleResponse</code></summary>
 <dl>
 <dd>
 
@@ -3494,7 +3502,7 @@ Resolves a cosmetic profile handle. Falls back to handles the creator previously
 <dd>
 
 ```go
-request := &sdk.GetMarketplaceCreatorProfileByHandleRequest{
+request := &promptvmgosdk.GetMarketplaceCreatorProfileByHandleRequest{
         Handle: "handle",
     }
 client.MarketplaceCreator.GetMarketplaceCreatorProfileByHandle(
@@ -3528,7 +3536,7 @@ client.MarketplaceCreator.GetMarketplaceCreatorProfileByHandle(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreator.CheckMarketplaceCreatorHandleAvailability() -> *sdk.CheckMarketplaceCreatorHandleAvailabilityResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.CheckMarketplaceCreatorHandleAvailability() -> *promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityResponse</code></summary>
 <dl>
 <dd>
 
@@ -3541,7 +3549,7 @@ client.MarketplaceCreator.GetMarketplaceCreatorProfileByHandle(
 <dd>
 
 ```go
-request := &sdk.CheckMarketplaceCreatorHandleAvailabilityRequest{
+request := &promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityRequest{
         Handle: "handle",
     }
 client.MarketplaceCreator.CheckMarketplaceCreatorHandleAvailability(
@@ -3575,7 +3583,7 @@ client.MarketplaceCreator.CheckMarketplaceCreatorHandleAvailability(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreator.BrowseMarketplaceCreators() -> *sdk.BrowseMarketplaceCreatorsResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.BrowseMarketplaceCreators() -> *promptvmgosdk.BrowseMarketplaceCreatorsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3588,7 +3596,7 @@ client.MarketplaceCreator.CheckMarketplaceCreatorHandleAvailability(
 <dd>
 
 ```go
-request := &sdk.BrowseMarketplaceCreatorsRequest{}
+request := &promptvmgosdk.BrowseMarketplaceCreatorsRequest{}
 client.MarketplaceCreator.BrowseMarketplaceCreators(
         context.TODO(),
         request,
@@ -3616,7 +3624,7 @@ client.MarketplaceCreator.BrowseMarketplaceCreators(
 <dl>
 <dd>
 
-**sort:** `*sdk.BrowseMarketplaceCreatorsRequestSort` 
+**sort:** `*promptvmgosdk.BrowseMarketplaceCreatorsRequestSort` 
     
 </dd>
 </dl>
@@ -3644,7 +3652,7 @@ client.MarketplaceCreator.BrowseMarketplaceCreators(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreator.GetMyMarketplaceCreatorProfile() -> *sdk.GetMyMarketplaceCreatorProfileResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.GetMyMarketplaceCreatorProfile() -> *promptvmgosdk.GetMyMarketplaceCreatorProfileResponse</code></summary>
 <dl>
 <dd>
 
@@ -3672,7 +3680,7 @@ client.MarketplaceCreator.GetMyMarketplaceCreatorProfile(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(request) -> *sdk.UpdateMyMarketplaceCreatorProfileResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(request) -> *promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse</code></summary>
 <dl>
 <dd>
 
@@ -3685,7 +3693,7 @@ client.MarketplaceCreator.GetMyMarketplaceCreatorProfile(
 <dd>
 
 ```go
-request := &sdk.UpdateMyMarketplaceCreatorProfileRequest{}
+request := &promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest{}
 client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(
         context.TODO(),
         request,
@@ -3757,7 +3765,7 @@ client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreator.CreateMarketplaceCreatorProfile(request) -> *sdk.CreateMarketplaceCreatorProfileResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.CreateMarketplaceCreatorProfile(request) -> *promptvmgosdk.CreateMarketplaceCreatorProfileResponse</code></summary>
 <dl>
 <dd>
 
@@ -3770,7 +3778,7 @@ client.MarketplaceCreator.UpdateMyMarketplaceCreatorProfile(
 <dd>
 
 ```go
-request := &sdk.CreateMarketplaceCreatorProfileRequest{
+request := &promptvmgosdk.CreateMarketplaceCreatorProfileRequest{
         Bio: "bio",
     }
 client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
@@ -3844,7 +3852,7 @@ client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreator.ClaimMarketplaceCreatorProfile(CreatorUserID, request) -> *sdk.ClaimMarketplaceCreatorProfileResponse</code></summary>
+<details><summary><code>client.MarketplaceCreator.ClaimMarketplaceCreatorProfile(CreatorUserID, request) -> *promptvmgosdk.ClaimMarketplaceCreatorProfileResponse</code></summary>
 <dl>
 <dd>
 
@@ -3857,7 +3865,7 @@ client.MarketplaceCreator.CreateMarketplaceCreatorProfile(
 <dd>
 
 ```go
-request := &sdk.ClaimMarketplaceCreatorProfileRequest{
+request := &promptvmgosdk.ClaimMarketplaceCreatorProfileRequest{
         CreatorUserID: "creatorUserId",
         Reason: "reason",
         ProofURL: "proofUrl",
@@ -3918,7 +3926,7 @@ client.MarketplaceCreator.ClaimMarketplaceCreatorProfile(
 </details>
 
 ## MarketplaceStats
-<details><summary><code>client.MarketplaceStats.GetMarketplaceStats() -> *sdk.GetMarketplaceStatsResponse</code></summary>
+<details><summary><code>client.MarketplaceStats.GetMarketplaceStats() -> *promptvmgosdk.GetMarketplaceStatsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3961,7 +3969,7 @@ client.MarketplaceStats.GetMarketplaceStats(
 </details>
 
 ## MarketplaceResolve
-<details><summary><code>client.MarketplaceResolve.ResolveInstallRef() -> *sdk.ResolveInstallRefResponse</code></summary>
+<details><summary><code>client.MarketplaceResolve.ResolveInstallRef() -> *promptvmgosdk.ResolveInstallRefResponse</code></summary>
 <dl>
 <dd>
 
@@ -3988,7 +3996,7 @@ Unauthenticated. Resolves `creator/name`, a legacy vanity slug, a `name-<uuid8>`
 <dd>
 
 ```go
-request := &sdk.ResolveInstallRefRequest{
+request := &promptvmgosdk.ResolveInstallRefRequest{
         Ref: "ref",
     }
 client.MarketplaceResolve.ResolveInstallRef(
@@ -4049,7 +4057,7 @@ Unauthenticated. Resolves the ref and atomically increments the tied active list
 <dd>
 
 ```go
-request := &sdk.RecordResolveInstallRequest{
+request := &promptvmgosdk.RecordResolveInstallRequest{
         Ref: "ref",
     }
 client.MarketplaceResolve.RecordResolveInstall(
@@ -4084,7 +4092,7 @@ client.MarketplaceResolve.RecordResolveInstall(
 </details>
 
 ## Sharing
-<details><summary><code>client.Sharing.AccessSharedPrompt(Token) -> *sdk.AccessSharedPromptResponse</code></summary>
+<details><summary><code>client.Sharing.AccessSharedPrompt(Token) -> *promptvmgosdk.AccessSharedPromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -4111,7 +4119,7 @@ Public endpoint — no authentication required. Each successful access increment
 <dd>
 
 ```go
-request := &sdk.AccessSharedPromptRequest{
+request := &promptvmgosdk.AccessSharedPromptRequest{
         Token: "token",
     }
 client.Sharing.AccessSharedPrompt(
@@ -4149,7 +4157,7 @@ client.Sharing.AccessSharedPrompt(
 <dl>
 <dd>
 
-**meta:** `*sdk.AccessSharedPromptRequestMeta` — When "1" or "true", performs a metadata-only read that does not increment useCount.
+**meta:** `*promptvmgosdk.AccessSharedPromptRequestMeta` — When "1" or "true", performs a metadata-only read that does not increment useCount.
     
 </dd>
 </dl>
@@ -4161,7 +4169,7 @@ client.Sharing.AccessSharedPrompt(
 </dl>
 </details>
 
-<details><summary><code>client.Sharing.SharePrompt(PromptID, request) -> *sdk.SharePromptResponse</code></summary>
+<details><summary><code>client.Sharing.SharePrompt(PromptID, request) -> *promptvmgosdk.SharePromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -4174,9 +4182,9 @@ client.Sharing.AccessSharedPrompt(
 <dd>
 
 ```go
-request := &sdk.SharePromptRequest{
+request := &promptvmgosdk.SharePromptRequest{
         PromptID: "promptId",
-        Permission: sdk.SharePromptRequestPermissionView,
+        Permission: promptvmgosdk.SharePromptRequestPermissionView,
     }
 client.Sharing.SharePrompt(
         context.TODO(),
@@ -4221,7 +4229,7 @@ client.Sharing.SharePrompt(
 <dl>
 <dd>
 
-**permission:** `*sdk.SharePromptRequestPermission` 
+**permission:** `*promptvmgosdk.SharePromptRequestPermission` 
     
 </dd>
 </dl>
@@ -4233,7 +4241,7 @@ client.Sharing.SharePrompt(
 </dl>
 </details>
 
-<details><summary><code>client.Sharing.ListPromptCollaborators(PromptID) -> *sdk.ListPromptCollaboratorsResponse</code></summary>
+<details><summary><code>client.Sharing.ListPromptCollaborators(PromptID) -> *promptvmgosdk.ListPromptCollaboratorsResponse</code></summary>
 <dl>
 <dd>
 
@@ -4246,7 +4254,7 @@ client.Sharing.SharePrompt(
 <dd>
 
 ```go
-request := &sdk.ListPromptCollaboratorsRequest{
+request := &promptvmgosdk.ListPromptCollaboratorsRequest{
         PromptID: "promptId",
     }
 client.Sharing.ListPromptCollaborators(
@@ -4280,7 +4288,7 @@ client.Sharing.ListPromptCollaborators(
 </dl>
 </details>
 
-<details><summary><code>client.Sharing.RevokePromptCollaborator(PromptID, CollaboratorID) -> *sdk.RevokePromptCollaboratorResponse</code></summary>
+<details><summary><code>client.Sharing.RevokePromptCollaborator(PromptID, CollaboratorID) -> *promptvmgosdk.RevokePromptCollaboratorResponse</code></summary>
 <dl>
 <dd>
 
@@ -4293,7 +4301,7 @@ client.Sharing.ListPromptCollaborators(
 <dd>
 
 ```go
-request := &sdk.RevokePromptCollaboratorRequest{
+request := &promptvmgosdk.RevokePromptCollaboratorRequest{
         PromptID: "promptId",
         CollaboratorID: "collaboratorId",
     }
@@ -4336,7 +4344,7 @@ client.Sharing.RevokePromptCollaborator(
 </dl>
 </details>
 
-<details><summary><code>client.Sharing.ListPromptShareLinks(PromptID) -> *sdk.ListPromptShareLinksResponse</code></summary>
+<details><summary><code>client.Sharing.ListPromptShareLinks(PromptID) -> *promptvmgosdk.ListPromptShareLinksResponse</code></summary>
 <dl>
 <dd>
 
@@ -4363,7 +4371,7 @@ Returns non-revoked share links for the prompt. Requires share permission.
 <dd>
 
 ```go
-request := &sdk.ListPromptShareLinksRequest{
+request := &promptvmgosdk.ListPromptShareLinksRequest{
         PromptID: "promptId",
     }
 client.Sharing.ListPromptShareLinks(
@@ -4424,7 +4432,7 @@ Sets revokedAt/revokedBy. Idempotent — revoking an already-revoked link return
 <dd>
 
 ```go
-request := &sdk.RevokePromptShareLinkRequest{
+request := &promptvmgosdk.RevokePromptShareLinkRequest{
         PromptID: "promptId",
         LinkID: "linkId",
     }
@@ -4467,7 +4475,7 @@ client.Sharing.RevokePromptShareLink(
 </dl>
 </details>
 
-<details><summary><code>client.Sharing.CreatePromptShareLink(PromptID, request) -> *sdk.CreatePromptShareLinkResponse</code></summary>
+<details><summary><code>client.Sharing.CreatePromptShareLink(PromptID, request) -> *promptvmgosdk.CreatePromptShareLinkResponse</code></summary>
 <dl>
 <dd>
 
@@ -4480,7 +4488,7 @@ client.Sharing.RevokePromptShareLink(
 <dd>
 
 ```go
-request := &sdk.CreatePromptShareLinkRequest{
+request := &promptvmgosdk.CreatePromptShareLinkRequest{
         PromptID: "promptId",
     }
 client.Sharing.CreatePromptShareLink(
@@ -4518,7 +4526,7 @@ client.Sharing.CreatePromptShareLink(
 <dl>
 <dd>
 
-**permission:** `*sdk.CreatePromptShareLinkRequestPermission` 
+**permission:** `*promptvmgosdk.CreatePromptShareLinkRequestPermission` 
     
 </dd>
 </dl>
@@ -4566,7 +4574,7 @@ client.Sharing.CreatePromptShareLink(
 <dl>
 <dd>
 
-**kind:** `*sdk.CreatePromptShareLinkRequestKind` 
+**kind:** `*promptvmgosdk.CreatePromptShareLinkRequestKind` 
     
 </dd>
 </dl>
@@ -4574,7 +4582,7 @@ client.Sharing.CreatePromptShareLink(
 <dl>
 <dd>
 
-**version:** `*sdk.CreatePromptShareLinkRequestVersion` 
+**version:** `*promptvmgosdk.CreatePromptShareLinkRequestVersion` 
     
 </dd>
 </dl>
@@ -4602,7 +4610,7 @@ client.Sharing.CreatePromptShareLink(
 </dl>
 </details>
 
-<details><summary><code>client.Sharing.ImportSharedPrompt(Token, request) -> *sdk.ImportSharedPromptResponse</code></summary>
+<details><summary><code>client.Sharing.ImportSharedPrompt(Token, request) -> *promptvmgosdk.ImportSharedPromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -4629,7 +4637,7 @@ Copies the prompt behind a share link into the caller's workspace (body.workspac
 <dd>
 
 ```go
-request := &sdk.ImportSharedPromptRequest{
+request := &promptvmgosdk.ImportSharedPromptRequest{
         Token: "token",
     }
 client.Sharing.ImportSharedPrompt(
@@ -4688,7 +4696,7 @@ client.Sharing.ImportSharedPrompt(
 </details>
 
 ## API Keys
-<details><summary><code>client.APIKeys.ListAPIKeys() -> *sdk.ListAPIKeysResponse</code></summary>
+<details><summary><code>client.APIKeys.ListAPIKeys() -> *promptvmgosdk.ListAPIKeysResponse</code></summary>
 <dl>
 <dd>
 
@@ -4715,8 +4723,8 @@ Retrieves a paginated list of API keys for the authenticated user. Results inclu
 <dd>
 
 ```go
-request := &sdk.ListAPIKeysRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.ListAPIKeysRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -4755,7 +4763,7 @@ client.APIKeys.ListAPIKeys(
 <dl>
 <dd>
 
-**status:** `*sdk.ListAPIKeysRequestStatus` — Filter by API key status
+**status:** `*promptvmgosdk.ListAPIKeysRequestStatus` — Filter by API key status
     
 </dd>
 </dl>
@@ -4775,7 +4783,7 @@ client.APIKeys.ListAPIKeys(
 </dl>
 </details>
 
-<details><summary><code>client.APIKeys.CreateAPIKey(request) -> *sdk.CreateAPIKeyResponse</code></summary>
+<details><summary><code>client.APIKeys.CreateAPIKey(request) -> *promptvmgosdk.CreateAPIKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -4802,14 +4810,14 @@ Generates a new API key for the authenticated user. Requires Pro or Enterprise t
 <dd>
 
 ```go
-request := &sdk.CreateAPIKeyRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.CreateAPIKeyRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
         Name: "Production API Key",
-        Scopes: []sdk.CreateAPIKeyRequestScopesItem{
-            sdk.CreateAPIKeyRequestScopesItemRead,
-            sdk.CreateAPIKeyRequestScopesItemWrite,
+        Scopes: []promptvmgosdk.CreateAPIKeyRequestScopesItem{
+            promptvmgosdk.CreateAPIKeyRequestScopesItemRead,
+            promptvmgosdk.CreateAPIKeyRequestScopesItemWrite,
         },
     }
 client.APIKeys.CreateAPIKey(
@@ -4847,7 +4855,7 @@ client.APIKeys.CreateAPIKey(
 <dl>
 <dd>
 
-**scopes:** `[]*sdk.CreateAPIKeyRequestScopesItem` — Permission scopes for the API key. Requires Pro or Enterprise tier.
+**scopes:** `[]*promptvmgosdk.CreateAPIKeyRequestScopesItem` — Permission scopes for the API key. Requires Pro or Enterprise tier.
     
 </dd>
 </dl>
@@ -4875,7 +4883,7 @@ client.APIKeys.CreateAPIKey(
 </dl>
 </details>
 
-<details><summary><code>client.APIKeys.GetAPIKey(APIKeyID) -> *sdk.GetAPIKeyResponse</code></summary>
+<details><summary><code>client.APIKeys.GetAPIKey(APIKeyID) -> *promptvmgosdk.GetAPIKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -4902,9 +4910,9 @@ Retrieves detailed information about a specific API key. Does not include the se
 <dd>
 
 ```go
-request := &sdk.GetAPIKeyRequest{
+request := &promptvmgosdk.GetAPIKeyRequest{
         APIKeyID: "apiKeyId",
-        OrgID: sdk.String(
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -4947,7 +4955,7 @@ client.APIKeys.GetAPIKey(
 </dl>
 </details>
 
-<details><summary><code>client.APIKeys.RevokeAPIKey(APIKeyID, request) -> *sdk.RevokeAPIKeyResponse</code></summary>
+<details><summary><code>client.APIKeys.RevokeAPIKey(APIKeyID, request) -> *promptvmgosdk.RevokeAPIKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -4974,9 +4982,9 @@ Permanently revokes an API key. Revoked keys cannot be used for API access but r
 <dd>
 
 ```go
-request := &sdk.RevokeAPIKeyRequest{
+request := &promptvmgosdk.RevokeAPIKeyRequest{
         APIKeyID: "apiKeyId",
-        OrgID: sdk.String(
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -5027,7 +5035,7 @@ client.APIKeys.RevokeAPIKey(
 </dl>
 </details>
 
-<details><summary><code>client.APIKeys.UpdateAPIKey(APIKeyID, request) -> *sdk.UpdateAPIKeyResponse</code></summary>
+<details><summary><code>client.APIKeys.UpdateAPIKey(APIKeyID, request) -> *promptvmgosdk.UpdateAPIKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -5054,9 +5062,9 @@ Updates the metadata (name) of an existing API key. Cannot modify scopes after c
 <dd>
 
 ```go
-request := &sdk.UpdateAPIKeyRequest{
+request := &promptvmgosdk.UpdateAPIKeyRequest{
         APIKeyID: "apiKeyId",
-        OrgID: sdk.String(
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -5107,7 +5115,7 @@ client.APIKeys.UpdateAPIKey(
 </dl>
 </details>
 
-<details><summary><code>client.APIKeys.GetAPIKeyUsage(APIKeyID) -> *sdk.GetAPIKeyUsageResponse</code></summary>
+<details><summary><code>client.APIKeys.GetAPIKeyUsage(APIKeyID) -> *promptvmgosdk.GetAPIKeyUsageResponse</code></summary>
 <dl>
 <dd>
 
@@ -5134,9 +5142,9 @@ Retrieves usage statistics for a specific API key including request counts, erro
 <dd>
 
 ```go
-request := &sdk.GetAPIKeyUsageRequest{
+request := &promptvmgosdk.GetAPIKeyUsageRequest{
         APIKeyID: "apiKeyId",
-        OrgID: sdk.String(
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -5167,7 +5175,7 @@ client.APIKeys.GetAPIKeyUsage(
 <dl>
 <dd>
 
-**period:** `*sdk.GetAPIKeyUsageRequestPeriod` — Time period for statistics aggregation
+**period:** `*promptvmgosdk.GetAPIKeyUsageRequestPeriod` — Time period for statistics aggregation
     
 </dd>
 </dl>
@@ -5187,7 +5195,7 @@ client.APIKeys.GetAPIKeyUsage(
 </dl>
 </details>
 
-<details><summary><code>client.APIKeys.RotateAPIKey(APIKeyID, request) -> *sdk.RotateAPIKeyResponse</code></summary>
+<details><summary><code>client.APIKeys.RotateAPIKey(APIKeyID, request) -> *promptvmgosdk.RotateAPIKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -5214,9 +5222,9 @@ Generates a new secret for an existing API key. The public key remains unchanged
 <dd>
 
 ```go
-request := &sdk.RotateAPIKeyRequest{
+request := &promptvmgosdk.RotateAPIKeyRequest{
         APIKeyID: "apiKeyId",
-        OrgID: sdk.String(
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -5268,7 +5276,7 @@ client.APIKeys.RotateAPIKey(
 </details>
 
 ## MarketplaceSocial
-<details><summary><code>client.MarketplaceSocial.FollowACreator(CreatorUserID) -> *sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse</code></summary>
+<details><summary><code>client.MarketplaceSocial.FollowACreator(CreatorUserID) -> *promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse</code></summary>
 <dl>
 <dd>
 
@@ -5281,7 +5289,7 @@ client.APIKeys.RotateAPIKey(
 <dd>
 
 ```go
-request := &sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
+request := &promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
         CreatorUserID: "creatorUserId",
     }
 client.MarketplaceSocial.FollowACreator(
@@ -5328,7 +5336,7 @@ client.MarketplaceSocial.FollowACreator(
 <dd>
 
 ```go
-request := &sdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
+request := &promptvmgosdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest{
         CreatorUserID: "creatorUserId",
     }
 client.MarketplaceSocial.UnfollowACreator(
@@ -5362,7 +5370,7 @@ client.MarketplaceSocial.UnfollowACreator(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceSocial.ListCreatorsIFollow() -> *sdk.GetAPIV1MarketplaceCreatorMeFollowingResponse</code></summary>
+<details><summary><code>client.MarketplaceSocial.ListCreatorsIFollow() -> *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingResponse</code></summary>
 <dl>
 <dd>
 
@@ -5375,7 +5383,7 @@ client.MarketplaceSocial.UnfollowACreator(
 <dd>
 
 ```go
-request := &sdk.GetAPIV1MarketplaceCreatorMeFollowingRequest{}
+request := &promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingRequest{}
 client.MarketplaceSocial.ListCreatorsIFollow(
         context.TODO(),
         request,
@@ -5415,7 +5423,7 @@ client.MarketplaceSocial.ListCreatorsIFollow(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceSocial.FollowedCreatorListingFeed() -> *sdk.GetAPIV1MarketplaceCreatorMeFeedResponse</code></summary>
+<details><summary><code>client.MarketplaceSocial.FollowedCreatorListingFeed() -> *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedResponse</code></summary>
 <dl>
 <dd>
 
@@ -5428,7 +5436,7 @@ client.MarketplaceSocial.ListCreatorsIFollow(
 <dd>
 
 ```go
-request := &sdk.GetAPIV1MarketplaceCreatorMeFeedRequest{}
+request := &promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedRequest{}
 client.MarketplaceSocial.FollowedCreatorListingFeed(
         context.TODO(),
         request,
@@ -5468,7 +5476,7 @@ client.MarketplaceSocial.FollowedCreatorListingFeed(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceSocial.ListACreatorsFollowers(CreatorUserID) -> *sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse</code></summary>
+<details><summary><code>client.MarketplaceSocial.ListACreatorsFollowers(CreatorUserID) -> *promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse</code></summary>
 <dl>
 <dd>
 
@@ -5481,7 +5489,7 @@ client.MarketplaceSocial.FollowedCreatorListingFeed(
 <dd>
 
 ```go
-request := &sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest{
+request := &promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest{
         CreatorUserID: "creatorUserId",
     }
 client.MarketplaceSocial.ListACreatorsFollowers(
@@ -5532,7 +5540,7 @@ client.MarketplaceSocial.ListACreatorsFollowers(
 </details>
 
 ## Marketplace
-<details><summary><code>client.Marketplace.SetListingRecommendedModels(ListingID, request) -> *sdk.SetListingRecommendedModelsResponse</code></summary>
+<details><summary><code>client.Marketplace.SetListingRecommendedModels(ListingID, request) -> *promptvmgosdk.SetListingRecommendedModelsResponse</code></summary>
 <dl>
 <dd>
 
@@ -5559,7 +5567,7 @@ Replace-all, in the order given. Up to 10. Independent of the resource version t
 <dd>
 
 ```go
-request := &sdk.SetListingRecommendedModelsRequest{
+request := &promptvmgosdk.SetListingRecommendedModelsRequest{
         ListingID: "listingId",
         ModelIDs: []string{
             "modelIds",
@@ -5604,7 +5612,7 @@ client.Marketplace.SetListingRecommendedModels(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminListContentTypes() -> *sdk.AdminListContentTypesResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminListContentTypes() -> *promptvmgosdk.AdminListContentTypesResponse</code></summary>
 <dl>
 <dd>
 
@@ -5646,7 +5654,7 @@ client.Marketplace.AdminListContentTypes(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminCreateContentType(request) -> *sdk.AdminCreateContentTypeResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminCreateContentType(request) -> *promptvmgosdk.AdminCreateContentTypeResponse</code></summary>
 <dl>
 <dd>
 
@@ -5673,7 +5681,7 @@ Creates a new marketplace content type. Slug must be unique and match ^[a-z0-9][
 <dd>
 
 ```go
-request := &sdk.AdminCreateContentTypeRequest{
+request := &promptvmgosdk.AdminCreateContentTypeRequest{
         Slug: "slug",
         Label: "label",
         PluralLabel: "pluralLabel",
@@ -5791,7 +5799,7 @@ client.Marketplace.AdminCreateContentType(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminReorderContentTypes(request) -> *sdk.AdminReorderContentTypesResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminReorderContentTypes(request) -> *promptvmgosdk.AdminReorderContentTypesResponse</code></summary>
 <dl>
 <dd>
 
@@ -5818,9 +5826,9 @@ Bulk-updates sort_order for a set of slugs in one transaction. Every slug must e
 <dd>
 
 ```go
-request := &sdk.AdminReorderContentTypesRequest{
-        Items: []*sdk.AdminReorderContentTypesRequestItemsItem{
-            &sdk.AdminReorderContentTypesRequestItemsItem{
+request := &promptvmgosdk.AdminReorderContentTypesRequest{
+        Items: []*promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
+            &promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
                 Slug: "slug",
                 SortOrder: 1,
             },
@@ -5845,7 +5853,7 @@ client.Marketplace.AdminReorderContentTypes(
 <dl>
 <dd>
 
-**items:** `[]*sdk.AdminReorderContentTypesRequestItemsItem` 
+**items:** `[]*promptvmgosdk.AdminReorderContentTypesRequestItemsItem` 
     
 </dd>
 </dl>
@@ -5884,7 +5892,7 @@ Deletes a content type. Allowed ONLY for non-built-in slugs with no dependent co
 <dd>
 
 ```go
-request := &sdk.AdminDeleteContentTypeRequest{
+request := &promptvmgosdk.AdminDeleteContentTypeRequest{
         Slug: "slug",
     }
 client.Marketplace.AdminDeleteContentType(
@@ -5918,7 +5926,7 @@ client.Marketplace.AdminDeleteContentType(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminUpdateContentType(Slug, request) -> *sdk.AdminUpdateContentTypeResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminUpdateContentType(Slug, request) -> *promptvmgosdk.AdminUpdateContentTypeResponse</code></summary>
 <dl>
 <dd>
 
@@ -5945,7 +5953,7 @@ Partially updates a content type's presentation/config fields. The slug is immut
 <dd>
 
 ```go
-request := &sdk.AdminUpdateContentTypeRequest{
+request := &promptvmgosdk.AdminUpdateContentTypeRequest{
         Slug: "slug",
     }
 client.Marketplace.AdminUpdateContentType(
@@ -6059,7 +6067,7 @@ client.Marketplace.AdminUpdateContentType(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminListAiModelProviders() -> *sdk.AdminListAiModelProvidersResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminListAiModelProviders() -> *promptvmgosdk.AdminListAiModelProvidersResponse</code></summary>
 <dl>
 <dd>
 
@@ -6101,7 +6109,7 @@ client.Marketplace.AdminListAiModelProviders(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminCreateAiModelProvider(request) -> *sdk.AdminCreateAiModelProviderResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminCreateAiModelProvider(request) -> *promptvmgosdk.AdminCreateAiModelProviderResponse</code></summary>
 <dl>
 <dd>
 
@@ -6128,7 +6136,7 @@ Logo and website URLs are validated (https, no credentials, no private hosts) an
 <dd>
 
 ```go
-request := &sdk.AdminCreateAiModelProviderRequest{
+request := &promptvmgosdk.AdminCreateAiModelProviderRequest{
         Slug: "slug",
         Name: "name",
     }
@@ -6203,7 +6211,7 @@ client.Marketplace.AdminCreateAiModelProvider(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminReorderAiModelProviders(request) -> *sdk.AdminReorderAiModelProvidersResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminReorderAiModelProviders(request) -> *promptvmgosdk.AdminReorderAiModelProvidersResponse</code></summary>
 <dl>
 <dd>
 
@@ -6216,9 +6224,9 @@ client.Marketplace.AdminCreateAiModelProvider(
 <dd>
 
 ```go
-request := &sdk.AdminReorderAiModelProvidersRequest{
-        Items: []*sdk.AdminReorderAiModelProvidersRequestItemsItem{
-            &sdk.AdminReorderAiModelProvidersRequestItemsItem{
+request := &promptvmgosdk.AdminReorderAiModelProvidersRequest{
+        Items: []*promptvmgosdk.AdminReorderAiModelProvidersRequestItemsItem{
+            &promptvmgosdk.AdminReorderAiModelProvidersRequestItemsItem{
                 ID: "id",
                 SortOrder: 1,
             },
@@ -6243,7 +6251,7 @@ client.Marketplace.AdminReorderAiModelProviders(
 <dl>
 <dd>
 
-**items:** `[]*sdk.AdminReorderAiModelProvidersRequestItemsItem` 
+**items:** `[]*promptvmgosdk.AdminReorderAiModelProvidersRequestItemsItem` 
     
 </dd>
 </dl>
@@ -6282,7 +6290,7 @@ Refused with 409 while the provider still has models. Retire it instead — reti
 <dd>
 
 ```go
-request := &sdk.AdminDeleteAiModelProviderRequest{
+request := &promptvmgosdk.AdminDeleteAiModelProviderRequest{
         Slug: "slug",
     }
 client.Marketplace.AdminDeleteAiModelProvider(
@@ -6316,7 +6324,7 @@ client.Marketplace.AdminDeleteAiModelProvider(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminUpdateAiModelProvider(Slug, request) -> *sdk.AdminUpdateAiModelProviderResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminUpdateAiModelProvider(Slug, request) -> *promptvmgosdk.AdminUpdateAiModelProviderResponse</code></summary>
 <dl>
 <dd>
 
@@ -6343,7 +6351,7 @@ Slug is immutable. Set `isActive: false` to retire a provider.
 <dd>
 
 ```go
-request := &sdk.AdminUpdateAiModelProviderRequest{
+request := &promptvmgosdk.AdminUpdateAiModelProviderRequest{
         Slug: "slug",
     }
 client.Marketplace.AdminUpdateAiModelProvider(
@@ -6417,7 +6425,7 @@ client.Marketplace.AdminUpdateAiModelProvider(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminListAiModels() -> *sdk.AdminListAiModelsResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminListAiModels() -> *promptvmgosdk.AdminListAiModelsResponse</code></summary>
 <dl>
 <dd>
 
@@ -6444,7 +6452,7 @@ All models including retired ones. Optionally scoped to one provider.
 <dd>
 
 ```go
-request := &sdk.AdminListAiModelsRequest{}
+request := &promptvmgosdk.AdminListAiModelsRequest{}
 client.Marketplace.AdminListAiModels(
         context.TODO(),
         request,
@@ -6476,7 +6484,7 @@ client.Marketplace.AdminListAiModels(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminCreateAiModel(request) -> *sdk.AdminCreateAiModelResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminCreateAiModel(request) -> *promptvmgosdk.AdminCreateAiModelResponse</code></summary>
 <dl>
 <dd>
 
@@ -6489,7 +6497,7 @@ client.Marketplace.AdminListAiModels(
 <dd>
 
 ```go
-request := &sdk.AdminCreateAiModelRequest{
+request := &promptvmgosdk.AdminCreateAiModelRequest{
         ProviderID: "providerId",
         Slug: "slug",
         Name: "name",
@@ -6553,7 +6561,7 @@ client.Marketplace.AdminCreateAiModel(
 <dl>
 <dd>
 
-**modality:** `*sdk.AdminCreateAiModelRequestModality` 
+**modality:** `*promptvmgosdk.AdminCreateAiModelRequestModality` 
     
 </dd>
 </dl>
@@ -6581,7 +6589,7 @@ client.Marketplace.AdminCreateAiModel(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminReorderAiModels(request) -> *sdk.AdminReorderAiModelsResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminReorderAiModels(request) -> *promptvmgosdk.AdminReorderAiModelsResponse</code></summary>
 <dl>
 <dd>
 
@@ -6594,9 +6602,9 @@ client.Marketplace.AdminCreateAiModel(
 <dd>
 
 ```go
-request := &sdk.AdminReorderAiModelsRequest{
-        Items: []*sdk.AdminReorderAiModelsRequestItemsItem{
-            &sdk.AdminReorderAiModelsRequestItemsItem{
+request := &promptvmgosdk.AdminReorderAiModelsRequest{
+        Items: []*promptvmgosdk.AdminReorderAiModelsRequestItemsItem{
+            &promptvmgosdk.AdminReorderAiModelsRequestItemsItem{
                 ID: "id",
                 SortOrder: 1,
             },
@@ -6621,7 +6629,7 @@ client.Marketplace.AdminReorderAiModels(
 <dl>
 <dd>
 
-**items:** `[]*sdk.AdminReorderAiModelsRequestItemsItem` 
+**items:** `[]*promptvmgosdk.AdminReorderAiModelsRequestItemsItem` 
     
 </dd>
 </dl>
@@ -6660,7 +6668,7 @@ Refused with 409 while any listing OR version recommends it — a private draft 
 <dd>
 
 ```go
-request := &sdk.AdminDeleteAiModelRequest{
+request := &promptvmgosdk.AdminDeleteAiModelRequest{
         ID: "id",
     }
 client.Marketplace.AdminDeleteAiModel(
@@ -6694,7 +6702,7 @@ client.Marketplace.AdminDeleteAiModel(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminUpdateAiModel(ID, request) -> *sdk.AdminUpdateAiModelResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminUpdateAiModel(ID, request) -> *promptvmgosdk.AdminUpdateAiModelResponse</code></summary>
 <dl>
 <dd>
 
@@ -6721,7 +6729,7 @@ Slug is immutable. Set `isActive: false` to retire — the model disappears from
 <dd>
 
 ```go
-request := &sdk.AdminUpdateAiModelRequest{
+request := &promptvmgosdk.AdminUpdateAiModelRequest{
         ID: "id",
     }
 client.Marketplace.AdminUpdateAiModel(
@@ -6783,7 +6791,7 @@ client.Marketplace.AdminUpdateAiModel(
 <dl>
 <dd>
 
-**modality:** `*sdk.AdminUpdateAiModelRequestModality` 
+**modality:** `*promptvmgosdk.AdminUpdateAiModelRequestModality` 
     
 </dd>
 </dl>
@@ -6811,7 +6819,7 @@ client.Marketplace.AdminUpdateAiModel(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminListCategories() -> *sdk.AdminListCategoriesResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminListCategories() -> *promptvmgosdk.AdminListCategoriesResponse</code></summary>
 <dl>
 <dd>
 
@@ -6853,7 +6861,7 @@ client.Marketplace.AdminListCategories(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminCreateCategory(request) -> *sdk.AdminCreateCategoryResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminCreateCategory(request) -> *promptvmgosdk.AdminCreateCategoryResponse</code></summary>
 <dl>
 <dd>
 
@@ -6866,7 +6874,7 @@ client.Marketplace.AdminListCategories(
 <dd>
 
 ```go
-request := &sdk.AdminCreateCategoryRequest{
+request := &promptvmgosdk.AdminCreateCategoryRequest{
         Name: "name",
         Slug: "slug",
     }
@@ -6941,7 +6949,7 @@ client.Marketplace.AdminCreateCategory(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminReorderCategories(request) -> *sdk.AdminReorderCategoriesResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminReorderCategories(request) -> *promptvmgosdk.AdminReorderCategoriesResponse</code></summary>
 <dl>
 <dd>
 
@@ -6954,9 +6962,9 @@ client.Marketplace.AdminCreateCategory(
 <dd>
 
 ```go
-request := &sdk.AdminReorderCategoriesRequest{
-        Items: []*sdk.AdminReorderCategoriesRequestItemsItem{
-            &sdk.AdminReorderCategoriesRequestItemsItem{
+request := &promptvmgosdk.AdminReorderCategoriesRequest{
+        Items: []*promptvmgosdk.AdminReorderCategoriesRequestItemsItem{
+            &promptvmgosdk.AdminReorderCategoriesRequestItemsItem{
                 ID: "id",
                 DisplayOrder: 1,
             },
@@ -6981,7 +6989,7 @@ client.Marketplace.AdminReorderCategories(
 <dl>
 <dd>
 
-**items:** `[]*sdk.AdminReorderCategoriesRequestItemsItem` 
+**items:** `[]*promptvmgosdk.AdminReorderCategoriesRequestItemsItem` 
     
 </dd>
 </dl>
@@ -7020,7 +7028,7 @@ Refused with 409 while the category has subcategories or listings. The join is O
 <dd>
 
 ```go
-request := &sdk.AdminDeleteCategoryRequest{
+request := &promptvmgosdk.AdminDeleteCategoryRequest{
         ID: "id",
     }
 client.Marketplace.AdminDeleteCategory(
@@ -7054,7 +7062,7 @@ client.Marketplace.AdminDeleteCategory(
 </dl>
 </details>
 
-<details><summary><code>client.Marketplace.AdminUpdateCategory(ID, request) -> *sdk.AdminUpdateCategoryResponse</code></summary>
+<details><summary><code>client.Marketplace.AdminUpdateCategory(ID, request) -> *promptvmgosdk.AdminUpdateCategoryResponse</code></summary>
 <dl>
 <dd>
 
@@ -7081,7 +7089,7 @@ Slug is immutable — it is the stable half of a shared browse link. A parent th
 <dd>
 
 ```go
-request := &sdk.AdminUpdateCategoryRequest{
+request := &promptvmgosdk.AdminUpdateCategoryRequest{
         ID: "id",
     }
 client.Marketplace.AdminUpdateCategory(
@@ -7156,7 +7164,7 @@ client.Marketplace.AdminUpdateCategory(
 </details>
 
 ## Marketplace - Creator Dashboard
-<details><summary><code>client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings() -> *sdk.ListMarketplaceCreatorListingsResponse</code></summary>
+<details><summary><code>client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings() -> *promptvmgosdk.ListMarketplaceCreatorListingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -7169,7 +7177,7 @@ client.Marketplace.AdminUpdateCategory(
 <dd>
 
 ```go
-request := &sdk.ListMarketplaceCreatorListingsRequest{}
+request := &promptvmgosdk.ListMarketplaceCreatorListingsRequest{}
 client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings(
         context.TODO(),
         request,
@@ -7189,7 +7197,7 @@ client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings(
 <dl>
 <dd>
 
-**status:** `*sdk.ListMarketplaceCreatorListingsRequestStatus` 
+**status:** `*promptvmgosdk.ListMarketplaceCreatorListingsRequestStatus` 
     
 </dd>
 </dl>
@@ -7217,7 +7225,7 @@ client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceCreatorDashboard.ListMarketplaceCreatorSubscribers() -> *sdk.ListMarketplaceCreatorSubscribersResponse</code></summary>
+<details><summary><code>client.MarketplaceCreatorDashboard.ListMarketplaceCreatorSubscribers() -> *promptvmgosdk.ListMarketplaceCreatorSubscribersResponse</code></summary>
 <dl>
 <dd>
 
@@ -7230,7 +7238,7 @@ client.MarketplaceCreatorDashboard.ListMarketplaceCreatorListings(
 <dd>
 
 ```go
-request := &sdk.ListMarketplaceCreatorSubscribersRequest{}
+request := &promptvmgosdk.ListMarketplaceCreatorSubscribersRequest{}
 client.MarketplaceCreatorDashboard.ListMarketplaceCreatorSubscribers(
         context.TODO(),
         request,
@@ -7271,7 +7279,7 @@ client.MarketplaceCreatorDashboard.ListMarketplaceCreatorSubscribers(
 </details>
 
 ## Marketplace - Subscriptions
-<details><summary><code>client.MarketplaceSubscriptions.SubscribeToMarketplaceCreator(CreatorUserID) -> *sdk.SubscribeToMarketplaceCreatorResponse</code></summary>
+<details><summary><code>client.MarketplaceSubscriptions.SubscribeToMarketplaceCreator(CreatorUserID) -> *promptvmgosdk.SubscribeToMarketplaceCreatorResponse</code></summary>
 <dl>
 <dd>
 
@@ -7284,7 +7292,7 @@ client.MarketplaceCreatorDashboard.ListMarketplaceCreatorSubscribers(
 <dd>
 
 ```go
-request := &sdk.SubscribeToMarketplaceCreatorRequest{
+request := &promptvmgosdk.SubscribeToMarketplaceCreatorRequest{
         CreatorUserID: "creatorUserId",
     }
 client.MarketplaceSubscriptions.SubscribeToMarketplaceCreator(
@@ -7331,7 +7339,7 @@ client.MarketplaceSubscriptions.SubscribeToMarketplaceCreator(
 <dd>
 
 ```go
-request := &sdk.UnsubscribeFromMarketplaceCreatorRequest{
+request := &promptvmgosdk.UnsubscribeFromMarketplaceCreatorRequest{
         CreatorUserID: "creatorUserId",
     }
 client.MarketplaceSubscriptions.UnsubscribeFromMarketplaceCreator(
@@ -7366,7 +7374,7 @@ client.MarketplaceSubscriptions.UnsubscribeFromMarketplaceCreator(
 </details>
 
 ## MarketplaceRatings
-<details><summary><code>client.MarketplaceRatings.ListRatingsForAListing(ListingID) -> *sdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse</code></summary>
+<details><summary><code>client.MarketplaceRatings.ListRatingsForAListing(ListingID) -> *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -7379,7 +7387,7 @@ client.MarketplaceSubscriptions.UnsubscribeFromMarketplaceCreator(
 <dd>
 
 ```go
-request := &sdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest{
+request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest{
         ListingID: "listingId",
     }
 client.MarketplaceRatings.ListRatingsForAListing(
@@ -7425,7 +7433,7 @@ client.MarketplaceRatings.ListRatingsForAListing(
 <dl>
 <dd>
 
-**sort:** `*sdk.GetAPIV1MarketplaceListingsListingIDRatingsRequestSort` 
+**sort:** `*promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsRequestSort` 
     
 </dd>
 </dl>
@@ -7437,7 +7445,7 @@ client.MarketplaceRatings.ListRatingsForAListing(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceRatings.CreateARatingOnAPurchasedListing(ListingID, request) -> *sdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse</code></summary>
+<details><summary><code>client.MarketplaceRatings.CreateARatingOnAPurchasedListing(ListingID, request) -> *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -7450,7 +7458,7 @@ client.MarketplaceRatings.ListRatingsForAListing(
 <dd>
 
 ```go
-request := &sdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest{
+request := &promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest{
         ListingID: "listingId",
         Score: 1,
     }
@@ -7501,7 +7509,7 @@ client.MarketplaceRatings.CreateARatingOnAPurchasedListing(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceRatings.GetTheCallersRatingOnAListing(ListingID) -> *sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse</code></summary>
+<details><summary><code>client.MarketplaceRatings.GetTheCallersRatingOnAListing(ListingID) -> *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeResponse</code></summary>
 <dl>
 <dd>
 
@@ -7514,7 +7522,7 @@ client.MarketplaceRatings.CreateARatingOnAPurchasedListing(
 <dd>
 
 ```go
-request := &sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest{
+request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest{
         ListingID: "listingId",
     }
 client.MarketplaceRatings.GetTheCallersRatingOnAListing(
@@ -7561,7 +7569,7 @@ client.MarketplaceRatings.GetTheCallersRatingOnAListing(
 <dd>
 
 ```go
-request := &sdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest{
+request := &promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest{
         RatingID: "ratingId",
     }
 client.MarketplaceRatings.DeleteMyRating(
@@ -7595,7 +7603,7 @@ client.MarketplaceRatings.DeleteMyRating(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceRatings.UpdateMyRating(RatingID, request) -> *sdk.PatchAPIV1MarketplaceRatingsRatingIDResponse</code></summary>
+<details><summary><code>client.MarketplaceRatings.UpdateMyRating(RatingID, request) -> *promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDResponse</code></summary>
 <dl>
 <dd>
 
@@ -7608,7 +7616,7 @@ client.MarketplaceRatings.DeleteMyRating(
 <dd>
 
 ```go
-request := &sdk.PatchAPIV1MarketplaceRatingsRatingIDRequest{
+request := &promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDRequest{
         RatingID: "ratingId",
     }
 client.MarketplaceRatings.UpdateMyRating(
@@ -7658,7 +7666,7 @@ client.MarketplaceRatings.UpdateMyRating(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(RatingID, request) -> *sdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse</code></summary>
+<details><summary><code>client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(RatingID, request) -> *promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteResponse</code></summary>
 <dl>
 <dd>
 
@@ -7671,9 +7679,9 @@ client.MarketplaceRatings.UpdateMyRating(
 <dd>
 
 ```go
-request := &sdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest{
+request := &promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest{
         RatingID: "ratingId",
-        VoteType: sdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteTypeUpvote,
+        VoteType: promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteTypeUpvote,
     }
 client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(
         context.TODO(),
@@ -7702,7 +7710,7 @@ client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(
 <dl>
 <dd>
 
-**voteType:** `*sdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteType` 
+**voteType:** `*promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteType` 
     
 </dd>
 </dl>
@@ -7727,7 +7735,7 @@ client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(
 <dd>
 
 ```go
-request := &sdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest{
+request := &promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest{
         RatingID: "ratingId",
     }
 client.MarketplaceRatings.RemoveMyVoteFromARating(
@@ -7762,7 +7770,7 @@ client.MarketplaceRatings.RemoveMyVoteFromARating(
 </details>
 
 ## MarketplaceComments
-<details><summary><code>client.MarketplaceComments.ListThreadedCommentsOnAListing(ListingID) -> *sdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse</code></summary>
+<details><summary><code>client.MarketplaceComments.ListThreadedCommentsOnAListing(ListingID) -> *promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -7775,7 +7783,7 @@ client.MarketplaceRatings.RemoveMyVoteFromARating(
 <dd>
 
 ```go
-request := &sdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest{
+request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest{
         ListingID: "listingId",
     }
 client.MarketplaceComments.ListThreadedCommentsOnAListing(
@@ -7825,7 +7833,7 @@ client.MarketplaceComments.ListThreadedCommentsOnAListing(
 </dl>
 </details>
 
-<details><summary><code>client.MarketplaceComments.CreateACommentOrReplyOnAListing(ListingID, request) -> *sdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse</code></summary>
+<details><summary><code>client.MarketplaceComments.CreateACommentOrReplyOnAListing(ListingID, request) -> *promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -7838,7 +7846,7 @@ client.MarketplaceComments.ListThreadedCommentsOnAListing(
 <dd>
 
 ```go
-request := &sdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest{
+request := &promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest{
         ListingID: "listingId",
         Content: "content",
     }
@@ -7902,7 +7910,7 @@ client.MarketplaceComments.CreateACommentOrReplyOnAListing(
 <dd>
 
 ```go
-request := &sdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest{
+request := &promptvmgosdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest{
         CommentID: "commentId",
     }
 client.MarketplaceComments.SoftDeleteMyComment(
@@ -7937,7 +7945,7 @@ client.MarketplaceComments.SoftDeleteMyComment(
 </details>
 
 ## Onboarding
-<details><summary><code>client.Onboarding.GetOnboardingStatus() -> *sdk.GetOnboardingStatusResponse</code></summary>
+<details><summary><code>client.Onboarding.GetOnboardingStatus() -> *promptvmgosdk.GetOnboardingStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -7979,7 +7987,7 @@ client.Onboarding.GetOnboardingStatus(
 </dl>
 </details>
 
-<details><summary><code>client.Onboarding.UpdateOnboardingStep(request) -> *sdk.UpdateOnboardingStepResponse</code></summary>
+<details><summary><code>client.Onboarding.UpdateOnboardingStep(request) -> *promptvmgosdk.UpdateOnboardingStepResponse</code></summary>
 <dl>
 <dd>
 
@@ -8006,8 +8014,8 @@ Resolve or unresolve an onboarding checklist step.
 <dd>
 
 ```go
-request := &sdk.UpdateOnboardingStepRequest{
-        Step: sdk.UpdateOnboardingStepRequestStepFirstPrompt,
+request := &promptvmgosdk.UpdateOnboardingStepRequest{
+        Step: promptvmgosdk.UpdateOnboardingStepRequestStepFirstPrompt,
         Completed: true,
     }
 client.Onboarding.UpdateOnboardingStep(
@@ -8029,7 +8037,7 @@ client.Onboarding.UpdateOnboardingStep(
 <dl>
 <dd>
 
-**step:** `*sdk.UpdateOnboardingStepRequestStep` 
+**step:** `*promptvmgosdk.UpdateOnboardingStepRequestStep` 
     
 </dd>
 </dl>
@@ -8049,7 +8057,7 @@ client.Onboarding.UpdateOnboardingStep(
 </dl>
 </details>
 
-<details><summary><code>client.Onboarding.DismissOnboarding() -> *sdk.DismissOnboardingResponse</code></summary>
+<details><summary><code>client.Onboarding.DismissOnboarding() -> *promptvmgosdk.DismissOnboardingResponse</code></summary>
 <dl>
 <dd>
 
@@ -8135,7 +8143,7 @@ client.Users.DeleteAccount(
 </details>
 
 ## Settings
-<details><summary><code>client.Settings.GetSettingsOverview() -> *sdk.GetSettingsOverviewResponse</code></summary>
+<details><summary><code>client.Settings.GetSettingsOverview() -> *promptvmgosdk.GetSettingsOverviewResponse</code></summary>
 <dl>
 <dd>
 
@@ -8162,8 +8170,8 @@ Returns workspace + API-key counts, derived admin-task status, and a top-5 recen
 <dd>
 
 ```go
-request := &sdk.GetSettingsOverviewRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.GetSettingsOverviewRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -8198,7 +8206,7 @@ client.Settings.GetSettingsOverview(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.GetAdminTasks() -> *sdk.GetAdminTasksResponse</code></summary>
+<details><summary><code>client.Settings.GetAdminTasks() -> *promptvmgosdk.GetAdminTasksResponse</code></summary>
 <dl>
 <dd>
 
@@ -8225,8 +8233,8 @@ Returns the unified admin-task list (billing method on file, first API key creat
 <dd>
 
 ```go
-request := &sdk.GetAdminTasksRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.GetAdminTasksRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -8261,7 +8269,7 @@ client.Settings.GetAdminTasks(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.ListAuditLogs() -> *sdk.ListAuditLogsResponse</code></summary>
+<details><summary><code>client.Settings.ListAuditLogs() -> *promptvmgosdk.ListAuditLogsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8288,8 +8296,8 @@ Server-scoped by role: owners/admins see all org events; members/viewers see onl
 <dd>
 
 ```go
-request := &sdk.ListAuditLogsRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.ListAuditLogsRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -8340,7 +8348,7 @@ client.Settings.ListAuditLogs(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.ListOrgTags() -> *sdk.ListOrgTagsResponse</code></summary>
+<details><summary><code>client.Settings.ListOrgTags() -> *promptvmgosdk.ListOrgTagsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8353,8 +8361,8 @@ client.Settings.ListAuditLogs(
 <dd>
 
 ```go
-request := &sdk.ListOrgTagsRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.ListOrgTagsRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -8389,7 +8397,7 @@ client.Settings.ListOrgTags(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.CreateOrgTag(request) -> *sdk.CreateOrgTagResponse</code></summary>
+<details><summary><code>client.Settings.CreateOrgTag(request) -> *promptvmgosdk.CreateOrgTagResponse</code></summary>
 <dl>
 <dd>
 
@@ -8402,12 +8410,12 @@ client.Settings.ListOrgTags(
 <dd>
 
 ```go
-request := &sdk.CreateOrgTagRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.CreateOrgTagRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
         Name: "name",
-        Category: sdk.CreateOrgTagRequestCategoryEngineering,
+        Category: promptvmgosdk.CreateOrgTagRequestCategoryEngineering,
         Protected: true,
     }
 client.Settings.CreateOrgTag(
@@ -8453,7 +8461,7 @@ client.Settings.CreateOrgTag(
 <dl>
 <dd>
 
-**category:** `*sdk.CreateOrgTagRequestCategory` 
+**category:** `*promptvmgosdk.CreateOrgTagRequestCategory` 
     
 </dd>
 </dl>
@@ -8486,9 +8494,9 @@ client.Settings.CreateOrgTag(
 <dd>
 
 ```go
-request := &sdk.DeleteOrgTagRequest{
+request := &promptvmgosdk.DeleteOrgTagRequest{
         ID: "id",
-        OrgID: sdk.String(
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -8531,7 +8539,7 @@ client.Settings.DeleteOrgTag(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.UpdateOrgTag(ID, request) -> *sdk.UpdateOrgTagResponse</code></summary>
+<details><summary><code>client.Settings.UpdateOrgTag(ID, request) -> *promptvmgosdk.UpdateOrgTagResponse</code></summary>
 <dl>
 <dd>
 
@@ -8544,9 +8552,9 @@ client.Settings.DeleteOrgTag(
 <dd>
 
 ```go
-request := &sdk.UpdateOrgTagRequest{
+request := &promptvmgosdk.UpdateOrgTagRequest{
         ID: "id",
-        OrgID: sdk.String(
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -8601,7 +8609,7 @@ client.Settings.UpdateOrgTag(
 <dl>
 <dd>
 
-**category:** `*sdk.UpdateOrgTagRequestCategory` 
+**category:** `*promptvmgosdk.UpdateOrgTagRequestCategory` 
     
 </dd>
 </dl>
@@ -8621,7 +8629,7 @@ client.Settings.UpdateOrgTag(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.GetSecurityStatus() -> *sdk.GetSecurityStatusResponse</code></summary>
+<details><summary><code>client.Settings.GetSecurityStatus() -> *promptvmgosdk.GetSecurityStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -8634,8 +8642,8 @@ client.Settings.UpdateOrgTag(
 <dd>
 
 ```go
-request := &sdk.GetSecurityStatusRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.GetSecurityStatusRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
     }
@@ -8670,7 +8678,7 @@ client.Settings.GetSecurityStatus(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.SetupTotp() -> *sdk.SetupTotpResponse</code></summary>
+<details><summary><code>client.Settings.SetupTotp() -> *promptvmgosdk.SetupTotpResponse</code></summary>
 <dl>
 <dd>
 
@@ -8698,7 +8706,7 @@ client.Settings.SetupTotp(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.VerifyTotp(request) -> *sdk.VerifyTotpResponse</code></summary>
+<details><summary><code>client.Settings.VerifyTotp(request) -> *promptvmgosdk.VerifyTotpResponse</code></summary>
 <dl>
 <dd>
 
@@ -8711,7 +8719,7 @@ client.Settings.SetupTotp(
 <dd>
 
 ```go
-request := &sdk.VerifyTotpRequest{
+request := &promptvmgosdk.VerifyTotpRequest{
         Code: "code",
     }
 client.Settings.VerifyTotp(
@@ -8745,7 +8753,7 @@ client.Settings.VerifyTotp(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.DisableTotp(request) -> *sdk.DisableTotpResponse</code></summary>
+<details><summary><code>client.Settings.DisableTotp(request) -> *promptvmgosdk.DisableTotpResponse</code></summary>
 <dl>
 <dd>
 
@@ -8758,7 +8766,7 @@ client.Settings.VerifyTotp(
 <dd>
 
 ```go
-request := &sdk.DisableTotpRequest{
+request := &promptvmgosdk.DisableTotpRequest{
         Code: "code",
     }
 client.Settings.DisableTotp(
@@ -8792,7 +8800,7 @@ client.Settings.DisableTotp(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.RegenerateRecoveryCodes(request) -> *sdk.RegenerateRecoveryCodesResponse</code></summary>
+<details><summary><code>client.Settings.RegenerateRecoveryCodes(request) -> *promptvmgosdk.RegenerateRecoveryCodesResponse</code></summary>
 <dl>
 <dd>
 
@@ -8805,7 +8813,7 @@ client.Settings.DisableTotp(
 <dd>
 
 ```go
-request := &sdk.RegenerateRecoveryCodesRequest{
+request := &promptvmgosdk.RegenerateRecoveryCodesRequest{
         Code: "code",
     }
 client.Settings.RegenerateRecoveryCodes(
@@ -8839,7 +8847,7 @@ client.Settings.RegenerateRecoveryCodes(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.ChangePassword(request) -> *sdk.ChangePasswordResponse</code></summary>
+<details><summary><code>client.Settings.ChangePassword(request) -> *promptvmgosdk.ChangePasswordResponse</code></summary>
 <dl>
 <dd>
 
@@ -8852,7 +8860,7 @@ client.Settings.RegenerateRecoveryCodes(
 <dd>
 
 ```go
-request := &sdk.ChangePasswordRequest{
+request := &promptvmgosdk.ChangePasswordRequest{
         CurrentPassword: "currentPassword",
         NewPassword: "newPassword",
     }
@@ -8895,7 +8903,7 @@ client.Settings.ChangePassword(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.UpdateOrgMfaPolicy(request) -> *sdk.UpdateOrgMfaPolicyResponse</code></summary>
+<details><summary><code>client.Settings.UpdateOrgMfaPolicy(request) -> *promptvmgosdk.UpdateOrgMfaPolicyResponse</code></summary>
 <dl>
 <dd>
 
@@ -8908,8 +8916,8 @@ client.Settings.ChangePassword(
 <dd>
 
 ```go
-request := &sdk.UpdateOrgMfaPolicyRequest{
-        OrgID: sdk.String(
+request := &promptvmgosdk.UpdateOrgMfaPolicyRequest{
+        OrgID: promptvmgosdk.String(
             "018e4a3b-0000-0000-0000-000000000001",
         ),
         RequireMfa: true,
@@ -8953,7 +8961,7 @@ client.Settings.UpdateOrgMfaPolicy(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.SendEmailOtp() -> *sdk.SendEmailOtpResponse</code></summary>
+<details><summary><code>client.Settings.SendEmailOtp() -> *promptvmgosdk.SendEmailOtpResponse</code></summary>
 <dl>
 <dd>
 
@@ -8981,7 +8989,7 @@ client.Settings.SendEmailOtp(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.VerifyEmailOtp(request) -> *sdk.VerifyEmailOtpResponse</code></summary>
+<details><summary><code>client.Settings.VerifyEmailOtp(request) -> *promptvmgosdk.VerifyEmailOtpResponse</code></summary>
 <dl>
 <dd>
 
@@ -8994,7 +9002,7 @@ client.Settings.SendEmailOtp(
 <dd>
 
 ```go
-request := &sdk.VerifyEmailOtpRequest{
+request := &promptvmgosdk.VerifyEmailOtpRequest{
         Code: "code",
     }
 client.Settings.VerifyEmailOtp(
@@ -9028,7 +9036,7 @@ client.Settings.VerifyEmailOtp(
 </dl>
 </details>
 
-<details><summary><code>client.Settings.DisableEmailOtp(request) -> *sdk.DisableEmailOtpResponse</code></summary>
+<details><summary><code>client.Settings.DisableEmailOtp(request) -> *promptvmgosdk.DisableEmailOtpResponse</code></summary>
 <dl>
 <dd>
 
@@ -9041,7 +9049,7 @@ client.Settings.VerifyEmailOtp(
 <dd>
 
 ```go
-request := &sdk.DisableEmailOtpRequest{
+request := &promptvmgosdk.DisableEmailOtpRequest{
         Code: "code",
     }
 client.Settings.DisableEmailOtp(
@@ -9076,7 +9084,7 @@ client.Settings.DisableEmailOtp(
 </details>
 
 ## Organizations
-<details><summary><code>client.Organizations.ListOrganizations() -> *sdk.ListOrganizationsResponse</code></summary>
+<details><summary><code>client.Organizations.ListOrganizations() -> *promptvmgosdk.ListOrganizationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -9117,7 +9125,7 @@ client.Organizations.ListOrganizations(
 <dd>
 
 ```go
-request := &sdk.CreateOrganizationRequest{
+request := &promptvmgosdk.CreateOrganizationRequest{
         Name: "name",
     }
 client.Organizations.CreateOrganization(
@@ -9178,7 +9186,7 @@ Soft-deletes the organization and cascades: workspaces and files are soft-delete
 <dd>
 
 ```go
-request := &sdk.DeleteOrganizationRequest{
+request := &promptvmgosdk.DeleteOrganizationRequest{
         OrgID: "orgId",
     }
 client.Organizations.DeleteOrganization(
@@ -9212,7 +9220,7 @@ client.Organizations.DeleteOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organizations.AcceptOrganizationInvitation(Token) -> *sdk.AcceptOrganizationInvitationResponse</code></summary>
+<details><summary><code>client.Organizations.AcceptOrganizationInvitation(Token) -> *promptvmgosdk.AcceptOrganizationInvitationResponse</code></summary>
 <dl>
 <dd>
 
@@ -9225,7 +9233,7 @@ client.Organizations.DeleteOrganization(
 <dd>
 
 ```go
-request := &sdk.AcceptOrganizationInvitationRequest{
+request := &promptvmgosdk.AcceptOrganizationInvitationRequest{
         Token: "token",
     }
 client.Organizations.AcceptOrganizationInvitation(
@@ -9259,7 +9267,7 @@ client.Organizations.AcceptOrganizationInvitation(
 </dl>
 </details>
 
-<details><summary><code>client.Organizations.ListOrganizationWorkspaces(OrgID) -> *sdk.ListOrganizationWorkspacesResponse</code></summary>
+<details><summary><code>client.Organizations.ListOrganizationWorkspaces(OrgID) -> *promptvmgosdk.ListOrganizationWorkspacesResponse</code></summary>
 <dl>
 <dd>
 
@@ -9286,7 +9294,7 @@ Returns all workspaces in the org visible to the caller. Org owners and admins s
 <dd>
 
 ```go
-request := &sdk.ListOrganizationWorkspacesRequest{
+request := &promptvmgosdk.ListOrganizationWorkspacesRequest{
         OrgID: "orgId",
     }
 client.Organizations.ListOrganizationWorkspaces(
@@ -9333,7 +9341,7 @@ client.Organizations.ListOrganizationWorkspaces(
 <dd>
 
 ```go
-request := &sdk.ListOrganizationMembersRequest{
+request := &promptvmgosdk.ListOrganizationMembersRequest{
         OrgID: "orgId",
     }
 client.Organizations.ListOrganizationMembers(
@@ -9387,7 +9395,7 @@ client.Organizations.ListOrganizationMembers(
 <dl>
 <dd>
 
-**role:** `*sdk.ListOrganizationMembersRequestRole` 
+**role:** `*promptvmgosdk.ListOrganizationMembersRequestRole` 
     
 </dd>
 </dl>
@@ -9395,7 +9403,7 @@ client.Organizations.ListOrganizationMembers(
 <dl>
 <dd>
 
-**status:** `*sdk.ListOrganizationMembersRequestStatus` 
+**status:** `*promptvmgosdk.ListOrganizationMembersRequestStatus` 
     
 </dd>
 </dl>
@@ -9420,7 +9428,7 @@ client.Organizations.ListOrganizationMembers(
 <dd>
 
 ```go
-request := &sdk.GetOrganizationPermissionsRequest{
+request := &promptvmgosdk.GetOrganizationPermissionsRequest{
         OrgID: "orgId",
     }
 client.Organizations.GetOrganizationPermissions(
@@ -9467,12 +9475,12 @@ client.Organizations.GetOrganizationPermissions(
 <dd>
 
 ```go
-request := &sdk.UpdateOrganizationPermissionsRequest{
+request := &promptvmgosdk.UpdateOrganizationPermissionsRequest{
         OrgID: "orgId",
-        Updates: []*sdk.UpdateOrganizationPermissionsRequestUpdatesItem{
-            &sdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+        Updates: []*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
+            &promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem{
                 Permission: "permission",
-                Role: sdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
+                Role: promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItemRoleOwner,
                 Enabled: true,
             },
         },
@@ -9504,7 +9512,7 @@ client.Organizations.UpdateOrganizationPermissions(
 <dl>
 <dd>
 
-**updates:** `[]*sdk.UpdateOrganizationPermissionsRequestUpdatesItem` 
+**updates:** `[]*promptvmgosdk.UpdateOrganizationPermissionsRequestUpdatesItem` 
     
 </dd>
 </dl>
@@ -9529,7 +9537,7 @@ client.Organizations.UpdateOrganizationPermissions(
 <dd>
 
 ```go
-request := &sdk.ListOrganizationRolesRequest{
+request := &promptvmgosdk.ListOrganizationRolesRequest{
         OrgID: "orgId",
     }
 client.Organizations.ListOrganizationRoles(
@@ -9576,10 +9584,10 @@ client.Organizations.ListOrganizationRoles(
 <dd>
 
 ```go
-request := &sdk.CreateOrganizationRoleRequest{
+request := &promptvmgosdk.CreateOrganizationRoleRequest{
         OrgID: "orgId",
         Name: "name",
-        BaseRole: sdk.CreateOrganizationRoleRequestBaseRoleOwner,
+        BaseRole: promptvmgosdk.CreateOrganizationRoleRequestBaseRoleOwner,
     }
 client.Organizations.CreateOrganizationRole(
         context.TODO(),
@@ -9616,7 +9624,7 @@ client.Organizations.CreateOrganizationRole(
 <dl>
 <dd>
 
-**baseRole:** `*sdk.CreateOrganizationRoleRequestBaseRole` 
+**baseRole:** `*promptvmgosdk.CreateOrganizationRoleRequestBaseRole` 
     
 </dd>
 </dl>
@@ -9657,7 +9665,7 @@ client.Organizations.CreateOrganizationRole(
 <dd>
 
 ```go
-request := &sdk.RemoveOrganizationMemberRequest{
+request := &promptvmgosdk.RemoveOrganizationMemberRequest{
         OrgID: "orgId",
         MemberID: "memberId",
     }
@@ -9713,10 +9721,10 @@ client.Organizations.RemoveOrganizationMember(
 <dd>
 
 ```go
-request := &sdk.UpdateOrganizationMemberRoleRequest{
+request := &promptvmgosdk.UpdateOrganizationMemberRoleRequest{
         OrgID: "orgId",
         MemberID: "memberId",
-        Role: sdk.UpdateOrganizationMemberRoleRequestRoleOwner,
+        Role: promptvmgosdk.UpdateOrganizationMemberRoleRequestRoleOwner,
     }
 client.Organizations.UpdateOrganizationMemberRole(
         context.TODO(),
@@ -9753,7 +9761,7 @@ client.Organizations.UpdateOrganizationMemberRole(
 <dl>
 <dd>
 
-**role:** `*sdk.UpdateOrganizationMemberRoleRequestRole` 
+**role:** `*promptvmgosdk.UpdateOrganizationMemberRoleRequestRole` 
     
 </dd>
 </dl>
@@ -9786,7 +9794,7 @@ client.Organizations.UpdateOrganizationMemberRole(
 <dd>
 
 ```go
-request := &sdk.ListOrganizationInvitationsRequest{
+request := &promptvmgosdk.ListOrganizationInvitationsRequest{
         OrgID: "orgId",
     }
 client.Organizations.ListOrganizationInvitations(
@@ -9816,7 +9824,7 @@ client.Organizations.ListOrganizationInvitations(
 <dl>
 <dd>
 
-**status:** `*sdk.ListOrganizationInvitationsRequestStatus` 
+**status:** `*promptvmgosdk.ListOrganizationInvitationsRequestStatus` 
     
 </dd>
 </dl>
@@ -9841,10 +9849,10 @@ client.Organizations.ListOrganizationInvitations(
 <dd>
 
 ```go
-request := &sdk.CreateOrganizationInvitationRequest{
+request := &promptvmgosdk.CreateOrganizationInvitationRequest{
         OrgID: "orgId",
         Email: "email",
-        Role: sdk.CreateOrganizationInvitationRequestRoleOwner,
+        Role: promptvmgosdk.CreateOrganizationInvitationRequestRoleOwner,
     }
 client.Organizations.CreateOrganizationInvitation(
         context.TODO(),
@@ -9881,7 +9889,7 @@ client.Organizations.CreateOrganizationInvitation(
 <dl>
 <dd>
 
-**role:** `*sdk.CreateOrganizationInvitationRequestRole` 
+**role:** `*promptvmgosdk.CreateOrganizationInvitationRequestRole` 
     
 </dd>
 </dl>
@@ -9906,7 +9914,7 @@ client.Organizations.CreateOrganizationInvitation(
 <dd>
 
 ```go
-request := &sdk.RevokeOrganizationInvitationRequest{
+request := &promptvmgosdk.RevokeOrganizationInvitationRequest{
         OrgID: "orgId",
         InvitationID: "invitationId",
     }
@@ -9962,7 +9970,7 @@ client.Organizations.RevokeOrganizationInvitation(
 <dd>
 
 ```go
-request := &sdk.ResendOrganizationInvitationRequest{
+request := &promptvmgosdk.ResendOrganizationInvitationRequest{
         OrgID: "orgId",
         InvitationID: "invitationId",
     }
@@ -10018,7 +10026,7 @@ client.Organizations.ResendOrganizationInvitation(
 <dd>
 
 ```go
-request := &sdk.DeleteOrganizationRoleRequest{
+request := &promptvmgosdk.DeleteOrganizationRoleRequest{
         OrgID: "orgId",
         RoleID: "roleId",
     }
@@ -10074,7 +10082,7 @@ client.Organizations.DeleteOrganizationRole(
 <dd>
 
 ```go
-request := &sdk.UpdateOrganizationRoleRequest{
+request := &promptvmgosdk.UpdateOrganizationRoleRequest{
         OrgID: "orgId",
         RoleID: "roleId",
     }
@@ -10121,7 +10129,7 @@ client.Organizations.UpdateOrganizationRole(
 <dl>
 <dd>
 
-**baseRole:** `*sdk.UpdateOrganizationRoleRequestBaseRole` 
+**baseRole:** `*promptvmgosdk.UpdateOrganizationRoleRequestBaseRole` 
     
 </dd>
 </dl>
@@ -10150,7 +10158,7 @@ client.Organizations.UpdateOrganizationRole(
 </details>
 
 ## Prompts
-<details><summary><code>client.Prompts.ListPrompts() -> *sdk.ListPromptsResponse</code></summary>
+<details><summary><code>client.Prompts.ListPrompts() -> *promptvmgosdk.ListPromptsResponse</code></summary>
 <dl>
 <dd>
 
@@ -10177,7 +10185,7 @@ Returns a paginated list of prompts in a workspace.
 <dd>
 
 ```go
-request := &sdk.ListPromptsRequest{
+request := &promptvmgosdk.ListPromptsRequest{
         WorkspaceID: "workspaceId",
     }
 client.Prompts.ListPrompts(
@@ -10223,7 +10231,7 @@ client.Prompts.ListPrompts(
 <dl>
 <dd>
 
-**status:** `*sdk.ListPromptsRequestStatus` 
+**status:** `*promptvmgosdk.ListPromptsRequestStatus` 
     
 </dd>
 </dl>
@@ -10231,7 +10239,7 @@ client.Prompts.ListPrompts(
 <dl>
 <dd>
 
-**kind:** `*sdk.ListPromptsRequestKind` 
+**kind:** `*promptvmgosdk.ListPromptsRequestKind` 
     
 </dd>
 </dl>
@@ -10251,7 +10259,7 @@ client.Prompts.ListPrompts(
 </dl>
 </details>
 
-<details><summary><code>client.Prompts.CreatePrompt(request) -> *sdk.CreatePromptResponse</code></summary>
+<details><summary><code>client.Prompts.CreatePrompt(request) -> *promptvmgosdk.CreatePromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -10278,7 +10286,7 @@ Creates a new prompt with an initial version (v1). Requires edit permission on t
 <dd>
 
 ```go
-request := &sdk.CreatePromptRequest{
+request := &promptvmgosdk.CreatePromptRequest{
         Name: "name",
         WorkspaceID: "workspaceId",
         Content: "content",
@@ -10358,7 +10366,7 @@ client.Prompts.CreatePrompt(
 <dl>
 <dd>
 
-**kind:** `*sdk.CreatePromptRequestKind` 
+**kind:** `*promptvmgosdk.CreatePromptRequestKind` 
     
 </dd>
 </dl>
@@ -10382,7 +10390,7 @@ client.Prompts.CreatePrompt(
 <dl>
 <dd>
 
-**status:** `*sdk.CreatePromptRequestStatus` 
+**status:** `*promptvmgosdk.CreatePromptRequestStatus` 
     
 </dd>
 </dl>
@@ -10390,7 +10398,7 @@ client.Prompts.CreatePrompt(
 <dl>
 <dd>
 
-**variablesSchema:** `map[string]*sdk.CreatePromptRequestVariablesSchemaValue` 
+**variablesSchema:** `map[string]*promptvmgosdk.CreatePromptRequestVariablesSchemaValue` 
     
 </dd>
 </dl>
@@ -10402,7 +10410,7 @@ client.Prompts.CreatePrompt(
 </dl>
 </details>
 
-<details><summary><code>client.Prompts.GetPrompt(PromptID) -> *sdk.GetPromptResponse</code></summary>
+<details><summary><code>client.Prompts.GetPrompt(PromptID) -> *promptvmgosdk.GetPromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -10429,7 +10437,7 @@ Returns a prompt with its current version content.
 <dd>
 
 ```go
-request := &sdk.GetPromptRequest{
+request := &promptvmgosdk.GetPromptRequest{
         PromptID: "promptId",
     }
 client.Prompts.GetPrompt(
@@ -10463,7 +10471,7 @@ client.Prompts.GetPrompt(
 </dl>
 </details>
 
-<details><summary><code>client.Prompts.DeletePrompt(PromptID) -> *sdk.DeletePromptResponse</code></summary>
+<details><summary><code>client.Prompts.DeletePrompt(PromptID) -> *promptvmgosdk.DeletePromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -10490,7 +10498,7 @@ Soft-deletes a prompt by setting deletedAt on its file record.
 <dd>
 
 ```go
-request := &sdk.DeletePromptRequest{
+request := &promptvmgosdk.DeletePromptRequest{
         PromptID: "promptId",
     }
 client.Prompts.DeletePrompt(
@@ -10524,7 +10532,7 @@ client.Prompts.DeletePrompt(
 </dl>
 </details>
 
-<details><summary><code>client.Prompts.UpdatePrompt(PromptID, request) -> *sdk.UpdatePromptResponse</code></summary>
+<details><summary><code>client.Prompts.UpdatePrompt(PromptID, request) -> *promptvmgosdk.UpdatePromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -10551,7 +10559,7 @@ Updates name, description, status, tags, or isPublic. Does not create a new vers
 <dd>
 
 ```go
-request := &sdk.UpdatePromptRequest{
+request := &promptvmgosdk.UpdatePromptRequest{
         PromptID: "promptId",
     }
 client.Prompts.UpdatePrompt(
@@ -10605,7 +10613,7 @@ client.Prompts.UpdatePrompt(
 <dl>
 <dd>
 
-**status:** `*sdk.UpdatePromptRequestStatus` 
+**status:** `*promptvmgosdk.UpdatePromptRequestStatus` 
     
 </dd>
 </dl>
@@ -10642,7 +10650,7 @@ client.Prompts.UpdatePrompt(
 </details>
 
 ## Prompt Versions
-<details><summary><code>client.PromptVersions.ListPromptVersions(PromptID) -> *sdk.ListPromptVersionsResponse</code></summary>
+<details><summary><code>client.PromptVersions.ListPromptVersions(PromptID) -> *promptvmgosdk.ListPromptVersionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -10655,7 +10663,7 @@ client.Prompts.UpdatePrompt(
 <dd>
 
 ```go
-request := &sdk.ListPromptVersionsRequest{
+request := &promptvmgosdk.ListPromptVersionsRequest{
         PromptID: "promptId",
     }
 client.PromptVersions.ListPromptVersions(
@@ -10705,7 +10713,7 @@ client.PromptVersions.ListPromptVersions(
 </dl>
 </details>
 
-<details><summary><code>client.PromptVersions.CreatePromptVersion(PromptID, request) -> *sdk.CreatePromptVersionResponse</code></summary>
+<details><summary><code>client.PromptVersions.CreatePromptVersion(PromptID, request) -> *promptvmgosdk.CreatePromptVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -10718,7 +10726,7 @@ client.PromptVersions.ListPromptVersions(
 <dd>
 
 ```go
-request := &sdk.CreatePromptVersionRequest{
+request := &promptvmgosdk.CreatePromptVersionRequest{
         PromptID: "promptId",
         Content: "content",
     }
@@ -10789,7 +10797,7 @@ client.PromptVersions.CreatePromptVersion(
 <dl>
 <dd>
 
-**variablesSchema:** `map[string]*sdk.CreatePromptVersionRequestVariablesSchemaValue` 
+**variablesSchema:** `map[string]*promptvmgosdk.CreatePromptVersionRequestVariablesSchemaValue` 
     
 </dd>
 </dl>
@@ -10817,7 +10825,7 @@ client.PromptVersions.CreatePromptVersion(
 </dl>
 </details>
 
-<details><summary><code>client.PromptVersions.RollbackPrompt(PromptID, request) -> *sdk.RollbackPromptResponse</code></summary>
+<details><summary><code>client.PromptVersions.RollbackPrompt(PromptID, request) -> *promptvmgosdk.RollbackPromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -10844,7 +10852,7 @@ Creates a new version from an older version's content.
 <dd>
 
 ```go
-request := &sdk.RollbackPromptRequest{
+request := &promptvmgosdk.RollbackPromptRequest{
         PromptID: "promptId",
         TargetVersion: 1,
     }
@@ -10895,7 +10903,7 @@ client.PromptVersions.RollbackPrompt(
 </dl>
 </details>
 
-<details><summary><code>client.PromptVersions.GetPromptVersion(PromptID, VersionID) -> *sdk.GetPromptVersionResponse</code></summary>
+<details><summary><code>client.PromptVersions.GetPromptVersion(PromptID, VersionID) -> *promptvmgosdk.GetPromptVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -10908,7 +10916,7 @@ client.PromptVersions.RollbackPrompt(
 <dd>
 
 ```go
-request := &sdk.GetPromptVersionRequest{
+request := &promptvmgosdk.GetPromptVersionRequest{
         PromptID: "promptId",
         VersionID: "versionId",
     }
@@ -10951,7 +10959,7 @@ client.PromptVersions.GetPromptVersion(
 </dl>
 </details>
 
-<details><summary><code>client.PromptVersions.UpdatePromptVersion(PromptID, VersionID, request) -> *sdk.UpdatePromptVersionResponse</code></summary>
+<details><summary><code>client.PromptVersions.UpdatePromptVersion(PromptID, VersionID, request) -> *promptvmgosdk.UpdatePromptVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -10964,7 +10972,7 @@ client.PromptVersions.GetPromptVersion(
 <dd>
 
 ```go
-request := &sdk.UpdatePromptVersionRequest{
+request := &promptvmgosdk.UpdatePromptVersionRequest{
         PromptID: "promptId",
         VersionID: "versionId",
     }
@@ -11035,7 +11043,7 @@ client.PromptVersions.UpdatePromptVersion(
 <dl>
 <dd>
 
-**variablesSchema:** `map[string]*sdk.UpdatePromptVersionRequestVariablesSchemaValue` 
+**variablesSchema:** `map[string]*promptvmgosdk.UpdatePromptVersionRequestVariablesSchemaValue` 
     
 </dd>
 </dl>
@@ -11055,7 +11063,7 @@ client.PromptVersions.UpdatePromptVersion(
 </dl>
 </details>
 
-<details><summary><code>client.PromptVersions.DiffPromptVersions(PromptID) -> *sdk.DiffPromptVersionsResponse</code></summary>
+<details><summary><code>client.PromptVersions.DiffPromptVersions(PromptID) -> *promptvmgosdk.DiffPromptVersionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11082,7 +11090,7 @@ Returns a unified diff between two version numbers.
 <dd>
 
 ```go
-request := &sdk.DiffPromptVersionsRequest{
+request := &promptvmgosdk.DiffPromptVersionsRequest{
         PromptID: "promptId",
         From: "from",
         To: "to",
@@ -11134,7 +11142,7 @@ client.PromptVersions.DiffPromptVersions(
 </dl>
 </details>
 
-<details><summary><code>client.PromptVersions.GetVersionRecommendedModels(PromptID, VersionID) -> *sdk.GetVersionRecommendedModelsResponse</code></summary>
+<details><summary><code>client.PromptVersions.GetVersionRecommendedModels(PromptID, VersionID) -> *promptvmgosdk.GetVersionRecommendedModelsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11147,7 +11155,7 @@ client.PromptVersions.DiffPromptVersions(
 <dd>
 
 ```go
-request := &sdk.GetVersionRecommendedModelsRequest{
+request := &promptvmgosdk.GetVersionRecommendedModelsRequest{
         PromptID: "promptId",
         VersionID: "versionId",
     }
@@ -11190,7 +11198,7 @@ client.PromptVersions.GetVersionRecommendedModels(
 </dl>
 </details>
 
-<details><summary><code>client.PromptVersions.SetVersionRecommendedModels(PromptID, VersionID, request) -> *sdk.SetVersionRecommendedModelsResponse</code></summary>
+<details><summary><code>client.PromptVersions.SetVersionRecommendedModels(PromptID, VersionID, request) -> *promptvmgosdk.SetVersionRecommendedModelsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11217,7 +11225,7 @@ Replace-all, in the order given. Up to 10. An unknown or retired model id is rej
 <dd>
 
 ```go
-request := &sdk.SetVersionRecommendedModelsRequest{
+request := &promptvmgosdk.SetVersionRecommendedModelsRequest{
         PromptID: "promptId",
         VersionID: "versionId",
         ModelIDs: []string{
@@ -11272,7 +11280,7 @@ client.PromptVersions.SetVersionRecommendedModels(
 </details>
 
 ## PromptDeployments
-<details><summary><code>client.PromptDeployments.DeployPromptVersion(PromptID, request) -> *sdk.DeployPromptVersionResponse</code></summary>
+<details><summary><code>client.PromptDeployments.DeployPromptVersion(PromptID, request) -> *promptvmgosdk.DeployPromptVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11299,9 +11307,9 @@ Points the named environment at an existing published version. Idempotent — re
 <dd>
 
 ```go
-request := &sdk.DeployPromptVersionRequest{
+request := &promptvmgosdk.DeployPromptVersionRequest{
         PromptID: "promptId",
-        Environment: sdk.DeployPromptVersionRequestEnvironmentDevelopment,
+        Environment: promptvmgosdk.DeployPromptVersionRequestEnvironmentDevelopment,
         VersionID: "versionId",
     }
 client.PromptDeployments.DeployPromptVersion(
@@ -11331,7 +11339,7 @@ client.PromptDeployments.DeployPromptVersion(
 <dl>
 <dd>
 
-**environment:** `*sdk.DeployPromptVersionRequestEnvironment` 
+**environment:** `*promptvmgosdk.DeployPromptVersionRequestEnvironment` 
     
 </dd>
 </dl>
@@ -11352,7 +11360,7 @@ client.PromptDeployments.DeployPromptVersion(
 </details>
 
 ## Prompt Resolution
-<details><summary><code>client.PromptResolution.ResolvePrompt(PromptID) -> *sdk.ResolvePromptResponse</code></summary>
+<details><summary><code>client.PromptResolution.ResolvePrompt(PromptID) -> *promptvmgosdk.ResolvePromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -11379,7 +11387,7 @@ Resolves [[include:]] references and {{variable}} substitutions.
 <dd>
 
 ```go
-request := &sdk.ResolvePromptRequest{
+request := &promptvmgosdk.ResolvePromptRequest{
         PromptID: "promptId",
     }
 client.PromptResolution.ResolvePrompt(
@@ -11421,7 +11429,7 @@ client.PromptResolution.ResolvePrompt(
 </dl>
 </details>
 
-<details><summary><code>client.PromptResolution.ResolvePromptPost(PromptID, request) -> *sdk.ResolvePromptPostResponse</code></summary>
+<details><summary><code>client.PromptResolution.ResolvePromptPost(PromptID, request) -> *promptvmgosdk.ResolvePromptPostResponse</code></summary>
 <dl>
 <dd>
 
@@ -11448,7 +11456,7 @@ Resolves [[include:]] references and {{variable}} substitutions. Read-safe: iden
 <dd>
 
 ```go
-request := &sdk.ResolvePromptPostRequest{
+request := &promptvmgosdk.ResolvePromptPostRequest{
         PromptID: "promptId",
     }
 client.PromptResolution.ResolvePromptPost(
@@ -11525,7 +11533,7 @@ Same as /resolve but delivers content as Server-Sent Events for large payloads.
 <dd>
 
 ```go
-request := &sdk.ResolvePromptStreamRequest{
+request := &promptvmgosdk.ResolvePromptStreamRequest{
         PromptID: "promptId",
     }
 client.PromptResolution.ResolvePromptStream(
@@ -11568,7 +11576,7 @@ client.PromptResolution.ResolvePromptStream(
 </details>
 
 ## Collections
-<details><summary><code>client.Collections.ListCollections() -> *sdk.ListCollectionsResponse</code></summary>
+<details><summary><code>client.Collections.ListCollections() -> *promptvmgosdk.ListCollectionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11581,7 +11589,7 @@ client.PromptResolution.ResolvePromptStream(
 <dd>
 
 ```go
-request := &sdk.ListCollectionsRequest{}
+request := &promptvmgosdk.ListCollectionsRequest{}
 client.Collections.ListCollections(
         context.TODO(),
         request,
@@ -11621,7 +11629,7 @@ client.Collections.ListCollections(
 </dl>
 </details>
 
-<details><summary><code>client.Collections.CreateCollection(request) -> *sdk.CreateCollectionResponse</code></summary>
+<details><summary><code>client.Collections.CreateCollection(request) -> *promptvmgosdk.CreateCollectionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11634,7 +11642,7 @@ client.Collections.ListCollections(
 <dd>
 
 ```go
-request := &sdk.CreateCollectionRequest{
+request := &promptvmgosdk.CreateCollectionRequest{
         Name: "name",
     }
 client.Collections.CreateCollection(
@@ -11676,7 +11684,7 @@ client.Collections.CreateCollection(
 </dl>
 </details>
 
-<details><summary><code>client.Collections.GetCollection(CollectionID) -> *sdk.GetCollectionResponse</code></summary>
+<details><summary><code>client.Collections.GetCollection(CollectionID) -> *promptvmgosdk.GetCollectionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11689,7 +11697,7 @@ client.Collections.CreateCollection(
 <dd>
 
 ```go
-request := &sdk.GetCollectionRequest{
+request := &promptvmgosdk.GetCollectionRequest{
         CollectionID: "collectionId",
     }
 client.Collections.GetCollection(
@@ -11723,7 +11731,7 @@ client.Collections.GetCollection(
 </dl>
 </details>
 
-<details><summary><code>client.Collections.DeleteCollection(CollectionID) -> *sdk.DeleteCollectionResponse</code></summary>
+<details><summary><code>client.Collections.DeleteCollection(CollectionID) -> *promptvmgosdk.DeleteCollectionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11736,7 +11744,7 @@ client.Collections.GetCollection(
 <dd>
 
 ```go
-request := &sdk.DeleteCollectionRequest{
+request := &promptvmgosdk.DeleteCollectionRequest{
         CollectionID: "collectionId",
     }
 client.Collections.DeleteCollection(
@@ -11770,7 +11778,7 @@ client.Collections.DeleteCollection(
 </dl>
 </details>
 
-<details><summary><code>client.Collections.UpdateCollection(CollectionID, request) -> *sdk.UpdateCollectionResponse</code></summary>
+<details><summary><code>client.Collections.UpdateCollection(CollectionID, request) -> *promptvmgosdk.UpdateCollectionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11783,7 +11791,7 @@ client.Collections.DeleteCollection(
 <dd>
 
 ```go
-request := &sdk.UpdateCollectionRequest{
+request := &promptvmgosdk.UpdateCollectionRequest{
         CollectionID: "collectionId",
     }
 client.Collections.UpdateCollection(
@@ -11833,7 +11841,7 @@ client.Collections.UpdateCollection(
 </dl>
 </details>
 
-<details><summary><code>client.Collections.AddCollectionItem(CollectionID, request) -> *sdk.AddCollectionItemResponse</code></summary>
+<details><summary><code>client.Collections.AddCollectionItem(CollectionID, request) -> *promptvmgosdk.AddCollectionItemResponse</code></summary>
 <dl>
 <dd>
 
@@ -11846,7 +11854,7 @@ client.Collections.UpdateCollection(
 <dd>
 
 ```go
-request := &sdk.AddCollectionItemRequest{
+request := &promptvmgosdk.AddCollectionItemRequest{
         CollectionID: "collectionId",
         FileID: "fileId",
     }
@@ -11897,7 +11905,7 @@ client.Collections.AddCollectionItem(
 </dl>
 </details>
 
-<details><summary><code>client.Collections.RemoveCollectionItem(CollectionID, ItemID) -> *sdk.RemoveCollectionItemResponse</code></summary>
+<details><summary><code>client.Collections.RemoveCollectionItem(CollectionID, ItemID) -> *promptvmgosdk.RemoveCollectionItemResponse</code></summary>
 <dl>
 <dd>
 
@@ -11910,7 +11918,7 @@ client.Collections.AddCollectionItem(
 <dd>
 
 ```go
-request := &sdk.RemoveCollectionItemRequest{
+request := &promptvmgosdk.RemoveCollectionItemRequest{
         CollectionID: "collectionId",
         ItemID: "itemId",
     }
@@ -11953,7 +11961,7 @@ client.Collections.RemoveCollectionItem(
 </dl>
 </details>
 
-<details><summary><code>client.Collections.ReorderCollectionItems(CollectionID, request) -> *sdk.ReorderCollectionItemsResponse</code></summary>
+<details><summary><code>client.Collections.ReorderCollectionItems(CollectionID, request) -> *promptvmgosdk.ReorderCollectionItemsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11980,7 +11988,7 @@ Rewrites each member's position to its index in orderedItemIds. The id set must 
 <dd>
 
 ```go
-request := &sdk.ReorderCollectionItemsRequest{
+request := &promptvmgosdk.ReorderCollectionItemsRequest{
         CollectionID: "collectionId",
         OrderedItemIDs: []string{
             "orderedItemIds",
@@ -12026,7 +12034,7 @@ client.Collections.ReorderCollectionItems(
 </details>
 
 ## Templates
-<details><summary><code>client.Templates.ConvertPromptToTemplate(PromptID) -> *sdk.ConvertPromptToTemplateResponse</code></summary>
+<details><summary><code>client.Templates.ConvertPromptToTemplate(PromptID) -> *promptvmgosdk.ConvertPromptToTemplateResponse</code></summary>
 <dl>
 <dd>
 
@@ -12039,7 +12047,7 @@ client.Collections.ReorderCollectionItems(
 <dd>
 
 ```go
-request := &sdk.ConvertPromptToTemplateRequest{
+request := &promptvmgosdk.ConvertPromptToTemplateRequest{
         PromptID: "promptId",
     }
 client.Templates.ConvertPromptToTemplate(
@@ -12073,7 +12081,7 @@ client.Templates.ConvertPromptToTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.ListTemplates() -> *sdk.ListTemplatesResponse</code></summary>
+<details><summary><code>client.Templates.ListTemplates() -> *promptvmgosdk.ListTemplatesResponse</code></summary>
 <dl>
 <dd>
 
@@ -12100,7 +12108,7 @@ Lists templates visible org-wide.
 <dd>
 
 ```go
-request := &sdk.ListTemplatesRequest{
+request := &promptvmgosdk.ListTemplatesRequest{
         WorkspaceID: "workspaceId",
     }
 client.Templates.ListTemplates(
@@ -12150,7 +12158,7 @@ client.Templates.ListTemplates(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.CreatePromptFromTemplate(request) -> *sdk.CreatePromptFromTemplateResponse</code></summary>
+<details><summary><code>client.Templates.CreatePromptFromTemplate(request) -> *promptvmgosdk.CreatePromptFromTemplateResponse</code></summary>
 <dl>
 <dd>
 
@@ -12163,7 +12171,7 @@ client.Templates.ListTemplates(
 <dd>
 
 ```go
-request := &sdk.CreatePromptFromTemplateRequest{
+request := &promptvmgosdk.CreatePromptFromTemplateRequest{
         TemplateID: "templateId",
         Name: "name",
         WorkspaceID: "workspaceId",
@@ -12232,7 +12240,7 @@ client.Templates.CreatePromptFromTemplate(
 </details>
 
 ## Prompt Organization
-<details><summary><code>client.PromptOrganization.MovePrompt(PromptID, request) -> *sdk.MovePromptResponse</code></summary>
+<details><summary><code>client.PromptOrganization.MovePrompt(PromptID, request) -> *promptvmgosdk.MovePromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -12259,7 +12267,7 @@ Moves a prompt to a different directory and/or workspace.
 <dd>
 
 ```go
-request := &sdk.MovePromptRequest{
+request := &promptvmgosdk.MovePromptRequest{
         PromptID: "promptId",
     }
 client.PromptOrganization.MovePrompt(
@@ -12309,7 +12317,7 @@ client.PromptOrganization.MovePrompt(
 </dl>
 </details>
 
-<details><summary><code>client.PromptOrganization.ForkPrompt(PromptID, request) -> *sdk.ForkPromptResponse</code></summary>
+<details><summary><code>client.PromptOrganization.ForkPrompt(PromptID, request) -> *promptvmgosdk.ForkPromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -12336,7 +12344,7 @@ Creates a copy in the specified workspace with forkedFromPromptId set.
 <dd>
 
 ```go
-request := &sdk.ForkPromptRequest{
+request := &promptvmgosdk.ForkPromptRequest{
         PromptID: "promptId",
         WorkspaceID: "workspaceId",
     }
@@ -12387,7 +12395,7 @@ client.PromptOrganization.ForkPrompt(
 </dl>
 </details>
 
-<details><summary><code>client.PromptOrganization.ListPromptReferences(PromptID) -> *sdk.ListPromptReferencesResponse</code></summary>
+<details><summary><code>client.PromptOrganization.ListPromptReferences(PromptID) -> *promptvmgosdk.ListPromptReferencesResponse</code></summary>
 <dl>
 <dd>
 
@@ -12414,7 +12422,7 @@ Returns all [[include:]] references in the current version.
 <dd>
 
 ```go
-request := &sdk.ListPromptReferencesRequest{
+request := &promptvmgosdk.ListPromptReferencesRequest{
         PromptID: "promptId",
     }
 client.PromptOrganization.ListPromptReferences(
@@ -12448,7 +12456,7 @@ client.PromptOrganization.ListPromptReferences(
 </dl>
 </details>
 
-<details><summary><code>client.PromptOrganization.ListPromptDependents(PromptID) -> *sdk.ListPromptDependentsResponse</code></summary>
+<details><summary><code>client.PromptOrganization.ListPromptDependents(PromptID) -> *promptvmgosdk.ListPromptDependentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -12475,7 +12483,7 @@ Returns all prompts that reference this one.
 <dd>
 
 ```go
-request := &sdk.ListPromptDependentsRequest{
+request := &promptvmgosdk.ListPromptDependentsRequest{
         PromptID: "promptId",
     }
 client.PromptOrganization.ListPromptDependents(
@@ -12510,7 +12518,7 @@ client.PromptOrganization.ListPromptDependents(
 </details>
 
 ## Prompt Export
-<details><summary><code>client.PromptExport.ExportPrompt(PromptID, request) -> *sdk.ExportPromptResponse</code></summary>
+<details><summary><code>client.PromptExport.ExportPrompt(PromptID, request) -> *promptvmgosdk.ExportPromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -12537,9 +12545,9 @@ Exports a prompt in Markdown, JSON, or XML format.
 <dd>
 
 ```go
-request := &sdk.ExportPromptRequest{
+request := &promptvmgosdk.ExportPromptRequest{
         PromptID: "promptId",
-        Format: sdk.ExportPromptRequestFormatMd,
+        Format: promptvmgosdk.ExportPromptRequestFormatMd,
     }
 client.PromptExport.ExportPrompt(
         context.TODO(),
@@ -12568,7 +12576,7 @@ client.PromptExport.ExportPrompt(
 <dl>
 <dd>
 
-**format:** `*sdk.ExportPromptRequestFormat` 
+**format:** `*promptvmgosdk.ExportPromptRequestFormat` 
     
 </dd>
 </dl>
@@ -12597,7 +12605,7 @@ client.PromptExport.ExportPrompt(
 </details>
 
 ## Directories
-<details><summary><code>client.Directories.ListDirectories() -> *sdk.ListDirectoriesResponse</code></summary>
+<details><summary><code>client.Directories.ListDirectories() -> *promptvmgosdk.ListDirectoriesResponse</code></summary>
 <dl>
 <dd>
 
@@ -12624,7 +12632,7 @@ Returns all active directories in a workspace.
 <dd>
 
 ```go
-request := &sdk.ListDirectoriesRequest{
+request := &promptvmgosdk.ListDirectoriesRequest{
         WorkspaceID: "workspaceId",
     }
 client.Directories.ListDirectories(
@@ -12658,7 +12666,7 @@ client.Directories.ListDirectories(
 </dl>
 </details>
 
-<details><summary><code>client.Directories.CreateDirectory(request) -> *sdk.CreateDirectoryResponse</code></summary>
+<details><summary><code>client.Directories.CreateDirectory(request) -> *promptvmgosdk.CreateDirectoryResponse</code></summary>
 <dl>
 <dd>
 
@@ -12685,7 +12693,7 @@ Creates a persisted directory inside a workspace.
 <dd>
 
 ```go
-request := &sdk.CreateDirectoryRequest{
+request := &promptvmgosdk.CreateDirectoryRequest{
         WorkspaceID: "workspaceId",
         Name: "name",
     }
@@ -12736,7 +12744,7 @@ client.Directories.CreateDirectory(
 </dl>
 </details>
 
-<details><summary><code>client.Directories.DeleteDirectory(DirectoryID) -> *sdk.DeleteDirectoryResponse</code></summary>
+<details><summary><code>client.Directories.DeleteDirectory(DirectoryID) -> *promptvmgosdk.DeleteDirectoryResponse</code></summary>
 <dl>
 <dd>
 
@@ -12763,7 +12771,7 @@ Deletes an empty directory.
 <dd>
 
 ```go
-request := &sdk.DeleteDirectoryRequest{
+request := &promptvmgosdk.DeleteDirectoryRequest{
         DirectoryID: "directoryId",
     }
 client.Directories.DeleteDirectory(
@@ -12797,7 +12805,7 @@ client.Directories.DeleteDirectory(
 </dl>
 </details>
 
-<details><summary><code>client.Directories.UpdateDirectory(DirectoryID, request) -> *sdk.UpdateDirectoryResponse</code></summary>
+<details><summary><code>client.Directories.UpdateDirectory(DirectoryID, request) -> *promptvmgosdk.UpdateDirectoryResponse</code></summary>
 <dl>
 <dd>
 
@@ -12824,7 +12832,7 @@ Updates persisted directory metadata.
 <dd>
 
 ```go
-request := &sdk.UpdateDirectoryRequest{
+request := &promptvmgosdk.UpdateDirectoryRequest{
         DirectoryID: "directoryId",
     }
 client.Directories.UpdateDirectory(
@@ -12875,7 +12883,7 @@ client.Directories.UpdateDirectory(
 </details>
 
 ## Resources
-<details><summary><code>client.Resources.ListWorkspaceResources() -> *sdk.ListWorkspaceResourcesResponse</code></summary>
+<details><summary><code>client.Resources.ListWorkspaceResources() -> *promptvmgosdk.ListWorkspaceResourcesResponse</code></summary>
 <dl>
 <dd>
 
@@ -12902,7 +12910,7 @@ Returns all confirmed, non-deleted resources belonging to a workspace. By defaul
 <dd>
 
 ```go
-request := &sdk.ListWorkspaceResourcesRequest{
+request := &promptvmgosdk.ListWorkspaceResourcesRequest{
         WorkspaceID: "workspaceId",
     }
 client.Resources.ListWorkspaceResources(
@@ -12952,7 +12960,7 @@ client.Resources.ListWorkspaceResources(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.InitiateResourceUpload(request) -> *sdk.InitiateResourceUploadResponse</code></summary>
+<details><summary><code>client.Resources.InitiateResourceUpload(request) -> *promptvmgosdk.InitiateResourceUploadResponse</code></summary>
 <dl>
 <dd>
 
@@ -12979,7 +12987,7 @@ Creates a file record and returns a presigned S3 PUT URL. Upload your file bytes
 <dd>
 
 ```go
-request := &sdk.InitiateResourceUploadRequest{
+request := &promptvmgosdk.InitiateResourceUploadRequest{
         WorkspaceID: "workspaceId",
         Name: "name",
         ContentType: "contentType",
@@ -13064,7 +13072,7 @@ client.Resources.InitiateResourceUpload(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.ConfirmResourceUpload(ResourceID, request) -> *sdk.ConfirmResourceUploadResponse</code></summary>
+<details><summary><code>client.Resources.ConfirmResourceUpload(ResourceID, request) -> *promptvmgosdk.ConfirmResourceUploadResponse</code></summary>
 <dl>
 <dd>
 
@@ -13091,7 +13099,7 @@ Verifies the file was uploaded to S3 and marks the resource as available for use
 <dd>
 
 ```go
-request := &sdk.ConfirmResourceUploadRequest{
+request := &promptvmgosdk.ConfirmResourceUploadRequest{
         ResourceID: "resourceId",
     }
 client.Resources.ConfirmResourceUpload(
@@ -13125,7 +13133,7 @@ client.Resources.ConfirmResourceUpload(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.GetResource(ResourceID) -> *sdk.GetResourceResponse</code></summary>
+<details><summary><code>client.Resources.GetResource(ResourceID) -> *promptvmgosdk.GetResourceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13138,7 +13146,7 @@ client.Resources.ConfirmResourceUpload(
 <dd>
 
 ```go
-request := &sdk.GetResourceRequest{
+request := &promptvmgosdk.GetResourceRequest{
         ResourceID: "resourceId",
     }
 client.Resources.GetResource(
@@ -13199,7 +13207,7 @@ Soft-deletes the resource and removes its S3 object. Also detaches it from all p
 <dd>
 
 ```go
-request := &sdk.DeleteResourceRequest{
+request := &promptvmgosdk.DeleteResourceRequest{
         ResourceID: "resourceId",
     }
 client.Resources.DeleteResource(
@@ -13233,7 +13241,7 @@ client.Resources.DeleteResource(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.UpdateResource(ResourceID, request) -> *sdk.UpdateResourceResponse</code></summary>
+<details><summary><code>client.Resources.UpdateResource(ResourceID, request) -> *promptvmgosdk.UpdateResourceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13260,7 +13268,7 @@ Update resource metadata (name, directory placement).
 <dd>
 
 ```go
-request := &sdk.UpdateResourceRequest{
+request := &promptvmgosdk.UpdateResourceRequest{
         ResourceID: "resourceId",
     }
 client.Resources.UpdateResource(
@@ -13310,7 +13318,7 @@ client.Resources.UpdateResource(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.GetResourceDownloadURL(ResourceID) -> *sdk.GetResourceDownloadURLResponse</code></summary>
+<details><summary><code>client.Resources.GetResourceDownloadURL(ResourceID) -> *promptvmgosdk.GetResourceDownloadURLResponse</code></summary>
 <dl>
 <dd>
 
@@ -13337,7 +13345,7 @@ Returns a time-limited presigned URL (1 hour) for downloading the resource from 
 <dd>
 
 ```go
-request := &sdk.GetResourceDownloadURLRequest{
+request := &promptvmgosdk.GetResourceDownloadURLRequest{
         ResourceID: "resourceId",
     }
 client.Resources.GetResourceDownloadURL(
@@ -13367,7 +13375,7 @@ client.Resources.GetResourceDownloadURL(
 <dl>
 <dd>
 
-**disposition:** `*sdk.GetResourceDownloadURLRequestDisposition` 
+**disposition:** `*promptvmgosdk.GetResourceDownloadURLRequestDisposition` 
     
 </dd>
 </dl>
@@ -13379,7 +13387,7 @@ client.Resources.GetResourceDownloadURL(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.GetResourceRagStatus(ResourceID) -> *sdk.GetResourceRagStatusResponse</code></summary>
+<details><summary><code>client.Resources.GetResourceRagStatus(ResourceID) -> *promptvmgosdk.GetResourceRagStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -13406,7 +13414,7 @@ Returns the document-processing status for the resource's current version: inges
 <dd>
 
 ```go
-request := &sdk.GetResourceRagStatusRequest{
+request := &promptvmgosdk.GetResourceRagStatusRequest{
         ResourceID: "resourceId",
     }
 client.Resources.GetResourceRagStatus(
@@ -13440,7 +13448,7 @@ client.Resources.GetResourceRagStatus(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.SetResourceSearchIndexing(ResourceID, request) -> *sdk.SetResourceSearchIndexingResponse</code></summary>
+<details><summary><code>client.Resources.SetResourceSearchIndexing(ResourceID, request) -> *promptvmgosdk.SetResourceSearchIndexingResponse</code></summary>
 <dl>
 <dd>
 
@@ -13467,7 +13475,7 @@ Toggle whether this resource is indexed for Knowledge Search (RAG). Disabling re
 <dd>
 
 ```go
-request := &sdk.SetResourceSearchIndexingRequest{
+request := &promptvmgosdk.SetResourceSearchIndexingRequest{
         ResourceID: "resourceId",
         Enabled: true,
     }
@@ -13510,7 +13518,7 @@ client.Resources.SetResourceSearchIndexing(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.GetResourceMarkdownURL(ResourceID) -> *sdk.GetResourceMarkdownURLResponse</code></summary>
+<details><summary><code>client.Resources.GetResourceMarkdownURL(ResourceID) -> *promptvmgosdk.GetResourceMarkdownURLResponse</code></summary>
 <dl>
 <dd>
 
@@ -13537,7 +13545,7 @@ Returns a time-limited presigned URL (1 hour) for the markdown render of the res
 <dd>
 
 ```go
-request := &sdk.GetResourceMarkdownURLRequest{
+request := &promptvmgosdk.GetResourceMarkdownURLRequest{
         ResourceID: "resourceId",
     }
 client.Resources.GetResourceMarkdownURL(
@@ -13571,7 +13579,7 @@ client.Resources.GetResourceMarkdownURL(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.GetPromptRagStatus(PromptID) -> *sdk.GetPromptRagStatusResponse</code></summary>
+<details><summary><code>client.Resources.GetPromptRagStatus(PromptID) -> *promptvmgosdk.GetPromptRagStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -13598,7 +13606,7 @@ Returns the document-processing status for the prompt's current version: ingesti
 <dd>
 
 ```go
-request := &sdk.GetPromptRagStatusRequest{
+request := &promptvmgosdk.GetPromptRagStatusRequest{
         PromptID: "promptId",
     }
 client.Resources.GetPromptRagStatus(
@@ -13632,7 +13640,7 @@ client.Resources.GetPromptRagStatus(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.SetPromptSearchIndexing(PromptID, request) -> *sdk.SetPromptSearchIndexingResponse</code></summary>
+<details><summary><code>client.Resources.SetPromptSearchIndexing(PromptID, request) -> *promptvmgosdk.SetPromptSearchIndexingResponse</code></summary>
 <dl>
 <dd>
 
@@ -13659,7 +13667,7 @@ Toggle whether this prompt is indexed for Knowledge Search (RAG). Disabling remo
 <dd>
 
 ```go
-request := &sdk.SetPromptSearchIndexingRequest{
+request := &promptvmgosdk.SetPromptSearchIndexingRequest{
         PromptID: "promptId",
         Enabled: true,
     }
@@ -13702,7 +13710,7 @@ client.Resources.SetPromptSearchIndexing(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.ListPromptResources(PromptID) -> *sdk.ListPromptResourcesResponse</code></summary>
+<details><summary><code>client.Resources.ListPromptResources(PromptID) -> *promptvmgosdk.ListPromptResourcesResponse</code></summary>
 <dl>
 <dd>
 
@@ -13715,7 +13723,7 @@ client.Resources.SetPromptSearchIndexing(
 <dd>
 
 ```go
-request := &sdk.ListPromptResourcesRequest{
+request := &promptvmgosdk.ListPromptResourcesRequest{
         PromptID: "promptId",
     }
 client.Resources.ListPromptResources(
@@ -13749,7 +13757,7 @@ client.Resources.ListPromptResources(
 </dl>
 </details>
 
-<details><summary><code>client.Resources.AttachPromptResource(PromptID, request) -> *sdk.AttachPromptResourceResponse</code></summary>
+<details><summary><code>client.Resources.AttachPromptResource(PromptID, request) -> *promptvmgosdk.AttachPromptResourceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13776,7 +13784,7 @@ The resource must be confirmed (upload completed) and belong to the same workspa
 <dd>
 
 ```go
-request := &sdk.AttachPromptResourceRequest{
+request := &promptvmgosdk.AttachPromptResourceRequest{
         PromptID: "promptId",
         ResourceID: "resourceId",
     }
@@ -13815,7 +13823,7 @@ client.Resources.AttachPromptResource(
 <dl>
 <dd>
 
-**usageContext:** `*sdk.AttachPromptResourceRequestUsageContext` — How the resource is used by the LLM at execution time
+**usageContext:** `*promptvmgosdk.AttachPromptResourceRequestUsageContext` — How the resource is used by the LLM at execution time
     
 </dd>
 </dl>
@@ -13854,7 +13862,7 @@ Removes the association only — the resource file is not deleted.
 <dd>
 
 ```go
-request := &sdk.DetachPromptResourceRequest{
+request := &promptvmgosdk.DetachPromptResourceRequest{
         PromptID: "promptId",
         ResourceID: "resourceId",
     }
@@ -13898,7 +13906,7 @@ client.Resources.DetachPromptResource(
 </details>
 
 ## Skills
-<details><summary><code>client.Skills.ListSkills() -> *sdk.ListSkillsResponse</code></summary>
+<details><summary><code>client.Skills.ListSkills() -> *promptvmgosdk.ListSkillsResponse</code></summary>
 <dl>
 <dd>
 
@@ -13925,7 +13933,7 @@ Returns paginated skills. Filter `q` matches name, description, AND when_to_use 
 <dd>
 
 ```go
-request := &sdk.ListSkillsRequest{
+request := &promptvmgosdk.ListSkillsRequest{
         WorkspaceID: "workspaceId",
     }
 client.Skills.ListSkills(
@@ -13987,7 +13995,7 @@ client.Skills.ListSkills(
 <dl>
 <dd>
 
-**isPublic:** `*sdk.ListSkillsRequestIsPublic` 
+**isPublic:** `*promptvmgosdk.ListSkillsRequestIsPublic` 
     
 </dd>
 </dl>
@@ -13999,7 +14007,7 @@ client.Skills.ListSkills(
 </dl>
 </details>
 
-<details><summary><code>client.Skills.CreateSkill(request) -> *sdk.CreateSkillResponse</code></summary>
+<details><summary><code>client.Skills.CreateSkill(request) -> *promptvmgosdk.CreateSkillResponse</code></summary>
 <dl>
 <dd>
 
@@ -14026,7 +14034,7 @@ Creates a skill artifact (content_kind=skill). The full SKILL.md bytes (frontmat
 <dd>
 
 ```go
-request := &sdk.CreateSkillRequest{
+request := &promptvmgosdk.CreateSkillRequest{
         SkillMd: "skill_md",
         WorkspaceID: "workspaceId",
     }
@@ -14057,7 +14065,7 @@ client.Skills.CreateSkill(
 <dl>
 <dd>
 
-**files:** `[]*sdk.CreateSkillRequestFilesItem` 
+**files:** `[]*promptvmgosdk.CreateSkillRequestFilesItem` 
     
 </dd>
 </dl>
@@ -14089,7 +14097,7 @@ client.Skills.CreateSkill(
 <dl>
 <dd>
 
-**status:** `*sdk.CreateSkillRequestStatus` 
+**status:** `*promptvmgosdk.CreateSkillRequestStatus` 
     
 </dd>
 </dl>
@@ -14109,7 +14117,7 @@ client.Skills.CreateSkill(
 </dl>
 </details>
 
-<details><summary><code>client.Skills.GetSkill(SkillID) -> *sdk.GetSkillResponse</code></summary>
+<details><summary><code>client.Skills.GetSkill(SkillID) -> *promptvmgosdk.GetSkillResponse</code></summary>
 <dl>
 <dd>
 
@@ -14122,7 +14130,7 @@ client.Skills.CreateSkill(
 <dd>
 
 ```go
-request := &sdk.GetSkillRequest{
+request := &promptvmgosdk.GetSkillRequest{
         SkillID: "skillId",
     }
 client.Skills.GetSkill(
@@ -14156,7 +14164,7 @@ client.Skills.GetSkill(
 </dl>
 </details>
 
-<details><summary><code>client.Skills.DeleteSkill(SkillID) -> *sdk.DeleteSkillResponse</code></summary>
+<details><summary><code>client.Skills.DeleteSkill(SkillID) -> *promptvmgosdk.DeleteSkillResponse</code></summary>
 <dl>
 <dd>
 
@@ -14169,7 +14177,7 @@ client.Skills.GetSkill(
 <dd>
 
 ```go
-request := &sdk.DeleteSkillRequest{
+request := &promptvmgosdk.DeleteSkillRequest{
         SkillID: "skillId",
     }
 client.Skills.DeleteSkill(
@@ -14203,7 +14211,7 @@ client.Skills.DeleteSkill(
 </dl>
 </details>
 
-<details><summary><code>client.Skills.UpdateSkill(SkillID, request) -> *sdk.UpdateSkillResponse</code></summary>
+<details><summary><code>client.Skills.UpdateSkill(SkillID, request) -> *promptvmgosdk.UpdateSkillResponse</code></summary>
 <dl>
 <dd>
 
@@ -14230,7 +14238,7 @@ Replaces any subset of skill fields. Replacing skill_md re-runs ingest, regenera
 <dd>
 
 ```go
-request := &sdk.UpdateSkillRequest{
+request := &promptvmgosdk.UpdateSkillRequest{
         SkillID: "skillId",
     }
 client.Skills.UpdateSkill(
@@ -14268,7 +14276,7 @@ client.Skills.UpdateSkill(
 <dl>
 <dd>
 
-**files:** `[]*sdk.UpdateSkillRequestFilesItem` 
+**files:** `[]*promptvmgosdk.UpdateSkillRequestFilesItem` 
     
 </dd>
 </dl>
@@ -14284,7 +14292,7 @@ client.Skills.UpdateSkill(
 <dl>
 <dd>
 
-**status:** `*sdk.UpdateSkillRequestStatus` 
+**status:** `*promptvmgosdk.UpdateSkillRequestStatus` 
     
 </dd>
 </dl>
@@ -14320,7 +14328,7 @@ client.Skills.UpdateSkill(
 </dl>
 </details>
 
-<details><summary><code>client.Skills.ListSkillFiles(SkillID) -> *sdk.ListSkillFilesResponse</code></summary>
+<details><summary><code>client.Skills.ListSkillFiles(SkillID) -> *promptvmgosdk.ListSkillFilesResponse</code></summary>
 <dl>
 <dd>
 
@@ -14347,7 +14355,7 @@ Returns the manifest of files bundled into the skill’s current version — pat
 <dd>
 
 ```go
-request := &sdk.ListSkillFilesRequest{
+request := &promptvmgosdk.ListSkillFilesRequest{
         SkillID: "skillId",
     }
 client.Skills.ListSkillFiles(
@@ -14381,7 +14389,7 @@ client.Skills.ListSkillFiles(
 </dl>
 </details>
 
-<details><summary><code>client.Skills.GetSkillFileContent(SkillID) -> *sdk.GetSkillFileContentResponse</code></summary>
+<details><summary><code>client.Skills.GetSkillFileContent(SkillID) -> *promptvmgosdk.GetSkillFileContentResponse</code></summary>
 <dl>
 <dd>
 
@@ -14408,7 +14416,7 @@ Returns a single bundled file identified by its manifest path. Text files are re
 <dd>
 
 ```go
-request := &sdk.GetSkillFileContentRequest{
+request := &promptvmgosdk.GetSkillFileContentRequest{
         SkillID: "skillId",
         Path: "path",
     }
@@ -14452,7 +14460,7 @@ client.Skills.GetSkillFileContent(
 </details>
 
 ## Hooks
-<details><summary><code>client.Hooks.ListHooks() -> *sdk.ListHooksResponse</code></summary>
+<details><summary><code>client.Hooks.ListHooks() -> *promptvmgosdk.ListHooksResponse</code></summary>
 <dl>
 <dd>
 
@@ -14479,7 +14487,7 @@ Returns paginated hooks. Supports filtering by event, handler type, tag, and tex
 <dd>
 
 ```go
-request := &sdk.ListHooksRequest{
+request := &promptvmgosdk.ListHooksRequest{
         WorkspaceID: "workspaceId",
     }
 client.Hooks.ListHooks(
@@ -14557,7 +14565,7 @@ client.Hooks.ListHooks(
 <dl>
 <dd>
 
-**isPublic:** `*sdk.ListHooksRequestIsPublic` 
+**isPublic:** `*promptvmgosdk.ListHooksRequestIsPublic` 
     
 </dd>
 </dl>
@@ -14569,7 +14577,7 @@ client.Hooks.ListHooks(
 </dl>
 </details>
 
-<details><summary><code>client.Hooks.CreateHook(request) -> *sdk.CreateHookResponse</code></summary>
+<details><summary><code>client.Hooks.CreateHook(request) -> *promptvmgosdk.CreateHookResponse</code></summary>
 <dl>
 <dd>
 
@@ -14596,7 +14604,7 @@ Creates a hook artifact (content_kind=hook). The JSON configuration is validated
 <dd>
 
 ```go
-request := &sdk.CreateHookRequest{
+request := &promptvmgosdk.CreateHookRequest{
         HookJSON: "hook_json",
         WorkspaceID: "workspaceId",
     }
@@ -14627,7 +14635,7 @@ client.Hooks.CreateHook(
 <dl>
 <dd>
 
-**files:** `[]*sdk.CreateHookRequestFilesItem` 
+**files:** `[]*promptvmgosdk.CreateHookRequestFilesItem` 
     
 </dd>
 </dl>
@@ -14659,7 +14667,7 @@ client.Hooks.CreateHook(
 <dl>
 <dd>
 
-**status:** `*sdk.CreateHookRequestStatus` 
+**status:** `*promptvmgosdk.CreateHookRequestStatus` 
     
 </dd>
 </dl>
@@ -14679,7 +14687,7 @@ client.Hooks.CreateHook(
 </dl>
 </details>
 
-<details><summary><code>client.Hooks.GetHook(HookID) -> *sdk.GetHookResponse</code></summary>
+<details><summary><code>client.Hooks.GetHook(HookID) -> *promptvmgosdk.GetHookResponse</code></summary>
 <dl>
 <dd>
 
@@ -14692,7 +14700,7 @@ client.Hooks.CreateHook(
 <dd>
 
 ```go
-request := &sdk.GetHookRequest{
+request := &promptvmgosdk.GetHookRequest{
         HookID: "hookId",
     }
 client.Hooks.GetHook(
@@ -14726,7 +14734,7 @@ client.Hooks.GetHook(
 </dl>
 </details>
 
-<details><summary><code>client.Hooks.DeleteHook(HookID) -> *sdk.DeleteHookResponse</code></summary>
+<details><summary><code>client.Hooks.DeleteHook(HookID) -> *promptvmgosdk.DeleteHookResponse</code></summary>
 <dl>
 <dd>
 
@@ -14739,7 +14747,7 @@ client.Hooks.GetHook(
 <dd>
 
 ```go
-request := &sdk.DeleteHookRequest{
+request := &promptvmgosdk.DeleteHookRequest{
         HookID: "hookId",
     }
 client.Hooks.DeleteHook(
@@ -14773,7 +14781,7 @@ client.Hooks.DeleteHook(
 </dl>
 </details>
 
-<details><summary><code>client.Hooks.UpdateHook(HookID, request) -> *sdk.UpdateHookResponse</code></summary>
+<details><summary><code>client.Hooks.UpdateHook(HookID, request) -> *promptvmgosdk.UpdateHookResponse</code></summary>
 <dl>
 <dd>
 
@@ -14800,7 +14808,7 @@ Replaces any subset of hook fields. Replacing hook_json re-runs ingest, regenera
 <dd>
 
 ```go
-request := &sdk.UpdateHookRequest{
+request := &promptvmgosdk.UpdateHookRequest{
         HookID: "hookId",
     }
 client.Hooks.UpdateHook(
@@ -14838,7 +14846,7 @@ client.Hooks.UpdateHook(
 <dl>
 <dd>
 
-**files:** `[]*sdk.UpdateHookRequestFilesItem` 
+**files:** `[]*promptvmgosdk.UpdateHookRequestFilesItem` 
     
 </dd>
 </dl>
@@ -14854,7 +14862,7 @@ client.Hooks.UpdateHook(
 <dl>
 <dd>
 
-**status:** `*sdk.UpdateHookRequestStatus` 
+**status:** `*promptvmgosdk.UpdateHookRequestStatus` 
     
 </dd>
 </dl>
@@ -14882,7 +14890,7 @@ client.Hooks.UpdateHook(
 </dl>
 </details>
 
-<details><summary><code>client.Hooks.ExportHook(HookID) -> *sdk.ExportHookResponse</code></summary>
+<details><summary><code>client.Hooks.ExportHook(HookID) -> *promptvmgosdk.ExportHookResponse</code></summary>
 <dl>
 <dd>
 
@@ -14909,7 +14917,7 @@ Returns the hook configuration as a Claude Code settings.json fragment ready to 
 <dd>
 
 ```go
-request := &sdk.ExportHookRequest{
+request := &promptvmgosdk.ExportHookRequest{
         HookID: "hookId",
     }
 client.Hooks.ExportHook(
@@ -14943,7 +14951,7 @@ client.Hooks.ExportHook(
 </dl>
 </details>
 
-<details><summary><code>client.Hooks.ValidateHook(request) -> *sdk.ValidateHookResponse</code></summary>
+<details><summary><code>client.Hooks.ValidateHook(request) -> *promptvmgosdk.ValidateHookResponse</code></summary>
 <dl>
 <dd>
 
@@ -14970,7 +14978,7 @@ Validates the hook JSON without saving. Returns errors and warnings.
 <dd>
 
 ```go
-request := &sdk.ValidateHookRequest{
+request := &promptvmgosdk.ValidateHookRequest{
         HookJSON: "hook_json",
     }
 client.Hooks.ValidateHook(
@@ -15004,7 +15012,7 @@ client.Hooks.ValidateHook(
 </dl>
 </details>
 
-<details><summary><code>client.Hooks.ImportHooks(request) -> *sdk.ImportHooksResponse</code></summary>
+<details><summary><code>client.Hooks.ImportHooks(request) -> *promptvmgosdk.ImportHooksResponse</code></summary>
 <dl>
 <dd>
 
@@ -15031,8 +15039,8 @@ Parses a Claude Code settings.json and creates hook artifacts from the hooks blo
 <dd>
 
 ```go
-request := &sdk.ImportHooksRequest{
-        Source: sdk.ImportHooksRequestSourceSettingsJSON,
+request := &promptvmgosdk.ImportHooksRequest{
+        Source: promptvmgosdk.ImportHooksRequestSourceSettingsJSON,
         Content: "content",
         WorkspaceID: "workspaceId",
     }
@@ -15055,7 +15063,7 @@ client.Hooks.ImportHooks(
 <dl>
 <dd>
 
-**source:** `*sdk.ImportHooksRequestSource` 
+**source:** `*promptvmgosdk.ImportHooksRequestSource` 
     
 </dd>
 </dl>
@@ -15100,7 +15108,7 @@ client.Hooks.ImportHooks(
 </details>
 
 ## Workspaces
-<details><summary><code>client.Workspaces.ListWorkspaces() -> *sdk.ListWorkspacesResponse</code></summary>
+<details><summary><code>client.Workspaces.ListWorkspaces() -> *promptvmgosdk.ListWorkspacesResponse</code></summary>
 <dl>
 <dd>
 
@@ -15127,7 +15135,7 @@ Returns workspaces the authenticated user can access within an organization.
 <dd>
 
 ```go
-request := &sdk.ListWorkspacesRequest{
+request := &promptvmgosdk.ListWorkspacesRequest{
         OrganizationID: "organizationId",
     }
 client.Workspaces.ListWorkspaces(
@@ -15161,7 +15169,7 @@ client.Workspaces.ListWorkspaces(
 </dl>
 </details>
 
-<details><summary><code>client.Workspaces.CreateWorkspace(request) -> *sdk.CreateWorkspaceResponse</code></summary>
+<details><summary><code>client.Workspaces.CreateWorkspace(request) -> *promptvmgosdk.CreateWorkspaceResponse</code></summary>
 <dl>
 <dd>
 
@@ -15188,7 +15196,7 @@ Creates a new workspace within an organization. The creator is added as owner.
 <dd>
 
 ```go
-request := &sdk.CreateWorkspaceRequest{
+request := &promptvmgosdk.CreateWorkspaceRequest{
         Name: "name",
         OrganizationID: "organizationId",
     }
@@ -15227,7 +15235,7 @@ client.Workspaces.CreateWorkspace(
 <dl>
 <dd>
 
-**visibility:** `*sdk.CreateWorkspaceRequestVisibility` 
+**visibility:** `*promptvmgosdk.CreateWorkspaceRequestVisibility` 
     
 </dd>
 </dl>
@@ -15255,7 +15263,7 @@ client.Workspaces.CreateWorkspace(
 </dl>
 </details>
 
-<details><summary><code>client.Workspaces.GetWorkspace(WorkspaceID) -> *sdk.GetWorkspaceResponse</code></summary>
+<details><summary><code>client.Workspaces.GetWorkspace(WorkspaceID) -> *promptvmgosdk.GetWorkspaceResponse</code></summary>
 <dl>
 <dd>
 
@@ -15282,7 +15290,7 @@ Returns full workspace metadata including owner, members, and content counts. PR
 <dd>
 
 ```go
-request := &sdk.GetWorkspaceRequest{
+request := &promptvmgosdk.GetWorkspaceRequest{
         WorkspaceID: "workspaceId",
     }
 client.Workspaces.GetWorkspace(
@@ -15316,7 +15324,7 @@ client.Workspaces.GetWorkspace(
 </dl>
 </details>
 
-<details><summary><code>client.Workspaces.DeleteWorkspace(WorkspaceID) -> *sdk.DeleteWorkspaceResponse</code></summary>
+<details><summary><code>client.Workspaces.DeleteWorkspace(WorkspaceID) -> *promptvmgosdk.DeleteWorkspaceResponse</code></summary>
 <dl>
 <dd>
 
@@ -15343,7 +15351,7 @@ Soft-deletes a workspace. Cannot delete default workspace. Use cascade=true to a
 <dd>
 
 ```go
-request := &sdk.DeleteWorkspaceRequest{
+request := &promptvmgosdk.DeleteWorkspaceRequest{
         WorkspaceID: "workspaceId",
     }
 client.Workspaces.DeleteWorkspace(
@@ -15373,7 +15381,7 @@ client.Workspaces.DeleteWorkspace(
 <dl>
 <dd>
 
-**cascade:** `*sdk.DeleteWorkspaceRequestCascade` 
+**cascade:** `*promptvmgosdk.DeleteWorkspaceRequestCascade` 
     
 </dd>
 </dl>
@@ -15385,7 +15393,7 @@ client.Workspaces.DeleteWorkspace(
 </dl>
 </details>
 
-<details><summary><code>client.Workspaces.UpdateWorkspace(WorkspaceID, request) -> *sdk.UpdateWorkspaceResponse</code></summary>
+<details><summary><code>client.Workspaces.UpdateWorkspace(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspaceResponse</code></summary>
 <dl>
 <dd>
 
@@ -15412,7 +15420,7 @@ Updates workspace metadata. Only owner or admin can update. Re-generates slug if
 <dd>
 
 ```go
-request := &sdk.UpdateWorkspaceRequest{
+request := &promptvmgosdk.UpdateWorkspaceRequest{
         WorkspaceID: "workspaceId",
     }
 client.Workspaces.UpdateWorkspace(
@@ -15458,7 +15466,7 @@ client.Workspaces.UpdateWorkspace(
 <dl>
 <dd>
 
-**visibility:** `*sdk.UpdateWorkspaceRequestVisibility` 
+**visibility:** `*promptvmgosdk.UpdateWorkspaceRequestVisibility` 
     
 </dd>
 </dl>
@@ -15478,7 +15486,7 @@ client.Workspaces.UpdateWorkspace(
 </dl>
 </details>
 
-<details><summary><code>client.Workspaces.UpdateWorkspacePin(WorkspaceID, request) -> *sdk.UpdateWorkspacePinResponse</code></summary>
+<details><summary><code>client.Workspaces.UpdateWorkspacePin(WorkspaceID, request) -> *promptvmgosdk.UpdateWorkspacePinResponse</code></summary>
 <dl>
 <dd>
 
@@ -15505,7 +15513,7 @@ Pins or unpins a workspace for the authenticated user.
 <dd>
 
 ```go
-request := &sdk.UpdateWorkspacePinRequest{
+request := &promptvmgosdk.UpdateWorkspacePinRequest{
         WorkspaceID: "workspaceId",
         Pinned: true,
     }
@@ -15548,7 +15556,7 @@ client.Workspaces.UpdateWorkspacePin(
 </dl>
 </details>
 
-<details><summary><code>client.Workspaces.TransferWorkspaceOwnership(WorkspaceID, request) -> *sdk.TransferWorkspaceOwnershipResponse</code></summary>
+<details><summary><code>client.Workspaces.TransferWorkspaceOwnership(WorkspaceID, request) -> *promptvmgosdk.TransferWorkspaceOwnershipResponse</code></summary>
 <dl>
 <dd>
 
@@ -15575,7 +15583,7 @@ Transfers workspace ownership to another org member. Only current owner can tran
 <dd>
 
 ```go
-request := &sdk.TransferWorkspaceOwnershipRequest{
+request := &promptvmgosdk.TransferWorkspaceOwnershipRequest{
         WorkspaceID: "workspaceId",
         NewOwnerID: "newOwnerId",
     }
@@ -15619,7 +15627,7 @@ client.Workspaces.TransferWorkspaceOwnership(
 </details>
 
 ## Search
-<details><summary><code>client.Search.Organization() -> *sdk.SearchOrganizationResponse</code></summary>
+<details><summary><code>client.Search.Organization() -> *promptvmgosdk.SearchOrganizationResponse</code></summary>
 <dl>
 <dd>
 
@@ -15646,7 +15654,7 @@ Cross-workspace, ranked search returning prompts and files the requester can rea
 <dd>
 
 ```go
-request := &sdk.SearchOrganizationRequest{
+request := &promptvmgosdk.SearchOrganizationRequest{
         Q: "q",
         OrganizationID: "organizationId",
     }
@@ -15701,7 +15709,7 @@ client.Search.Organization(
 <dl>
 <dd>
 
-**kinds:** `*sdk.SearchOrganizationRequestKindsItem` — Subset of [prompt, file]. Default both. Unknown kinds return 400 UNSUPPORTED_KIND.
+**kinds:** `*promptvmgosdk.SearchOrganizationRequestKindsItem` — Subset of [prompt, file]. Default both. Unknown kinds return 400 UNSUPPORTED_KIND.
     
 </dd>
 </dl>
@@ -15709,7 +15717,7 @@ client.Search.Organization(
 <dl>
 <dd>
 
-**contentKind:** `*sdk.SearchOrganizationRequestContentKind` — Filter prompt results by content_kind. Omit for all content kinds.
+**contentKind:** `*promptvmgosdk.SearchOrganizationRequestContentKind` — Filter prompt results by content_kind. Omit for all content kinds.
     
 </dd>
 </dl>
@@ -15733,7 +15741,7 @@ client.Search.Organization(
 <dl>
 <dd>
 
-**ranking:** `*sdk.SearchOrganizationRequestRanking` — Ranking mode. `semantic` returns 503 SEARCH_BACKEND_UNAVAILABLE when the embedding backend is down; `hybrid` degrades to keyword (response flag `degraded: true`). Semantic hits carry a plain-text `content` highlight (the best-matching chunk). Hybrid pagination is bounded by the fused candidate pool (60 keyword + 60 semantic).
+**ranking:** `*promptvmgosdk.SearchOrganizationRequestRanking` — Ranking mode. `semantic` returns 503 SEARCH_BACKEND_UNAVAILABLE when the embedding backend is down; `hybrid` degrades to keyword (response flag `degraded: true`). Semantic hits carry a plain-text `content` highlight (the best-matching chunk). Hybrid pagination is bounded by the fused candidate pool (60 keyword + 60 semantic).
     
 </dd>
 </dl>
@@ -15746,7 +15754,7 @@ client.Search.Organization(
 </details>
 
 ## Identity
-<details><summary><code>client.Identity.GetMyIdentity() -> *sdk.GetMyIdentityResponse</code></summary>
+<details><summary><code>client.Identity.GetMyIdentity() -> *promptvmgosdk.GetMyIdentityResponse</code></summary>
 <dl>
 <dd>
 
@@ -15788,7 +15796,7 @@ client.Identity.GetMyIdentity(
 </dl>
 </details>
 
-<details><summary><code>client.Identity.GetMyWorkspaces() -> *sdk.GetMyWorkspacesResponse</code></summary>
+<details><summary><code>client.Identity.GetMyWorkspaces() -> *promptvmgosdk.GetMyWorkspacesResponse</code></summary>
 <dl>
 <dd>
 
@@ -15831,7 +15839,7 @@ client.Identity.GetMyWorkspaces(
 </details>
 
 ## Ai
-<details><summary><code>client.Ai.EnhancePrompt(request) -> *sdk.EnhancePromptResponse</code></summary>
+<details><summary><code>client.Ai.EnhancePrompt(request) -> *promptvmgosdk.EnhancePromptResponse</code></summary>
 <dl>
 <dd>
 
@@ -15858,7 +15866,7 @@ Rewrites the submitted prompt to follow good prompting practices. Backed by the 
 <dd>
 
 ```go
-request := &sdk.EnhancePromptRequest{
+request := &promptvmgosdk.EnhancePromptRequest{
         Prompt: "prompt",
     }
 client.Ai.EnhancePrompt(
@@ -15912,7 +15920,7 @@ client.Ai.EnhancePrompt(
 <dl>
 <dd>
 
-**preset:** `*sdk.EnhancePromptRequestPreset` — Optional optimization preset. When provided, the handler routes to a specialized system prompt for that optimization type (e.g. `shorten` → task slug `prompt-optimization-shorten`). When absent, the default `prompt-enhancement` task is used. Mutually exclusive with `instructions` — if both are provided, `preset` takes precedence.
+**preset:** `*promptvmgosdk.EnhancePromptRequestPreset` — Optional optimization preset. When provided, the handler routes to a specialized system prompt for that optimization type (e.g. `shorten` → task slug `prompt-optimization-shorten`). When absent, the default `prompt-enhancement` task is used. Mutually exclusive with `instructions` — if both are provided, `preset` takes precedence.
     
 </dd>
 </dl>
@@ -15933,7 +15941,7 @@ client.Ai.EnhancePrompt(
 </details>
 
 ## Mcp
-<details><summary><code>client.Mcp.ListMcpSessionTokens() -> *sdk.ListMcpSessionTokensResponse</code></summary>
+<details><summary><code>client.Mcp.ListMcpSessionTokens() -> *promptvmgosdk.ListMcpSessionTokensResponse</code></summary>
 <dl>
 <dd>
 
@@ -15961,7 +15969,7 @@ client.Mcp.ListMcpSessionTokens(
 </dl>
 </details>
 
-<details><summary><code>client.Mcp.MintMcpSessionToken(request) -> *sdk.MintMcpSessionTokenResponse</code></summary>
+<details><summary><code>client.Mcp.MintMcpSessionToken(request) -> *promptvmgosdk.MintMcpSessionTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -15988,7 +15996,7 @@ Creates a short-lived opaque session token bound to the caller. The plaintext to
 <dd>
 
 ```go
-request := &sdk.MintMcpSessionTokenRequest{}
+request := &promptvmgosdk.MintMcpSessionTokenRequest{}
 client.Mcp.MintMcpSessionToken(
         context.TODO(),
         request,
@@ -16032,7 +16040,7 @@ client.Mcp.MintMcpSessionToken(
 <dl>
 <dd>
 
-**scopes:** `[]*sdk.MintMcpSessionTokenRequestScopesItem` 
+**scopes:** `[]*promptvmgosdk.MintMcpSessionTokenRequestScopesItem` 
     
 </dd>
 </dl>
@@ -16040,7 +16048,7 @@ client.Mcp.MintMcpSessionToken(
 <dl>
 <dd>
 
-**client:** `*sdk.MintMcpSessionTokenRequestClient` 
+**client:** `*promptvmgosdk.MintMcpSessionTokenRequestClient` 
     
 </dd>
 </dl>
@@ -16065,7 +16073,7 @@ client.Mcp.MintMcpSessionToken(
 <dd>
 
 ```go
-request := &sdk.RevokeMcpSessionTokenRequest{
+request := &promptvmgosdk.RevokeMcpSessionTokenRequest{
         TokenID: "tokenId",
     }
 client.Mcp.RevokeMcpSessionToken(
@@ -16141,7 +16149,7 @@ client.OAuth.OAuth21AuthorizationServerMetadata(
 <dd>
 
 ```go
-request := &sdk.PostAPIV1OauthRegisterRequest{
+request := &promptvmgosdk.PostAPIV1OauthRegisterRequest{
         ClientName: "client_name",
         RedirectURIs: []string{
             "redirect_uris",
@@ -16223,7 +16231,7 @@ client.OAuth.DynamicClientRegistrationRfc7591(
 <dd>
 
 ```go
-request := &sdk.GetAPIV1OauthAuthorizeRequest{
+request := &promptvmgosdk.GetAPIV1OauthAuthorizeRequest{
         ResponseType: "response_type",
         ClientID: "client_id",
         RedirectURI: "redirect_uri",

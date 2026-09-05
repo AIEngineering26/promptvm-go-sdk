@@ -4,7 +4,7 @@ package cliauth
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Called by the frontend consent page after the user authorizes a CLI login request. Returns a one-time authorization code tied to the PKCE challenge.
 func (c *Client) CliAuthorize(
 	ctx context.Context,
-	request *sdk.CliAuthorizeRequest,
+	request *promptvmgosdk.CliAuthorizeRequest,
 	opts ...option.RequestOption,
-) (*sdk.CliAuthorizeResponse, error) {
+) (*promptvmgosdk.CliAuthorizeResponse, error) {
 	response, err := c.WithRawResponse.CliAuthorize(
 		ctx,
 		request,
@@ -51,9 +51,9 @@ func (c *Client) CliAuthorize(
 
 func (c *Client) CliDeviceAuthorize(
 	ctx context.Context,
-	request *sdk.CliDeviceAuthorizeRequest,
+	request *promptvmgosdk.CliDeviceAuthorizeRequest,
 	opts ...option.RequestOption,
-) (*sdk.CliDeviceAuthorizeResponse, error) {
+) (*promptvmgosdk.CliDeviceAuthorizeResponse, error) {
 	response, err := c.WithRawResponse.CliDeviceAuthorize(
 		ctx,
 		request,
@@ -68,7 +68,7 @@ func (c *Client) CliDeviceAuthorize(
 func (c *Client) ListCliSessions(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) ([]*sdk.ListCliSessionsResponseItem, error) {
+) ([]*promptvmgosdk.ListCliSessionsResponseItem, error) {
 	response, err := c.WithRawResponse.ListCliSessions(
 		ctx,
 		opts...,
@@ -81,7 +81,7 @@ func (c *Client) ListCliSessions(
 
 func (c *Client) RevokeCliSession(
 	ctx context.Context,
-	request *sdk.RevokeCliSessionRequest,
+	request *promptvmgosdk.RevokeCliSessionRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.RevokeCliSession(
@@ -98,7 +98,7 @@ func (c *Client) RevokeCliSession(
 // OAuth 2.0 token endpoint supporting grant_type=authorization_code (with PKCE) and grant_type=refresh_token. Public — no client secret.
 func (c *Client) CliTokenExchange(
 	ctx context.Context,
-	request *sdk.CliTokenExchangeRequest,
+	request *promptvmgosdk.CliTokenExchangeRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.CliTokenExchange(
@@ -114,9 +114,9 @@ func (c *Client) CliTokenExchange(
 
 func (c *Client) CliDeviceCode(
 	ctx context.Context,
-	request *sdk.CliDeviceCodeRequest,
+	request *promptvmgosdk.CliDeviceCodeRequest,
 	opts ...option.RequestOption,
-) (*sdk.CliDeviceCodeResponse, error) {
+) (*promptvmgosdk.CliDeviceCodeResponse, error) {
 	response, err := c.WithRawResponse.CliDeviceCode(
 		ctx,
 		request,
@@ -130,7 +130,7 @@ func (c *Client) CliDeviceCode(
 
 func (c *Client) CliDeviceToken(
 	ctx context.Context,
-	request *sdk.CliDeviceTokenRequest,
+	request *promptvmgosdk.CliDeviceTokenRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.CliDeviceToken(

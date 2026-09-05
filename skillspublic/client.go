@@ -4,7 +4,7 @@ package skillspublic
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Unauthenticated. Atomically increments the tied marketplace listing's downloadCount (never importCount). No-op (still 204) when the public skill has no listing. 404 for a missing/non-public skill.
 func (c *Client) RecordPublicSkillInstall(
 	ctx context.Context,
-	request *sdk.RecordPublicSkillInstallRequest,
+	request *promptvmgosdk.RecordPublicSkillInstallRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.RecordPublicSkillInstall(
@@ -52,9 +52,9 @@ func (c *Client) RecordPublicSkillInstall(
 // Unauthenticated read. Returns the parsed Agent Skills frontmatter as JSON, or the literal SKILL.md bytes when ?format=skill_md.
 func (c *Client) GetPublicSkillBySlug(
 	ctx context.Context,
-	request *sdk.GetPublicSkillBySlugRequest,
+	request *promptvmgosdk.GetPublicSkillBySlugRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetPublicSkillBySlugResponse, error) {
+) (*promptvmgosdk.GetPublicSkillBySlugResponse, error) {
 	response, err := c.WithRawResponse.GetPublicSkillBySlug(
 		ctx,
 		request,

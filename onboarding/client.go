@@ -4,7 +4,7 @@ package onboarding
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -36,7 +36,7 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetOnboardingStatus(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.GetOnboardingStatusResponse, error) {
+) (*promptvmgosdk.GetOnboardingStatusResponse, error) {
 	response, err := c.WithRawResponse.GetOnboardingStatus(
 		ctx,
 		opts...,
@@ -50,9 +50,9 @@ func (c *Client) GetOnboardingStatus(
 // Resolve or unresolve an onboarding checklist step.
 func (c *Client) UpdateOnboardingStep(
 	ctx context.Context,
-	request *sdk.UpdateOnboardingStepRequest,
+	request *promptvmgosdk.UpdateOnboardingStepRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdateOnboardingStepResponse, error) {
+) (*promptvmgosdk.UpdateOnboardingStepResponse, error) {
 	response, err := c.WithRawResponse.UpdateOnboardingStep(
 		ctx,
 		request,
@@ -68,7 +68,7 @@ func (c *Client) UpdateOnboardingStep(
 func (c *Client) DismissOnboarding(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.DismissOnboardingResponse, error) {
+) (*promptvmgosdk.DismissOnboardingResponse, error) {
 	response, err := c.WithRawResponse.DismissOnboarding(
 		ctx,
 		opts...,

@@ -4,11 +4,11 @@ package workspaces
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListWorkspaces(
 	ctx context.Context,
-	request *sdk.ListWorkspacesRequest,
+	request *promptvmgosdk.ListWorkspacesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListWorkspacesResponse], error) {
+) (*core.Response[*promptvmgosdk.ListWorkspacesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListWorkspaces(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListWorkspacesResponse
+	var response *promptvmgosdk.ListWorkspacesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListWorkspaces(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListWorkspacesResponse]{
+	return &core.Response[*promptvmgosdk.ListWorkspacesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListWorkspaces(
 
 func (r *RawClient) CreateWorkspace(
 	ctx context.Context,
-	request *sdk.CreateWorkspaceRequest,
+	request *promptvmgosdk.CreateWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreateWorkspaceResponse], error) {
+) (*core.Response[*promptvmgosdk.CreateWorkspaceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateWorkspace(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreateWorkspaceResponse
+	var response *promptvmgosdk.CreateWorkspaceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) CreateWorkspace(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreateWorkspaceResponse]{
+	return &core.Response[*promptvmgosdk.CreateWorkspaceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -123,9 +123,9 @@ func (r *RawClient) CreateWorkspace(
 
 func (r *RawClient) GetWorkspace(
 	ctx context.Context,
-	request *sdk.GetWorkspaceRequest,
+	request *promptvmgosdk.GetWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetWorkspaceResponse], error) {
+) (*core.Response[*promptvmgosdk.GetWorkspaceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetWorkspace(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetWorkspaceResponse
+	var response *promptvmgosdk.GetWorkspaceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,13 +152,13 @@ func (r *RawClient) GetWorkspace(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetWorkspaceResponse]{
+	return &core.Response[*promptvmgosdk.GetWorkspaceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -167,9 +167,9 @@ func (r *RawClient) GetWorkspace(
 
 func (r *RawClient) DeleteWorkspace(
 	ctx context.Context,
-	request *sdk.DeleteWorkspaceRequest,
+	request *promptvmgosdk.DeleteWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DeleteWorkspaceResponse], error) {
+) (*core.Response[*promptvmgosdk.DeleteWorkspaceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -191,7 +191,7 @@ func (r *RawClient) DeleteWorkspace(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.DeleteWorkspaceResponse
+	var response *promptvmgosdk.DeleteWorkspaceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -203,13 +203,13 @@ func (r *RawClient) DeleteWorkspace(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DeleteWorkspaceResponse]{
+	return &core.Response[*promptvmgosdk.DeleteWorkspaceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -218,9 +218,9 @@ func (r *RawClient) DeleteWorkspace(
 
 func (r *RawClient) UpdateWorkspace(
 	ctx context.Context,
-	request *sdk.UpdateWorkspaceRequest,
+	request *promptvmgosdk.UpdateWorkspaceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdateWorkspaceResponse], error) {
+) (*core.Response[*promptvmgosdk.UpdateWorkspaceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -236,7 +236,7 @@ func (r *RawClient) UpdateWorkspace(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.UpdateWorkspaceResponse
+	var response *promptvmgosdk.UpdateWorkspaceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -249,13 +249,13 @@ func (r *RawClient) UpdateWorkspace(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdateWorkspaceResponse]{
+	return &core.Response[*promptvmgosdk.UpdateWorkspaceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -264,9 +264,9 @@ func (r *RawClient) UpdateWorkspace(
 
 func (r *RawClient) UpdateWorkspacePin(
 	ctx context.Context,
-	request *sdk.UpdateWorkspacePinRequest,
+	request *promptvmgosdk.UpdateWorkspacePinRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdateWorkspacePinResponse], error) {
+) (*core.Response[*promptvmgosdk.UpdateWorkspacePinResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -282,7 +282,7 @@ func (r *RawClient) UpdateWorkspacePin(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.UpdateWorkspacePinResponse
+	var response *promptvmgosdk.UpdateWorkspacePinResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -295,13 +295,13 @@ func (r *RawClient) UpdateWorkspacePin(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdateWorkspacePinResponse]{
+	return &core.Response[*promptvmgosdk.UpdateWorkspacePinResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -310,9 +310,9 @@ func (r *RawClient) UpdateWorkspacePin(
 
 func (r *RawClient) TransferWorkspaceOwnership(
 	ctx context.Context,
-	request *sdk.TransferWorkspaceOwnershipRequest,
+	request *promptvmgosdk.TransferWorkspaceOwnershipRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.TransferWorkspaceOwnershipResponse], error) {
+) (*core.Response[*promptvmgosdk.TransferWorkspaceOwnershipResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -328,7 +328,7 @@ func (r *RawClient) TransferWorkspaceOwnership(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.TransferWorkspaceOwnershipResponse
+	var response *promptvmgosdk.TransferWorkspaceOwnershipResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -341,13 +341,13 @@ func (r *RawClient) TransferWorkspaceOwnership(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.TransferWorkspaceOwnershipResponse]{
+	return &core.Response[*promptvmgosdk.TransferWorkspaceOwnershipResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -4,11 +4,11 @@ package promptversions
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListPromptVersions(
 	ctx context.Context,
-	request *sdk.ListPromptVersionsRequest,
+	request *promptvmgosdk.ListPromptVersionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListPromptVersionsResponse], error) {
+) (*core.Response[*promptvmgosdk.ListPromptVersionsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) ListPromptVersions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListPromptVersionsResponse
+	var response *promptvmgosdk.ListPromptVersionsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,13 +68,13 @@ func (r *RawClient) ListPromptVersions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListPromptVersionsResponse]{
+	return &core.Response[*promptvmgosdk.ListPromptVersionsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -83,9 +83,9 @@ func (r *RawClient) ListPromptVersions(
 
 func (r *RawClient) CreatePromptVersion(
 	ctx context.Context,
-	request *sdk.CreatePromptVersionRequest,
+	request *promptvmgosdk.CreatePromptVersionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreatePromptVersionResponse], error) {
+) (*core.Response[*promptvmgosdk.CreatePromptVersionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -104,7 +104,7 @@ func (r *RawClient) CreatePromptVersion(
 		headers.Add("idempotency-key", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreatePromptVersionResponse
+	var response *promptvmgosdk.CreatePromptVersionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -117,13 +117,13 @@ func (r *RawClient) CreatePromptVersion(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreatePromptVersionResponse]{
+	return &core.Response[*promptvmgosdk.CreatePromptVersionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -132,9 +132,9 @@ func (r *RawClient) CreatePromptVersion(
 
 func (r *RawClient) RollbackPrompt(
 	ctx context.Context,
-	request *sdk.RollbackPromptRequest,
+	request *promptvmgosdk.RollbackPromptRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RollbackPromptResponse], error) {
+) (*core.Response[*promptvmgosdk.RollbackPromptResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -153,7 +153,7 @@ func (r *RawClient) RollbackPrompt(
 		headers.Add("idempotency-key", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.RollbackPromptResponse
+	var response *promptvmgosdk.RollbackPromptResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -166,13 +166,13 @@ func (r *RawClient) RollbackPrompt(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RollbackPromptResponse]{
+	return &core.Response[*promptvmgosdk.RollbackPromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -181,9 +181,9 @@ func (r *RawClient) RollbackPrompt(
 
 func (r *RawClient) GetPromptVersion(
 	ctx context.Context,
-	request *sdk.GetPromptVersionRequest,
+	request *promptvmgosdk.GetPromptVersionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetPromptVersionResponse], error) {
+) (*core.Response[*promptvmgosdk.GetPromptVersionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -199,7 +199,7 @@ func (r *RawClient) GetPromptVersion(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetPromptVersionResponse
+	var response *promptvmgosdk.GetPromptVersionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -211,13 +211,13 @@ func (r *RawClient) GetPromptVersion(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetPromptVersionResponse]{
+	return &core.Response[*promptvmgosdk.GetPromptVersionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -226,9 +226,9 @@ func (r *RawClient) GetPromptVersion(
 
 func (r *RawClient) UpdatePromptVersion(
 	ctx context.Context,
-	request *sdk.UpdatePromptVersionRequest,
+	request *promptvmgosdk.UpdatePromptVersionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdatePromptVersionResponse], error) {
+) (*core.Response[*promptvmgosdk.UpdatePromptVersionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -245,7 +245,7 @@ func (r *RawClient) UpdatePromptVersion(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.UpdatePromptVersionResponse
+	var response *promptvmgosdk.UpdatePromptVersionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -258,13 +258,13 @@ func (r *RawClient) UpdatePromptVersion(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdatePromptVersionResponse]{
+	return &core.Response[*promptvmgosdk.UpdatePromptVersionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -273,9 +273,9 @@ func (r *RawClient) UpdatePromptVersion(
 
 func (r *RawClient) DiffPromptVersions(
 	ctx context.Context,
-	request *sdk.DiffPromptVersionsRequest,
+	request *promptvmgosdk.DiffPromptVersionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DiffPromptVersionsResponse], error) {
+) (*core.Response[*promptvmgosdk.DiffPromptVersionsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -297,7 +297,7 @@ func (r *RawClient) DiffPromptVersions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.DiffPromptVersionsResponse
+	var response *promptvmgosdk.DiffPromptVersionsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -309,13 +309,13 @@ func (r *RawClient) DiffPromptVersions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DiffPromptVersionsResponse]{
+	return &core.Response[*promptvmgosdk.DiffPromptVersionsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -324,9 +324,9 @@ func (r *RawClient) DiffPromptVersions(
 
 func (r *RawClient) GetVersionRecommendedModels(
 	ctx context.Context,
-	request *sdk.GetVersionRecommendedModelsRequest,
+	request *promptvmgosdk.GetVersionRecommendedModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetVersionRecommendedModelsResponse], error) {
+) (*core.Response[*promptvmgosdk.GetVersionRecommendedModelsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -342,7 +342,7 @@ func (r *RawClient) GetVersionRecommendedModels(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetVersionRecommendedModelsResponse
+	var response *promptvmgosdk.GetVersionRecommendedModelsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -354,13 +354,13 @@ func (r *RawClient) GetVersionRecommendedModels(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetVersionRecommendedModelsResponse]{
+	return &core.Response[*promptvmgosdk.GetVersionRecommendedModelsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -369,9 +369,9 @@ func (r *RawClient) GetVersionRecommendedModels(
 
 func (r *RawClient) SetVersionRecommendedModels(
 	ctx context.Context,
-	request *sdk.SetVersionRecommendedModelsRequest,
+	request *promptvmgosdk.SetVersionRecommendedModelsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SetVersionRecommendedModelsResponse], error) {
+) (*core.Response[*promptvmgosdk.SetVersionRecommendedModelsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -388,7 +388,7 @@ func (r *RawClient) SetVersionRecommendedModels(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.SetVersionRecommendedModelsResponse
+	var response *promptvmgosdk.SetVersionRecommendedModelsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -401,13 +401,13 @@ func (r *RawClient) SetVersionRecommendedModels(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SetVersionRecommendedModelsResponse]{
+	return &core.Response[*promptvmgosdk.SetVersionRecommendedModelsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

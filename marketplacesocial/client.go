@@ -4,7 +4,7 @@ package marketplacesocial
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) FollowACreator(
 	ctx context.Context,
-	request *sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
+	request *promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
 	opts ...option.RequestOption,
-) (*sdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse, error) {
+) (*promptvmgosdk.PostAPIV1MarketplaceCreatorCreatorUserIDFollowResponse, error) {
 	response, err := c.WithRawResponse.FollowACreator(
 		ctx,
 		request,
@@ -50,7 +50,7 @@ func (c *Client) FollowACreator(
 
 func (c *Client) UnfollowACreator(
 	ctx context.Context,
-	request *sdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
+	request *promptvmgosdk.DeleteAPIV1MarketplaceCreatorCreatorUserIDFollowRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.UnfollowACreator(
@@ -66,9 +66,9 @@ func (c *Client) UnfollowACreator(
 
 func (c *Client) ListCreatorsIFollow(
 	ctx context.Context,
-	request *sdk.GetAPIV1MarketplaceCreatorMeFollowingRequest,
+	request *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetAPIV1MarketplaceCreatorMeFollowingResponse, error) {
+) (*promptvmgosdk.GetAPIV1MarketplaceCreatorMeFollowingResponse, error) {
 	response, err := c.WithRawResponse.ListCreatorsIFollow(
 		ctx,
 		request,
@@ -82,9 +82,9 @@ func (c *Client) ListCreatorsIFollow(
 
 func (c *Client) FollowedCreatorListingFeed(
 	ctx context.Context,
-	request *sdk.GetAPIV1MarketplaceCreatorMeFeedRequest,
+	request *promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetAPIV1MarketplaceCreatorMeFeedResponse, error) {
+) (*promptvmgosdk.GetAPIV1MarketplaceCreatorMeFeedResponse, error) {
 	response, err := c.WithRawResponse.FollowedCreatorListingFeed(
 		ctx,
 		request,
@@ -98,9 +98,9 @@ func (c *Client) FollowedCreatorListingFeed(
 
 func (c *Client) ListACreatorsFollowers(
 	ctx context.Context,
-	request *sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest,
+	request *promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse, error) {
+) (*promptvmgosdk.GetAPIV1MarketplaceCreatorCreatorUserIDFollowersResponse, error) {
 	response, err := c.WithRawResponse.ListACreatorsFollowers(
 		ctx,
 		request,

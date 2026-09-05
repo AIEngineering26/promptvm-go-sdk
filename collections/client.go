@@ -4,7 +4,7 @@ package collections
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListCollections(
 	ctx context.Context,
-	request *sdk.ListCollectionsRequest,
+	request *promptvmgosdk.ListCollectionsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListCollectionsResponse, error) {
+) (*promptvmgosdk.ListCollectionsResponse, error) {
 	response, err := c.WithRawResponse.ListCollections(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) ListCollections(
 
 func (c *Client) CreateCollection(
 	ctx context.Context,
-	request *sdk.CreateCollectionRequest,
+	request *promptvmgosdk.CreateCollectionRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreateCollectionResponse, error) {
+) (*promptvmgosdk.CreateCollectionResponse, error) {
 	response, err := c.WithRawResponse.CreateCollection(
 		ctx,
 		request,
@@ -66,9 +66,9 @@ func (c *Client) CreateCollection(
 
 func (c *Client) GetCollection(
 	ctx context.Context,
-	request *sdk.GetCollectionRequest,
+	request *promptvmgosdk.GetCollectionRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetCollectionResponse, error) {
+) (*promptvmgosdk.GetCollectionResponse, error) {
 	response, err := c.WithRawResponse.GetCollection(
 		ctx,
 		request,
@@ -82,9 +82,9 @@ func (c *Client) GetCollection(
 
 func (c *Client) DeleteCollection(
 	ctx context.Context,
-	request *sdk.DeleteCollectionRequest,
+	request *promptvmgosdk.DeleteCollectionRequest,
 	opts ...option.RequestOption,
-) (*sdk.DeleteCollectionResponse, error) {
+) (*promptvmgosdk.DeleteCollectionResponse, error) {
 	response, err := c.WithRawResponse.DeleteCollection(
 		ctx,
 		request,
@@ -98,9 +98,9 @@ func (c *Client) DeleteCollection(
 
 func (c *Client) UpdateCollection(
 	ctx context.Context,
-	request *sdk.UpdateCollectionRequest,
+	request *promptvmgosdk.UpdateCollectionRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdateCollectionResponse, error) {
+) (*promptvmgosdk.UpdateCollectionResponse, error) {
 	response, err := c.WithRawResponse.UpdateCollection(
 		ctx,
 		request,
@@ -114,9 +114,9 @@ func (c *Client) UpdateCollection(
 
 func (c *Client) AddCollectionItem(
 	ctx context.Context,
-	request *sdk.AddCollectionItemRequest,
+	request *promptvmgosdk.AddCollectionItemRequest,
 	opts ...option.RequestOption,
-) (*sdk.AddCollectionItemResponse, error) {
+) (*promptvmgosdk.AddCollectionItemResponse, error) {
 	response, err := c.WithRawResponse.AddCollectionItem(
 		ctx,
 		request,
@@ -130,9 +130,9 @@ func (c *Client) AddCollectionItem(
 
 func (c *Client) RemoveCollectionItem(
 	ctx context.Context,
-	request *sdk.RemoveCollectionItemRequest,
+	request *promptvmgosdk.RemoveCollectionItemRequest,
 	opts ...option.RequestOption,
-) (*sdk.RemoveCollectionItemResponse, error) {
+) (*promptvmgosdk.RemoveCollectionItemResponse, error) {
 	response, err := c.WithRawResponse.RemoveCollectionItem(
 		ctx,
 		request,
@@ -147,9 +147,9 @@ func (c *Client) RemoveCollectionItem(
 // Rewrites each member's position to its index in orderedItemIds. The id set must match the collection's current members exactly.
 func (c *Client) ReorderCollectionItems(
 	ctx context.Context,
-	request *sdk.ReorderCollectionItemsRequest,
+	request *promptvmgosdk.ReorderCollectionItemsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ReorderCollectionItemsResponse, error) {
+) (*promptvmgosdk.ReorderCollectionItemsResponse, error) {
 	response, err := c.WithRawResponse.ReorderCollectionItems(
 		ctx,
 		request,

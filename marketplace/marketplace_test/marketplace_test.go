@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceSetListingRecommendedModelsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.SetListingRecommendedModelsRequest{
+	request := &promptvmgosdk.SetListingRecommendedModelsRequest{
 		ListingID: "listingId",
 		ModelIDs: []string{
 			"modelIds",
@@ -124,7 +124,7 @@ func TestMarketplaceAdminCreateContentTypeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminCreateContentTypeRequest{
+	request := &promptvmgosdk.AdminCreateContentTypeRequest{
 		Slug:        "slug",
 		Label:       "label",
 		PluralLabel: "pluralLabel",
@@ -154,9 +154,9 @@ func TestMarketplaceAdminReorderContentTypesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminReorderContentTypesRequest{
-		Items: []*sdk.AdminReorderContentTypesRequestItemsItem{
-			&sdk.AdminReorderContentTypesRequestItemsItem{
+	request := &promptvmgosdk.AdminReorderContentTypesRequest{
+		Items: []*promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
+			&promptvmgosdk.AdminReorderContentTypesRequestItemsItem{
 				Slug:      "slug",
 				SortOrder: 1,
 			},
@@ -185,7 +185,7 @@ func TestMarketplaceAdminDeleteContentTypeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminDeleteContentTypeRequest{
+	request := &promptvmgosdk.AdminDeleteContentTypeRequest{
 		Slug: "slug",
 	}
 	invocationErr := client.Marketplace.AdminDeleteContentType(
@@ -211,7 +211,7 @@ func TestMarketplaceAdminUpdateContentTypeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminUpdateContentTypeRequest{
+	request := &promptvmgosdk.AdminUpdateContentTypeRequest{
 		Slug: "slug",
 	}
 	_, invocationErr := client.Marketplace.AdminUpdateContentType(
@@ -259,7 +259,7 @@ func TestMarketplaceAdminCreateAiModelProviderWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminCreateAiModelProviderRequest{
+	request := &promptvmgosdk.AdminCreateAiModelProviderRequest{
 		Slug: "slug",
 		Name: "name",
 	}
@@ -286,9 +286,9 @@ func TestMarketplaceAdminReorderAiModelProvidersWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminReorderAiModelProvidersRequest{
-		Items: []*sdk.AdminReorderAiModelProvidersRequestItemsItem{
-			&sdk.AdminReorderAiModelProvidersRequestItemsItem{
+	request := &promptvmgosdk.AdminReorderAiModelProvidersRequest{
+		Items: []*promptvmgosdk.AdminReorderAiModelProvidersRequestItemsItem{
+			&promptvmgosdk.AdminReorderAiModelProvidersRequestItemsItem{
 				ID:        "id",
 				SortOrder: 1,
 			},
@@ -317,7 +317,7 @@ func TestMarketplaceAdminDeleteAiModelProviderWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminDeleteAiModelProviderRequest{
+	request := &promptvmgosdk.AdminDeleteAiModelProviderRequest{
 		Slug: "slug",
 	}
 	invocationErr := client.Marketplace.AdminDeleteAiModelProvider(
@@ -343,7 +343,7 @@ func TestMarketplaceAdminUpdateAiModelProviderWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminUpdateAiModelProviderRequest{
+	request := &promptvmgosdk.AdminUpdateAiModelProviderRequest{
 		Slug: "slug",
 	}
 	_, invocationErr := client.Marketplace.AdminUpdateAiModelProvider(
@@ -369,7 +369,7 @@ func TestMarketplaceAdminListAiModelsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminListAiModelsRequest{}
+	request := &promptvmgosdk.AdminListAiModelsRequest{}
 	_, invocationErr := client.Marketplace.AdminListAiModels(
 		context.TODO(),
 		request,
@@ -393,7 +393,7 @@ func TestMarketplaceAdminCreateAiModelWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminCreateAiModelRequest{
+	request := &promptvmgosdk.AdminCreateAiModelRequest{
 		ProviderID: "providerId",
 		Slug:       "slug",
 		Name:       "name",
@@ -421,9 +421,9 @@ func TestMarketplaceAdminReorderAiModelsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminReorderAiModelsRequest{
-		Items: []*sdk.AdminReorderAiModelsRequestItemsItem{
-			&sdk.AdminReorderAiModelsRequestItemsItem{
+	request := &promptvmgosdk.AdminReorderAiModelsRequest{
+		Items: []*promptvmgosdk.AdminReorderAiModelsRequestItemsItem{
+			&promptvmgosdk.AdminReorderAiModelsRequestItemsItem{
 				ID:        "id",
 				SortOrder: 1,
 			},
@@ -452,7 +452,7 @@ func TestMarketplaceAdminDeleteAiModelWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminDeleteAiModelRequest{
+	request := &promptvmgosdk.AdminDeleteAiModelRequest{
 		ID: "id",
 	}
 	invocationErr := client.Marketplace.AdminDeleteAiModel(
@@ -478,7 +478,7 @@ func TestMarketplaceAdminUpdateAiModelWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminUpdateAiModelRequest{
+	request := &promptvmgosdk.AdminUpdateAiModelRequest{
 		ID: "id",
 	}
 	_, invocationErr := client.Marketplace.AdminUpdateAiModel(
@@ -526,7 +526,7 @@ func TestMarketplaceAdminCreateCategoryWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminCreateCategoryRequest{
+	request := &promptvmgosdk.AdminCreateCategoryRequest{
 		Name: "name",
 		Slug: "slug",
 	}
@@ -553,9 +553,9 @@ func TestMarketplaceAdminReorderCategoriesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminReorderCategoriesRequest{
-		Items: []*sdk.AdminReorderCategoriesRequestItemsItem{
-			&sdk.AdminReorderCategoriesRequestItemsItem{
+	request := &promptvmgosdk.AdminReorderCategoriesRequest{
+		Items: []*promptvmgosdk.AdminReorderCategoriesRequestItemsItem{
+			&promptvmgosdk.AdminReorderCategoriesRequestItemsItem{
 				ID:           "id",
 				DisplayOrder: 1,
 			},
@@ -584,7 +584,7 @@ func TestMarketplaceAdminDeleteCategoryWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminDeleteCategoryRequest{
+	request := &promptvmgosdk.AdminDeleteCategoryRequest{
 		ID: "id",
 	}
 	invocationErr := client.Marketplace.AdminDeleteCategory(
@@ -610,7 +610,7 @@ func TestMarketplaceAdminUpdateCategoryWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AdminUpdateCategoryRequest{
+	request := &promptvmgosdk.AdminUpdateCategoryRequest{
 		ID: "id",
 	}
 	_, invocationErr := client.Marketplace.AdminUpdateCategory(

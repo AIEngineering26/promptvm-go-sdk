@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestSkillsPublicRecordPublicSkillInstallWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.RecordPublicSkillInstallRequest{
+	request := &promptvmgosdk.RecordPublicSkillInstallRequest{
 		Slug: "slug",
 	}
 	invocationErr := client.SkillsPublic.RecordPublicSkillInstall(
@@ -99,7 +99,7 @@ func TestSkillsPublicGetPublicSkillBySlugWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetPublicSkillBySlugRequest{
+	request := &promptvmgosdk.GetPublicSkillBySlugRequest{
 		Slug: "slug",
 	}
 	_, invocationErr := client.SkillsPublic.GetPublicSkillBySlug(

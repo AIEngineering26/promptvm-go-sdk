@@ -4,7 +4,7 @@ package marketplaceresolve
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Unauthenticated. Resolves `creator/name`, a legacy vanity slug, a `name-<uuid8>` file slug, or an unambiguous bare name. Returns { ref, kind, content, … } for skill/agent/command/hook/mcp/settings/prompt. 404 for missing/non-public; 409 AMBIGUOUS_REF + candidates when a bare name is owned by multiple creators.
 func (c *Client) ResolveInstallRef(
 	ctx context.Context,
-	request *sdk.ResolveInstallRefRequest,
+	request *promptvmgosdk.ResolveInstallRefRequest,
 	opts ...option.RequestOption,
-) (*sdk.ResolveInstallRefResponse, error) {
+) (*promptvmgosdk.ResolveInstallRefResponse, error) {
 	response, err := c.WithRawResponse.ResolveInstallRef(
 		ctx,
 		request,
@@ -52,7 +52,7 @@ func (c *Client) ResolveInstallRef(
 // Unauthenticated. Resolves the ref and atomically increments the tied active listing's downloadCount (never importCount). 204 even when the resolved artifact has no active listing. 404 for missing/non-public; 409 AMBIGUOUS_REF.
 func (c *Client) RecordResolveInstall(
 	ctx context.Context,
-	request *sdk.RecordResolveInstallRequest,
+	request *promptvmgosdk.RecordResolveInstallRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.RecordResolveInstall(

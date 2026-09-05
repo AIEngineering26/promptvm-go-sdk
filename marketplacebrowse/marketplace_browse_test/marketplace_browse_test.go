@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceBrowseListMarketplaceListingsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListMarketplaceListingsRequest{}
+	request := &promptvmgosdk.ListMarketplaceListingsRequest{}
 	_, invocationErr := client.MarketplaceBrowse.ListMarketplaceListings(
 		context.TODO(),
 		request,
@@ -97,7 +97,7 @@ func TestMarketplaceBrowseGetMarketplaceListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetMarketplaceListingRequest{
+	request := &promptvmgosdk.GetMarketplaceListingRequest{
 		ListingID: "listingId",
 	}
 	_, invocationErr := client.MarketplaceBrowse.GetMarketplaceListing(
@@ -211,7 +211,7 @@ func TestMarketplaceBrowseGetMarketplaceFacetsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetMarketplaceFacetsRequest{}
+	request := &promptvmgosdk.GetMarketplaceFacetsRequest{}
 	_, invocationErr := client.MarketplaceBrowse.GetMarketplaceFacets(
 		context.TODO(),
 		request,

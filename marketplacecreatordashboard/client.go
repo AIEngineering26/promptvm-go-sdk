@@ -4,7 +4,7 @@ package marketplacecreatordashboard
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListMarketplaceCreatorListings(
 	ctx context.Context,
-	request *sdk.ListMarketplaceCreatorListingsRequest,
+	request *promptvmgosdk.ListMarketplaceCreatorListingsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListMarketplaceCreatorListingsResponse, error) {
+) (*promptvmgosdk.ListMarketplaceCreatorListingsResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceCreatorListings(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) ListMarketplaceCreatorListings(
 
 func (c *Client) ListMarketplaceCreatorSubscribers(
 	ctx context.Context,
-	request *sdk.ListMarketplaceCreatorSubscribersRequest,
+	request *promptvmgosdk.ListMarketplaceCreatorSubscribersRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListMarketplaceCreatorSubscribersResponse, error) {
+) (*promptvmgosdk.ListMarketplaceCreatorSubscribersResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceCreatorSubscribers(
 		ctx,
 		request,

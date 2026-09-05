@@ -4,7 +4,7 @@ package promptdeployments
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Points the named environment at an existing published version. Idempotent — redeploying the same version updates deployedAt only.
 func (c *Client) DeployPromptVersion(
 	ctx context.Context,
-	request *sdk.DeployPromptVersionRequest,
+	request *promptvmgosdk.DeployPromptVersionRequest,
 	opts ...option.RequestOption,
-) (*sdk.DeployPromptVersionResponse, error) {
+) (*promptvmgosdk.DeployPromptVersionResponse, error) {
 	response, err := c.WithRawResponse.DeployPromptVersion(
 		ctx,
 		request,

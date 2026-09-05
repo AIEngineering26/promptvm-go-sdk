@@ -4,7 +4,7 @@ package settings
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns workspace + API-key counts, derived admin-task status, and a top-5 recent-activity slice for the active organization. Recent activity is server-scoped by role: owners/admins see all org events, members/viewers see only their own.
 func (c *Client) GetSettingsOverview(
 	ctx context.Context,
-	request *sdk.GetSettingsOverviewRequest,
+	request *promptvmgosdk.GetSettingsOverviewRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetSettingsOverviewResponse, error) {
+) (*promptvmgosdk.GetSettingsOverviewResponse, error) {
 	response, err := c.WithRawResponse.GetSettingsOverview(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) GetSettingsOverview(
 // Returns the unified admin-task list (billing method on file, first API key created). Tasks are derived from observable state, not stored — there is no toggle endpoint.
 func (c *Client) GetAdminTasks(
 	ctx context.Context,
-	request *sdk.GetAdminTasksRequest,
+	request *promptvmgosdk.GetAdminTasksRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetAdminTasksResponse, error) {
+) (*promptvmgosdk.GetAdminTasksResponse, error) {
 	response, err := c.WithRawResponse.GetAdminTasks(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) GetAdminTasks(
 // Server-scoped by role: owners/admins see all org events; members/viewers see only events where they are the actor.
 func (c *Client) ListAuditLogs(
 	ctx context.Context,
-	request *sdk.ListAuditLogsRequest,
+	request *promptvmgosdk.ListAuditLogsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListAuditLogsResponse, error) {
+) (*promptvmgosdk.ListAuditLogsResponse, error) {
 	response, err := c.WithRawResponse.ListAuditLogs(
 		ctx,
 		request,
@@ -85,9 +85,9 @@ func (c *Client) ListAuditLogs(
 
 func (c *Client) ListOrgTags(
 	ctx context.Context,
-	request *sdk.ListOrgTagsRequest,
+	request *promptvmgosdk.ListOrgTagsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListOrgTagsResponse, error) {
+) (*promptvmgosdk.ListOrgTagsResponse, error) {
 	response, err := c.WithRawResponse.ListOrgTags(
 		ctx,
 		request,
@@ -101,9 +101,9 @@ func (c *Client) ListOrgTags(
 
 func (c *Client) CreateOrgTag(
 	ctx context.Context,
-	request *sdk.CreateOrgTagRequest,
+	request *promptvmgosdk.CreateOrgTagRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreateOrgTagResponse, error) {
+) (*promptvmgosdk.CreateOrgTagResponse, error) {
 	response, err := c.WithRawResponse.CreateOrgTag(
 		ctx,
 		request,
@@ -117,7 +117,7 @@ func (c *Client) CreateOrgTag(
 
 func (c *Client) DeleteOrgTag(
 	ctx context.Context,
-	request *sdk.DeleteOrgTagRequest,
+	request *promptvmgosdk.DeleteOrgTagRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.DeleteOrgTag(
@@ -133,9 +133,9 @@ func (c *Client) DeleteOrgTag(
 
 func (c *Client) UpdateOrgTag(
 	ctx context.Context,
-	request *sdk.UpdateOrgTagRequest,
+	request *promptvmgosdk.UpdateOrgTagRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdateOrgTagResponse, error) {
+) (*promptvmgosdk.UpdateOrgTagResponse, error) {
 	response, err := c.WithRawResponse.UpdateOrgTag(
 		ctx,
 		request,
@@ -149,9 +149,9 @@ func (c *Client) UpdateOrgTag(
 
 func (c *Client) GetSecurityStatus(
 	ctx context.Context,
-	request *sdk.GetSecurityStatusRequest,
+	request *promptvmgosdk.GetSecurityStatusRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetSecurityStatusResponse, error) {
+) (*promptvmgosdk.GetSecurityStatusResponse, error) {
 	response, err := c.WithRawResponse.GetSecurityStatus(
 		ctx,
 		request,
@@ -166,7 +166,7 @@ func (c *Client) GetSecurityStatus(
 func (c *Client) SetupTotp(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.SetupTotpResponse, error) {
+) (*promptvmgosdk.SetupTotpResponse, error) {
 	response, err := c.WithRawResponse.SetupTotp(
 		ctx,
 		opts...,
@@ -179,9 +179,9 @@ func (c *Client) SetupTotp(
 
 func (c *Client) VerifyTotp(
 	ctx context.Context,
-	request *sdk.VerifyTotpRequest,
+	request *promptvmgosdk.VerifyTotpRequest,
 	opts ...option.RequestOption,
-) (*sdk.VerifyTotpResponse, error) {
+) (*promptvmgosdk.VerifyTotpResponse, error) {
 	response, err := c.WithRawResponse.VerifyTotp(
 		ctx,
 		request,
@@ -195,9 +195,9 @@ func (c *Client) VerifyTotp(
 
 func (c *Client) DisableTotp(
 	ctx context.Context,
-	request *sdk.DisableTotpRequest,
+	request *promptvmgosdk.DisableTotpRequest,
 	opts ...option.RequestOption,
-) (*sdk.DisableTotpResponse, error) {
+) (*promptvmgosdk.DisableTotpResponse, error) {
 	response, err := c.WithRawResponse.DisableTotp(
 		ctx,
 		request,
@@ -211,9 +211,9 @@ func (c *Client) DisableTotp(
 
 func (c *Client) RegenerateRecoveryCodes(
 	ctx context.Context,
-	request *sdk.RegenerateRecoveryCodesRequest,
+	request *promptvmgosdk.RegenerateRecoveryCodesRequest,
 	opts ...option.RequestOption,
-) (*sdk.RegenerateRecoveryCodesResponse, error) {
+) (*promptvmgosdk.RegenerateRecoveryCodesResponse, error) {
 	response, err := c.WithRawResponse.RegenerateRecoveryCodes(
 		ctx,
 		request,
@@ -227,9 +227,9 @@ func (c *Client) RegenerateRecoveryCodes(
 
 func (c *Client) ChangePassword(
 	ctx context.Context,
-	request *sdk.ChangePasswordRequest,
+	request *promptvmgosdk.ChangePasswordRequest,
 	opts ...option.RequestOption,
-) (*sdk.ChangePasswordResponse, error) {
+) (*promptvmgosdk.ChangePasswordResponse, error) {
 	response, err := c.WithRawResponse.ChangePassword(
 		ctx,
 		request,
@@ -243,9 +243,9 @@ func (c *Client) ChangePassword(
 
 func (c *Client) UpdateOrgMfaPolicy(
 	ctx context.Context,
-	request *sdk.UpdateOrgMfaPolicyRequest,
+	request *promptvmgosdk.UpdateOrgMfaPolicyRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdateOrgMfaPolicyResponse, error) {
+) (*promptvmgosdk.UpdateOrgMfaPolicyResponse, error) {
 	response, err := c.WithRawResponse.UpdateOrgMfaPolicy(
 		ctx,
 		request,
@@ -260,7 +260,7 @@ func (c *Client) UpdateOrgMfaPolicy(
 func (c *Client) SendEmailOtp(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.SendEmailOtpResponse, error) {
+) (*promptvmgosdk.SendEmailOtpResponse, error) {
 	response, err := c.WithRawResponse.SendEmailOtp(
 		ctx,
 		opts...,
@@ -273,9 +273,9 @@ func (c *Client) SendEmailOtp(
 
 func (c *Client) VerifyEmailOtp(
 	ctx context.Context,
-	request *sdk.VerifyEmailOtpRequest,
+	request *promptvmgosdk.VerifyEmailOtpRequest,
 	opts ...option.RequestOption,
-) (*sdk.VerifyEmailOtpResponse, error) {
+) (*promptvmgosdk.VerifyEmailOtpResponse, error) {
 	response, err := c.WithRawResponse.VerifyEmailOtp(
 		ctx,
 		request,
@@ -289,9 +289,9 @@ func (c *Client) VerifyEmailOtp(
 
 func (c *Client) DisableEmailOtp(
 	ctx context.Context,
-	request *sdk.DisableEmailOtpRequest,
+	request *promptvmgosdk.DisableEmailOtpRequest,
 	opts ...option.RequestOption,
-) (*sdk.DisableEmailOtpResponse, error) {
+) (*promptvmgosdk.DisableEmailOtpResponse, error) {
 	response, err := c.WithRawResponse.DisableEmailOtp(
 		ctx,
 		request,

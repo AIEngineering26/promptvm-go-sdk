@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestCollectionsListCollectionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListCollectionsRequest{}
+	request := &promptvmgosdk.ListCollectionsRequest{}
 	_, invocationErr := client.Collections.ListCollections(
 		context.TODO(),
 		request,
@@ -97,7 +97,7 @@ func TestCollectionsCreateCollectionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.CreateCollectionRequest{
+	request := &promptvmgosdk.CreateCollectionRequest{
 		Name: "name",
 	}
 	_, invocationErr := client.Collections.CreateCollection(
@@ -123,7 +123,7 @@ func TestCollectionsGetCollectionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetCollectionRequest{
+	request := &promptvmgosdk.GetCollectionRequest{
 		CollectionID: "collectionId",
 	}
 	_, invocationErr := client.Collections.GetCollection(
@@ -149,7 +149,7 @@ func TestCollectionsDeleteCollectionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DeleteCollectionRequest{
+	request := &promptvmgosdk.DeleteCollectionRequest{
 		CollectionID: "collectionId",
 	}
 	_, invocationErr := client.Collections.DeleteCollection(
@@ -175,7 +175,7 @@ func TestCollectionsUpdateCollectionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.UpdateCollectionRequest{
+	request := &promptvmgosdk.UpdateCollectionRequest{
 		CollectionID: "collectionId",
 	}
 	_, invocationErr := client.Collections.UpdateCollection(
@@ -201,7 +201,7 @@ func TestCollectionsAddCollectionItemWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AddCollectionItemRequest{
+	request := &promptvmgosdk.AddCollectionItemRequest{
 		CollectionID: "collectionId",
 		FileID:       "fileId",
 	}
@@ -228,7 +228,7 @@ func TestCollectionsRemoveCollectionItemWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.RemoveCollectionItemRequest{
+	request := &promptvmgosdk.RemoveCollectionItemRequest{
 		CollectionID: "collectionId",
 		ItemID:       "itemId",
 	}
@@ -255,7 +255,7 @@ func TestCollectionsReorderCollectionItemsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ReorderCollectionItemsRequest{
+	request := &promptvmgosdk.ReorderCollectionItemsRequest{
 		CollectionID: "collectionId",
 		OrderedItemIDs: []string{
 			"orderedItemIds",

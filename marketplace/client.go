@@ -4,7 +4,7 @@ package marketplace
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Replace-all, in the order given. Up to 10. Independent of the resource version this listing was published from — editing the version never reaches back into a live listing.
 func (c *Client) SetListingRecommendedModels(
 	ctx context.Context,
-	request *sdk.SetListingRecommendedModelsRequest,
+	request *promptvmgosdk.SetListingRecommendedModelsRequest,
 	opts ...option.RequestOption,
-) (*sdk.SetListingRecommendedModelsResponse, error) {
+) (*promptvmgosdk.SetListingRecommendedModelsResponse, error) {
 	response, err := c.WithRawResponse.SetListingRecommendedModels(
 		ctx,
 		request,
@@ -53,7 +53,7 @@ func (c *Client) SetListingRecommendedModels(
 func (c *Client) AdminListContentTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.AdminListContentTypesResponse, error) {
+) (*promptvmgosdk.AdminListContentTypesResponse, error) {
 	response, err := c.WithRawResponse.AdminListContentTypes(
 		ctx,
 		opts...,
@@ -67,9 +67,9 @@ func (c *Client) AdminListContentTypes(
 // Creates a new marketplace content type. Slug must be unique and match ^[a-z0-9][a-z0-9-]{0,31}$. Setting enabled=true requires a registered code kind (422 otherwise). Requires internal_marketplace:manage.
 func (c *Client) AdminCreateContentType(
 	ctx context.Context,
-	request *sdk.AdminCreateContentTypeRequest,
+	request *promptvmgosdk.AdminCreateContentTypeRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminCreateContentTypeResponse, error) {
+) (*promptvmgosdk.AdminCreateContentTypeResponse, error) {
 	response, err := c.WithRawResponse.AdminCreateContentType(
 		ctx,
 		request,
@@ -84,9 +84,9 @@ func (c *Client) AdminCreateContentType(
 // Bulk-updates sort_order for a set of slugs in one transaction. Every slug must exist. Requires internal_marketplace:manage.
 func (c *Client) AdminReorderContentTypes(
 	ctx context.Context,
-	request *sdk.AdminReorderContentTypesRequest,
+	request *promptvmgosdk.AdminReorderContentTypesRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminReorderContentTypesResponse, error) {
+) (*promptvmgosdk.AdminReorderContentTypesResponse, error) {
 	response, err := c.WithRawResponse.AdminReorderContentTypes(
 		ctx,
 		request,
@@ -101,7 +101,7 @@ func (c *Client) AdminReorderContentTypes(
 // Deletes a content type. Allowed ONLY for non-built-in slugs with no dependent content — otherwise 409 (disable instead). Requires internal_marketplace:manage.
 func (c *Client) AdminDeleteContentType(
 	ctx context.Context,
-	request *sdk.AdminDeleteContentTypeRequest,
+	request *promptvmgosdk.AdminDeleteContentTypeRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.AdminDeleteContentType(
@@ -118,9 +118,9 @@ func (c *Client) AdminDeleteContentType(
 // Partially updates a content type's presentation/config fields. The slug is immutable. Flipping enabled=true requires a registered code kind (422 otherwise). Requires internal_marketplace:manage.
 func (c *Client) AdminUpdateContentType(
 	ctx context.Context,
-	request *sdk.AdminUpdateContentTypeRequest,
+	request *promptvmgosdk.AdminUpdateContentTypeRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminUpdateContentTypeResponse, error) {
+) (*promptvmgosdk.AdminUpdateContentTypeResponse, error) {
 	response, err := c.WithRawResponse.AdminUpdateContentType(
 		ctx,
 		request,
@@ -136,7 +136,7 @@ func (c *Client) AdminUpdateContentType(
 func (c *Client) AdminListAiModelProviders(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.AdminListAiModelProvidersResponse, error) {
+) (*promptvmgosdk.AdminListAiModelProvidersResponse, error) {
 	response, err := c.WithRawResponse.AdminListAiModelProviders(
 		ctx,
 		opts...,
@@ -150,9 +150,9 @@ func (c *Client) AdminListAiModelProviders(
 // Logo and website URLs are validated (https, no credentials, no private hosts) and are never fetched by the server.
 func (c *Client) AdminCreateAiModelProvider(
 	ctx context.Context,
-	request *sdk.AdminCreateAiModelProviderRequest,
+	request *promptvmgosdk.AdminCreateAiModelProviderRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminCreateAiModelProviderResponse, error) {
+) (*promptvmgosdk.AdminCreateAiModelProviderResponse, error) {
 	response, err := c.WithRawResponse.AdminCreateAiModelProvider(
 		ctx,
 		request,
@@ -166,9 +166,9 @@ func (c *Client) AdminCreateAiModelProvider(
 
 func (c *Client) AdminReorderAiModelProviders(
 	ctx context.Context,
-	request *sdk.AdminReorderAiModelProvidersRequest,
+	request *promptvmgosdk.AdminReorderAiModelProvidersRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminReorderAiModelProvidersResponse, error) {
+) (*promptvmgosdk.AdminReorderAiModelProvidersResponse, error) {
 	response, err := c.WithRawResponse.AdminReorderAiModelProviders(
 		ctx,
 		request,
@@ -183,7 +183,7 @@ func (c *Client) AdminReorderAiModelProviders(
 // Refused with 409 while the provider still has models. Retire it instead — retiring hides it from pickers without disturbing existing recommendations.
 func (c *Client) AdminDeleteAiModelProvider(
 	ctx context.Context,
-	request *sdk.AdminDeleteAiModelProviderRequest,
+	request *promptvmgosdk.AdminDeleteAiModelProviderRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.AdminDeleteAiModelProvider(
@@ -200,9 +200,9 @@ func (c *Client) AdminDeleteAiModelProvider(
 // Slug is immutable. Set `isActive: false` to retire a provider.
 func (c *Client) AdminUpdateAiModelProvider(
 	ctx context.Context,
-	request *sdk.AdminUpdateAiModelProviderRequest,
+	request *promptvmgosdk.AdminUpdateAiModelProviderRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminUpdateAiModelProviderResponse, error) {
+) (*promptvmgosdk.AdminUpdateAiModelProviderResponse, error) {
 	response, err := c.WithRawResponse.AdminUpdateAiModelProvider(
 		ctx,
 		request,
@@ -217,9 +217,9 @@ func (c *Client) AdminUpdateAiModelProvider(
 // All models including retired ones. Optionally scoped to one provider.
 func (c *Client) AdminListAiModels(
 	ctx context.Context,
-	request *sdk.AdminListAiModelsRequest,
+	request *promptvmgosdk.AdminListAiModelsRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminListAiModelsResponse, error) {
+) (*promptvmgosdk.AdminListAiModelsResponse, error) {
 	response, err := c.WithRawResponse.AdminListAiModels(
 		ctx,
 		request,
@@ -233,9 +233,9 @@ func (c *Client) AdminListAiModels(
 
 func (c *Client) AdminCreateAiModel(
 	ctx context.Context,
-	request *sdk.AdminCreateAiModelRequest,
+	request *promptvmgosdk.AdminCreateAiModelRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminCreateAiModelResponse, error) {
+) (*promptvmgosdk.AdminCreateAiModelResponse, error) {
 	response, err := c.WithRawResponse.AdminCreateAiModel(
 		ctx,
 		request,
@@ -249,9 +249,9 @@ func (c *Client) AdminCreateAiModel(
 
 func (c *Client) AdminReorderAiModels(
 	ctx context.Context,
-	request *sdk.AdminReorderAiModelsRequest,
+	request *promptvmgosdk.AdminReorderAiModelsRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminReorderAiModelsResponse, error) {
+) (*promptvmgosdk.AdminReorderAiModelsResponse, error) {
 	response, err := c.WithRawResponse.AdminReorderAiModels(
 		ctx,
 		request,
@@ -266,7 +266,7 @@ func (c *Client) AdminReorderAiModels(
 // Refused with 409 while any listing OR version recommends it — a private draft breaks as surely as a live listing, and less visibly. Retire it instead.
 func (c *Client) AdminDeleteAiModel(
 	ctx context.Context,
-	request *sdk.AdminDeleteAiModelRequest,
+	request *promptvmgosdk.AdminDeleteAiModelRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.AdminDeleteAiModel(
@@ -283,9 +283,9 @@ func (c *Client) AdminDeleteAiModel(
 // Slug is immutable. Set `isActive: false` to retire — the model disappears from pickers while every listing and version that already recommends it keeps rendering it.
 func (c *Client) AdminUpdateAiModel(
 	ctx context.Context,
-	request *sdk.AdminUpdateAiModelRequest,
+	request *promptvmgosdk.AdminUpdateAiModelRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminUpdateAiModelResponse, error) {
+) (*promptvmgosdk.AdminUpdateAiModelResponse, error) {
 	response, err := c.WithRawResponse.AdminUpdateAiModel(
 		ctx,
 		request,
@@ -301,7 +301,7 @@ func (c *Client) AdminUpdateAiModel(
 func (c *Client) AdminListCategories(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.AdminListCategoriesResponse, error) {
+) (*promptvmgosdk.AdminListCategoriesResponse, error) {
 	response, err := c.WithRawResponse.AdminListCategories(
 		ctx,
 		opts...,
@@ -314,9 +314,9 @@ func (c *Client) AdminListCategories(
 
 func (c *Client) AdminCreateCategory(
 	ctx context.Context,
-	request *sdk.AdminCreateCategoryRequest,
+	request *promptvmgosdk.AdminCreateCategoryRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminCreateCategoryResponse, error) {
+) (*promptvmgosdk.AdminCreateCategoryResponse, error) {
 	response, err := c.WithRawResponse.AdminCreateCategory(
 		ctx,
 		request,
@@ -330,9 +330,9 @@ func (c *Client) AdminCreateCategory(
 
 func (c *Client) AdminReorderCategories(
 	ctx context.Context,
-	request *sdk.AdminReorderCategoriesRequest,
+	request *promptvmgosdk.AdminReorderCategoriesRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminReorderCategoriesResponse, error) {
+) (*promptvmgosdk.AdminReorderCategoriesResponse, error) {
 	response, err := c.WithRawResponse.AdminReorderCategories(
 		ctx,
 		request,
@@ -347,7 +347,7 @@ func (c *Client) AdminReorderCategories(
 // Refused with 409 while the category has subcategories or listings. The join is ON DELETE CASCADE, so an unguarded delete would silently strip the category from every listing using it — deactivate instead.
 func (c *Client) AdminDeleteCategory(
 	ctx context.Context,
-	request *sdk.AdminDeleteCategoryRequest,
+	request *promptvmgosdk.AdminDeleteCategoryRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.AdminDeleteCategory(
@@ -364,9 +364,9 @@ func (c *Client) AdminDeleteCategory(
 // Slug is immutable — it is the stable half of a shared browse link. A parent that is a descendant of this category is rejected, so the tree cannot cycle.
 func (c *Client) AdminUpdateCategory(
 	ctx context.Context,
-	request *sdk.AdminUpdateCategoryRequest,
+	request *promptvmgosdk.AdminUpdateCategoryRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdminUpdateCategoryResponse, error) {
+) (*promptvmgosdk.AdminUpdateCategoryResponse, error) {
 	response, err := c.WithRawResponse.AdminUpdateCategory(
 		ctx,
 		request,

@@ -4,7 +4,7 @@ package promptexport
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Exports a prompt in Markdown, JSON, or XML format.
 func (c *Client) ExportPrompt(
 	ctx context.Context,
-	request *sdk.ExportPromptRequest,
+	request *promptvmgosdk.ExportPromptRequest,
 	opts ...option.RequestOption,
-) (*sdk.ExportPromptResponse, error) {
+) (*promptvmgosdk.ExportPromptResponse, error) {
 	response, err := c.WithRawResponse.ExportPrompt(
 		ctx,
 		request,

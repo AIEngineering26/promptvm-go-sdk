@@ -4,11 +4,11 @@ package marketplacecreator
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.GetMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.GetMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetMarketplaceCreatorProfileResponse], error) {
+) (*core.Response[*promptvmgosdk.GetMarketplaceCreatorProfileResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -49,7 +49,7 @@ func (r *RawClient) GetMarketplaceCreatorProfile(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetMarketplaceCreatorProfileResponse
+	var response *promptvmgosdk.GetMarketplaceCreatorProfileResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -61,13 +61,13 @@ func (r *RawClient) GetMarketplaceCreatorProfile(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetMarketplaceCreatorProfileResponse]{
+	return &core.Response[*promptvmgosdk.GetMarketplaceCreatorProfileResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -76,9 +76,9 @@ func (r *RawClient) GetMarketplaceCreatorProfile(
 
 func (r *RawClient) GetMarketplaceCreatorProfileByHandle(
 	ctx context.Context,
-	request *sdk.GetMarketplaceCreatorProfileByHandleRequest,
+	request *promptvmgosdk.GetMarketplaceCreatorProfileByHandleRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetMarketplaceCreatorProfileByHandleResponse], error) {
+) (*core.Response[*promptvmgosdk.GetMarketplaceCreatorProfileByHandleResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -93,7 +93,7 @@ func (r *RawClient) GetMarketplaceCreatorProfileByHandle(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetMarketplaceCreatorProfileByHandleResponse
+	var response *promptvmgosdk.GetMarketplaceCreatorProfileByHandleResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -105,13 +105,13 @@ func (r *RawClient) GetMarketplaceCreatorProfileByHandle(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetMarketplaceCreatorProfileByHandleResponse]{
+	return &core.Response[*promptvmgosdk.GetMarketplaceCreatorProfileByHandleResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -120,9 +120,9 @@ func (r *RawClient) GetMarketplaceCreatorProfileByHandle(
 
 func (r *RawClient) CheckMarketplaceCreatorHandleAvailability(
 	ctx context.Context,
-	request *sdk.CheckMarketplaceCreatorHandleAvailabilityRequest,
+	request *promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CheckMarketplaceCreatorHandleAvailabilityResponse], error) {
+) (*core.Response[*promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -141,7 +141,7 @@ func (r *RawClient) CheckMarketplaceCreatorHandleAvailability(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.CheckMarketplaceCreatorHandleAvailabilityResponse
+	var response *promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -153,13 +153,13 @@ func (r *RawClient) CheckMarketplaceCreatorHandleAvailability(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CheckMarketplaceCreatorHandleAvailabilityResponse]{
+	return &core.Response[*promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -168,9 +168,9 @@ func (r *RawClient) CheckMarketplaceCreatorHandleAvailability(
 
 func (r *RawClient) BrowseMarketplaceCreators(
 	ctx context.Context,
-	request *sdk.BrowseMarketplaceCreatorsRequest,
+	request *promptvmgosdk.BrowseMarketplaceCreatorsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BrowseMarketplaceCreatorsResponse], error) {
+) (*core.Response[*promptvmgosdk.BrowseMarketplaceCreatorsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -189,7 +189,7 @@ func (r *RawClient) BrowseMarketplaceCreators(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.BrowseMarketplaceCreatorsResponse
+	var response *promptvmgosdk.BrowseMarketplaceCreatorsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -201,13 +201,13 @@ func (r *RawClient) BrowseMarketplaceCreators(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BrowseMarketplaceCreatorsResponse]{
+	return &core.Response[*promptvmgosdk.BrowseMarketplaceCreatorsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -217,7 +217,7 @@ func (r *RawClient) BrowseMarketplaceCreators(
 func (r *RawClient) GetMyMarketplaceCreatorProfile(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetMyMarketplaceCreatorProfileResponse], error) {
+) (*core.Response[*promptvmgosdk.GetMyMarketplaceCreatorProfileResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) GetMyMarketplaceCreatorProfile(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetMyMarketplaceCreatorProfileResponse
+	var response *promptvmgosdk.GetMyMarketplaceCreatorProfileResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -241,13 +241,13 @@ func (r *RawClient) GetMyMarketplaceCreatorProfile(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetMyMarketplaceCreatorProfileResponse]{
+	return &core.Response[*promptvmgosdk.GetMyMarketplaceCreatorProfileResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -256,9 +256,9 @@ func (r *RawClient) GetMyMarketplaceCreatorProfile(
 
 func (r *RawClient) UpdateMyMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.UpdateMyMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdateMyMarketplaceCreatorProfileResponse], error) {
+) (*core.Response[*promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -271,7 +271,7 @@ func (r *RawClient) UpdateMyMarketplaceCreatorProfile(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.UpdateMyMarketplaceCreatorProfileResponse
+	var response *promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -284,13 +284,13 @@ func (r *RawClient) UpdateMyMarketplaceCreatorProfile(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdateMyMarketplaceCreatorProfileResponse]{
+	return &core.Response[*promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -299,9 +299,9 @@ func (r *RawClient) UpdateMyMarketplaceCreatorProfile(
 
 func (r *RawClient) CreateMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.CreateMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.CreateMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreateMarketplaceCreatorProfileResponse], error) {
+) (*core.Response[*promptvmgosdk.CreateMarketplaceCreatorProfileResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -314,7 +314,7 @@ func (r *RawClient) CreateMarketplaceCreatorProfile(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreateMarketplaceCreatorProfileResponse
+	var response *promptvmgosdk.CreateMarketplaceCreatorProfileResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -327,13 +327,13 @@ func (r *RawClient) CreateMarketplaceCreatorProfile(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreateMarketplaceCreatorProfileResponse]{
+	return &core.Response[*promptvmgosdk.CreateMarketplaceCreatorProfileResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -342,9 +342,9 @@ func (r *RawClient) CreateMarketplaceCreatorProfile(
 
 func (r *RawClient) ClaimMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.ClaimMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.ClaimMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ClaimMarketplaceCreatorProfileResponse], error) {
+) (*core.Response[*promptvmgosdk.ClaimMarketplaceCreatorProfileResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -360,7 +360,7 @@ func (r *RawClient) ClaimMarketplaceCreatorProfile(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.ClaimMarketplaceCreatorProfileResponse
+	var response *promptvmgosdk.ClaimMarketplaceCreatorProfileResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -373,13 +373,13 @@ func (r *RawClient) ClaimMarketplaceCreatorProfile(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ClaimMarketplaceCreatorProfileResponse]{
+	return &core.Response[*promptvmgosdk.ClaimMarketplaceCreatorProfileResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

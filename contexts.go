@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	big "math/big"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
+	big "math/big"
 )
 
 // Kind catalogue

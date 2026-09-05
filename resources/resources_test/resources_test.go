@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestResourcesListWorkspaceResourcesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListWorkspaceResourcesRequest{
+	request := &promptvmgosdk.ListWorkspaceResourcesRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.Resources.ListWorkspaceResources(
@@ -99,7 +99,7 @@ func TestResourcesInitiateResourceUploadWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.InitiateResourceUploadRequest{
+	request := &promptvmgosdk.InitiateResourceUploadRequest{
 		WorkspaceID: "workspaceId",
 		Name:        "name",
 		ContentType: "contentType",
@@ -128,7 +128,7 @@ func TestResourcesConfirmResourceUploadWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ConfirmResourceUploadRequest{
+	request := &promptvmgosdk.ConfirmResourceUploadRequest{
 		ResourceID: "resourceId",
 	}
 	_, invocationErr := client.Resources.ConfirmResourceUpload(
@@ -154,7 +154,7 @@ func TestResourcesGetResourceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetResourceRequest{
+	request := &promptvmgosdk.GetResourceRequest{
 		ResourceID: "resourceId",
 	}
 	_, invocationErr := client.Resources.GetResource(
@@ -180,7 +180,7 @@ func TestResourcesDeleteResourceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DeleteResourceRequest{
+	request := &promptvmgosdk.DeleteResourceRequest{
 		ResourceID: "resourceId",
 	}
 	invocationErr := client.Resources.DeleteResource(
@@ -206,7 +206,7 @@ func TestResourcesUpdateResourceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.UpdateResourceRequest{
+	request := &promptvmgosdk.UpdateResourceRequest{
 		ResourceID: "resourceId",
 	}
 	_, invocationErr := client.Resources.UpdateResource(
@@ -232,7 +232,7 @@ func TestResourcesGetResourceDownloadURLWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetResourceDownloadURLRequest{
+	request := &promptvmgosdk.GetResourceDownloadURLRequest{
 		ResourceID: "resourceId",
 	}
 	_, invocationErr := client.Resources.GetResourceDownloadURL(
@@ -258,7 +258,7 @@ func TestResourcesGetResourceRagStatusWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetResourceRagStatusRequest{
+	request := &promptvmgosdk.GetResourceRagStatusRequest{
 		ResourceID: "resourceId",
 	}
 	_, invocationErr := client.Resources.GetResourceRagStatus(
@@ -284,7 +284,7 @@ func TestResourcesSetResourceSearchIndexingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.SetResourceSearchIndexingRequest{
+	request := &promptvmgosdk.SetResourceSearchIndexingRequest{
 		ResourceID: "resourceId",
 		Enabled:    true,
 	}
@@ -311,7 +311,7 @@ func TestResourcesGetResourceMarkdownURLWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetResourceMarkdownURLRequest{
+	request := &promptvmgosdk.GetResourceMarkdownURLRequest{
 		ResourceID: "resourceId",
 	}
 	_, invocationErr := client.Resources.GetResourceMarkdownURL(
@@ -337,7 +337,7 @@ func TestResourcesGetPromptRagStatusWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetPromptRagStatusRequest{
+	request := &promptvmgosdk.GetPromptRagStatusRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Resources.GetPromptRagStatus(
@@ -363,7 +363,7 @@ func TestResourcesSetPromptSearchIndexingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.SetPromptSearchIndexingRequest{
+	request := &promptvmgosdk.SetPromptSearchIndexingRequest{
 		PromptID: "promptId",
 		Enabled:  true,
 	}
@@ -390,7 +390,7 @@ func TestResourcesListPromptResourcesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListPromptResourcesRequest{
+	request := &promptvmgosdk.ListPromptResourcesRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Resources.ListPromptResources(
@@ -416,7 +416,7 @@ func TestResourcesAttachPromptResourceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AttachPromptResourceRequest{
+	request := &promptvmgosdk.AttachPromptResourceRequest{
 		PromptID:   "promptId",
 		ResourceID: "resourceId",
 	}
@@ -443,7 +443,7 @@ func TestResourcesDetachPromptResourceWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DetachPromptResourceRequest{
+	request := &promptvmgosdk.DetachPromptResourceRequest{
 		PromptID:   "promptId",
 		ResourceID: "resourceId",
 	}

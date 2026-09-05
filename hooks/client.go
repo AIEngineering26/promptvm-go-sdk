@@ -4,7 +4,7 @@ package hooks
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Returns paginated hooks. Supports filtering by event, handler type, tag, and text search.
 func (c *Client) ListHooks(
 	ctx context.Context,
-	request *sdk.ListHooksRequest,
+	request *promptvmgosdk.ListHooksRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListHooksResponse, error) {
+) (*promptvmgosdk.ListHooksResponse, error) {
 	response, err := c.WithRawResponse.ListHooks(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ListHooks(
 // Creates a hook artifact (content_kind=hook). The JSON configuration is validated against the Claude Code hooks schema.
 func (c *Client) CreateHook(
 	ctx context.Context,
-	request *sdk.CreateHookRequest,
+	request *promptvmgosdk.CreateHookRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreateHookResponse, error) {
+) (*promptvmgosdk.CreateHookResponse, error) {
 	response, err := c.WithRawResponse.CreateHook(
 		ctx,
 		request,
@@ -68,9 +68,9 @@ func (c *Client) CreateHook(
 
 func (c *Client) GetHook(
 	ctx context.Context,
-	request *sdk.GetHookRequest,
+	request *promptvmgosdk.GetHookRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetHookResponse, error) {
+) (*promptvmgosdk.GetHookResponse, error) {
 	response, err := c.WithRawResponse.GetHook(
 		ctx,
 		request,
@@ -84,9 +84,9 @@ func (c *Client) GetHook(
 
 func (c *Client) DeleteHook(
 	ctx context.Context,
-	request *sdk.DeleteHookRequest,
+	request *promptvmgosdk.DeleteHookRequest,
 	opts ...option.RequestOption,
-) (*sdk.DeleteHookResponse, error) {
+) (*promptvmgosdk.DeleteHookResponse, error) {
 	response, err := c.WithRawResponse.DeleteHook(
 		ctx,
 		request,
@@ -101,9 +101,9 @@ func (c *Client) DeleteHook(
 // Replaces any subset of hook fields. Replacing hook_json re-runs ingest, regenerates the metadata cache, and creates a new version.
 func (c *Client) UpdateHook(
 	ctx context.Context,
-	request *sdk.UpdateHookRequest,
+	request *promptvmgosdk.UpdateHookRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdateHookResponse, error) {
+) (*promptvmgosdk.UpdateHookResponse, error) {
 	response, err := c.WithRawResponse.UpdateHook(
 		ctx,
 		request,
@@ -118,9 +118,9 @@ func (c *Client) UpdateHook(
 // Returns the hook configuration as a Claude Code settings.json fragment ready to merge.
 func (c *Client) ExportHook(
 	ctx context.Context,
-	request *sdk.ExportHookRequest,
+	request *promptvmgosdk.ExportHookRequest,
 	opts ...option.RequestOption,
-) (*sdk.ExportHookResponse, error) {
+) (*promptvmgosdk.ExportHookResponse, error) {
 	response, err := c.WithRawResponse.ExportHook(
 		ctx,
 		request,
@@ -135,9 +135,9 @@ func (c *Client) ExportHook(
 // Validates the hook JSON without saving. Returns errors and warnings.
 func (c *Client) ValidateHook(
 	ctx context.Context,
-	request *sdk.ValidateHookRequest,
+	request *promptvmgosdk.ValidateHookRequest,
 	opts ...option.RequestOption,
-) (*sdk.ValidateHookResponse, error) {
+) (*promptvmgosdk.ValidateHookResponse, error) {
 	response, err := c.WithRawResponse.ValidateHook(
 		ctx,
 		request,
@@ -152,9 +152,9 @@ func (c *Client) ValidateHook(
 // Parses a Claude Code settings.json and creates hook artifacts from the hooks block.
 func (c *Client) ImportHooks(
 	ctx context.Context,
-	request *sdk.ImportHooksRequest,
+	request *promptvmgosdk.ImportHooksRequest,
 	opts ...option.RequestOption,
-) (*sdk.ImportHooksResponse, error) {
+) (*promptvmgosdk.ImportHooksResponse, error) {
 	response, err := c.WithRawResponse.ImportHooks(
 		ctx,
 		request,

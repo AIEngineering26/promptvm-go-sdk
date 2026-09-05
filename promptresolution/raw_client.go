@@ -4,11 +4,11 @@ package promptresolution
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ResolvePrompt(
 	ctx context.Context,
-	request *sdk.ResolvePromptRequest,
+	request *promptvmgosdk.ResolvePromptRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ResolvePromptResponse], error) {
+) (*core.Response[*promptvmgosdk.ResolvePromptResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) ResolvePrompt(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ResolvePromptResponse
+	var response *promptvmgosdk.ResolvePromptResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,13 +68,13 @@ func (r *RawClient) ResolvePrompt(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ResolvePromptResponse]{
+	return &core.Response[*promptvmgosdk.ResolvePromptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -83,9 +83,9 @@ func (r *RawClient) ResolvePrompt(
 
 func (r *RawClient) ResolvePromptPost(
 	ctx context.Context,
-	request *sdk.ResolvePromptPostRequest,
+	request *promptvmgosdk.ResolvePromptPostRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ResolvePromptPostResponse], error) {
+) (*core.Response[*promptvmgosdk.ResolvePromptPostResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -101,7 +101,7 @@ func (r *RawClient) ResolvePromptPost(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.ResolvePromptPostResponse
+	var response *promptvmgosdk.ResolvePromptPostResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,13 +114,13 @@ func (r *RawClient) ResolvePromptPost(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ResolvePromptPostResponse]{
+	return &core.Response[*promptvmgosdk.ResolvePromptPostResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -129,7 +129,7 @@ func (r *RawClient) ResolvePromptPost(
 
 func (r *RawClient) ResolvePromptStream(
 	ctx context.Context,
-	request *sdk.ResolvePromptStreamRequest,
+	request *promptvmgosdk.ResolvePromptStreamRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)

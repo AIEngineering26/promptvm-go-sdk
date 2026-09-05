@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestSharingAccessSharedPromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.AccessSharedPromptRequest{
+	request := &promptvmgosdk.AccessSharedPromptRequest{
 		Token: "token",
 	}
 	_, invocationErr := client.Sharing.AccessSharedPrompt(
@@ -99,9 +99,9 @@ func TestSharingSharePromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.SharePromptRequest{
+	request := &promptvmgosdk.SharePromptRequest{
 		PromptID:   "promptId",
-		Permission: sdk.SharePromptRequestPermissionView,
+		Permission: promptvmgosdk.SharePromptRequestPermissionView,
 	}
 	_, invocationErr := client.Sharing.SharePrompt(
 		context.TODO(),
@@ -126,7 +126,7 @@ func TestSharingListPromptCollaboratorsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListPromptCollaboratorsRequest{
+	request := &promptvmgosdk.ListPromptCollaboratorsRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Sharing.ListPromptCollaborators(
@@ -152,7 +152,7 @@ func TestSharingRevokePromptCollaboratorWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.RevokePromptCollaboratorRequest{
+	request := &promptvmgosdk.RevokePromptCollaboratorRequest{
 		PromptID:       "promptId",
 		CollaboratorID: "collaboratorId",
 	}
@@ -179,7 +179,7 @@ func TestSharingListPromptShareLinksWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListPromptShareLinksRequest{
+	request := &promptvmgosdk.ListPromptShareLinksRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Sharing.ListPromptShareLinks(
@@ -205,7 +205,7 @@ func TestSharingRevokePromptShareLinkWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.RevokePromptShareLinkRequest{
+	request := &promptvmgosdk.RevokePromptShareLinkRequest{
 		PromptID: "promptId",
 		LinkID:   "linkId",
 	}
@@ -232,7 +232,7 @@ func TestSharingCreatePromptShareLinkWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.CreatePromptShareLinkRequest{
+	request := &promptvmgosdk.CreatePromptShareLinkRequest{
 		PromptID: "promptId",
 	}
 	_, invocationErr := client.Sharing.CreatePromptShareLink(
@@ -258,7 +258,7 @@ func TestSharingImportSharedPromptWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ImportSharedPromptRequest{
+	request := &promptvmgosdk.ImportSharedPromptRequest{
 		Token: "token",
 	}
 	_, invocationErr := client.Sharing.ImportSharedPrompt(

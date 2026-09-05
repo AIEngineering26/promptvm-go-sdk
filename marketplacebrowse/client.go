@@ -4,7 +4,7 @@ package marketplacebrowse
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Paginated browse with optional search, category filter, and sort.
 func (c *Client) ListMarketplaceListings(
 	ctx context.Context,
-	request *sdk.ListMarketplaceListingsRequest,
+	request *promptvmgosdk.ListMarketplaceListingsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListMarketplaceListingsResponse, error) {
+) (*promptvmgosdk.ListMarketplaceListingsResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceListings(
 		ctx,
 		request,
@@ -51,9 +51,9 @@ func (c *Client) ListMarketplaceListings(
 
 func (c *Client) GetMarketplaceListing(
 	ctx context.Context,
-	request *sdk.GetMarketplaceListingRequest,
+	request *promptvmgosdk.GetMarketplaceListingRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetMarketplaceListingResponse, error) {
+) (*promptvmgosdk.GetMarketplaceListingResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceListing(
 		ctx,
 		request,
@@ -68,7 +68,7 @@ func (c *Client) GetMarketplaceListing(
 func (c *Client) ListFeaturedMarketplaceListings(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.ListFeaturedMarketplaceListingsResponse, error) {
+) (*promptvmgosdk.ListFeaturedMarketplaceListingsResponse, error) {
 	response, err := c.WithRawResponse.ListFeaturedMarketplaceListings(
 		ctx,
 		opts...,
@@ -82,7 +82,7 @@ func (c *Client) ListFeaturedMarketplaceListings(
 func (c *Client) ListMarketplaceCategories(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.ListMarketplaceCategoriesResponse, error) {
+) (*promptvmgosdk.ListMarketplaceCategoriesResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceCategories(
 		ctx,
 		opts...,
@@ -97,7 +97,7 @@ func (c *Client) ListMarketplaceCategories(
 func (c *Client) ListMarketplaceAiModels(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.ListMarketplaceAiModelsResponse, error) {
+) (*promptvmgosdk.ListMarketplaceAiModelsResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceAiModels(
 		ctx,
 		opts...,
@@ -112,7 +112,7 @@ func (c *Client) ListMarketplaceAiModels(
 func (c *Client) ListMarketplaceContentTypes(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.ListMarketplaceContentTypesResponse, error) {
+) (*promptvmgosdk.ListMarketplaceContentTypesResponse, error) {
 	response, err := c.WithRawResponse.ListMarketplaceContentTypes(
 		ctx,
 		opts...,
@@ -126,9 +126,9 @@ func (c *Client) ListMarketplaceContentTypes(
 // Unauthenticated. Returns { total, kinds, categories } counted over ACTIVE listings using the same predicate as browse. Optional ?sellerId scopes to one creator. kinds includes every enabled content_type (0-count included) so the frontend can hide empty types.
 func (c *Client) GetMarketplaceFacets(
 	ctx context.Context,
-	request *sdk.GetMarketplaceFacetsRequest,
+	request *promptvmgosdk.GetMarketplaceFacetsRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetMarketplaceFacetsResponse, error) {
+) (*promptvmgosdk.GetMarketplaceFacetsResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceFacets(
 		ctx,
 		request,

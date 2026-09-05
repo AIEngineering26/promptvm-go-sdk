@@ -4,11 +4,11 @@ package collections
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListCollections(
 	ctx context.Context,
-	request *sdk.ListCollectionsRequest,
+	request *promptvmgosdk.ListCollectionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListCollectionsResponse], error) {
+) (*core.Response[*promptvmgosdk.ListCollectionsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListCollections(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListCollectionsResponse
+	var response *promptvmgosdk.ListCollectionsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListCollections(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListCollectionsResponse]{
+	return &core.Response[*promptvmgosdk.ListCollectionsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListCollections(
 
 func (r *RawClient) CreateCollection(
 	ctx context.Context,
-	request *sdk.CreateCollectionRequest,
+	request *promptvmgosdk.CreateCollectionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreateCollectionResponse], error) {
+) (*core.Response[*promptvmgosdk.CreateCollectionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) CreateCollection(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreateCollectionResponse
+	var response *promptvmgosdk.CreateCollectionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) CreateCollection(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreateCollectionResponse]{
+	return &core.Response[*promptvmgosdk.CreateCollectionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -123,9 +123,9 @@ func (r *RawClient) CreateCollection(
 
 func (r *RawClient) GetCollection(
 	ctx context.Context,
-	request *sdk.GetCollectionRequest,
+	request *promptvmgosdk.GetCollectionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetCollectionResponse], error) {
+) (*core.Response[*promptvmgosdk.GetCollectionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -140,7 +140,7 @@ func (r *RawClient) GetCollection(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetCollectionResponse
+	var response *promptvmgosdk.GetCollectionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,13 +152,13 @@ func (r *RawClient) GetCollection(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetCollectionResponse]{
+	return &core.Response[*promptvmgosdk.GetCollectionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -167,9 +167,9 @@ func (r *RawClient) GetCollection(
 
 func (r *RawClient) DeleteCollection(
 	ctx context.Context,
-	request *sdk.DeleteCollectionRequest,
+	request *promptvmgosdk.DeleteCollectionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DeleteCollectionResponse], error) {
+) (*core.Response[*promptvmgosdk.DeleteCollectionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,7 +184,7 @@ func (r *RawClient) DeleteCollection(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.DeleteCollectionResponse
+	var response *promptvmgosdk.DeleteCollectionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -196,13 +196,13 @@ func (r *RawClient) DeleteCollection(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DeleteCollectionResponse]{
+	return &core.Response[*promptvmgosdk.DeleteCollectionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -211,9 +211,9 @@ func (r *RawClient) DeleteCollection(
 
 func (r *RawClient) UpdateCollection(
 	ctx context.Context,
-	request *sdk.UpdateCollectionRequest,
+	request *promptvmgosdk.UpdateCollectionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdateCollectionResponse], error) {
+) (*core.Response[*promptvmgosdk.UpdateCollectionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -229,7 +229,7 @@ func (r *RawClient) UpdateCollection(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.UpdateCollectionResponse
+	var response *promptvmgosdk.UpdateCollectionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -242,13 +242,13 @@ func (r *RawClient) UpdateCollection(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdateCollectionResponse]{
+	return &core.Response[*promptvmgosdk.UpdateCollectionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -257,9 +257,9 @@ func (r *RawClient) UpdateCollection(
 
 func (r *RawClient) AddCollectionItem(
 	ctx context.Context,
-	request *sdk.AddCollectionItemRequest,
+	request *promptvmgosdk.AddCollectionItemRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AddCollectionItemResponse], error) {
+) (*core.Response[*promptvmgosdk.AddCollectionItemResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -275,7 +275,7 @@ func (r *RawClient) AddCollectionItem(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AddCollectionItemResponse
+	var response *promptvmgosdk.AddCollectionItemResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -288,13 +288,13 @@ func (r *RawClient) AddCollectionItem(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AddCollectionItemResponse]{
+	return &core.Response[*promptvmgosdk.AddCollectionItemResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -303,9 +303,9 @@ func (r *RawClient) AddCollectionItem(
 
 func (r *RawClient) RemoveCollectionItem(
 	ctx context.Context,
-	request *sdk.RemoveCollectionItemRequest,
+	request *promptvmgosdk.RemoveCollectionItemRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RemoveCollectionItemResponse], error) {
+) (*core.Response[*promptvmgosdk.RemoveCollectionItemResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -321,7 +321,7 @@ func (r *RawClient) RemoveCollectionItem(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.RemoveCollectionItemResponse
+	var response *promptvmgosdk.RemoveCollectionItemResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -333,13 +333,13 @@ func (r *RawClient) RemoveCollectionItem(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RemoveCollectionItemResponse]{
+	return &core.Response[*promptvmgosdk.RemoveCollectionItemResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -348,9 +348,9 @@ func (r *RawClient) RemoveCollectionItem(
 
 func (r *RawClient) ReorderCollectionItems(
 	ctx context.Context,
-	request *sdk.ReorderCollectionItemsRequest,
+	request *promptvmgosdk.ReorderCollectionItemsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ReorderCollectionItemsResponse], error) {
+) (*core.Response[*promptvmgosdk.ReorderCollectionItemsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -366,7 +366,7 @@ func (r *RawClient) ReorderCollectionItems(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.ReorderCollectionItemsResponse
+	var response *promptvmgosdk.ReorderCollectionItemsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -379,13 +379,13 @@ func (r *RawClient) ReorderCollectionItems(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ReorderCollectionItemsResponse]{
+	return &core.Response[*promptvmgosdk.ReorderCollectionItemsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

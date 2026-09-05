@@ -4,7 +4,7 @@ package marketplacecreator
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) GetMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.GetMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.GetMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetMarketplaceCreatorProfileResponse, error) {
+) (*promptvmgosdk.GetMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceCreatorProfile(
 		ctx,
 		request,
@@ -51,9 +51,9 @@ func (c *Client) GetMarketplaceCreatorProfile(
 // Resolves a cosmetic profile handle. Falls back to handles the creator previously held, in which case `meta.redirectTo` carries the current handle so the caller can issue a 301. Unrelated to `users.username`, which remains the install namespace for `creator/name` refs.
 func (c *Client) GetMarketplaceCreatorProfileByHandle(
 	ctx context.Context,
-	request *sdk.GetMarketplaceCreatorProfileByHandleRequest,
+	request *promptvmgosdk.GetMarketplaceCreatorProfileByHandleRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetMarketplaceCreatorProfileByHandleResponse, error) {
+) (*promptvmgosdk.GetMarketplaceCreatorProfileByHandleResponse, error) {
 	response, err := c.WithRawResponse.GetMarketplaceCreatorProfileByHandle(
 		ctx,
 		request,
@@ -67,9 +67,9 @@ func (c *Client) GetMarketplaceCreatorProfileByHandle(
 
 func (c *Client) CheckMarketplaceCreatorHandleAvailability(
 	ctx context.Context,
-	request *sdk.CheckMarketplaceCreatorHandleAvailabilityRequest,
+	request *promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityRequest,
 	opts ...option.RequestOption,
-) (*sdk.CheckMarketplaceCreatorHandleAvailabilityResponse, error) {
+) (*promptvmgosdk.CheckMarketplaceCreatorHandleAvailabilityResponse, error) {
 	response, err := c.WithRawResponse.CheckMarketplaceCreatorHandleAvailability(
 		ctx,
 		request,
@@ -83,9 +83,9 @@ func (c *Client) CheckMarketplaceCreatorHandleAvailability(
 
 func (c *Client) BrowseMarketplaceCreators(
 	ctx context.Context,
-	request *sdk.BrowseMarketplaceCreatorsRequest,
+	request *promptvmgosdk.BrowseMarketplaceCreatorsRequest,
 	opts ...option.RequestOption,
-) (*sdk.BrowseMarketplaceCreatorsResponse, error) {
+) (*promptvmgosdk.BrowseMarketplaceCreatorsResponse, error) {
 	response, err := c.WithRawResponse.BrowseMarketplaceCreators(
 		ctx,
 		request,
@@ -100,7 +100,7 @@ func (c *Client) BrowseMarketplaceCreators(
 func (c *Client) GetMyMarketplaceCreatorProfile(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.GetMyMarketplaceCreatorProfileResponse, error) {
+) (*promptvmgosdk.GetMyMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.GetMyMarketplaceCreatorProfile(
 		ctx,
 		opts...,
@@ -113,9 +113,9 @@ func (c *Client) GetMyMarketplaceCreatorProfile(
 
 func (c *Client) UpdateMyMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.UpdateMyMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.UpdateMyMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdateMyMarketplaceCreatorProfileResponse, error) {
+) (*promptvmgosdk.UpdateMyMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.UpdateMyMarketplaceCreatorProfile(
 		ctx,
 		request,
@@ -129,9 +129,9 @@ func (c *Client) UpdateMyMarketplaceCreatorProfile(
 
 func (c *Client) CreateMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.CreateMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.CreateMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreateMarketplaceCreatorProfileResponse, error) {
+) (*promptvmgosdk.CreateMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.CreateMarketplaceCreatorProfile(
 		ctx,
 		request,
@@ -145,9 +145,9 @@ func (c *Client) CreateMarketplaceCreatorProfile(
 
 func (c *Client) ClaimMarketplaceCreatorProfile(
 	ctx context.Context,
-	request *sdk.ClaimMarketplaceCreatorProfileRequest,
+	request *promptvmgosdk.ClaimMarketplaceCreatorProfileRequest,
 	opts ...option.RequestOption,
-) (*sdk.ClaimMarketplaceCreatorProfileResponse, error) {
+) (*promptvmgosdk.ClaimMarketplaceCreatorProfileResponse, error) {
 	response, err := c.WithRawResponse.ClaimMarketplaceCreatorProfile(
 		ctx,
 		request,

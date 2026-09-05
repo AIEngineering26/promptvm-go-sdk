@@ -1,6 +1,6 @@
 # Promptvm Go Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Promptvm%2FGo)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2FAIEngineering26%2Fpromptvm-go-sdk)
 
 The Promptvm Go library provides convenient access to the Promptvm APIs from Go.
 
@@ -20,7 +20,7 @@ The Promptvm Go library provides convenient access to the Promptvm APIs from Go.
 
 ## Reference
 
-A full reference for this library is available [here](./reference.md).
+A full reference for this library is available [here](https://github.com/AIEngineering26/promptvm-go-sdk/blob/HEAD/./reference.md).
 
 ## Usage
 
@@ -30,9 +30,9 @@ Instantiate and use the client with the following:
 package example
 
 import (
-    client "sdk/client"
-    option "sdk/option"
-    sdk "sdk"
+    client "github.com/AIEngineering26/promptvm-go-sdk/client"
+    option "github.com/AIEngineering26/promptvm-go-sdk/option"
+    promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
     context "context"
 )
 
@@ -42,11 +42,11 @@ func do() {
             "<value>",
         ),
     )
-    request := &sdk.CliAuthorizeRequest{
+    request := &promptvmgosdk.CliAuthorizeRequest{
         CodeChallenge: "code_challenge",
-        CodeChallengeMethod: sdk.CliAuthorizeRequestCodeChallengeMethodS256,
+        CodeChallengeMethod: promptvmgosdk.CliAuthorizeRequestCodeChallengeMethodS256,
         RedirectURI: "redirect_uri",
-        ClientID: sdk.CliAuthorizeRequestClientIDPromptvmCli,
+        ClientID: promptvmgosdk.CliAuthorizeRequestClientIDPromptvmCli,
     }
     client.CliAuth.CliAuthorize(
         context.TODO(),

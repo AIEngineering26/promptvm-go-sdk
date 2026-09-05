@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -95,7 +95,7 @@ func TestContextSyncListCapturedSessionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListCapturedSessionsRequest{
+	request := &promptvmgosdk.ListCapturedSessionsRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.ContextSync.ListCapturedSessions(
@@ -121,11 +121,11 @@ func TestContextSyncIngestCapturedSessionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.IngestCapturedSessionRequest{
+	request := &promptvmgosdk.IngestCapturedSessionRequest{
 		WorkspaceID:     "workspaceId",
 		ClaudeSessionID: "claudeSessionId",
 		Source:          "source",
-		CaptureMode:     sdk.IngestCapturedSessionRequestCaptureModeSummary,
+		CaptureMode:     promptvmgosdk.IngestCapturedSessionRequestCaptureModeSummary,
 	}
 	_, invocationErr := client.ContextSync.IngestCapturedSession(
 		context.TODO(),
@@ -150,7 +150,7 @@ func TestContextSyncGetContextSyncHealthWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetContextSyncHealthRequest{
+	request := &promptvmgosdk.GetContextSyncHealthRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.ContextSync.GetContextSyncHealth(
@@ -176,7 +176,7 @@ func TestContextSyncListCaptureReposWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.ListCaptureReposRequest{
+	request := &promptvmgosdk.ListCaptureReposRequest{
 		WorkspaceID: "workspaceId",
 	}
 	_, invocationErr := client.ContextSync.ListCaptureRepos(
@@ -202,7 +202,7 @@ func TestContextSyncBulkPromoteCapturedSessionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.BulkPromoteCapturedSessionsRequest{
+	request := &promptvmgosdk.BulkPromoteCapturedSessionsRequest{
 		IDs: []string{
 			"ids",
 		},
@@ -230,7 +230,7 @@ func TestContextSyncBulkDiscardCapturedSessionsWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.BulkDiscardCapturedSessionsRequest{
+	request := &promptvmgosdk.BulkDiscardCapturedSessionsRequest{
 		IDs: []string{
 			"ids",
 		},
@@ -258,7 +258,7 @@ func TestContextSyncPromoteCapturedSessionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.PromoteCapturedSessionRequest{
+	request := &promptvmgosdk.PromoteCapturedSessionRequest{
 		ID: "id",
 	}
 	_, invocationErr := client.ContextSync.PromoteCapturedSession(
@@ -284,7 +284,7 @@ func TestContextSyncDiscardCapturedSessionWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DiscardCapturedSessionRequest{
+	request := &promptvmgosdk.DiscardCapturedSessionRequest{
 		ID: "id",
 	}
 	_, invocationErr := client.ContextSync.DiscardCapturedSession(

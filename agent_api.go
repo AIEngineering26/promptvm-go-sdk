@@ -8,15 +8,18 @@ import (
 )
 
 var (
-	agentResolvePromptRequestFieldSlug    = big.NewInt(1 << 0)
-	agentResolvePromptRequestFieldVersion = big.NewInt(1 << 1)
-	agentResolvePromptRequestFieldFormat  = big.NewInt(1 << 2)
+	agentResolvePromptRequestFieldSlug     = big.NewInt(1 << 0)
+	agentResolvePromptRequestFieldVersion  = big.NewInt(1 << 1)
+	agentResolvePromptRequestFieldFormat   = big.NewInt(1 << 2)
+	agentResolvePromptRequestFieldTemplate = big.NewInt(1 << 3)
 )
 
 type AgentResolvePromptRequest struct {
 	Slug    string                           `json:"-" url:"-"`
 	Version *string                          `json:"-" url:"version,omitempty"`
 	Format  *AgentResolvePromptRequestFormat `json:"-" url:"format,omitempty"`
+	// Force the {{placeholder}} form for every caller, including the prompt author. Used by surfaces that must render identically for everyone, such as a marketplace listing.
+	Template *string `json:"-" url:"template,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -48,6 +51,13 @@ func (a *AgentResolvePromptRequest) SetVersion(version *string) {
 func (a *AgentResolvePromptRequest) SetFormat(format *AgentResolvePromptRequestFormat) {
 	a.Format = format
 	a.require(agentResolvePromptRequestFieldFormat)
+}
+
+// SetTemplate sets the Template field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AgentResolvePromptRequest) SetTemplate(template *string) {
+	a.Template = template
+	a.require(agentResolvePromptRequestFieldTemplate)
 }
 
 type AgentResolvePromptRequestFormat string

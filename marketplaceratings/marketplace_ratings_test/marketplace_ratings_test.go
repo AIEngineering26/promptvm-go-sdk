@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceRatingsListRatingsForAListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest{
+	request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsRequest{
 		ListingID: "listingId",
 	}
 	_, invocationErr := client.MarketplaceRatings.ListRatingsForAListing(
@@ -99,7 +99,7 @@ func TestMarketplaceRatingsCreateARatingOnAPurchasedListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest{
+	request := &promptvmgosdk.PostAPIV1MarketplaceListingsListingIDRatingsRequest{
 		ListingID: "listingId",
 		Score:     1,
 	}
@@ -126,7 +126,7 @@ func TestMarketplaceRatingsGetTheCallersRatingOnAListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest{
+	request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDRatingsMeRequest{
 		ListingID: "listingId",
 	}
 	_, invocationErr := client.MarketplaceRatings.GetTheCallersRatingOnAListing(
@@ -152,7 +152,7 @@ func TestMarketplaceRatingsDeleteMyRatingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest{
+	request := &promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDRequest{
 		RatingID: "ratingId",
 	}
 	invocationErr := client.MarketplaceRatings.DeleteMyRating(
@@ -178,7 +178,7 @@ func TestMarketplaceRatingsUpdateMyRatingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.PatchAPIV1MarketplaceRatingsRatingIDRequest{
+	request := &promptvmgosdk.PatchAPIV1MarketplaceRatingsRatingIDRequest{
 		RatingID: "ratingId",
 	}
 	_, invocationErr := client.MarketplaceRatings.UpdateMyRating(
@@ -204,9 +204,9 @@ func TestMarketplaceRatingsVoteHelpfulUnhelpfulOnARatingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest{
+	request := &promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequest{
 		RatingID: "ratingId",
-		VoteType: sdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteTypeUpvote,
+		VoteType: promptvmgosdk.PostAPIV1MarketplaceRatingsRatingIDVoteRequestVoteTypeUpvote,
 	}
 	_, invocationErr := client.MarketplaceRatings.VoteHelpfulUnhelpfulOnARating(
 		context.TODO(),
@@ -231,7 +231,7 @@ func TestMarketplaceRatingsRemoveMyVoteFromARatingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest{
+	request := &promptvmgosdk.DeleteAPIV1MarketplaceRatingsRatingIDVoteRequest{
 		RatingID: "ratingId",
 	}
 	invocationErr := client.MarketplaceRatings.RemoveMyVoteFromARating(

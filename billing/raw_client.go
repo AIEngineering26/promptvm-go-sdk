@@ -4,11 +4,11 @@ package billing
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetPromoOffer(
 	ctx context.Context,
-	request *sdk.GetPromoOfferRequest,
+	request *promptvmgosdk.GetPromoOfferRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetPromoOfferResponse], error) {
+) (*core.Response[*promptvmgosdk.GetPromoOfferResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -49,7 +49,7 @@ func (r *RawClient) GetPromoOffer(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetPromoOfferResponse
+	var response *promptvmgosdk.GetPromoOfferResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -61,13 +61,13 @@ func (r *RawClient) GetPromoOffer(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetPromoOfferResponse]{
+	return &core.Response[*promptvmgosdk.GetPromoOfferResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -113,9 +113,9 @@ func (r *RawClient) ListBillingPlans(
 
 func (r *RawClient) CreateBillingCheckoutSession(
 	ctx context.Context,
-	request *sdk.CreateBillingCheckoutSessionRequest,
+	request *promptvmgosdk.CreateBillingCheckoutSessionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreateBillingCheckoutSessionResponse], error) {
+) (*core.Response[*promptvmgosdk.CreateBillingCheckoutSessionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -129,7 +129,7 @@ func (r *RawClient) CreateBillingCheckoutSession(
 	)
 	headers.Add("x-org-id", request.OrgID)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.CreateBillingCheckoutSessionResponse
+	var response *promptvmgosdk.CreateBillingCheckoutSessionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -142,13 +142,13 @@ func (r *RawClient) CreateBillingCheckoutSession(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreateBillingCheckoutSessionResponse]{
+	return &core.Response[*promptvmgosdk.CreateBillingCheckoutSessionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -157,9 +157,9 @@ func (r *RawClient) CreateBillingCheckoutSession(
 
 func (r *RawClient) CreateBillingPortalSession(
 	ctx context.Context,
-	request *sdk.CreateBillingPortalSessionRequest,
+	request *promptvmgosdk.CreateBillingPortalSessionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CreateBillingPortalSessionResponse], error) {
+) (*core.Response[*promptvmgosdk.CreateBillingPortalSessionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -172,7 +172,7 @@ func (r *RawClient) CreateBillingPortalSession(
 		options.ToHeader(),
 	)
 	headers.Add("x-org-id", request.OrgID)
-	var response *sdk.CreateBillingPortalSessionResponse
+	var response *promptvmgosdk.CreateBillingPortalSessionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -184,13 +184,13 @@ func (r *RawClient) CreateBillingPortalSession(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CreateBillingPortalSessionResponse]{
+	return &core.Response[*promptvmgosdk.CreateBillingPortalSessionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -199,9 +199,9 @@ func (r *RawClient) CreateBillingPortalSession(
 
 func (r *RawClient) ChangeBillingPlan(
 	ctx context.Context,
-	request *sdk.ChangeBillingPlanRequest,
+	request *promptvmgosdk.ChangeBillingPlanRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ChangeBillingPlanResponse], error) {
+) (*core.Response[*promptvmgosdk.ChangeBillingPlanResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -215,7 +215,7 @@ func (r *RawClient) ChangeBillingPlan(
 	)
 	headers.Add("x-org-id", request.OrgID)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.ChangeBillingPlanResponse
+	var response *promptvmgosdk.ChangeBillingPlanResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -228,13 +228,13 @@ func (r *RawClient) ChangeBillingPlan(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ChangeBillingPlanResponse]{
+	return &core.Response[*promptvmgosdk.ChangeBillingPlanResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -243,9 +243,9 @@ func (r *RawClient) ChangeBillingPlan(
 
 func (r *RawClient) AdjustBillingSeats(
 	ctx context.Context,
-	request *sdk.AdjustBillingSeatsRequest,
+	request *promptvmgosdk.AdjustBillingSeatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AdjustBillingSeatsResponse], error) {
+) (*core.Response[*promptvmgosdk.AdjustBillingSeatsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -259,7 +259,7 @@ func (r *RawClient) AdjustBillingSeats(
 	)
 	headers.Add("x-org-id", request.OrgID)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.AdjustBillingSeatsResponse
+	var response *promptvmgosdk.AdjustBillingSeatsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -272,13 +272,13 @@ func (r *RawClient) AdjustBillingSeats(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AdjustBillingSeatsResponse]{
+	return &core.Response[*promptvmgosdk.AdjustBillingSeatsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -287,9 +287,9 @@ func (r *RawClient) AdjustBillingSeats(
 
 func (r *RawClient) CancelBillingSubscription(
 	ctx context.Context,
-	request *sdk.CancelBillingSubscriptionRequest,
+	request *promptvmgosdk.CancelBillingSubscriptionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CancelBillingSubscriptionResponse], error) {
+) (*core.Response[*promptvmgosdk.CancelBillingSubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -302,7 +302,7 @@ func (r *RawClient) CancelBillingSubscription(
 		options.ToHeader(),
 	)
 	headers.Add("x-org-id", request.OrgID)
-	var response *sdk.CancelBillingSubscriptionResponse
+	var response *promptvmgosdk.CancelBillingSubscriptionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -314,13 +314,13 @@ func (r *RawClient) CancelBillingSubscription(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CancelBillingSubscriptionResponse]{
+	return &core.Response[*promptvmgosdk.CancelBillingSubscriptionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -329,9 +329,9 @@ func (r *RawClient) CancelBillingSubscription(
 
 func (r *RawClient) ResumeBillingSubscription(
 	ctx context.Context,
-	request *sdk.ResumeBillingSubscriptionRequest,
+	request *promptvmgosdk.ResumeBillingSubscriptionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ResumeBillingSubscriptionResponse], error) {
+) (*core.Response[*promptvmgosdk.ResumeBillingSubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -344,7 +344,7 @@ func (r *RawClient) ResumeBillingSubscription(
 		options.ToHeader(),
 	)
 	headers.Add("x-org-id", request.OrgID)
-	var response *sdk.ResumeBillingSubscriptionResponse
+	var response *promptvmgosdk.ResumeBillingSubscriptionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -356,13 +356,13 @@ func (r *RawClient) ResumeBillingSubscription(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ResumeBillingSubscriptionResponse]{
+	return &core.Response[*promptvmgosdk.ResumeBillingSubscriptionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -371,9 +371,9 @@ func (r *RawClient) ResumeBillingSubscription(
 
 func (r *RawClient) ListBillingInvoices(
 	ctx context.Context,
-	request *sdk.ListBillingInvoicesRequest,
+	request *promptvmgosdk.ListBillingInvoicesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListBillingInvoicesResponse], error) {
+) (*core.Response[*promptvmgosdk.ListBillingInvoicesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -393,7 +393,7 @@ func (r *RawClient) ListBillingInvoices(
 		options.ToHeader(),
 	)
 	headers.Add("x-org-id", request.OrgID)
-	var response *sdk.ListBillingInvoicesResponse
+	var response *promptvmgosdk.ListBillingInvoicesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -410,7 +410,7 @@ func (r *RawClient) ListBillingInvoices(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListBillingInvoicesResponse]{
+	return &core.Response[*promptvmgosdk.ListBillingInvoicesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -419,9 +419,9 @@ func (r *RawClient) ListBillingInvoices(
 
 func (r *RawClient) RedeemPromotionalOffer(
 	ctx context.Context,
-	request *sdk.RedeemPromotionalOfferRequest,
+	request *promptvmgosdk.RedeemPromotionalOfferRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RedeemPromotionalOfferResponse], error) {
+) (*core.Response[*promptvmgosdk.RedeemPromotionalOfferResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -437,7 +437,7 @@ func (r *RawClient) RedeemPromotionalOffer(
 		options.ToHeader(),
 	)
 	headers.Add("x-org-id", request.OrgID)
-	var response *sdk.RedeemPromotionalOfferResponse
+	var response *promptvmgosdk.RedeemPromotionalOfferResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -449,13 +449,13 @@ func (r *RawClient) RedeemPromotionalOffer(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RedeemPromotionalOfferResponse]{
+	return &core.Response[*promptvmgosdk.RedeemPromotionalOfferResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -464,9 +464,9 @@ func (r *RawClient) RedeemPromotionalOffer(
 
 func (r *RawClient) GetBillingStatus(
 	ctx context.Context,
-	request *sdk.GetBillingStatusRequest,
+	request *promptvmgosdk.GetBillingStatusRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetBillingStatusResponse], error) {
+) (*core.Response[*promptvmgosdk.GetBillingStatusResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -482,7 +482,7 @@ func (r *RawClient) GetBillingStatus(
 		headers.Add("x-org-id", *request.OrgID)
 	}
 
-	var response *sdk.GetBillingStatusResponse
+	var response *promptvmgosdk.GetBillingStatusResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -499,7 +499,7 @@ func (r *RawClient) GetBillingStatus(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetBillingStatusResponse]{
+	return &core.Response[*promptvmgosdk.GetBillingStatusResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -508,9 +508,9 @@ func (r *RawClient) GetBillingStatus(
 
 func (r *RawClient) ListBillingWebhookErrors(
 	ctx context.Context,
-	request *sdk.ListBillingWebhookErrorsRequest,
+	request *promptvmgosdk.ListBillingWebhookErrorsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListBillingWebhookErrorsResponse], error) {
+) (*core.Response[*promptvmgosdk.ListBillingWebhookErrorsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -530,7 +530,7 @@ func (r *RawClient) ListBillingWebhookErrors(
 		options.ToHeader(),
 	)
 	headers.Add("x-org-id", request.OrgID)
-	var response *sdk.ListBillingWebhookErrorsResponse
+	var response *promptvmgosdk.ListBillingWebhookErrorsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -547,7 +547,7 @@ func (r *RawClient) ListBillingWebhookErrors(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListBillingWebhookErrorsResponse]{
+	return &core.Response[*promptvmgosdk.ListBillingWebhookErrorsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

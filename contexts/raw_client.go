@@ -4,11 +4,11 @@ package contexts
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) ListContextKinds(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListContextKindsResponse], error) {
+) (*core.Response[*promptvmgosdk.ListContextKindsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -45,7 +45,7 @@ func (r *RawClient) ListContextKinds(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListContextKindsResponse
+	var response *promptvmgosdk.ListContextKindsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -62,7 +62,7 @@ func (r *RawClient) ListContextKinds(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListContextKindsResponse]{
+	return &core.Response[*promptvmgosdk.ListContextKindsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

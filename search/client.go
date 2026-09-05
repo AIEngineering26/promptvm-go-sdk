@@ -4,7 +4,7 @@ package search
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Cross-workspace, ranked search returning prompts and files the requester can read. Optional scoping by workspace or directory. Cursor pagination, normalized relevance score, ts_headline highlights with <mark> markers. The contract is forward-compat: future ranking modes (`semantic`, `hybrid`) and result kinds (`collection`, `team`) are additive — existing clients ignore unknown enum values.
 func (c *Client) Organization(
 	ctx context.Context,
-	request *sdk.SearchOrganizationRequest,
+	request *promptvmgosdk.SearchOrganizationRequest,
 	opts ...option.RequestOption,
-) (*sdk.SearchOrganizationResponse, error) {
+) (*promptvmgosdk.SearchOrganizationResponse, error) {
 	response, err := c.WithRawResponse.Organization(
 		ctx,
 		request,

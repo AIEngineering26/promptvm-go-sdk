@@ -4,7 +4,7 @@ package promptresolution
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Resolves [[include:]] references and {{variable}} substitutions.
 func (c *Client) ResolvePrompt(
 	ctx context.Context,
-	request *sdk.ResolvePromptRequest,
+	request *promptvmgosdk.ResolvePromptRequest,
 	opts ...option.RequestOption,
-) (*sdk.ResolvePromptResponse, error) {
+) (*promptvmgosdk.ResolvePromptResponse, error) {
 	response, err := c.WithRawResponse.ResolvePrompt(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ResolvePrompt(
 // Resolves [[include:]] references and {{variable}} substitutions. Read-safe: identical semantics to GET /prompts/{promptId}/resolve, but accepts a JSON body so callers can pass a Record<string,string> `variables` map cleanly. Idempotent — no `Idempotency-Key` header is required or honoured. Unknown variables remain literal in the output (e.g. `{{unknown}}`); the endpoint never throws on missing keys. Gated by the `RESOLVE_POST_ENABLED` env flag (default true); when disabled the endpoint returns 503 and SDK/CLI clients should fall back to the GET path with `variables` ignored.
 func (c *Client) ResolvePromptPost(
 	ctx context.Context,
-	request *sdk.ResolvePromptPostRequest,
+	request *promptvmgosdk.ResolvePromptPostRequest,
 	opts ...option.RequestOption,
-) (*sdk.ResolvePromptPostResponse, error) {
+) (*promptvmgosdk.ResolvePromptPostResponse, error) {
 	response, err := c.WithRawResponse.ResolvePromptPost(
 		ctx,
 		request,
@@ -69,7 +69,7 @@ func (c *Client) ResolvePromptPost(
 // Same as /resolve but delivers content as Server-Sent Events for large payloads.
 func (c *Client) ResolvePromptStream(
 	ctx context.Context,
-	request *sdk.ResolvePromptStreamRequest,
+	request *promptvmgosdk.ResolvePromptStreamRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.ResolvePromptStream(

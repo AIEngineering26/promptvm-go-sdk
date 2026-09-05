@@ -4,11 +4,11 @@ package skillspublic
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) RecordPublicSkillInstall(
 	ctx context.Context,
-	request *sdk.RecordPublicSkillInstallRequest,
+	request *promptvmgosdk.RecordPublicSkillInstallRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -66,7 +66,7 @@ func (r *RawClient) RecordPublicSkillInstall(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -81,9 +81,9 @@ func (r *RawClient) RecordPublicSkillInstall(
 
 func (r *RawClient) GetPublicSkillBySlug(
 	ctx context.Context,
-	request *sdk.GetPublicSkillBySlugRequest,
+	request *promptvmgosdk.GetPublicSkillBySlugRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetPublicSkillBySlugResponse], error) {
+) (*core.Response[*promptvmgosdk.GetPublicSkillBySlugResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -105,7 +105,7 @@ func (r *RawClient) GetPublicSkillBySlug(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetPublicSkillBySlugResponse
+	var response *promptvmgosdk.GetPublicSkillBySlugResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -117,13 +117,13 @@ func (r *RawClient) GetPublicSkillBySlug(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetPublicSkillBySlugResponse]{
+	return &core.Response[*promptvmgosdk.GetPublicSkillBySlugResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

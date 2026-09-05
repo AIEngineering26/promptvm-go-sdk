@@ -4,7 +4,7 @@ package billing
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Public endpoint that returns the offer metadata and status for a single-use redemption token. No authentication is required. Returns 200 when the token is valid and the offer is available. Returns 410 Gone for any non-available status (already used, disabled, expired, or exhausted) so the frontend can render a user-friendly "link no longer valid" view without leaking token existence. Rate-limited to 30 requests/minute per IP.
 func (c *Client) GetPromoOffer(
 	ctx context.Context,
-	request *sdk.GetPromoOfferRequest,
+	request *promptvmgosdk.GetPromoOfferRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetPromoOfferResponse, error) {
+) (*promptvmgosdk.GetPromoOfferResponse, error) {
 	response, err := c.WithRawResponse.GetPromoOffer(
 		ctx,
 		request,
@@ -67,9 +67,9 @@ func (c *Client) ListBillingPlans(
 // Returns a Stripe-hosted Checkout URL for the caller to complete payment. Owner/admin only. Rate-limited 5/min/org. The frontend redirects the browser to the returned URL; the actual subscription state lands in our DB via the `customer.subscription.created` webhook (US-01-4), not via the success URL. Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9) — clients should render an Upgrade-disabled state and route users to sales.
 func (c *Client) CreateBillingCheckoutSession(
 	ctx context.Context,
-	request *sdk.CreateBillingCheckoutSessionRequest,
+	request *promptvmgosdk.CreateBillingCheckoutSessionRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreateBillingCheckoutSessionResponse, error) {
+) (*promptvmgosdk.CreateBillingCheckoutSessionResponse, error) {
 	response, err := c.WithRawResponse.CreateBillingCheckoutSession(
 		ctx,
 		request,
@@ -84,9 +84,9 @@ func (c *Client) CreateBillingCheckoutSession(
 // Returns a Stripe-hosted Customer Portal URL the caller can use to update their payment method, view invoices, edit billing details, or cancel their subscription. Owner/admin only. Rate-limited 5/min/org. Plan switching is intentionally disabled in the Portal — use `/billing/change-plan` for that. Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) CreateBillingPortalSession(
 	ctx context.Context,
-	request *sdk.CreateBillingPortalSessionRequest,
+	request *promptvmgosdk.CreateBillingPortalSessionRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreateBillingPortalSessionResponse, error) {
+) (*promptvmgosdk.CreateBillingPortalSessionResponse, error) {
 	response, err := c.WithRawResponse.CreateBillingPortalSession(
 		ctx,
 		request,
@@ -101,9 +101,9 @@ func (c *Client) CreateBillingPortalSession(
 // Routes through the Phase 02 change-plan algorithm: detects upgrade/downgrade/seat-adjust direction, releases any pending `subscription_schedule` first (FR-02-5a), then writes the change to Stripe (immediate proration on upgrade, scheduled phase on downgrade). Owner/admin only. Rate-limited per org via Redis SET NX with TTL `BILLING_CHANGE_PLAN_COOLDOWN_SECONDS` (default 60, 0 in tests). The authoritative state lands in our DB via the `customer.subscription.updated` webhook (US-01-4) — clients should re-read `/billing/status` after a 200. Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) ChangeBillingPlan(
 	ctx context.Context,
-	request *sdk.ChangeBillingPlanRequest,
+	request *promptvmgosdk.ChangeBillingPlanRequest,
 	opts ...option.RequestOption,
-) (*sdk.ChangeBillingPlanResponse, error) {
+) (*promptvmgosdk.ChangeBillingPlanResponse, error) {
 	response, err := c.WithRawResponse.ChangeBillingPlan(
 		ctx,
 		request,
@@ -118,9 +118,9 @@ func (c *Client) ChangeBillingPlan(
 // Owner/admin only. Pushes a `quantity` change to the Stripe subscription item with `proration_behavior=create_prorations`. Increases generate a prorated charge on the next invoice; decreases (still ≥ used_seats) generate a prorated credit on the next invoice (no card refund). Per-seat plans only. Rate-limited 5/min/org (US-05-8 F-1). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) AdjustBillingSeats(
 	ctx context.Context,
-	request *sdk.AdjustBillingSeatsRequest,
+	request *promptvmgosdk.AdjustBillingSeatsRequest,
 	opts ...option.RequestOption,
-) (*sdk.AdjustBillingSeatsResponse, error) {
+) (*promptvmgosdk.AdjustBillingSeatsResponse, error) {
 	response, err := c.WithRawResponse.AdjustBillingSeats(
 		ctx,
 		request,
@@ -135,9 +135,9 @@ func (c *Client) AdjustBillingSeats(
 // Owner/admin only. Sets `cancel_at_period_end = true` on the Stripe subscription. Releases any pending downgrade schedule first (FR-02-15) so the update can apply cleanly. The cancellation is scheduled, not immediate — billing continues through the current period and access ends at `cancelAt`. Re-invoking with the same period is a no-op (FR-02-14 idempotency). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) CancelBillingSubscription(
 	ctx context.Context,
-	request *sdk.CancelBillingSubscriptionRequest,
+	request *promptvmgosdk.CancelBillingSubscriptionRequest,
 	opts ...option.RequestOption,
-) (*sdk.CancelBillingSubscriptionResponse, error) {
+) (*promptvmgosdk.CancelBillingSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.CancelBillingSubscription(
 		ctx,
 		request,
@@ -152,9 +152,9 @@ func (c *Client) CancelBillingSubscription(
 // Owner/admin only. Sets `cancel_at_period_end = false` on the Stripe subscription. Does NOT recreate any previously scheduled downgrade — the user must re-request that via `/change-plan` (FR-02-15). Re-invoking with the same period is a no-op (FR-02-14 idempotency). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) ResumeBillingSubscription(
 	ctx context.Context,
-	request *sdk.ResumeBillingSubscriptionRequest,
+	request *promptvmgosdk.ResumeBillingSubscriptionRequest,
 	opts ...option.RequestOption,
-) (*sdk.ResumeBillingSubscriptionResponse, error) {
+) (*promptvmgosdk.ResumeBillingSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.ResumeBillingSubscription(
 		ctx,
 		request,
@@ -169,9 +169,9 @@ func (c *Client) ResumeBillingSubscription(
 // Returns a paginated, owner/admin-gated history of Stripe invoices mirrored locally by the webhook worker (US-02-4). Rows are ordered `created_at desc, id desc` and paginated via an opaque cursor (`?cursor`). Default page size is 20, maximum 50 (FR-02-12). The response always includes Stripe-hosted `hostedInvoiceUrl` + `invoicePdfUrl` so the frontend can deep-link to receipts without a second round-trip.
 func (c *Client) ListBillingInvoices(
 	ctx context.Context,
-	request *sdk.ListBillingInvoicesRequest,
+	request *promptvmgosdk.ListBillingInvoicesRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListBillingInvoicesResponse, error) {
+) (*promptvmgosdk.ListBillingInvoicesResponse, error) {
 	response, err := c.WithRawResponse.ListBillingInvoices(
 		ctx,
 		request,
@@ -186,9 +186,9 @@ func (c *Client) ListBillingInvoices(
 // Owner/admin only. Atomically locks the token, increments the offer counter, and returns a Stripe Checkout URL configured with `trial_period_days` and `payment_method_collection: 'always'`. On Stripe failure runs a compensating reversal so the token is reusable (FR-06-8). One promotional trial per org per lifetime — enforced at the DB layer via the `promo_one_trial_per_org` partial UNIQUE index (FR-06-9). Rate-limited 10/min/IP AND 5/min/authenticated user (FR-06-5). Returns 503 `billing_not_live` when the `FEATURE_BILLING_LIVE` kill-switch is disengaged (US-05-7 / FR-05-9).
 func (c *Client) RedeemPromotionalOffer(
 	ctx context.Context,
-	request *sdk.RedeemPromotionalOfferRequest,
+	request *promptvmgosdk.RedeemPromotionalOfferRequest,
 	opts ...option.RequestOption,
-) (*sdk.RedeemPromotionalOfferResponse, error) {
+) (*promptvmgosdk.RedeemPromotionalOfferResponse, error) {
 	response, err := c.WithRawResponse.RedeemPromotionalOffer(
 		ctx,
 		request,
@@ -203,9 +203,9 @@ func (c *Client) RedeemPromotionalOffer(
 // Returns the active org's subscription projection, plan-derived entitlements, and a usage snapshot. Any role inside the org may read. Cached server-side in Redis for 30s; invalidated by the Stripe webhook worker on every event apply.
 func (c *Client) GetBillingStatus(
 	ctx context.Context,
-	request *sdk.GetBillingStatusRequest,
+	request *promptvmgosdk.GetBillingStatusRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetBillingStatusResponse, error) {
+) (*promptvmgosdk.GetBillingStatusResponse, error) {
 	response, err := c.WithRawResponse.GetBillingStatus(
 		ctx,
 		request,
@@ -220,9 +220,9 @@ func (c *Client) GetBillingStatus(
 // Returns the FR-05-11 dead-letter view: `stripe_webhook_events` rows where `error IS NOT NULL` AND `org_id = X-Org-Id` (US-05-7a-FIX). Ordered `received_at DESC, id DESC` with opaque cursor pagination. Default `limit=50`, max `200`. Supports `?since=<ISO8601>` and `?kind=<error-keyword>` filters. The `payload` jsonb column is INTENTIONALLY EXCLUDED — Stripe payloads can carry PII (customer email, billing address); ops reads the full payload from the worker logs or the Stripe Dashboard, not from this endpoint. Events whose `org_id` could not be resolved at ingress time (`org_id IS NULL`) are intentionally NOT returned — a future platform-admin route will surface them. Currently gated by `requireOwnerOrAdmin` (org-scoped) as a placeholder.
 func (c *Client) ListBillingWebhookErrors(
 	ctx context.Context,
-	request *sdk.ListBillingWebhookErrorsRequest,
+	request *promptvmgosdk.ListBillingWebhookErrorsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListBillingWebhookErrorsResponse, error) {
+) (*promptvmgosdk.ListBillingWebhookErrorsResponse, error) {
 	response, err := c.WithRawResponse.ListBillingWebhookErrors(
 		ctx,
 		request,

@@ -4,11 +4,11 @@ package oauth
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -71,7 +71,7 @@ func (r *RawClient) OAuth21AuthorizationServerMetadata(
 
 func (r *RawClient) DynamicClientRegistrationRfc7591(
 	ctx context.Context,
-	request *sdk.PostAPIV1OauthRegisterRequest,
+	request *promptvmgosdk.PostAPIV1OauthRegisterRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -113,7 +113,7 @@ func (r *RawClient) DynamicClientRegistrationRfc7591(
 
 func (r *RawClient) OAuth21AuthorizationEndpoint(
 	ctx context.Context,
-	request *sdk.GetAPIV1OauthAuthorizeRequest,
+	request *promptvmgosdk.GetAPIV1OauthAuthorizeRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)

@@ -4,11 +4,11 @@ package hookspublic
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetPublicHookBySlug(
 	ctx context.Context,
-	request *sdk.GetPublicHookBySlugRequest,
+	request *promptvmgosdk.GetPublicHookBySlugRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetPublicHookBySlugResponse], error) {
+) (*core.Response[*promptvmgosdk.GetPublicHookBySlugResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) GetPublicHookBySlug(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetPublicHookBySlugResponse
+	var response *promptvmgosdk.GetPublicHookBySlugResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,13 +68,13 @@ func (r *RawClient) GetPublicHookBySlug(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(sdk.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(promptvmgosdk.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetPublicHookBySlugResponse]{
+	return &core.Response[*promptvmgosdk.GetPublicHookBySlugResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -4,11 +4,11 @@ package contextsync
 
 import (
 	context "context"
-	http "net/http"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
+	http "net/http"
 )
 
 type RawClient struct {
@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) GetContextSyncManifest(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetContextSyncManifestResponse], error) {
+) (*core.Response[*promptvmgosdk.GetContextSyncManifestResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -45,7 +45,7 @@ func (r *RawClient) GetContextSyncManifest(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetContextSyncManifestResponse
+	var response *promptvmgosdk.GetContextSyncManifestResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -62,7 +62,7 @@ func (r *RawClient) GetContextSyncManifest(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetContextSyncManifestResponse]{
+	return &core.Response[*promptvmgosdk.GetContextSyncManifestResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -71,9 +71,9 @@ func (r *RawClient) GetContextSyncManifest(
 
 func (r *RawClient) ListCapturedSessions(
 	ctx context.Context,
-	request *sdk.ListCapturedSessionsRequest,
+	request *promptvmgosdk.ListCapturedSessionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListCapturedSessionsResponse], error) {
+) (*core.Response[*promptvmgosdk.ListCapturedSessionsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -92,7 +92,7 @@ func (r *RawClient) ListCapturedSessions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListCapturedSessionsResponse
+	var response *promptvmgosdk.ListCapturedSessionsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -109,7 +109,7 @@ func (r *RawClient) ListCapturedSessions(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListCapturedSessionsResponse]{
+	return &core.Response[*promptvmgosdk.ListCapturedSessionsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -118,9 +118,9 @@ func (r *RawClient) ListCapturedSessions(
 
 func (r *RawClient) IngestCapturedSession(
 	ctx context.Context,
-	request *sdk.IngestCapturedSessionRequest,
+	request *promptvmgosdk.IngestCapturedSessionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.IngestCapturedSessionResponse], error) {
+) (*core.Response[*promptvmgosdk.IngestCapturedSessionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -133,7 +133,7 @@ func (r *RawClient) IngestCapturedSession(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *sdk.IngestCapturedSessionResponse
+	var response *promptvmgosdk.IngestCapturedSessionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -151,7 +151,7 @@ func (r *RawClient) IngestCapturedSession(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.IngestCapturedSessionResponse]{
+	return &core.Response[*promptvmgosdk.IngestCapturedSessionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -160,9 +160,9 @@ func (r *RawClient) IngestCapturedSession(
 
 func (r *RawClient) GetContextSyncHealth(
 	ctx context.Context,
-	request *sdk.GetContextSyncHealthRequest,
+	request *promptvmgosdk.GetContextSyncHealthRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetContextSyncHealthResponse], error) {
+) (*core.Response[*promptvmgosdk.GetContextSyncHealthResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -181,7 +181,7 @@ func (r *RawClient) GetContextSyncHealth(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.GetContextSyncHealthResponse
+	var response *promptvmgosdk.GetContextSyncHealthResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -198,7 +198,7 @@ func (r *RawClient) GetContextSyncHealth(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetContextSyncHealthResponse]{
+	return &core.Response[*promptvmgosdk.GetContextSyncHealthResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -207,9 +207,9 @@ func (r *RawClient) GetContextSyncHealth(
 
 func (r *RawClient) ListCaptureRepos(
 	ctx context.Context,
-	request *sdk.ListCaptureReposRequest,
+	request *promptvmgosdk.ListCaptureReposRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListCaptureReposResponse], error) {
+) (*core.Response[*promptvmgosdk.ListCaptureReposResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -228,7 +228,7 @@ func (r *RawClient) ListCaptureRepos(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.ListCaptureReposResponse
+	var response *promptvmgosdk.ListCaptureReposResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -245,7 +245,7 @@ func (r *RawClient) ListCaptureRepos(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListCaptureReposResponse]{
+	return &core.Response[*promptvmgosdk.ListCaptureReposResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -254,7 +254,7 @@ func (r *RawClient) ListCaptureRepos(
 
 func (r *RawClient) BulkPromoteCapturedSessions(
 	ctx context.Context,
-	request *sdk.BulkPromoteCapturedSessionsRequest,
+	request *promptvmgosdk.BulkPromoteCapturedSessionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -294,7 +294,7 @@ func (r *RawClient) BulkPromoteCapturedSessions(
 
 func (r *RawClient) BulkDiscardCapturedSessions(
 	ctx context.Context,
-	request *sdk.BulkDiscardCapturedSessionsRequest,
+	request *promptvmgosdk.BulkDiscardCapturedSessionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -334,9 +334,9 @@ func (r *RawClient) BulkDiscardCapturedSessions(
 
 func (r *RawClient) PromoteCapturedSession(
 	ctx context.Context,
-	request *sdk.PromoteCapturedSessionRequest,
+	request *promptvmgosdk.PromoteCapturedSessionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PromoteCapturedSessionResponse], error) {
+) (*core.Response[*promptvmgosdk.PromoteCapturedSessionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -351,7 +351,7 @@ func (r *RawClient) PromoteCapturedSession(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.PromoteCapturedSessionResponse
+	var response *promptvmgosdk.PromoteCapturedSessionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -368,7 +368,7 @@ func (r *RawClient) PromoteCapturedSession(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PromoteCapturedSessionResponse]{
+	return &core.Response[*promptvmgosdk.PromoteCapturedSessionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -377,9 +377,9 @@ func (r *RawClient) PromoteCapturedSession(
 
 func (r *RawClient) DiscardCapturedSession(
 	ctx context.Context,
-	request *sdk.DiscardCapturedSessionRequest,
+	request *promptvmgosdk.DiscardCapturedSessionRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DiscardCapturedSessionResponse], error) {
+) (*core.Response[*promptvmgosdk.DiscardCapturedSessionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -394,7 +394,7 @@ func (r *RawClient) DiscardCapturedSession(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *sdk.DiscardCapturedSessionResponse
+	var response *promptvmgosdk.DiscardCapturedSessionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -411,7 +411,7 @@ func (r *RawClient) DiscardCapturedSession(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DiscardCapturedSessionResponse]{
+	return &core.Response[*promptvmgosdk.DiscardCapturedSessionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

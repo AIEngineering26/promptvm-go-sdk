@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestMarketplaceCommentsListThreadedCommentsOnAListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest{
+	request := &promptvmgosdk.GetAPIV1MarketplaceListingsListingIDCommentsRequest{
 		ListingID: "listingId",
 	}
 	_, invocationErr := client.MarketplaceComments.ListThreadedCommentsOnAListing(
@@ -99,7 +99,7 @@ func TestMarketplaceCommentsCreateACommentOrReplyOnAListingWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest{
+	request := &promptvmgosdk.PostAPIV1MarketplaceListingsListingIDCommentsRequest{
 		ListingID: "listingId",
 		Content:   "content",
 	}
@@ -126,7 +126,7 @@ func TestMarketplaceCommentsSoftDeleteMyCommentWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest{
+	request := &promptvmgosdk.DeleteAPIV1MarketplaceCommentsCommentIDRequest{
 		CommentID: "commentId",
 	}
 	invocationErr := client.MarketplaceComments.SoftDeleteMyComment(

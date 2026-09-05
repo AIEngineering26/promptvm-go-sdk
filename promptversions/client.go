@@ -4,7 +4,7 @@ package promptversions
 
 import (
 	context "context"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
 	core "github.com/AIEngineering26/promptvm-go-sdk/core"
 	internal "github.com/AIEngineering26/promptvm-go-sdk/internal"
 	option "github.com/AIEngineering26/promptvm-go-sdk/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListPromptVersions(
 	ctx context.Context,
-	request *sdk.ListPromptVersionsRequest,
+	request *promptvmgosdk.ListPromptVersionsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListPromptVersionsResponse, error) {
+) (*promptvmgosdk.ListPromptVersionsResponse, error) {
 	response, err := c.WithRawResponse.ListPromptVersions(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) ListPromptVersions(
 
 func (c *Client) CreatePromptVersion(
 	ctx context.Context,
-	request *sdk.CreatePromptVersionRequest,
+	request *promptvmgosdk.CreatePromptVersionRequest,
 	opts ...option.RequestOption,
-) (*sdk.CreatePromptVersionResponse, error) {
+) (*promptvmgosdk.CreatePromptVersionResponse, error) {
 	response, err := c.WithRawResponse.CreatePromptVersion(
 		ctx,
 		request,
@@ -67,9 +67,9 @@ func (c *Client) CreatePromptVersion(
 // Creates a new version from an older version's content.
 func (c *Client) RollbackPrompt(
 	ctx context.Context,
-	request *sdk.RollbackPromptRequest,
+	request *promptvmgosdk.RollbackPromptRequest,
 	opts ...option.RequestOption,
-) (*sdk.RollbackPromptResponse, error) {
+) (*promptvmgosdk.RollbackPromptResponse, error) {
 	response, err := c.WithRawResponse.RollbackPrompt(
 		ctx,
 		request,
@@ -83,9 +83,9 @@ func (c *Client) RollbackPrompt(
 
 func (c *Client) GetPromptVersion(
 	ctx context.Context,
-	request *sdk.GetPromptVersionRequest,
+	request *promptvmgosdk.GetPromptVersionRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetPromptVersionResponse, error) {
+) (*promptvmgosdk.GetPromptVersionResponse, error) {
 	response, err := c.WithRawResponse.GetPromptVersion(
 		ctx,
 		request,
@@ -99,9 +99,9 @@ func (c *Client) GetPromptVersion(
 
 func (c *Client) UpdatePromptVersion(
 	ctx context.Context,
-	request *sdk.UpdatePromptVersionRequest,
+	request *promptvmgosdk.UpdatePromptVersionRequest,
 	opts ...option.RequestOption,
-) (*sdk.UpdatePromptVersionResponse, error) {
+) (*promptvmgosdk.UpdatePromptVersionResponse, error) {
 	response, err := c.WithRawResponse.UpdatePromptVersion(
 		ctx,
 		request,
@@ -116,9 +116,9 @@ func (c *Client) UpdatePromptVersion(
 // Returns a unified diff between two version numbers.
 func (c *Client) DiffPromptVersions(
 	ctx context.Context,
-	request *sdk.DiffPromptVersionsRequest,
+	request *promptvmgosdk.DiffPromptVersionsRequest,
 	opts ...option.RequestOption,
-) (*sdk.DiffPromptVersionsResponse, error) {
+) (*promptvmgosdk.DiffPromptVersionsResponse, error) {
 	response, err := c.WithRawResponse.DiffPromptVersions(
 		ctx,
 		request,
@@ -132,9 +132,9 @@ func (c *Client) DiffPromptVersions(
 
 func (c *Client) GetVersionRecommendedModels(
 	ctx context.Context,
-	request *sdk.GetVersionRecommendedModelsRequest,
+	request *promptvmgosdk.GetVersionRecommendedModelsRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetVersionRecommendedModelsResponse, error) {
+) (*promptvmgosdk.GetVersionRecommendedModelsResponse, error) {
 	response, err := c.WithRawResponse.GetVersionRecommendedModels(
 		ctx,
 		request,
@@ -149,9 +149,9 @@ func (c *Client) GetVersionRecommendedModels(
 // Replace-all, in the order given. Up to 10. An unknown or retired model id is rejected rather than dropped, so a partially-invalid selection never silently succeeds.
 func (c *Client) SetVersionRecommendedModels(
 	ctx context.Context,
-	request *sdk.SetVersionRecommendedModelsRequest,
+	request *promptvmgosdk.SetVersionRecommendedModelsRequest,
 	opts ...option.RequestOption,
-) (*sdk.SetVersionRecommendedModelsResponse, error) {
+) (*promptvmgosdk.SetVersionRecommendedModelsResponse, error) {
 	response, err := c.WithRawResponse.SetVersionRecommendedModels(
 		ctx,
 		request,

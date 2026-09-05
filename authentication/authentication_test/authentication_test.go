@@ -6,12 +6,12 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	promptvmgosdk "github.com/AIEngineering26/promptvm-go-sdk"
+	client "github.com/AIEngineering26/promptvm-go-sdk/client"
+	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
 	os "os"
-	sdk "github.com/AIEngineering26/promptvm-go-sdk"
-	client "github.com/AIEngineering26/promptvm-go-sdk/client"
-	option "github.com/AIEngineering26/promptvm-go-sdk/option"
 	testing "testing"
 )
 
@@ -73,7 +73,7 @@ func TestAuthenticationMcpAuthorizeWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.McpAuthorizeRequest{
+	request := &promptvmgosdk.McpAuthorizeRequest{
 		RedirectURI: "redirect_uri",
 		State:       "state",
 	}
@@ -100,7 +100,7 @@ func TestAuthenticationUpdateUIPreferencesWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &sdk.UpdateUIPreferencesRequest{}
+	request := &promptvmgosdk.UpdateUIPreferencesRequest{}
 	_, invocationErr := client.Authentication.UpdateUIPreferences(
 		context.TODO(),
 		request,
